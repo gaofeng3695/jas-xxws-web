@@ -26,9 +26,9 @@ git checkout -b v1.6-shifei //自己名字的拼音全拼
 ###### 4. 开发项目，在自己的分支上进行
 
 ``` java
-git install //安装项目相关的依赖包
-git run start //启动项目，会自动打开浏览器，可配合nginx开发
-git run build //打包项目代码到dist文件，用于发布
+npm install //安装项目相关的依赖包
+npm run start //启动项目，会自动打开浏览器，可配合nginx开发
+npm run build //打包项目代码到dist文件，用于发布
 ```
 
 ###### 5. 提交代码
