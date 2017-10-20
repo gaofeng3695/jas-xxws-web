@@ -1,0 +1,572 @@
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+    
+    .pd {
+        padding: 4px 0 4px 12px;
+    }
+    
+    html,
+    body {
+        height: 100%;
+    }
+    
+    #peoplepage {
+        height: 100%;
+        background: #edf1f2;
+        padding: 15px 0;
+        .container-fluid {
+            height: 100%;
+            overflow: hidden;
+            .search_item_wrapper {
+                padding-bottom: 15px;
+                margin-bottom: 15px;
+                background: #fff;
+                border-bottom: 1px solid #cbccce;
+                border-radius: 6px;
+                box-shadow: 0px 1px 8px #e3e3e3;
+            }
+            .content {
+                height: 100%;
+                overflow: hidden;
+                .treeLeft {
+                    height: 100%;
+                    width: 300px;
+                    background: #fff;
+                    float: left;
+                    border-radius: 6px;
+                    box-shadow: 0 1px 8px #e3e3e3;
+                    .treeLeftson {
+                        width: 280px;
+                        overflow-x: auto;
+                        padding: 0px 0px 20px 10px;
+                        .ztreeLeft {
+                            padding: 0;
+                            width: 100%;
+                            padding-top: 20px;
+                            li {
+                                line-height: 26px;
+                                #organ_list_1_a {
+                                    font-weight: bold;
+                                }
+                                a {
+                                    display: block;
+                                    height: 26px;
+                                    background: #f3f3f3;
+                                    margin-bottom: 10px;
+                                    color: #666;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    padding-left: 10px;
+                                    &:hover {
+                                        text-decoration: none;
+                                    }
+                                    &.curSelectedNode {
+                                        background: #edf7ff;
+                                        border: 1px solid #5ab7fc;
+                                        height: 26px;
+                                    }
+                                }
+                                span {
+                                    font-size: 14px;
+                                    color: #666;
+                                }
+                                #organ_list_1_span {
+                                    color: #333;
+                                }
+                                span.button {
+                                    &.switch {
+                                        width: 18px;
+                                        height: 18px;
+                                        float: right;
+                                        margin-top: 3px;
+                                    }
+                                    &.noline_open,
+                                    &.bottom_open,
+                                    &.root_open,
+                                    &.center_open {
+                                        background: url(/src/images/management/open.png) center no-repeat;
+                                    }
+                                    &.noline_close,
+                                    &.bottom_close,
+                                    &.root_close,
+                                    &.center_close {
+                                        background: url(/src/images/management/close.png) center no-repeat;
+                                    }
+                                }
+                                ul {
+                                    padding: 0;
+                                    li {
+                                        padding-left: 15px;
+                                        overflow: hidden;
+                                        background: url(/src/images/management/center.png) 5px 0px repeat-y;
+                                        &:first-child {
+                                            background: url(/src/images/management/start.png) 5px 13px no-repeat;
+                                        }
+                                        &:last-child {
+                                            background: url(/src/images/management/end.png) 5px -23px no-repeat;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .treeRight {
+                    width: auto;
+                    margin-left: 315px;
+                    overflow-y: auto;
+                    max-height: 100%;
+                    .row {
+                        margin: 0;
+                        .container-fluid {
+                            margin: 0;
+                        }
+                    }
+                }
+                .right_wrapper {
+                    margin-top: 0px;
+                }
+                .search_wrapper {
+                    margin-right: -50px;
+                }
+                #toolbar {
+                    .export-all,
+                    .inviteuser {
+                        margin: 0 10px;
+                        color: #53b5fc;
+                        font-size: 14px;
+                        cursor: pointer;
+                    }
+                }
+            }
+            #table {
+                .th-inner {
+                    text-align: center;
+                }
+            }
+        }
+        .view {
+            margin: 0px 5px;
+            i {
+                display: inline-block;
+                width: 22px;
+                height: 16px;
+                margin-left: 10px;
+                background: url(/src/images/event/look.png) no-repeat;
+                vertical-align: middle;
+                &:hover {
+                    background: url(/src/images/event/look_h.png) no-repeat;
+                }
+            }
+        }
+        .inviter {
+            i {
+                display: inline-block;
+                width: 22px;
+                height: 16px;
+                background: url(/src/images/enterprised/invite.png) no-repeat;
+                vertical-align: middle;
+                &:hover {
+                    background: url(/src/images/enterprised/invite1.png) no-repeat;
+                }
+            }
+        }
+        .edituser {
+            margin: 0px 5px;
+            i {
+                display: inline-block;
+                width: 22px;
+                height: 21px;
+                background: url(/src/images/management/modify.png) no-repeat;
+                vertical-align: middle;
+                &:hover {
+                    background: url(/src/images/enterprised/edit_h.png) no-repeat;
+                }
+            }
+        }
+        .remove {
+            margin: 0px 5px;
+            i {
+                display: inline-block;
+                width: 22px;
+                height: 21px;
+                background: url(/src/images/task/closed.png) no-repeat;
+                vertical-align: middle;
+                &:hover {
+                    background: url(/src/images/task/closed_h.png) no-repeat;
+                }
+            }
+        }
+        .search_btn_right {
+            right: 15px;
+            position: absolute;
+            height: 36px;
+            color: white;
+            background: #58b7f7;
+            width: 80px;
+            text-align: center;
+            line-height: 36px;
+            border-radius: 18px;
+            float: left;
+            cursor: pointer;
+        }
+    }
+    
+    .fixed-table-body {
+        border: 1px solid #ddd;
+    }
+    
+    .table {
+        border: 1px solid #dddddd;
+    }
+    
+    .join {
+        color: #fff;
+        background: #59b6fc;
+        width: 70px;
+        vertical-align: middle;
+        padding: 5px;
+        border-radius: 4px;
+    }
+    
+    .frozen {
+        color: #fff;
+        background: #fdad3e;
+        width: 70px;
+        padding: 5px;
+        vertical-align: middle;
+        border-radius: 4px;
+    }
+    
+    .nojoin {
+        color: #fff;
+        background: #cbcbcb;
+        vertical-align: middle;
+        width: 70px;
+        // line-height: 30px;
+        border-radius: 4px;
+        padding: 5px;
+    }
+    
+    //模态框打开的页面
+    .cancelbtn {
+        background: #fff;
+        color: #666;
+    }
+    
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+    
+    .alignRight {
+        text-align: right;
+    }
+    
+    .mt25 {
+        margin-top: 25px;
+    }
+    
+    .mt50 {
+        margin-top: 50px;
+    }
+    
+    .ml15 {
+        margin-left: 15px;
+    }
+    
+    .mr15 {
+        margin-right: 15px;
+    }
+    
+    .mt80 {
+        margin-top: 80px;
+    }
+    
+    .pl16 {
+        padding-left: 16px;
+    }
+    
+    .rightDiv {
+        img {
+            width: 20px;
+            height: 20px;
+            margin-top: -5px;
+        }
+    }
+    
+    .ml39 {
+        margin-left: 39px;
+    }
+    
+    .ml65 {
+        margin-left: 65px;
+    }
+    
+    //邀请人员的样式
+    #addUser {
+        .modal-lg {
+            .modal-content {
+                width: 730px;
+                height: 555px;
+                background: #E7E9ED;
+                border-radius: 8px;
+                margin: 0 auto;
+                overflow: hidden;
+                border: none;
+                .modal-header {
+                    height: 38px;
+                    background: #344052;
+                    color: #fff;
+                    padding: 0;
+                    margin: 0;
+                    h3 {
+                        line-height: 40px;
+                        font-size: 16px;
+                        text-align: center;
+                        margin: 0;
+                        a {
+                            color: #fff;
+                            margin-top: 6px;
+                            margin-right: 10px;
+                            font-weight: none;
+                            opacity: 1;
+                        }
+                    }
+                }
+                .modal-body {
+                    width: 690px;
+                    height: 445px;
+                    background: #fff;
+                    margin: 10px 20px;
+                    .peopleleft {
+                        width: 361px;
+                        margin: 50px auto;
+                        .leftspanstyle {
+                            color: #666;
+                            letter-spacing: 26px;
+                            float: left;
+                            line-height: 30px;
+                            span {
+                                display: block;
+                                float: left;
+                                color: red;
+                                letter-spacing: 8px;
+                                font-size: 18px;
+                                line-height: 40px;
+                            }
+                        }
+                        .leftinputstyle {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            height: 30px;
+                            border: 1px solid #ccc;
+                            outline: none;
+                            border-radius: 5px;
+                            padding-left: 15px;
+                            width: 265px;
+                            display: block;
+                            float: left;
+                        }
+                        img {
+                            cursor: pointer;
+                            width: 19px;
+                            height: 19px;
+                            float: right;
+                            margin-right: -26px;
+                            margin-top: 6px;
+                        }
+                        .leftspan2style {
+                            color: red;
+                            margin-left: 5px;
+                        }
+                    }
+                }
+                .modal-footer {
+                    text-align: center;
+                    background: #344052;
+                    height: 52px;
+                    padding: 0;
+                    margin: 0;
+                    button {
+                        height: 36px;
+                        border: none;
+                        width: 120px;
+                        margin: 7px 30px 0 30px;
+                        font-size: 16px;
+                    }
+                    .btn1 {
+                        background: #59b6fc;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+    
+    // 查看人员详情
+    #viewUser {
+        @extend #addUser;
+        .modal-lg {
+            .modal-content {
+                width: 890px;
+                height: 425px;
+                .modal-body {
+                    width: 850px;
+                    height: 235px;
+                    margin: 20px 20px 80px 20px;
+                    table {
+                        width: 410px;
+                        height: 200px;
+                        float: left;
+                        margin: 0 auto;
+                        border: 1px solid #ececec;
+                        tr {
+                            border-bottom: 1px solid #ececec;
+                        }
+                        .font {
+                            padding-left: 5px;
+                        }
+                        .bgwidth {
+                            width: 125px;
+                            letter-spacing: 8px;
+                            height: 40px;
+                            border-right: 1px solid #ececec;
+                            background: #F7F7F7;
+                            text-align: center;
+                            line-height: 40px;
+                        }
+                    }
+                }
+                .modal-footer {
+                    height: 55px;
+                    .frozebtn {
+                        background: #FBAD3E;
+                        color: #fff;
+                    }
+                    .removebtn {
+                        background: #FF3D29;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+    
+    //编辑人员的样式
+    #editUser {
+        @extend #addUser;
+        .modal-lg {
+            .modal-content {
+                width: 890px;
+                height: 618px;
+                background: #E7E9ED;
+                margin: 0 auto;
+                .modal-body {
+                    width: 850px;
+                    height: 490px;
+                    background: #fff;
+                    margin: 19px;
+                    .leftAndRight {
+                        width: 800px;
+                        height: 350px;
+                        margin: 60px auto;
+                        .peopleleft {
+                            height: 335px;
+                            margin: 0 auto;
+                            margin-left: 25px;
+                            float: left;
+                            img {
+                                width: 18px;
+                                height: 18px;
+                                margin-top: 5px;
+                                margin-left: 5px;
+                            }
+                            .leftspanstyle {
+                                width: 80px;
+                            }
+                            img {
+                                cursor: pointer;
+                                width: 19px;
+                                height: 19px;
+                                float: right;
+                                margin-right: -26px;
+                                margin-top: 6px;
+                            }
+                            .leftspan2style {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                display: block;
+                                height: 25px;
+                                clear: both;
+                                margin-left: 40px;
+                            }
+                        }
+                        .peopleright {
+                            width: 370px;
+                            height: 335px;
+                            float: right;
+                            .rightspanstyle {
+                                color: #666;
+                                letter-spacing: 26px;
+                                float: left;
+                                line-height: 30px;
+                            }
+                            .rightinputstyle {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: 265px;
+                                height: 30px;
+                                border: 1px solid #ccc;
+                                outline: none;
+                                border-radius: 5px;
+                                padding-left: 15px;
+                            }
+                            .leftspan2style {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                display: block;
+                                height: 25px;
+                                color: red;
+                                clear: both;
+                                margin-left: 110px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /*优化表格*/
+    
+    .table {
+        border: 1px solid #fff !important;
+    }
+    
+    .tablebg {
+        border: 1px solid #4aaffb;
+        background: #edf7ff;
+    }
+    
+    td {
+        white-space: nowrap;
+        width: 60%;
+        text-overflow: ellipsis;
+        -moz-text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    
+    .fixed-table-container {
+        border: none;
+    }
+    
+    .bootstrap-table {
+        margin-bottom: 20px;
+    }

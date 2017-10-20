@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <base target="_parent">
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
+    <link href="/src/css/index.css" rel="stylesheet">
+    <link href="/src/css/common/view.pic.css" rel="stylesheet">
+    <link href="/src/css/dispose_common.css" rel="stylesheet">
+    <link href="/src/css/details_common.css" rel="stylesheet">
+    <link href="/src/css/detailsRepair.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="index_wrapper">
+        <div class=" container-fluid">
+            <!-- /.row -->
+            <div class="row dashboard">
+                <div class="col-lg-3 col-md-6 col-xs-12 box">
+                    <div class="title"><span>企业人员</span></div>
+                    <div class="qtty"><span class="num">--</span><span>人</span></div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-xs-12 box">
+                    <div class="title">巡检中人员</div>
+                    <div class="qtty"><span class="num">--</span><span>人</span></div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-xs-12 box">
+                    <div class="title">本日新增事件</div>
+                    <div class="qtty"><span class="num">--</span><span>起</span></div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-xs-12 box">
+                    <div class="title">本日新增任务</div>
+                    <div class="qtty"><span class="num">--</span><span>起</span></div>
+                </div>
+                <!--<div class="col-lg-3 col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-comments fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">26</div>
+                                        <div>New Comments!</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+            </div>
+            <!-- /.row -->
+            <div class="row row_main">
+                <!--任务图表-->
+                <div class="col-lg-5 mainbox">
+                    <div class="title">本周任务 <span class="thisWeek"></span></div>
+                    <div class="sub_title">
+                        <div class="box01">
+                            <div>任务总量</div>
+                            <div id="taskChart_all" class="num">--</div>
+                        </div>
+                        <div class="box01">
+                            <div>已完成</div>
+                            <div id="taskChart_done" class="num">--</div>
+                        </div>
+                        <div class="box01">
+                            <div>处理中</div>
+                            <div id="taskChart_doing" class="num">--</div>
+                        </div>
+                    </div>
+                    <div id="taskChart" class="chart"></div>
+                </div>
+                <!--任务列表-->
+                <div class="col-lg-7 mainbox">
+                    <div class="title">我的任务（ <span id="taskList_total">--</span> ）
+                        <a class="more" href="/main.html#/task">更多 ></a>
+                    </div>
+                    <div id="task_tip" class="tip">
+                        您的待办任务全部搞定啦...
+                    </div>
+                    <div id="taskList_wrapper" class="wrapper">
+                        <!--<div class="line">
+                                <div class="line_title">
+                                    <span class="person">item.createUserName</span>
+                                    <span>任务号：</span>
+                                    <span>item.code</span>
+                                </div>
+                                <div class="sub_wrap">
+                                    <div class="icon record">
+
+                                    </div>
+                                    <div class="mybtn">
+                                        处置
+                                    </div>
+                                    <div class="content">
+                                        <div class="desc">
+                                            item.eventDescription
+                                        </div>
+                                        <div class="dis_title">
+                                            <span class="person">item.disposeUserName</span>
+                                            <span class="handle">item.disposeTypeName</span>
+                                            <span class="date">item.disposeTime</span>
+                                        </div>
+                                        <div class="dispose">
+                                            item.disposeContent
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>-->
+                    </div>
+                </div>
+                <!--事件图表-->
+                <div class="col-lg-5 mainbox">
+                    <div class="title">本周事件 <span class="thisWeek"></span></div>
+                    <div id="eventChart" class="chart ">
+                        <div id="chart_tip" class="chart_tip" style="display:none;">您还没有创建任何事件类型...</div>
+                    </div>
+
+                    <!-- <div class="sub_title">
+                        <div class="line">
+                            <div class="ceil">
+                                <div class="ceil_box e_all">
+                                    <span>总巡线事件</span>
+                                    <span>（<span id="eventChart_all">--</span> 起）</span>
+                                </div>
+                            </div>
+                            <div class="ceil">
+                                <div class="ceil_box e_nature">
+                                    <span>自然灾害</span>
+                                    <span class="numBtn"><span id="disasterCount">--</span> 起</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="ceil">
+                                <div class="ceil_box e_self">
+                                    <span>管道设施</span>
+                                    <span class="numBtn"><span id="pipeEquipmentCount">--</span> 起</span>
+                                </div>
+                            </div>
+                            <div class="ceil">
+                                <div class="ceil_box e_other">
+                                    <span>第三方活动</span>
+                                    <span class="numBtn"><span id="constructionCount">--</span> 起</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                <!--事件列表-->
+                <div id="" class="col-lg-7 mainbox">
+                    <div class="title">企业处理中事件（ <span id="eventList_total">--</span> ）
+                        <a class="more" href="/main.html#/event">更多 ></a>
+                    </div>
+                    <div id="event_tip" class="tip">
+                        最近什么都没有发生哟~
+                    </div>
+                    <div id="eventList_wrapper"></div>
+                    <!--<div class="line">
+                            <div class="line_title">
+                                <span>事件号：</span>
+                                <span>201609087897</span>
+                            </div>
+                            <div class="sub_wrap">
+                                <div class="icon record">
+
+                                </div>
+
+                                <div class="content">
+                                    <div class="con_title">
+                                        <span class="date">2016.12.12 12:14</span>
+                                        <span class="type">第三方施工——道路返修</span>
+                                        <span class="scope">所属范围内</span>
+                                    </div>
+                                    <div class="des_wrap">
+                                        <div class="mybtn">
+                                            查看
+                                        </div>
+                                        <div class="desc">
+                                            八方路桃李园小区思琪童安格会受到进口，啊实打实的。八方路桃李园小区思琪童安格会受到进口，啊实打实的。八方路桃李园小区思琪童安格会受到进口，啊实打实的。
+                                        </div>
+                                        <div class="dist">
+                                            北京市海淀区科大天工大厦A座13层
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>-->
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!--处置填写-->
+    <div id="dispose" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>填写信息<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form_task">
+                            <div class="form_list">
+                                <div class="list_left text-right">
+                                    处置时间
+                                </div>
+                                <div class="list_right has-feedback">
+                                    <p id="datetime"></p>
+                                </div>
+                            </div>
+                            <div class="form_line"></div>
+                            <div class="form_list">
+                                <div class="form_part">
+                                    <div class="list_left text-right">
+                                        信息类型
+                                    </div>
+                                    <div class="list_right has-feedback radio">
+                                        <label>
+                                            <input type="radio" name="taskType" value="10" checked>
+                                            记录
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="taskType" value="20">
+                                            请示
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="taskType" value="30">
+                                            意见
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form_list">
+                                <div class="list_left text-right">
+                                    信息描述
+                                </div>
+                                <div class="list_right textarea_text">
+                                    <textarea id="event_description" oninput="checkLen(this)" class="form-control"></textarea>
+                                    <span class="text_num">(160字)</span>
+                                </div>
+                            </div>
+                            <div class="form_list">
+                                <div class="list_left text-right">
+                                    照片
+                                </div>
+                                <div class="list_right">
+                                    <div class="feedback_img">
+                                        <div class="feedback_img_list">
+                                        </div>
+                                        <div class="feedback_img_file">
+                                            <input type="file" onchange="handleFiles(this);" class="upload_file" />
+                                        </div>
+                                        <div class="feedback_img_add">
+                                            <span class="addImg"><img src="/src/images/event/upload.png" alt=""></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form_line"></div>
+                            <div class="form_list">
+                                <div class="list_left text-right">
+                                    报送人
+                                </div>
+                                <div class="list_right has-feedback">
+                                    <input type="text" class="form-control" name="receiveUser" placeholder="请选择报送人" readonly>
+                                    <span class="form-control-feedback" aria-hidden="true">
+                                        <img src="/src/images/event/slaff.png" alt="">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit">提交</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--人员信息-->
+    <div id="stakeholder" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>人员添加<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="sub_wrapper">
+                        <ul id="people_list" class="ztree"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_selectPeople" type="button" class="btn modal_active btn-primary">确定</button>
+                    <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--详情窗口-->
+    <div id="details" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>事件详情<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="details_main">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 text-right details_title">事件编号</div>
+                                <div class="col-md-4 col-sm-4 details_text eventCode"></div>
+                                <div class="col-md-2 col-sm-2 text-right details_title">事件发生时间</div>
+                                <div class="col-md-4 col-sm-4 details_text occurrenceTime"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 text-right details_title">事件类型</div>
+                                <div class="col-md-4  col-sm-4 details_text fullTypeName"></div>
+                                <div class="col-md-2 col-sm-2 text-right details_title">上报人</div>
+                                <div class="col-md-4  col-sm-4 details_text inspectorName"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 text-right details_title">详细位置</div>
+                                <div class="col-md-10  col-sm-10 details_text details_map_main">
+                                    <p class="address"></p>
+                                    <div id="details_address_map"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 text-right details_title">事件描述</div>
+                                <div class="col-md-10  col-sm-10 details_text description"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 text-right details_title">语音描述</div>
+                                <div class="col-md-10 details_text col-sm-10 event_audio">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 text-right details_title">照片</div>
+                                <div class="col-md-10 details_text  col-sm-10 event_pic">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn getHistory">历史维修记录</button>
+                    <button class="btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--历史维修记录-->
+    <div id="repairHistory" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>历史维修记录<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="historyMain">
+                        <div class="historySeach">
+                            <div class="historySeachMain">
+                                <input type="text" placeholder="请输入关键字搜索" />
+                                <span class="historySeachBtn">确定</span>
+                            </div>
+                        </div>
+                        <table id="repairTableHistory"></table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--维修详情模态框-->
+    <div id="repairDetails" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>{{frameName}}<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="frameDetails">
+                        <div class="frameDetailsNav">
+                            <ul>
+                                <li v-bind:class="{active:detailsShow}" @click="tabChange('details')">维修详情</li>
+                                <li v-bind:class="{active:axisShow}" @click="tabChange('axis')">维修任务轴</li>
+                            </ul>
+                        </div>
+                        <div class="frameDetailsNavMian">
+                            <p class="detailsCode">维修编号：{{maintenanceCode}}</p>
+                            <!--维修详情-->
+                            <div class="frameDetailsMain" v-show="detailsShow">
+                                <component v-bind:is="which_to_show" v-bind:modifybtn="modifyShow" v-bind:openperson="openPerson" v-bind:my-msgdetails="dataBasics"></component>
+                            </div>
+                            <!--维修任务轴-->
+                            <div class="frameAxisMian" v-show="axisShow">
+                                <axis-html v-bind:my-msgaxis="dataAxis"></axis-html>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit" v-show="modifyShow" @click="modifySave">保存</button>
+                    <button class="btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/lib/js/echarts.common.min.js"></script>
+    <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+
+    <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="/src/js/event/upload.js"></script>
+    <script type="text/javascript" src="/src/js/event/ajaxFileUpload.js"></script>
+    <script type="text/javascript" src="/lib/js/common_base.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
+    <script type="text/javascript" src="/lib/js/amrnb.js"></script>
+    <script type="text/javascript" src="/lib/js/amrnb-play.js"></script>
+    <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+    <script type="text/javascript" src="/src/js/common/common.js"></script>
+    <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+    <script type="text/javascript" src="/src/js/common/view.pic.js"></script>
+    <script type="text/javascript" src="/src/js/common/dispose_common.js"></script>
+    <script type="text/javascript" src="/src/js/common/details_common.js"></script>
+    <script type="text/javascript" src="/src/js/index.js"></script>
+
+    <script type="text/javascript" src="/src/js/common/vue.js"></script>
+    <script type="text/javascript" src="/src/js/maintenance/details.js"></script>
+</body>
+
+</html>

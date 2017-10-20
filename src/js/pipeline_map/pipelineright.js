@@ -1,0 +1,628 @@
+var pipe_right_title = { //右侧title组件
+    template: '#pipe-right-title',
+    methods: {
+        tabchange: function(sTap, bgcolor) {
+            this.$emit('tabchange', sTap);
+            $(bgcolor.currentTarget).attr("class", "active").siblings('li').attr("class", "");
+        }
+    },
+};
+
+var pipe_right_content_attribute = { //右侧属性组件
+    props: ["detail"],
+    template: '#pipe-right-content-attribute',
+    data: function() {
+        return {
+            changeObj: {}
+        }
+    },
+    watch: {
+        detail: function() {
+            $.extend(this.changeObj, this.detail);
+            $(".attributeBtn").html("修改");
+            $(".right-content-attribute input").prop({ disabled: true });
+            $(".right-content-attribute textarea").prop({ disabled: true });
+            // 切换管线 默认  属性模块打开
+            $(".left-edit-shrink").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+            $(".rightcontent").show();
+        },
+    },
+    methods: {
+        save_attribute: function(e) {
+            if ($(e.currentTarget).html() == "修改") {
+                $(e.currentTarget).html("保存")
+                $(".right-content-attribute input").prop({ disabled: false });
+                $(".right-content-attribute textarea").prop({ disabled: false });
+            } else {
+                this.verifyPipe();
+            }
+        },
+        //管线修改提交
+        lineModify: function() {
+            var that = this;
+            var pipeFactLength = that.changeObj.pipeFactLength;
+            if (pipeFactLength == "" || pipeFactLength == null) {
+                pipeFactLength = null;
+            }
+            var _data = {
+                objectId: that.detail.objectId, //管线主键ID
+                pipeNetworkId: that.detail.pipeNetworkId, //所属管网主键
+                pipeLineName: that.changeObj.pipeLineName, //管线名称
+                pipeLineRemark: that.changeObj.pipeLineRemark, //备注
+                pipeMaterial: that.changeObj.pipeMaterial, //材质
+                pipeDiameter: that.changeObj.pipeDiameter, //管径
+                pipeThickness: that.changeObj.pipeThickness, //壁厚
+                pipeFactLength: pipeFactLength, //管线实际长度（人工输入的长度）
+                pipeLength: that.detail.pipeLength, //管线长度
+                // pipeColor: that.detail.pipeColor, //管线颜色
+                // pipeStyle: that.detail.pipeStyle, //设置是为实线或虚线 (solid或dashed)
+                // pipeWeight: that.detail.pipeWeight, //管线宽度（1~20）
+            };
+            $.ajax({
+                type: "POST",
+                url: "/cloudlink-inspection-event/pipemapline/updateProperty?token=" + lsObj.getLocalStorage('token'),
+                contentType: "application/json",
+                data: JSON.stringify(_data),
+                dataType: "json",
+                success: function(data) {
+                    if (data.success == 1) {
+                        xxwsWindowObj.xxwsAlert("修改管线属性成功", function() {
+                            that.$emit('savelineattribute', _data.objectId, 3);
+                            $(".attributeBtn").html("修改");
+                            $(".right-content-attribute  input").prop({ disabled: true });
+                            $(".right-content-attribute  textarea").prop({ disabled: true });
+                        });
+                    } else {
+                        $(".attributeBtn").html("修改");
+                        $(".right-content-attribute  input").prop({ disabled: true });
+                        $(".right-content-attribute  textarea").prop({ disabled: true });
+                        xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                    }
+                },
+                error: function() {
+                    $(".attributeBtn").html("修改");
+                    $(".right-content-attribute  input").prop({ disabled: true });
+                    $(".right-content-attribute  textarea").prop({ disabled: true });
+                    xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                }
+            });
+        },
+        //管线编辑长度验证
+        verifyPipe: function() {
+            var regNum = /^[0-9]{1,1}\d{0,8}(\.\d{1,3})?$/;
+            if (this.changeObj.pipeLineName.trim().length == 0) {
+                xxwsWindowObj.xxwsAlert("管线名称不能为空");
+                return false;
+            } else if (this.changeObj.pipeLineName.trim().length > 50) {
+                xxwsWindowObj.xxwsAlert("管线名称长度不能超过50个字");
+                return false;
+            } else if (this.changeObj.pipeMaterial.trim().length > 50) {
+                //针对材质写正则
+                xxwsWindowObj.xxwsAlert("管线材质长度不能超过50个字");
+                return false;
+            } else if (this.changeObj.pipeDiameter.trim().length > 50) {
+                //针对管径写正则
+                xxwsWindowObj.xxwsAlert("管线管径长度不能超过50个字");
+                return false;
+            } else if (this.changeObj.pipeThickness.trim().length > 50) {
+                //针对壁厚写正则
+                xxwsWindowObj.xxwsAlert("管线壁厚长度不能超过50个字");
+                return false;
+            } else if (this.changeObj.pipeFactLength != null && this.changeObj.pipeFactLength.trim().length > 0) {
+                if (!regNum.test(this.changeObj.pipeFactLength.trim())) {
+                    xxwsWindowObj.xxwsAlert("管线实际长度格式不正确");
+                    return false;
+                } else {
+                    this.lineModify(this.changeObj)
+                }
+            } else if (this.changeObj.pipeLineRemark.trim().length > 200) {
+                //针对壁厚写正则
+                xxwsWindowObj.xxwsAlert("备注长度不能超过200个字");
+                return false;
+            } else {
+                this.lineModify(this.changeObj)
+            }
+        },
+    },
+};
+
+var pipe_right_content_style = { //右侧样式组件
+    template: '#pipe-right-content-style',
+    props: ["detailstyle"],
+    data: function() {
+        return {
+            lineWeight: {},
+            lineColor: {},
+            lineStyle: {}
+        }
+    },
+    watch: {
+        detailstyle: function() {
+            if (this.detailstyle.pipeStyle == "solid") {
+                $('select').val("1")
+            } else if ((this.detailstyle.pipeStyle == "dashed")) {
+                $('select').val("2");
+            }
+            $(".bgColorStyle").css("background-color", this.detailstyle.pipeColor);
+            $(".borderColorStyle").css("border-color", this.detailstyle.pipeColor);
+            $(".borderColorStyle").css("border-style", this.detailstyle.pipeStyle);
+            $(".preview").css({ "height": this.detailstyle.pipeWeight, "background-color": this.detailstyle.pipeColor });
+            if (this.detailstyle.pipeWeight == "" || this.detailstyle.pipeWeight == null) {
+                this.detailstyle.pipeWeight = "2"
+                $(".preview").height("2px");
+                $(".scale div").css({ "width": "12px", "background-color": this.detailstyle.pipeColor });
+                $("#btn").css("left", "12px");
+            } else {
+                $(".scale div").css({ "width": (this.detailstyle.pipeWeight) * 6, "background-color": this.detailstyle.pipeColor });
+                $("#btn").css("left", (this.detailstyle.pipeWeight) * 6);
+            }
+        }
+    },
+    mounted: function() {
+        var that = this;
+        //边线颜色的设置
+        $(".bgcolor").colorpicker({
+            fillcolor: true,
+            success: function(o, color) {
+                $(".bgColorStyle").css("background", color);
+                $(".borderColorStyle").css("border-color", color);
+                $(".scale div").css("background-color", color);
+                $(".preview").css("background-color", color);
+                var oDetail = JSON.parse(JSON.stringify(that.detailstyle));
+                oDetail.pipeColor = color; ////储存改变后线颜色的值
+                that.$emit("styleedit", oDetail);
+            }
+        });
+        //边线样式的设置
+        $(".chooseStyle").change(function() {
+            var val = $('select').val();
+            if (val == 1) {
+                $(".borderColorStyle").css("border-style", "solid");
+                var oDetail = JSON.parse(JSON.stringify(that.detailstyle));
+                oDetail.pipeStyle = "solid"; //储存改变后线类型的值
+            } else {
+                $(".borderColorStyle").css("border-style", "dashed");
+                var oDetail = JSON.parse(JSON.stringify(that.detailstyle));
+                oDetail.pipeStyle = "dashed"; //储存改变后线类型的值
+            }
+            that.$emit("styleedit", oDetail);
+        });
+        //进度条插件
+        var scale = function(btn, bar) {
+            this.btn = document.getElementById(btn);
+            this.bar = document.getElementById(bar);
+            this.fontSizeVal = document.getElementById("font_size");
+            this.step = this.bar.getElementsByTagName("div")[0];
+            this.init();
+        };
+        scale.prototype = {
+            init: function() {
+                var f = this,
+                    g = document,
+                    b = window,
+                    m = Math;
+                f.btn.onmousedown = function(e) {
+                    var x = (e || b.event).clientX;
+                    var l = this.offsetLeft;
+                    var max = f.bar.offsetWidth - this.offsetWidth;
+                    g.onmousemove = function(e) {
+                        var thisX = (e || b.event).clientX;
+                        var to = m.min(max, m.max(-2, l + (thisX - x)));
+                        f.btn.style.left = to + 'px';
+                        f.ondrag(m.round(m.max(0, to / max) * 100), to);
+                        b.getSelection ? b.getSelection().removeAllRanges() : g.selection.empty();
+                    };
+                    g.onmouseup = new Function('this.onmousemove=null');
+                };
+            },
+            ondrag: function(pos, x) {
+                this.step.style.width = Math.max(0, x) + 'px';
+                var num = (pos - pos % 5.26) / 5.26 + 1;
+                this.fontSizeVal.value = Math.round(num);
+                //拖拽进度条 效果预览跟随改变
+                var oDetail = JSON.parse(JSON.stringify(that.detailstyle));
+                oDetail.pipeWeight = Math.round(num); //储存改变后线宽的值
+                that.$emit("styleedit", oDetail);
+            }
+        };
+        new scale('btn', 'bar');
+        //价格输入验证 正整数
+        $('#font_size').on('input proprarychange', function(h) {
+            var val = $(this).val().trim();
+            var length = val.length;
+            var reg = /[\D]/g;
+            if (reg.test(val) || val > 20) {
+                $(this).val(val.substring(0, length - 1))
+                return;
+            } else if (val == 0) {
+                $(this).val("1")
+                val = 1;
+            }
+            $('.scale>div').width(val * 6);
+            $('#btn').attr('style', 'left:' + val * 6 + 'px');
+            //改变input值 效果预览宽度跟随改变
+            if (val == "" || val == null) {
+                $(".preview").height(0);
+            } else {
+                $(".preview").height(val);
+            }
+            var oDetail = JSON.parse(JSON.stringify(that.detailstyle));
+            oDetail.pipeWeight = val; //储存改变后线宽的值
+            that.$emit("styleedit", oDetail);
+        })
+    }
+};
+
+var pipe_right_content_point = { //右侧坐标点组件
+    template: '#pipe-right-content-point',
+    props: ["detailPointer"],
+    data: function() {
+        return {};
+    },
+    methods: {
+        deletePointer: function(index) {
+            var that = this;
+            var defaultOptions = {
+                tip: '是否确定删除坐标点？',
+                name_title: '提示',
+                name_cancel: '取消',
+                name_confirm: '确定',
+                isCancelBtnShow: true,
+                callBack: function() {
+                    var oDetail = JSON.parse(JSON.stringify(that.detailPointer));
+                    var arr = oDetail.line;
+                    arr.splice(index, 1);
+                    //把修改的坐标点传给父组件
+                    that.$emit("pointedit", oDetail);
+                }
+            };
+            xxwsWindowObj.xxwsAlert(defaultOptions);
+        },
+        pointerImport: function() { //导入坐标点
+            this.$emit("pointerImport");
+        },
+        downTemplate: function() { //下载坐标点模板
+            var options = {
+                "url": '/cloudlink-inspection-event/templatedownload/excelDownload?token=' + lsObj.getLocalStorage('token'),
+                "method": 'post'
+            }
+            this.downLoadFile(options);
+        },
+        downLoadFile: function(options) { //坐标点模板的方法
+            var config = $.extend(true, {
+                method: 'post'
+            }, options);
+            var $iframe = $('<iframe id="down-file-iframe" />');
+            var $form = $('<form target="down-file-iframe" method="' + config.method + '" />');
+            $form.attr('action', config.url);
+            for (var key in config.data) {
+                $form.append('<input type="hidden" name="' + key + '" value="' + config.data[key] + '" />');
+            }
+            $iframe.append($form);
+            $(document.body).append($iframe);
+            $form[0].submit();
+            $iframe.remove();
+        },
+    }
+};
+var pipenetwork_attribute = { //右侧管网属性组件
+    props: {
+        details: {
+            type: [Object, String]
+        },
+    },
+    template: '#pipenetwork-attribute',
+    data: function() {
+        return {
+            pipeNetworkNameL: '',
+            pipeNetworkRemarkL: ''
+        }
+    },
+    watch: {
+        details: function() {
+            this.pipeNetworkNameL = this.details.pipeNetworkName;
+            this.pipeNetworkRemarkL = this.details.pipeNetworkRemark;
+            $(".attributeWorkBtn").html("修改");
+            $(".pipenetwork-attribute input").attr("disabled", true);
+            $(".pipenetwork-attribute textarea").attr("disabled", true);
+            $(".pipeNetworkShrink").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+            $(".netrightcontent").show();
+        }
+    },
+    methods: {
+        save_workattribute: function(e) {
+            if ($(e.currentTarget).html() == "修改") {
+                $(e.currentTarget).html("保存");
+                $(".pipenetwork-attribute input").prop({ disabled: false });
+                $(".pipenetwork-attribute textarea").prop({ disabled: false });
+            } else {
+                this.verifyNet(this.details);
+            }
+        },
+        //管网修改提交
+        worklineModify: function(data) {
+            var that = this;
+            var _data = {
+                "objectId": data.objectId,
+                "pipeNetworkName": that.pipeNetworkNameL,
+                "pipeNetworkRemark": that.pipeNetworkRemarkL,
+                "pipeNetworkUsed": data.pipeNetworkUsed
+            };
+            $.ajax({
+                type: "POST",
+                url: "/cloudlink-inspection-event/commonData/pipemapnetwork/update?token=" + lsObj.getLocalStorage('token'),
+                contentType: "application/json",
+                data: JSON.stringify(_data),
+                dataType: "json",
+                success: function(data) {
+                    if (data.success == 1) {
+                        xxwsWindowObj.xxwsAlert("修改管网属性成功", function() {
+                            that.$emit('saveworkattribute', _data.objectId, 3);
+                            $(".attributeWorkBtn").html("修改");
+                            $(".pipenetwork-attribute input").prop({ disabled: true });
+                            $(".pipenetwork-attribute textarea").prop({ disabled: true });
+                        });
+                    } else {
+                        $(".attributeWorkBtn").html("修改");
+                        $(".pipenetwork-attribute input").prop({ disabled: true });
+                        $(".pipenetwork-attribute textarea").prop({ disabled: true });
+                        xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                    }
+                },
+                error: function() {
+                    $(".attributeWorkBtn").html("修改");
+                    $(".pipenetwork-attribute input").prop({ disabled: true });
+                    $(".pipenetwork-attribute textarea").prop({ disabled: true });
+                    xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                }
+            });
+        },
+        //管网编辑长度验证        
+        verifyNet: function(data) {
+            //进行填报管网验证
+            if (this.pipeNetworkNameL.trim().length == 0) {
+                xxwsWindowObj.xxwsAlert("管网名称不能为空");
+                return false;
+            } else if (this.pipeNetworkNameL.trim().length > 50) {
+                xxwsWindowObj.xxwsAlert("管网名称长度不能超过50个字");
+                return false;
+            } else if (this.pipeNetworkRemarkL.trim().length > 200) {
+                xxwsWindowObj.xxwsAlert("备注长度不能超过200个字");
+                return false;
+            } else {
+                this.worklineModify(data);
+            }
+        },
+        // checkLen: function(e) {
+        //     if ($(e.currentTarget).val().trim().length > 199) {
+        //         $(e.currentTarget).val($(e.currentTarget).val().substring(0, 200));
+        //         $(e.currentTarget).blur();
+        //         xxwsWindowObj.xxwsAlert("备注最多可输入200字");
+        //     }
+        // }
+    },
+};
+//管线详细信息
+var pipeline_edit = {
+    props: {
+        linedetail: {
+            type: [Object, String],
+        },
+        netdetail: {
+            type: [Object, String],
+        },
+        editdetail: {
+            type: [Object, String],
+        },
+    },
+    template: '#pipeline_edit',
+    components: {
+        'pipe-right-title': pipe_right_title,
+        'pipe-right-content-attribute': pipe_right_content_attribute,
+        'pipe-right-content-style': pipe_right_content_style,
+        'pipe-right-content-point': pipe_right_content_point,
+        'pipenetwork-attribute': pipenetwork_attribute,
+    },
+    computed: {
+        linedata: function() {
+            return (this.editdetail == "") ? this.linedetail : this.editdetail;
+        }
+    },
+    data: function() {
+        return {
+            sCurrentTap: 'attributeShow',
+            show: false,
+            errorinfo: false
+        };
+    },
+    mounted: function() {
+        $(".scrollpointer").mCustomScrollbar({
+            theme: "minimal-dark",
+            advanced: {
+                updateOnContentResize: true
+            }
+        });
+    },
+    methods: {
+        tabchange: function(sTap) {
+            this.sCurrentTap = sTap;
+            $(".rightcontent").show();
+        },
+        //点击关闭右侧管线编辑属性
+        pipeNeLineClose: function() {
+            var that = this;
+            if (that.editdetail) {
+                xxwsWindowObj.xxwsAlert("当前管线已修改未保存,您是否放弃对当前管线的编辑?", function() {
+                    that.$emit('checkedcloseline');
+                }, true);
+            } else {
+                that.$emit('checkedcloseline');
+            }
+        },
+        //点击关闭右侧管网编辑属性
+        pipeNetworkClose: function() {
+            this.$emit('chooseclosenet');
+        },
+        shrink: function(e) {
+            $('.rightcontent').slideToggle(500);
+            if ($(e.currentTarget).hasClass("fa-chevron-down")) {
+                $(e.currentTarget).removeClass("fa-chevron-down").addClass("fa-chevron-up");
+            } else {
+                $(e.currentTarget).addClass("fa-chevron-down").removeClass("fa-chevron-up");
+            }
+        },
+        networkshrink: function() {
+            $('.netrightcontent').slideToggle(500);
+            if ($(".pipeNetworkShrink").hasClass("fa-chevron-down")) {
+                $(".pipeNetworkShrink").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+            } else {
+                $(".pipeNetworkShrink").addClass("fa-chevron-down").removeClass("fa-chevron-up");
+            }
+        },
+        pointerImport: function() {
+            this.styleobj = {
+                title: "导入坐标",
+                width: "800",
+                height: "400",
+            };
+            this.aFooters = [{ "title": "上传", "color": "#fff", "bgcolor": "#59B6FC", "disabled": false }, { "title": "取消", "color": "#333", "bgcolor": "#fff", "disabled": false }];
+            this.show = true;
+            this._flag = true;
+        },
+        cancel: function() {
+            this.show = false;
+        },
+        close: function() {
+            this.errorinfo = false;
+        },
+        browse: function() {
+            $(".upload_picture").trigger("click");
+        },
+        uploadbtn: function() {
+            this.importVerification();
+        },
+        importVerification: function() { //提交的时候表单验证
+            var that = this;
+            var val = $('.batchImportInput').val().trim();
+            if (val == "" || val == null) {
+                xxwsWindowObj.xxwsAlert("请选择上传的文件");
+                return false;
+            } else {
+                var uploadId = $('.feedback_img_file').find('input').attr('id');
+                that.uploadFlie(uploadId)
+            }
+        },
+        uploadFlie: function(uploadId) { //上传文件到阿里
+            var that = this;
+            var objectId = baseOperation.createuuid();
+            if (that._flag == true) {
+                that._flag = false;
+                $.ajaxFileUpload({
+                    url: "/cloudlink-core-file/attachment/web/v1/save?businessId=" + objectId + "&bizType=excel&token=" + lsObj.getLocalStorage("token"),
+                    secureuri: false,
+                    fileElementId: uploadId, //上传input的id
+                    dataType: "json",
+                    type: "POST",
+                    async: false,
+                    success: function(data) {
+                        if (data.success == 1) {
+                            var fileId = data.rows[0].fileId;
+                            that.fileCheck(fileId);
+                        } else {
+                            that.again();
+                            xxwsWindowObj.xxwsAlert("校验失败，请稍后重试");
+                        }
+                    },
+                    error: function(data) {
+                        that.again();
+                        xxwsWindowObj.xxwsAlert("校验失败，请稍后重试");
+                    }
+                });
+            }
+        },
+        fileCheck: function(fileId) { //文件的校验
+            var that = this;
+            var param = {
+                fileId: fileId
+            };
+            $.ajax({
+                type: 'POST',
+                url: "/cloudlink-inspection-event/pipemapline/importValidation?token=" + lsObj.getLocalStorage('token'),
+                contentType: "application/json",
+                data: JSON.stringify(param),
+                dataType: "json",
+                success: function(data, status) {
+                    var state = data.rows[0].status;
+                    var total = data.rows[0].total;
+                    var errors = data.rows[0].errors;
+                    var converted = data.rows[0].converted;
+                    if (data.success == 1) {
+                        if (state == 1) {
+                            // if (total === converted) {
+                            var oDetail = JSON.parse(JSON.stringify(that.linedetail));
+                            var id = oDetail.objectId;
+                            var arr = data.rows[0].line;
+                            var newArr = [];
+                            arr.forEach(function(tear, index) {
+                                var obj = {
+                                    lon: tear.lon,
+                                    lat: tear.lat,
+                                    bdLon: tear.bdLon,
+                                    bdLat: tear.bdLat,
+                                    pipeLineId: id
+                                }
+                                newArr.push(obj);
+                            });
+                            //导入的坐标点替换原来的坐标点
+                            oDetail.line = newArr;
+                            //把修改的坐标点传给父组件
+                            that.changelinefn(oDetail);
+                            xxwsWindowObj.xxwsAlert("坐标点导入成功");
+                            that.show = false;
+                            // } else {
+                            //     xxwsWindowObj.xxwsAlert("坐标点导入失败");
+                            // }
+                        } else {
+                            that.show = false;
+                            that.pointerstyleobj = {
+                                title: "坐标点规范验证",
+                                width: "600",
+                                height: "400",
+                            };
+                            that.pointeraFooters = [{ "title": "关闭", "color": "#333", "bgcolor": "#fff", "disabled": false }];
+                            that.errorinfo = true;
+                            setTimeout(function() {
+                                $(".hintsTotal").text(total);
+                                $(".hintsNum").text(errors.length);
+                                for (i in errors) {
+                                    var lonlat = data.rows[0].errors[i].msg.split(',')
+                                    var txt = '<li><span class="rownum listLeft">' + errors[i].rowNum + '</span><span class="lon listRight">' + ((lonlat[0] == "null") ? "" : lonlat[0]) + '</span><span class="lat listRight">' + ((lonlat[1] == "null") ? "" : lonlat[1]) + '</span><span class="errorinfo listRight">数据类型不匹配</span></li>'
+                                    $(".hintsMainList ul").append(txt);
+                                }
+                            }, 0);
+                        }
+                    } else {
+                        xxwsWindowObj.xxwsAlert("校验失败，请稍后重试");
+                        that.again();
+                    }
+                },
+                error: function(data) {
+                    that.again();
+                    xxwsWindowObj.xxwsAlert("校验失败，请稍后重试");
+                }
+            });
+        },
+        again: function() {
+            this._flag = true;
+        },
+        changelinefn: function(obj) {
+            this.$emit('changelinefn', obj);
+        },
+        saveattribute: function(id, num) {
+            this.$emit('savework', id, num);
+        },
+        savelineattribute: function(id, num) {
+            this.$emit('saveline', id, num);
+        }
+    },
+};

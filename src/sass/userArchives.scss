@@ -1,0 +1,893 @@
+#page-wrapper {
+    padding-top: 15px;
+    .wrapper-main {
+        background: #edf1f2;
+        padding: 0 15px 15px 15px;
+        .data_tab {
+            background: #fff;
+            border-radius: 5px;
+            border: 1px solid #e1e5e6;
+            padding: 10px 0;
+            box-shadow: 2px 1px #e1e5e6;
+            font-size: 14px;
+            margin-top: 15px;
+            .delete {
+                i {
+                    display: inline-block;
+                    width: 16px;
+                    height: 18px;
+                    background: url(/src/images/security/delete.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                    &:hover {
+                        background: url(/src/images/security/delete_h.png) no-repeat;
+                    }
+                }
+            }
+            .delete_end {
+                cursor: default;
+                i {
+                    display: inline-block;
+                    width: 16px;
+                    height: 18px;
+                    background: url(/src/images/security/delete_e.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                }
+            }
+            .look {
+                i {
+                    display: inline-block;
+                    width: 22px;
+                    height: 16px;
+                    background: url(/src/images/event/look.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                    &:hover {
+                        background: url(/src/images/event/look_h.png) no-repeat;
+                    }
+                }
+            }
+            .modify {
+                i {
+                    display: inline-block;
+                    width: 19px;
+                    height: 21px;
+                    background: url(/src/images/security/modify.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                    &:hover {
+                        background: url(/src/images/security/modify_h.png) no-repeat;
+                    }
+                }
+            }
+            .modify_end {
+                cursor: default;
+                i {
+                    display: inline-block;
+                    width: 19px;
+                    height: 21px;
+                    background: url(/src/images/security/modify_e.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                }
+            }
+        }
+    }
+}
+
+#addUserFrame {
+    font-size: 14px;
+    .modal-lg {
+        .modal-content {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            .modal-header {
+                height: 40px;
+                background: #344052;
+                color: #fff;
+                padding: 0;
+                margin: 0;
+                h3 {
+                    line-height: 40px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin: 0;
+                    a {
+                        color: #fff;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                        font-weight: none;
+                        opacity: 1;
+                    }
+                }
+            }
+            .modal-body {
+                padding: 15px;
+                overflow-y: auto;
+                height: 510px;
+                background: #e7e8ec;
+                .formMain {
+                    padding-top: 15px;
+                    padding-bottom: 20px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    .formTitle {
+                        width: 100%;
+                        height: 40px;
+                        p {
+                            margin: 0;
+                            text-align: center;
+                            font-size: 18px;
+                            line-height: 40px;
+                            font-weight: bold;
+                        }
+                    }
+                    .formList {
+                        overflow: hidden;
+                        margin-top: 15px;
+                        .formListHalf {
+                            width: 50%;
+                            float: left;
+                            overflow: hidden;
+                            .formListHalfB {
+                                width: 50%;
+                                float: left;
+                                .formListLeft {
+                                    width: 60px;
+                                    float: left;
+                                    text-align: right;
+                                }
+                                .formListRight {
+                                    margin-left: 60px;
+                                    width: auto;
+                                    padding: 0 20px 0 10px;
+                                }
+                            }
+                        }
+                        .formListLeft {
+                            width: 90px;
+                            float: left;
+                            text-align: right;
+                            line-height: 36px;
+                            i {
+                                color: red;
+                                vertical-align: middle;
+                                margin-right: 5px;
+                                font-size: 20px;
+                            }
+                        }
+                        .formListRight {
+                            margin-left: 90px;
+                            width: auto;
+                            padding: 0 20px 0 10px;
+                            input {
+                                height: 36px;
+                                &.pointer {
+                                    cursor: pointer;
+                                    background: #ffffff;
+                                }
+                                &.shortInput {
+                                    display: inline-block;
+                                    width: 90px;
+                                }
+                            }
+                            textarea {
+                                height: 120px;
+                                position: relative;
+                                resize: none;
+                            }
+                        }
+                        .addressOption {
+                            select {
+                                width: 23%;
+                                display: inline-block;
+                                margin-right: 12px;
+                                &:last-child {
+                                    margin-right: 0;
+                                }
+                            }
+                        }
+                        .textarea_text {
+                            position: relative;
+                            .text_num {
+                                color: #999;
+                                position: absolute;
+                                bottom: 2px;
+                                right: 30px;
+                            }
+                        }
+                        .has-feedback {
+                            .form-control {
+                                padding-right: 38px;
+                                background: #fff;
+                                cursor: pointer;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: hidden;
+                            }
+                            .form-control-feedback {
+                                right: 20px;
+                            }
+                        }
+                        p.line {
+                            border-bottom: 1px solid #ddd;
+                            margin: 10px 15px;
+                            ;
+                        }
+                    }
+                    .formBorder {
+                        padding: 0px 15px 20px 15px;
+                        .formBorderMain {
+                            border: 1px solid #ddd;
+                            padding-bottom: 15px;
+                            .formTitle {
+                                border-bottom: 1px solid #ddd;
+                            }
+                            .formList {
+                                overflow: hidden;
+                                margin-top: 15px;
+                                .formListHalf {
+                                    width: 50%;
+                                    float: left;
+                                    overflow: hidden;
+                                    .formListHalfB {
+                                        width: 50%;
+                                        float: left;
+                                        .formListLeft {
+                                            width: 60px;
+                                            float: left;
+                                            text-align: right;
+                                        }
+                                        .formListRight {
+                                            margin-left: 60px;
+                                            width: auto;
+                                            padding: 0 20px 0 10px;
+                                        }
+                                    }
+                                }
+                                .formListLeft {
+                                    width: 80px;
+                                    float: left;
+                                    text-align: right;
+                                }
+                                .formListRight {
+                                    margin-left: 80px;
+                                    width: auto;
+                                    padding: 0 20px 0 10px;
+                                }
+                                .formLongLeft {
+                                    width: 110px;
+                                }
+                                .formLongright {
+                                    margin-left: 110px;
+                                }
+                                .form-group {
+                                    margin-bottom: 0;
+                                }
+                            }
+                            .gasList {
+                                border-bottom: 1px solid #ddd;
+                                padding-bottom: 15px;
+                                .gasTitle {
+                                    background: #f1f1f1;
+                                    height: 40px;
+                                    position: relative;
+                                    p {
+                                        line-height: 40px;
+                                        text-align: center;
+                                        font-size: 16px;
+                                    }
+                                    .closedGas {
+                                        position: absolute;
+                                        display: inline-block;
+                                        width: 10px;
+                                        height: 10px;
+                                        right: 15px;
+                                        top: 10px;
+                                        cursor: pointer;
+                                    }
+                                }
+                            }
+                            .addGasBtn {
+                                padding-top: 15px;
+                                text-align: center;
+                                span {
+                                    display: inline-block;
+                                    height: 20px;
+                                    line-height: 20px;
+                                    padding: 0 10px 0 25px;
+                                    cursor: pointer;
+                                    color: #59b6fc;
+                                    font-size: 16px;
+                                    background: url(/src/images/user/add.png) no-repeat center left;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                text-align: center;
+                background: #344052;
+                height: 50px;
+                padding: 0;
+                margin: 0;
+                button {
+                    height: 36px;
+                    border: none;
+                    width: 120px;
+                    margin-top: 7px;
+                    font-size: 16px;
+                    margin: 7px 20px 0 20px;
+                }
+                .submit {
+                    background: #59b6fc;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+#batchImportModal {
+    @extend #addUserFrame;
+    .modal-lg {
+        .modal-content {
+            .modal-body {
+                .formMain {
+                    .importAdress {
+                        margin-top: 50px;
+                    }
+                    .importInputLine {
+                        margin-top: 60px;
+                    }
+                    .formImportList {
+                        padding-top: 10px;
+                        p {
+                            line-height: 36px;
+                            padding-left: 23px;
+                            margin: 0;
+                            i {
+                                color: red;
+                                vertical-align: middle;
+                                margin-right: 5px;
+                                font-size: 20px;
+                            }
+                        }
+                        .feedback_img_file {
+                            display: none;
+                        }
+                        .batchImport {
+                            line-height: 36px;
+                            position: relative;
+                            padding-left: 35px;
+                            padding-right: 20px;
+                            .batchImportInput {
+                                height: 36px;
+                                background: #e4e4e4;
+                                border: 1px solid #999;
+                                cursor: pointer;
+                            }
+                            .submitFile {
+                                width: 100px;
+                                height: 34px;
+                                text-align: center;
+                                line-height: 36px;
+                                cursor: pointer;
+                                position: absolute;
+                                top: 1px;
+                                right: 20px;
+                                border: none;
+                                border-left: 1px solid #fff;
+                            }
+                        }
+                        p.importTxt {
+                            color: red;
+                            padding-left: 35px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#usreDetailsFrame {
+    @extend #addUserFrame;
+    .modal-lg {
+        .modal-content {
+            .modal-body {
+                .frameDetails {
+                    padding: 15px;
+                    padding-bottom: 0px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    overflow: hidden;
+                    .frameDetailsMain {
+                        border: 1px solid #ddd;
+                        background: #f7f7f7;
+                        margin-bottom: 30px;
+                        .frameList {
+                            border-bottom: 1px solid #ddd;
+                            overflow: hidden;
+                            &:last-child {
+                                border: none;
+                            }
+                            .frameListLeft {
+                                width: 110px;
+                                float: left;
+                                text-align: right;
+                                line-height: 36px;
+                                padding-right: 10px;
+                                color: #666;
+                            }
+                            .frameListRight {
+                                background: #fff;
+                                margin-left: 110px;
+                                width: auto;
+                                padding: 0 10px;
+                                border-left: 1px solid #ddd;
+                                p {
+                                    margin: 0;
+                                    min-height: 36px;
+                                    padding: 7px 0;
+                                    line-height: 22px;
+                                    color: #000;
+                                    word-wrap: break-word;
+                                    word-break: normal;
+                                }
+                                ul {
+                                    margin: 0;
+                                    min-height: 36px;
+                                    padding: 8px 0 0 0;
+                                    color: #000;
+                                    overflow: hidden;
+                                    list-style: none;
+                                    margin-right: -10px;
+                                    li {
+                                        display: inline-block;
+                                        float: left;
+                                        overflow: hidden;
+                                        padding: 3px;
+                                        border: 1px solid #f1f1f1;
+                                        margin: 0 7px 8px 0;
+                                        cursor: pointer;
+                                    }
+                                }
+                                div.detailsAddressMap {
+                                    margin: 0 -10px;
+                                    height: 200px;
+                                }
+                            }
+                            .frameListHalf {
+                                width: 50%;
+                                float: left;
+                                &:first-child {
+                                    .frameListRight {
+                                        border-right: 1px solid #ddd;
+                                    }
+                                }
+                            }
+                        }
+                        .frameDetailsTitle {
+                            height: 40px;
+                            background: #fff;
+                            text-align: center;
+                            line-height: 40px;
+                            font-size: 18px;
+                            border-bottom: 1px solid #ddd;
+                        }
+                        .gasMainList {
+                            .gasMainTitle {
+                                height: 36px;
+                                border-bottom: 1px solid #ddd;
+                                border-top: 1px solid #ddd;
+                                p {
+                                    text-align: center;
+                                    line-height: 36px;
+                                    font-size: 16px;
+                                }
+                            }
+                            &:first-child {
+                                .gasMainTitle {
+                                    border-top: none;
+                                }
+                            }
+                        }
+                        .gaslistNone {
+                            line-height: 36px;
+                            margin: 0;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                .deleteframe {
+                    background: #fd6768;
+                    color: #fff;
+                }
+                .closeframe {
+                    background: #fbad3e;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+#historyInspectFrame {
+    @extend #usreDetailsFrame;
+    .modal-lg {
+        .modal-content {
+            .modal-body {
+                .frameDetails {
+                    .frameList {
+                        &.hideClass {
+                            display: none;
+                        }
+                        &.showClass {
+                            display: block;
+                        }
+                        .frameListRight {
+                            p {
+                                .dangerC {
+                                    display: inline-block;
+                                    line-height: 24px;
+                                    color: #ec9029;
+                                    padding-right: 5px;
+                                    padding-left: 20px;
+                                    margin-right: 10px;
+                                    border-radius: 5px;
+                                    border: 1px solid #ec9029;
+                                    background: url(/src/images/security/yes.png) 3px center no-repeat;
+                                    margin-bottom: 7px;
+                                }
+                                &.hiddendangersT {
+                                    padding-bottom: 0;
+                                }
+                            }
+                            ul {
+                                margin: 0;
+                                min-height: 36px;
+                                padding: 8px 0 0 0;
+                                color: #000;
+                                overflow: hidden;
+                                list-style: none;
+                                margin-right: -10px;
+                                li {
+                                    display: inline-block;
+                                    float: left;
+                                    overflow: hidden;
+                                    padding: 3px;
+                                    border: 1px solid #f1f1f1;
+                                    margin: 0 9px 8px 0;
+                                    cursor: pointer;
+                                }
+                            }
+                            &.satisfaction {
+                                ul {
+                                    display: inline-block;
+                                    vertical-align: middle;
+                                    padding-top: 6px;
+                                    margin: 0;
+                                    li {
+                                        border: none;
+                                        padding: 0;
+                                        margin-bottom: 0;
+                                        height: 20px;
+                                        cursor: inherit;
+                                    }
+                                }
+                                span {
+                                    display: inline-block;
+                                    vertical-align: middle;
+                                }
+                            }
+                        }
+                    }
+                    .historyTitle {
+                        overflow: hidden;
+                        line-height: 30px;
+                        padding-bottom: 15px;
+                        .historyTimeTxt {
+                            display: inline-block;
+                            overflow: hidden;
+                            vertical-align: middle;
+                            span {
+                                &.historyTimeBtn {
+                                    margin-right: 20px;
+                                    cursor: pointer;
+                                    &:hover {
+                                        color: #59b6fc;
+                                    }
+                                }
+                                &.active {
+                                    color: #59b6fc;
+                                }
+                            }
+                        }
+                        .historyTimeInput {
+                            display: inline-block;
+                            overflow: hidden;
+                            vertical-align: middle;
+                            input {
+                                line-height: 30px;
+                                float: left;
+                                height: 30px;
+                                border: 1px solid #e3e3e3;
+                                outline: none;
+                                -webkit-appearance: none;
+                                color: #999;
+                                padding-left: 8px;
+                                width: 118px;
+                                cursor: pointer;
+                                background: #fff url(/src/images/common/icon_down2.png) no-repeat 98px center;
+                                background-size: 12px 6px;
+                            }
+                            span {
+                                float: left;
+                                &.historyTimeBtn {
+                                    display: inline-block;
+                                    position: relative;
+                                    margin-right: 36px;
+                                    cursor: pointer;
+                                    margin-left: 10px;
+                                    width: 54px;
+                                    text-align: center;
+                                    color: white;
+                                    background: #999;
+                                    border-radius: 16px;
+                                    &:hover {
+                                        background: #59b6fc;
+                                        color: #fff;
+                                    }
+                                }
+                                &.active {
+                                    background: #59b6fc;
+                                    color: #fff;
+                                }
+                            }
+                        }
+                    }
+                    span.notEmptyData {
+                        display: block;
+                        text-align: center;
+                        font-size: 18px;
+                        line-height: 40px;
+                        padding-top: 30px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#validationHintsFrame {
+    @extend #addUserFrame;
+    .modal-lg {
+        .modal-content {
+            width: 1000px;
+            height: 600px;
+            .modal-body {
+                .hintsMain {
+                    padding-top: 15px;
+                    padding-bottom: 20px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    .hintsMainTitle {
+                        padding: 0 15px;
+                        height: 20px;
+                        p {
+                            margin: 0;
+                            line-height: 20px;
+                            font-size: 16px;
+                            i {
+                                color: red;
+                                font-style: normal;
+                            }
+                        }
+                    }
+                    .hintsMainList {
+                        padding: 20px 15px 0;
+                        p {
+                            margin: 0;
+                            border: 1px solid #ddd;
+                            background: #f7f7f7;
+                            span {
+                                line-height: 22px;
+                                padding: 7px 0;
+                                text-align: center;
+                            }
+                        }
+                        ul {
+                            list-style: none;
+                            padding: 0;
+                            margin: 0;
+                            border-right: 1px solid #ddd;
+                            border-left: 1px solid #ddd;
+                            li {
+                                border-bottom: 1px solid #ddd;
+                                overflow: hidden;
+                                span {
+                                    line-height: 22px;
+                                    padding: 7px 0;
+                                }
+                                &:nth-child(2n+0) {
+                                    background: #f7f7f7;
+                                }
+                            }
+                        }
+                        .listLeft {
+                            width: 70px;
+                            float: left;
+                            display: inline-block;
+                            text-align: center;
+                        }
+                        .listRight {
+                            margin-left: 70px;
+                            width: auto;
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#confirmationFrame {
+    @extend #addUserFrame;
+    .modal-lg {
+        .modal-content {
+            width: 400px;
+            height: 300px;
+            margin-top: 150px;
+            .modal-body {
+                height: 210px;
+                .confirmationMain {
+                    padding-top: 15px;
+                    padding-bottom: 20px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 180px;
+                    div.confirmationText {
+                        line-height: 40px;
+                        text-align: center;
+                        padding-top: 40px;
+                    }
+                    div.confirmationAdopt {
+                        line-height: 40px;
+                        text-align: center;
+                        padding-top: 40px;
+                        p {
+                            line-height: 40px;
+                            display: inline-block;
+                            padding-left: 30px;
+                            background: url(/src/images/user/success.png) no-repeat center left;
+                            background-size: 25px 25px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#validationDeleteFrame {
+    @extend #addUserFrame;
+    .modal-lg {
+        .modal-content {
+            width: 800px;
+            height: 600px;
+            .modal-body {
+                .hintsDeleteMain {
+                    padding-top: 15px;
+                    padding-bottom: 20px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    .hintsDeleteMainTitle {
+                        padding: 0 15px;
+                        height: 20px;
+                        p {
+                            margin: 0;
+                            line-height: 20px;
+                            font-size: 16px;
+                            color: red;
+                        }
+                    }
+                    .hintsDeleteMainList {
+                        padding: 20px 15px 0;
+                        p {
+                            margin: 0;
+                            border: 1px solid #ddd;
+                            background: #f7f7f7;
+                            span {
+                                line-height: 22px;
+                                padding: 7px 0;
+                                text-align: center;
+                            }
+                        }
+                        ul {
+                            list-style: none;
+                            padding: 0;
+                            margin: 0;
+                            border-right: 1px solid #ddd;
+                            border-left: 1px solid #ddd;
+                            li {
+                                border-bottom: 1px solid #ddd;
+                                overflow: hidden;
+                                span {
+                                    line-height: 22px;
+                                    padding: 7px 0;
+                                }
+                                &:nth-child(2n+0) {
+                                    background: #f7f7f7;
+                                }
+                            }
+                        }
+                        .listLeft {
+                            width: 70px;
+                            float: left;
+                            display: inline-block;
+                            text-align: center;
+                        }
+                        .listRight {
+                            margin-left: 70px;
+                            width: auto;
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#refrsetFrame {
+    @extend #confirmationFrame;
+}
+
+#transitionFrame {
+    @extend #addUserFrame;
+    .modal-lg {
+        .modal-content {
+            width: 300px;
+            height: 200px;
+            margin-top: 200px;
+            .modal-body {
+                height: 200px;
+                background: #fff;
+                .transitionMain {
+                    dl {
+                        padding-top: 20px;
+                        dt {
+                            text-align: center;
+                            padding-bottom: 10px;
+                        }
+                        dd {
+                            text-align: center;
+                            line-height: 26px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    #validationHintsFrame {
+        .modal-lg {
+            width: 1000px;
+        }
+    }
+}

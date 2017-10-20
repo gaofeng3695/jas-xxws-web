@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+    <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/src/css/common/search_table.css" rel="stylesheet">
+    <link href="/src/css/common/view.pic.css" rel="stylesheet">
+    <link href="/src/css/detailsRepair.css" rel="stylesheet">
+    <link href="/src/css/maintenance.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="page-wrapper" class="maintenance">
+        <div class="wrapper-main">
+            <!--高级搜索-->
+            <div class="container-fluid search_item_wrapper">
+                <div class="top">
+                    <div class="row search_title">
+                        <div class="col-lg-6 col-xs-12 btn_wrapper">
+                            <div class="col-xs-12" data-class="status">
+                                <div class="item col-xs-2 " data-value="">全部</div>
+                                <div class="item col-xs-2" data-value="1"> 待维修</div>
+                                <div class="item col-xs-2" data-value="2">已完成</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xs-12 right_wrapper">
+                            <div class="search_btn_right">
+                                <div class="search_reset" id="gf_reset_Btn">重置</div>
+                                <div class="more" id="search_more">
+                                    高级搜索
+                                </div>
+                            </div>
+                            <div class="search_wrapper">
+                                <div class="input_wrapper">
+                                    <input class="" id="searchInput" type="text" placeholder="请输入搜索关键词进行搜索">
+                                </div>
+                                <span class="mybtn" id="gf_Btn">确定</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="more_item_wrapper">
+                        <div class="sub_wrapper">
+                            <b class="up_triangle"><i></i></b>
+                            <div class="son_wrapper">
+                                <div class="line">
+                                    <div class="title">维修类型</div>
+                                    <div class="item_box">
+                                        <div class="item1" data-class="originTypeCode">
+                                            <span class="item" data-value="">全部</span>
+                                            <span class="item" data-value="MO_01">入户整改</span>
+                                            <span class="item" data-value="MO_02">管网设施</span>
+                                            <span class="item" data-value="MO_03">巡检事件</span>
+                                            <span class="item" data-value="MO_99">其他维修</span>
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <div class="title">维修期限</div>
+                                        <div class="item_box">
+                                            <div class="item1" data-class="date">
+                                                <span class="item" data-value="all">不限</span>
+                                                <span class="item" data-value="week">7天内</span>
+                                                <span class="item" data-value="harfMonth">15天内</span>
+                                                <span class="item" data-value="month">30天内</span>
+                                                <span class="date">
+                                                <span id="item_diy" class="diy">自定义：</span>
+                                                <input size="16" type="text" onchange="dateChangeForSearch();" id="datetimeStart" placeholder="选择起始时间" readonly class="form_datetime">
+                                                <span>&nbsp;&nbsp;至&nbsp;&nbsp;</span>
+                                                <input size="16" type="text" onchange="dateChangeForSearch();" id="datetimeEnd" placeholder="选择结束时间" readonly class="form_datetime">
+                                                <span class="itemBtn" id="diyDateBtn" data-value="diy">确定</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/高级搜索-->
+            <!--表格-->
+            <div class="data_tab">
+                <div class="container-fluid">
+                    <div id="toolbar">
+                        <div class="btn-group">
+                            <button id="rectification" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"> </span>&nbsp;新建维修
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="rectification">
+                                <li onclick="userTable.creatmtc('MO_01')">入户整改</li>
+                                <li onclick="userTable.creatmtc('MO_02')">管网设施</li>
+                                <li onclick="userTable.creatmtc('MO_03')">巡检事件</li>
+                                <li onclick="userTable.creatmtc('MO_99')">其他维修</li>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <button id="installation" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span class="glyphicon glyphicon-share" aria-hidden="true"> </span>&nbsp;导出台账
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="installation">
+                                <li id="export_all">全部台账</li>
+                                <li class="underline" id="export_choice">已选台账</li>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <button id="download" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span class="glyphicon glyphicon-share" aria-hidden="true"> </span>&nbsp;导出工单
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="download">
+                                <li id="export_all_worksheet">全部工单</li>
+                                <li id="export_choice_worksheet" class="underline">已选工单</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <table id="workList"></table>
+                </div>
+            </div>
+            <!--/表格-->
+        </div>
+    </div>
+    <!--入户整改 用户地址-->
+    <div id="choiceUserFrame" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>用户选择<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="userChoiceMain">
+                        <div class="container-fluid search_item_wrapper">
+                            <div class="ChoiceTop">
+                                <div class="row search_title">
+                                    <div class="col-lg-5 col-xs-5 btn_wrapper">
+                                        <div class="col-xs-8">
+                                            <select class="form-control" name="areaList">
+                                                <option value="">全部（片区）</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-7 col-xs-7 right_wrapper">
+                                        <div class="search_btn_right">
+                                            <div class="search_reset" id="address_reset_Btn">重置</div>
+                                        </div>
+                                        <div class="search_wrapper">
+                                            <div class="input_wrapper">
+                                                <input class="" id="addressSearchInput" type="text" placeholder="请输入搜索关键词进行搜索">
+                                            </div>
+                                            <span class="mybtn" id="address_gf_Btn">确定</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="more_item_wrapper">
+                                    <div class="sub_wrapper">
+                                        <div class="son_wrapper">
+                                            <div class="line">
+                                                <div class="title">用户类型</div>
+                                                <div class="item_box">
+                                                    <div class="item1" data-class="enterhomeUserTypeCode">
+                                                        <span class="item" data-value="">全部</span>
+                                                        <span class="item" data-value="EHT_001">居民</span>
+                                                        <span class="item" data-value="EHT_002">工业</span>
+                                                        <span class="item" data-value="EHT_003">商业</span>
+                                                        <span class="item" data-value="EHT_004">公共福利</span>
+                                                        <span class="item" data-value="EHT_099">其他</span>
+                                                        <span class="item" data-value="none">无</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="line">
+                                                <div class="title">用户状态</div>
+                                                <div class="item_box">
+                                                    <div class="item1" data-class="userStatusCode">
+                                                        <span class="item" data-value="">全部</span>
+                                                        <span class="item" data-value="US_02">未通气</span>
+                                                        <span class="item" data-value="US_01">在用</span>
+                                                        <span class="item" data-value="US_03">停用</span>
+                                                        <span class="item" data-value="US_04">欠费</span>
+                                                        <span class="item" data-value="US_05">已注销</span>
+                                                        <span class="item" data-value="none">无</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table id="userList"></table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit selectUserBtn">确认</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--管网设施 设施选择-->
+    <div id="choiceFacFrame" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>设备设施<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="userChoiceMain">
+                        <div class="container-fluid search_item_wrapper">
+                            <div class="facilityTop">
+                                <div class="row search_title">
+                                    <div class="col-lg-2 col-xs-2 right_wrapper"></div>
+                                    <div class="col-lg-8 col-xs-8 right_wrapper">
+                                        <div class="search_btn_right">
+                                            <div class="search_reset" id="facility_reset_Btn">重置</div>
+                                        </div>
+                                        <div class="search_wrapper">
+                                            <div class="input_wrapper">
+                                                <input class="" id="facilitySearchInput" type="text" placeholder="请输入搜索关键词进行搜索">
+                                            </div>
+                                            <span class="mybtn" id="facility_gf_Btn">确定</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-xs-2 right_wrapper"></div>
+                                </div>
+                                <div class="more_item_wrapper">
+                                    <div class="sub_wrapper">
+                                        <div class="son_wrapper">
+                                            <div class="line">
+                                                <div class="title">管网类型</div>
+                                                <div class="item_box">
+                                                    <div class="item1" data-class="pipelineTypeCode">
+                                                        <span class="item" data-value="">全部</span>
+                                                        <span class="item" data-value="PT_01">低压</span>
+                                                        <span class="item" data-value="PT_02">中压</span>
+                                                        <span class="item" data-value="PT_03">次高压</span>
+                                                        <span class="item" data-value="PT_04">高压</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="line">
+                                                <div class="title">设施类型</div>
+                                                <div class="item_box">
+                                                    <div class="item1" data-class="facilityTypeCodeList">
+                                                        <span class="item" data-value="">全部</span>
+                                                        <span class="item" data-value="FT_01">调压设备</span>
+                                                        <span class="item" data-value="FT_02">阀室</span>
+                                                        <span class="item" data-value="FT_03">阀门</span>
+                                                        <span class="item" data-value="FT_04">井</span>
+                                                        <span class="item" data-value="FT_05">缸</span>
+                                                        <span class="item" data-value="FT_06">三通</span>
+                                                        <span class="item" data-value="FT_07">四通</span>
+                                                        <span class="item" data-value="FT_08">桩</span>
+                                                        <span class="item" data-value="FT_09">警示牌</span>
+                                                        <span class="item" data-value="FT_10">流量计</span>
+                                                        <span class="item" data-value="FT_11">压力表</span>
+                                                        <span class="item" data-value="FT_99">其他</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table id="facilityList"></table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit selectFacilityBtn">确认</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--巡检事件 事件选择-->
+    <div id="choiceEventFrame" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>事件选择<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="userChoiceMain">
+                        <div id="search_wrapper"></div>
+                        <table id="eventList"></table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit selectEventBtn">确认</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 新建工单模态框组件开始 -->
+    <div id="maintenanceAdd" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>新建维修<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="householdMain">
+                        <form>
+                            <div class="householdList">
+                                <div class="householdHalf">
+                                    <div class="householdHalfLeft">
+                                        维修来源
+                                    </div>
+                                    <div class="householdHalfRight">
+                                        <input name="originTypeName" readonly="readonly" onfocus="this.blur()" class="form-control" :value=originTypeName />
+                                    </div>
+                                </div>
+                                <div class="householdHalf">
+                                    <div class="householdHalfLeft">
+                                        创建人
+                                    </div>
+                                    <div class="householdHalfRight">
+                                        <input name="createUserName" readonly="readonly" onfocus="this.blur()" class="form-control" :value=name />
+                                    </div>
+                                </div>
+                            </div>
+                            <component v-bind:is="is_show" v-bind:repairdate="repairObj"></component>
+                            <div class="householdList">
+                                <div class="householdHalf">
+                                    <div class="householdHalfLeft has-feedback">
+                                        <i>*</i>维修人
+                                    </div>
+                                    <div class="householdHalfRight has-feedback" @click="chooserepairer(false)">
+                                        <input type="text" name="relationshipPersonNames" readonly="readonly" onfocus="this.blur()" :value="selectPeople" class="form-control hand ellipsis" />
+                                        <span class="repairerLogo"></span>
+                                    </div>
+                                </div>
+                                <div class="householdHalf ">
+                                    <div class="householdHalfLeft ">
+                                        <i>*</i>维修期限
+                                    </div>
+                                    <div class="householdHalfRight has-feedback">
+                                        <input type="text" name="remediationTime" readonly="readonly" onfocus="this.blur()" :value="remediationTime" onchange="createmaintenance.remediationTime=this.value" class="form-control time-limit hand" />
+                                        <span class="termLogo form-control-feedback"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="householdList ">
+                                <div class="householdHalfLeft ">
+                                    <i>*</i>维修原因
+                                </div>
+                                <div class="householdHalfRight textarea_text ">
+                                    <textarea class="form-control " v-model="reason" name="reason" oninput="checkLen(this)"></textarea>
+                                    <span class="text_num ">(200字)</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button class="btn submit creatSubmit" @click="judge">新建</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 新建工单模态框组件结束 -->
+    <!--维修人模态框-->
+    <div id="chooseRepairer" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>人员添加<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="sub_wrapper">
+                        <ul id="people_list" class="ztree"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn modal_active btn-primary selectPeopleBtn">确定</button>
+                    <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--维修详情模态框-->
+    <div id="repairDetails" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>{{frameName}}<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="frameDetails">
+                        <div class="frameDetailsNav">
+                            <ul>
+                                <li v-bind:class="{active:detailsShow}" @click="tabChange('details')">维修详情</li>
+                                <li v-bind:class="{active:axisShow}" @click="tabChange('axis')">维修任务轴</li>
+                            </ul>
+                        </div>
+                        <div class="frameDetailsNavMian">
+                            <p class="detailsCode">维修编号：{{maintenanceCode}}</p>
+                            <!--维修详情-->
+                            <div class="frameDetailsMain" v-show="detailsShow">
+                                <component v-bind:is="which_to_show" v-bind:modifybtn="modifyShow" v-bind:openperson="openPerson" v-bind:my-msgdetails="dataBasics"></component>
+                            </div>
+                            <!--维修任务轴-->
+                            <div class="frameAxisMian" v-show="axisShow">
+                                <axis-html v-bind:my-msgaxis="dataAxis"></axis-html>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit" v-show="modifyShow" @click="modifySave">保存</button>
+                    <button class="btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 历史类型 -->
+    <div id="hisData" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>历史类型筛选<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="sub_wrapper">
+                        <ul id="eventType_list" class="ztree"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_hisData" type="button" class="btn modal_active btn-primary">确定</button>
+                    <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/lib/js/vue.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/lib/js/common_base.js"></script>
+
+    <script type="text/javascript" src="/src/js/common/common.js"></script>
+    <script type="text/javascript" src="/src/js/common/zhuge.js"></script>
+    <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+    <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+    <script type="text/javascript" src="/src/js/common/view.pic.js"></script>
+
+    <script type="text/javascript" src="/src/js/maintenance/details.js"></script>
+    <script type="text/javascript" src="/src/js/maintenance/repairsearch.template.js"></script>
+    <script type="text/javascript" src="/src/js/maintenance/maintenance.js"></script>
+</body>
+
+</html>

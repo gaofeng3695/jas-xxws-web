@@ -1,0 +1,81 @@
+                    * {
+                        margin: 0px;
+                        padding: 0px;
+                    }
+                    
+                    #page-wrapper {
+                        background: #edf1f2;
+                        .container-fluid {
+                            // background: #fff;
+                            padding-right: 15px;
+                            padding-left: 15px;
+                            // margin: 20px 20px 0px 20px;
+                        }
+                        .content {
+                            margin-top: 20px;
+                            #toolbar {
+                                .export-all,
+                                .inviteuser {
+                                    margin: 0 10px;
+                                    color: #53b5fc;
+                                    font-size: 14px;
+                                    cursor: pointer;
+                                }
+                            }
+                            .pull-right {
+                                button {
+                                    color: #59b6fc;
+                                }
+                            }
+                        }
+                        table {
+                            td {
+                                white-space: nowrap;
+                                width: 16%;
+                                text-overflow: ellipsis;
+                                -moz-text-overflow: ellipsis;
+                                overflow: hidden;
+                            }
+                        }
+                    }
+                    
+                    .remove {
+                        background: #59b6fc;
+                        color: #fff;
+                        // height: 36px;
+                        // line-height: 36px;
+                        border: 1px solid transparent;
+                        border-radius: 4px;
+                        padding: 0px 5px;
+                        // margin: 5px;
+                    }
+                    
+                    .disabledremove {
+                        // background: red;
+                        color: #fff;
+                        // height: 36px;
+                        // line-height: 36px;
+                        border: 1px solid transparent;
+                        border-radius: 4px;
+                        padding: 0px 5px;
+                    }
+                    
+                    .fixed-table-body {
+                        border: 1px solid #ddd;
+                    }
+                    
+                    .fixed-table-container {
+                        border: none;
+                    }
+                    
+                    .bootstrap-table {
+                        margin-bottom: 20px;
+                    }
+                    
+                    .search_wrapper {
+                        margin-right: 0px !important;
+                    }
+                    
+                    .table {
+                        border-bottom: none !important;
+                    }

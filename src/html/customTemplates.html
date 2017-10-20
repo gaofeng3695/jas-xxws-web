@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
+    <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+    <link href="/src/css/customTemplates.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="typeContent">
+        <div class="aTitle">
+            <ul>
+                <li>系统模板</li>
+                <li>自定义模板</li>
+            </ul>
+        </div>
+        <div class="tabChange">
+            <div class="template system">
+                <div class="template_main ">
+                    <div class="template_tree">
+                        <div style="height:100%" class="scrollContainer leftTreeMain" style="max-height:100%;">
+                            <div class="template_nav">
+                                <div class="default_template systemButton">
+                                    <span class="defaultBtn defaultW">设为默认模板</span>
+                                </div>
+                                <!--事件类型树形结构-->
+                                <div class="customTemplates systemTitle active"><span class="ellipsis">系统模板</span><span class="customImg customImg1"></span></div>
+                                <ul class='eventTreeStyle systemTypeTree'></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="template_list">
+                        <p class="list_title"><span class="title-order">序号</span><span class="title-pic">类型图片</span><span class="title-typeName">类型名称</span></p>
+                        <ul class="systemChild_list">
+                            <!--<li>
+                            <input type="hidden" name="typeId" value="' + id + '" />
+                            <input type="hidden" name="typeNum" value="' + num + '" />
+                            <span class="clildren_order">333</span>
+                            <span class="children_typeName">ssssssss</span>
+                        </li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="template custom">
+                <div class="template_main ">
+                    <div style="height:100%" class="template_tree scrollContainer" style="max-height:100%;">
+                        <div class="template_nav">
+                            <div class="default_template customButton">
+                                <span class="defaultBtn">设为默认模板</span>
+                            </div>
+                            <div class="empty_templates">
+                                <span class="emptyBtn">清除模板</span>
+                            </div>
+                            <!--事件类型树形结构-->
+                            <div class="customTemplates customTitle active"><span class="ellipsis">自定义模板</span><span class="customImg customImg1"></span></div>
+                            <ul class='eventTreeStyle customTypeTree'></ul>
+                        </div>
+                    </div>
+                    <div class="template_list">
+                        <div class="type_add">
+                            <botton><span>创建类型</span><i></i></botton>
+                        </div>
+                        <div class="modify_order bgBlue">
+                            <botton><span>修改顺序</span><i></i></botton>
+                        </div>
+                        <p class="list_title"><span class="title-order">序号</span><span class="title-pic">类型图片</span><span class="title-typeName">类型名称</span><span class="title-operation">操作</span></p>
+                        <ul class="child_list">
+                            <!--<li data-id="' + childData[i].orgId + '">
+                        <span class="clildren_order">1</span>
+                        <span data-placement="top" data-toggle="tooltip" class="children_typeName">施工</span>
+                        <i class="delete_btn" title="删除"></i>
+                        <i class="modify_btn" title="修改"></i>
+                        <i class="modify_btn down" title="下移"></i>
+                        <i class="modify_btn move" title="上移"></i>
+                    </li>-->
+                            <!--<li data-id="' + childData[i].orgId + '">
+                        <span class="clildren_order">2</span>
+                        <span data-placement="top" data-toggle="tooltip" class="children_typeName">施工</span>
+                        <i class="delete_btn" title="删除"></i>
+                        <i class="modify_btn" title="修改"></i>
+                        <i class="modify_btn down" title="下移"></i>
+                        <i class="modify_btn move" title="上移"></i>
+                    </li>
+                    <li data-id="' + childData[i].orgId + '">
+                        <span class="clildren_order">3</span>
+                        <span data-placement="top" data-toggle="tooltip" class="children_typeName">施工</span>
+                        <i class="delete_btn" title="删除"></i>
+                        <i class="modify_btn" title="修改"></i>
+                        <i class="modify_btn down" title="下移"></i>
+                        <i class="modify_btn move" title="上移"></i>
+                    </li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--添加事件类型模态框-->
+    <div id="eventTypeAdd" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>创建类型<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="eventType_main">
+                        <div class="Radio">
+                            <div class="form_radio">
+                                <div class="form_radio_l">
+                                    <span class="pay_list_c1 on">
+                                        <input type="radio" id="radioGroup" checked="checked" name="nodeType" value="2" class="radioclass">
+                                    </span>
+                                    <label for="radioGroup">事件组</label>
+                                    <span class="font12">（创建事件组可在事件组下创建第二级分类）</span>
+                                </div>
+                            </div>
+                            <div class="form_radio">
+                                <div class="form_radio_l">
+                                    <span class="pay_list_c1">
+                                        <input type="radio" id="radioType" name="nodeType" value="1" class="radioclass">
+                                    </span>
+                                    <label for="radioType">事件类型</label>
+                                    <span class="font12">（不可创建第二级）</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="eventType_list addEventTypeName">
+                            <div class="list_l"><i>*</i>事件类型名称：</div>
+                            <div class="list_r">
+                                <input type="text" class="form-control" name="typeName" value="">
+                            </div>
+                            <div class="REGname"></div>
+                        </div>
+                        <div class="eventType_list addEventTypeSymbol">
+                            <div class="list_l"><i>*</i>选择类型符号：</div>
+                            <div class="list_r pictureBox">
+                                <ul>
+                                    <li data-src="D01.png"><img src="/src/images/common/eventTypeImg/D01.png" alt=""></li>
+                                    <li data-src="S01.png"><img src="/src/images/common/eventTypeImg/S01.png" alt=""></li>
+                                    <li data-src="S02.png"><img src="/src/images/common/eventTypeImg/S02.png" alt=""></li>
+                                    <li data-src="S03.png"><img src="/src/images/common/eventTypeImg/S03.png" alt=""></li>
+                                    <li data-src="C01.png"><img src="/src/images/common/eventTypeImg/C01.png" alt=""></li>
+                                    <li data-src="C02.png"><img src="/src/images/common/eventTypeImg/C02.png" alt=""></li>
+                                    <li data-src="C03.png"><img src="/src/images/common/eventTypeImg/C03.png" alt=""></li>
+                                    <li data-src="C04.png"><img src="/src/images/common/eventTypeImg/C04.png" alt=""></li>
+                                    <li data-src="C05.png"><img src="/src/images/common/eventTypeImg/C05.png" alt=""></li>
+                                    <li data-src="C06.png"><img src="/src/images/common/eventTypeImg/C06.png" alt=""></li>
+                                    <li data-src="C07.png"><img src="/src/images/common/eventTypeImg/C07.png" alt=""></li>
+                                    <li data-src="C08.png"><img src="/src/images/common/eventTypeImg/C08.png" alt=""></li>
+                                    <li data-src="C09.png"><img src="/src/images/common/eventTypeImg/C09.png" alt=""></li>
+                                    <li data-src="C10.png"><img src="/src/images/common/eventTypeImg/C10.png" alt=""></li>
+                                    <li data-src="C11.png"><img src="/src/images/common/eventTypeImg/C11.png" alt=""></li>
+                                    <li data-src="C12.png"><img src="/src/images/common/eventTypeImg/C12.png" alt=""></li>
+                                    <li data-src="C13.png"><img src="/src/images/common/eventTypeImg/C13.png" alt=""></li>
+                                    <li data-src="C14.png"><img src="/src/images/common/eventTypeImg/C14.png" alt=""></li>
+                                    <li data-src="C15.png"><img src="/src/images/common/eventTypeImg/C15.png" alt=""></li>
+                                    <li data-src="C16.png"><img src="/src/images/common/eventTypeImg/C16.png" alt=""></li>
+                                    <li data-src="C17.png"><img src="/src/images/common/eventTypeImg/C17.png" alt=""></li>
+                                    <li data-src="C18.png"><img src="/src/images/common/eventTypeImg/C18.png" alt=""></li>
+                                    <li data-src="C19.png"><img src="/src/images/common/eventTypeImg/C19.png" alt=""></li>
+                                    <li data-src="C20.png"><img src="/src/images/common/eventTypeImg/C20.png" alt=""></li>
+                                </ul>
+                            </div>
+                            <div class="REGsymbol">dxcfvgbthyjukil</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="addType" class="btn submit">确定</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--清除模板模态框-->
+    <div id="clearTemplate" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>清除模板<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="eventType_main">
+                        <div class="chooseSymbol">
+                            当前操作会清除自定义模板，且不可恢复，您是否确认此操作？
+                        </div>
+                        <div class="eventType_list clearValidationCode">
+                            <div class="list_l"><i>*</i>请输入验证码</div>
+                            <div class="list_r">
+                                <input type="text" class="form-control prompt" name="prompt" value="">
+                            </div>
+                            <div class="list_r code">
+                                <i></i>
+                            </div>
+
+                        </div>
+                        <div class="errorPrompt"><span></span></div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="clearTypeTemplate" class="btn submit">确定</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--修改事件类型模态框-->
+    <div id="eventTypeEdit" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>修改类型<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="eventType_main">
+                        <div class="eventType_list modifyText">
+                            <div class="list_l"><i>*</i>事件类型名称：</div>
+                            <div class="list_r">
+                                <input type="text" class="form-control" name="typeName" value="">
+                            </div>
+                            <div class="REGname"></div>
+                        </div>
+                        <div class="eventType_list editEventTypeSymbol">
+                            <div class="list_l"><i>*</i>选择类型符号：</div>
+                            <div class="list_r pictureBox">
+                                <ul>
+                                    <li data-src="D01.png"><img src="/src/images/common/eventTypeImg/D01.png" alt=""></li>
+                                    <li data-src="S01.png"><img src="/src/images/common/eventTypeImg/S01.png" alt=""></li>
+                                    <li data-src="S02.png"><img src="/src/images/common/eventTypeImg/S02.png" alt=""></li>
+                                    <li data-src="S03.png"><img src="/src/images/common/eventTypeImg/S03.png" alt=""></li>
+                                    <li data-src="C01.png"><img src="/src/images/common/eventTypeImg/C01.png" alt=""></li>
+                                    <li data-src="C02.png"><img src="/src/images/common/eventTypeImg/C02.png" alt=""></li>
+                                    <li data-src="C03.png"><img src="/src/images/common/eventTypeImg/C03.png" alt=""></li>
+                                    <li data-src="C04.png"><img src="/src/images/common/eventTypeImg/C04.png" alt=""></li>
+                                    <li data-src="C05.png"><img src="/src/images/common/eventTypeImg/C05.png" alt=""></li>
+                                    <li data-src="C06.png"><img src="/src/images/common/eventTypeImg/C06.png" alt=""></li>
+                                    <li data-src="C07.png"><img src="/src/images/common/eventTypeImg/C07.png" alt=""></li>
+                                    <li data-src="C08.png"><img src="/src/images/common/eventTypeImg/C08.png" alt=""></li>
+                                    <li data-src="C09.png"><img src="/src/images/common/eventTypeImg/C09.png" alt=""></li>
+                                    <li data-src="C10.png"><img src="/src/images/common/eventTypeImg/C10.png" alt=""></li>
+                                    <li data-src="C11.png"><img src="/src/images/common/eventTypeImg/C11.png" alt=""></li>
+                                    <li data-src="C12.png"><img src="/src/images/common/eventTypeImg/C12.png" alt=""></li>
+                                    <li data-src="C13.png"><img src="/src/images/common/eventTypeImg/C13.png" alt=""></li>
+                                    <li data-src="C14.png"><img src="/src/images/common/eventTypeImg/C14.png" alt=""></li>
+                                    <li data-src="C15.png"><img src="/src/images/common/eventTypeImg/C15.png" alt=""></li>
+                                    <li data-src="C16.png"><img src="/src/images/common/eventTypeImg/C16.png" alt=""></li>
+                                    <li data-src="C17.png"><img src="/src/images/common/eventTypeImg/C17.png" alt=""></li>
+                                    <li data-src="C18.png"><img src="/src/images/common/eventTypeImg/C18.png" alt=""></li>
+                                    <li data-src="C19.png"><img src="/src/images/common/eventTypeImg/C19.png" alt=""></li>
+                                    <li data-src="C20.png"><img src="/src/images/common/eventTypeImg/C20.png" alt=""></li>
+                                </ul>
+                            </div>
+                            <div class="REGsymbol"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="modifyType" class="btn submit">确定</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/src/js/common/linq.min.js"></script>
+    <script type="text/javascript" src="/lib/js/common_base.js"></script>
+    <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+    <script type="text/javascript" src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script type="text/javascript" src="/src/js/common/zhuge.js"></script>
+    <script type="text/javascript" src="/src/js/template/customTemplates.js"></script>
+    <script>
+        $(".scrollContainer").mCustomScrollbar({
+            advanced: {
+                updateOnContentResize: true
+            }
+        });
+    </script>
+</body>
+
+</html>

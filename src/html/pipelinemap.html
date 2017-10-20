@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/src/css/map.css" rel="stylesheet">
+    <link href="/src/css/common/view.pic.css" rel="stylesheet">
+    <link href="/src/css/map_test.css" rel="stylesheet">
+    <link href="/src/css/task.css" rel="stylesheet">
+    <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet"/>
+    <style type="text/css">
+    .list {
+        width: 240px;
+        height: 100%;
+        float: left;
+        border: 1px solid #999;
+    }
+    .list .top{
+        position:absolute;
+        top:0px;
+        height: 50px;
+        width: 238px;
+    }
+    .list .content{
+        position:absolute;
+        overflow:auto;
+        top:50px;
+        bottom:50px;
+        width: 238px;
+        min-width: 200px;
+    }
+     .list .bottom{
+        position:absolute;
+        bottom:0px;
+        height: 50px;
+         width: 238px;
+    }
+    .tool{
+        position: absolute;
+        left: 250px;
+        top: 10px;
+        z-index: 999;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="mdl_wrapper">
+        <div id="pipelist" class="list">
+            <div class="top"><a href="#" class="btn btn-primary" style="width:100%;margin:auto;" role="button">新建管网</a></div>
+            <div class="content">
+                <ul>
+                </ul>
+            </div>
+            <div class="bottom" style="margin: auto;"><a href="#" class="btn btn-primary" style="width:100%;margin:auto;" role="button">返回</a></div>
+        </div>
+        <div class="btn-group tool" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" onclick="drawLine()">画线</button>
+            <button type="button" class="btn btn-default">续画</button>
+            <button type="button" class="btn btn-default">保存</button>
+        </div>
+        <div id="container" class="map_wrapper">
+        </div>
+    </div>
+    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/amrnb.js"></script>
+    <script type="text/javascript" src="/lib/js/amrnb-play.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="/lib/js/common_base.js"></script>
+    <script type="text/javascript" src="/src/js/common/linq.min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+    <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+    <script type="text/javascript" src="/src/js/common/json-linq.js"></script>
+    <script type="text/javascript" src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+    <script type="text/javascript" src="/src/js/common/view.pic.js"></script>
+
+    
+
+
+    <script>
+    var model = "";
+    var linePoints = [];
+    var lastLine = null;
+    var editLine = null;
+    var map = new BMap.Map("container");    // 创建Map实例
+
+    var  defaultCursor = null;
+    var  draggingCursor = null;
+	map.centerAndZoom(new BMap.Point(116.404, 39.915), 19); 
+    map.addControl(new BMap.ScaleControl());  
+    map.enableScrollWheelZoom();
+    map.disableContinuousZoom();
+
+   
+   defaultCursor = map.getDefaultCursor();
+   draggingCursor = map.getDraggingCursor();
+
+
+    function drawLine(){
+        alert("开始");
+        model = "draw";
+        map.setDefaultCursor('crosshair');
+        map.setDraggingCursor('crosshair');
+        map.addEventListener("click",function(e){
+		    if(model == "draw"){
+                if(linePoints.length > 0){
+                    //var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));
+                    //map.addOverlay(marker);            //增加点
+                    linePoints.push(new BMap.Point(e.point.lng, e.point.lat));
+
+                    map.removeOverlay(lastLine);
+
+                    var polyline1 = new BMap.Polyline(linePoints, {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5});
+                    if(editLine != null){
+                        map.removeOverlay(editLine);
+                    }
+                    map.addOverlay(polyline1);
+                    polyline1.enableEditing();
+                    polyline1.addEventListener("lineupdate",function(e){
+                        var lll = polyline1.getPath();
+                        alert(lll.length);
+                    });
+                    editLine = polyline1;
+                }
+                else{
+                    var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));
+                    map.addOverlay(marker);            //增加点
+                    linePoints.push(new BMap.Point(e.point.lng, e.point.lat));
+                }
+            }
+	    });
+        map.addEventListener("mousemove",function(e){
+		    if(model == "draw"){
+                console.log(e.point.lng + "," + e.point.lat);
+                if(linePoints.length>0){
+                    var lastPoint = linePoints[linePoints.length-1];
+                    var newPointt = new BMap.Point(e.point.lng, e.point.lat);
+                    var polyline = new BMap.Polyline([lastPoint,newPointt], {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5,strokeStyle:"dashed"}); 
+                    if(lastLine!= null){
+                        map.removeOverlay(lastLine);
+                    }
+                    map.addOverlay(polyline);            //添加线
+                    lastLine =polyline;
+                   
+                }
+            }
+	    });
+
+        map.addEventListener("rightclick",function(e){
+		    if(model == "draw"){
+               model = "";
+               map.removeOverlay(lastLine);
+               map.setDefaultCursor(defaultCursor);
+               map.setDraggingCursor(draggingCursor);
+            }
+	    });
+    }
+    </script>
+</body>
+
+</html>

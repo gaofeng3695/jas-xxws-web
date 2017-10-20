@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="/lib/css/webuploader.css">
+</head>
+
+<body>
+    <!--dom结构部分-->
+    <div id="uploader-demo">
+        <!--用来存放item-->
+        <div id="fileList" class="uploader-list">
+            <ul id="img_wrapp"></ul>
+        </div>
+        <div id="filePicker">选择图片</div>
+    </div>
+
+    <script src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script src="/src/js/common/html5-storage.js"></script>
+    <script src="/lib/js/webuploader.min.js"></script>
+    <script>
+
+    console.log("/cloudlink-core-file/attachment/web/v1/save?businessId=" + JSON.parse(lsObj.getLocalStorage("userBo")).objectId + "&bizType=pic&token=" + lsObj.getLocalStorage('token'))
+        // 初始化Web Uploader
+        var uploader = WebUploader.create({
+
+            // 选完文件后，是否自动上传。
+            auto: true,
+
+            // swf文件路径
+            swf: '/lib/imgs/Uploader.swf',
+
+            // 文件接收服务端。
+            server: '/cloudlink-core-file/attachment/web/v1/save?businessId=1c9756bf-898b-4469-867d-0e4f1be3ee4f&bizType=pic&token=d565f878-6775-46c2-b952-20a172e56db6',
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: '#filePicker',
+
+            // 只允许选择图片文件。
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            }
+        });
+        // 当有文件添加进来的时候
+        var $list = $('#img_wrapp')
+        uploader.on('fileQueued', function (file) {
+            var $li = $(
+                    '<div id="' + file.id + '" class="file-item thumbnail">' +
+                    '<img>' +
+                    '<div class="info">' + file.name + '</div>' +
+                    '</div>'
+                ),
+                $img = $li.find('img');
+
+
+            // $list为容器jQuery实例
+            $list.append($li);
+
+            // 创建缩略图
+            // 如果为非图片文件，可以不用调用此方法。
+            // thumbnailWidth x thumbnailHeight 为 100 x 100
+            uploader.makeThumb(file, function (error, src) {
+                if (error) {
+                    $img.replaceWith('<span>不能预览</span>');
+                    return;
+                }
+
+                $img.attr('src', src);
+            }, 80, 80);
+        });
+// 文件上传过程中创建进度条实时显示。
+uploader.on( 'uploadProgress', function( file, percentage ) {
+    var $li = $( '#'+file.id ),
+        $percent = $li.find('.progress span');
+
+    // 避免重复创建
+    if ( !$percent.length ) {
+        $percent = $('<p class="progress"><span></span></p>')
+                .appendTo( $li )
+                .find('span');
+    }
+
+    $percent.css( 'width', percentage * 100 + '%' );
+})
+    </script>
+</body>
+
+</html>

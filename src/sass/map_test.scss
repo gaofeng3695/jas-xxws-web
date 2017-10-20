@@ -1,0 +1,501 @@
+.block {
+    display: block;
+}
+
+.fl {
+    float: left
+}
+
+.fr {
+    float: right
+}
+
+.maxHeight {
+    max-height: 100px;
+}
+
+.width {
+    display: block;
+    width: 65px;
+    padding-left: 10px;
+    float: left
+}
+
+.pr30 {
+    padding-right: 30px;
+}
+
+.pr10 {
+    padding-right: 10px;
+}
+
+.pr5 {
+    padding-right: 5px;
+}
+
+.pl5 {
+    padding-left: 5px;
+}
+
+.pt10 {
+    padding-top: 10px;
+}
+
+.mt10 {
+    margin-top: 10px;
+}
+
+.pb10 {
+    padding-bottom: 10px;
+}
+
+.pr15 {
+    padding-right: 15px;
+}
+
+.font14 {
+    font-size: 14px;
+}
+
+.inputStyle {
+    width: 75px;
+    height: 20px;
+}
+
+.buttonStyle {
+    height: 20px;
+    margin-left: 5px;
+    color: #fff;
+    background: #54B8FC;
+    line-height: 20px;
+    outline: none;
+    border: none;
+}
+
+.borderLeft {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    width: 125px;
+    border-left: 1px solid #ccc;
+    padding-left: 10px;
+    img {
+        cursor: pointer;
+    }
+}
+
+// 人员开始
+.change {
+    width: 228px;
+    background: #686866;
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    height: 37px;
+    line-height: 37px;
+    color: #fff;
+    padding-left: 5px;
+    img {
+        padding-left: 10px;
+    }
+    span {
+        display: inline-block;
+        width: 29px;
+        height: 16px;
+        cursor: pointer;
+        vertical-align: middle;
+        // margin-left: 10px;
+        background: url(/src/images/map/close.png) no-repeat;
+        &.active {
+            background: url(/src/images/map/open.png) no-repeat;
+        }
+    }
+    .renyuan,
+    .shijian,
+    .network {
+        width: 72px;
+        text-align: center;
+    }
+}
+
+#accordion {
+    display: none;
+    width: 228px;
+    position: absolute;
+    top: 105px;
+    right: 40px;
+    z-index: 999;
+    box-shadow: 0px 0px 12px #888;
+    .panel {
+        width: 228px;
+        height: 100%;
+        margin: 0;
+        .panel-title {
+            cursor: pointer;
+        }
+        a {
+            text-decoration: none;
+            border-radius: 50%;
+        }
+        p {
+            height: 22px;
+            // line-height: 22px;
+            font-size: 12px;
+            color: #666;
+            text-align: left;
+            margin: 0;
+        }
+        .viewDetails {
+            width: 178px;
+            height: 30px;
+            margin-left: 15px;
+            margin-top: 10px;
+            font-size: 12px;
+            background: #fff;
+            border: 2px solid #76C4F9;
+            color: #76C4F9;
+            outline: none;
+            border-radius: 5px;
+        }
+    }
+    .personnel {
+        background: rgba(88, 88, 88, 0.9);
+        height: 37px;
+        line-height: 37px;
+        color: #fff;
+        padding-left: 10px;
+        .close_inspect {
+            display: inline-block;
+            width: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            background: url(/src/images/map/closed.png) center no-repeat;
+            margin-right: 10px;
+        }
+    }
+    .message {
+        width: 228px;
+        height: 122px;
+        overflow: hidden;
+        background: #fff;
+        .essentialInformation {
+            width: 208px;
+            height: 112px;
+            margin: 0 auto;
+            margin-top: 10px;
+            .peopleInformation {
+                width: 100%;
+                height: 63px;
+                // margin-bottom: 10px;
+                overflow: hidden;
+                .left {
+                    width: 55px;
+                    height: 55px;
+                    margin-top: 3px;
+                    .inspectImg {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%
+                    }
+                }
+                .right {
+                    width: 138px;
+                    height: 63px;
+                    margin-left: 15px;
+                    p {
+                        height: 21px;
+                        font-size: 12px;
+                        line-height: 21px;
+                        text-align: left;
+                        margin: 0;
+                        .inspectUseName {
+                            display: block;
+                            max-width: 55px;
+                            width: 55px;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                        }
+                        .isOnline {
+                            cursor: pointer;
+                        }
+                        .status {
+                            float: right;
+                            background: #51b7ff;
+                            border-radius: 4px;
+                            padding: 0px 4px 0px 3px;
+                            color: #fff;
+                        }
+                        .dynamicTitle {
+                            // display: block;
+                            width: 8px;
+                            height: 12px;
+                            margin-left: 5px;
+                            cursor: pointer;
+                        }
+                        .inspectDepartment {
+                            display: block;
+                            width: 145px;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                        }
+                        .inspectRoleName {
+                            display: block;
+                            width: 145px;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                        }
+                    }
+                }
+            }
+            .patrolInformation {
+                width: 198px;
+                height: 45px;
+                overflow: hidden;
+                text-align: center;
+                .left {
+                    width: 66px;
+                    float: left;
+                }
+                .center {
+                    width: 66px;
+                    float: left;
+                }
+                .right {
+                    float: right;
+                    width: 66px;
+                }
+                p {
+                    height: 22px;
+                    font-size: 12px;
+                    line-height: 22px;
+                    margin: 0;
+                    color: #666;
+                }
+            }
+        }
+    }
+}
+
+.panel-heading {
+    padding: 6px 15px;
+    font-size: 12px;
+}
+
+#collapseOne,
+#collapseTwo {
+    padding-left: 7px;
+    margin: 10px 0px;
+}
+
+.record_details {
+    width: 210px;
+    background: #F9F9F9;
+    height: 152px;
+    margin-bottom: 10px;
+    z-index: 999;
+    // border: 1px solid #ececec;
+    box-shadow: 0px 0px -40px #F9F9F9;
+}
+
+.searchStyle {
+    // display: none;
+    height: 20px;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.inputStyle {
+    width: 75px;
+    height: 20px;
+}
+
+.buttonStyle {
+    height: 20px;
+    margin-left: 5px;
+    color: #fff;
+    background: #54B8FC;
+    line-height: 20px;
+    outline: none;
+    border: none;
+}
+
+.pagination {
+    // width: 212;
+    display: none;
+    height: 27px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    li:hover a {
+        background: #5DB8FB;
+    }
+    li {
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        a {
+            width: 27px;
+            height: 27px;
+            color: #000;
+            line-height: 17px;
+            text-align: center;
+            border-radius: 50%;
+            span {
+                width: 27px;
+                height: 27px;
+                line-height: -5px;
+                border-radius: 50%;
+            }
+        }
+    }
+}
+
+// 人员结束
+//事件处理
+.event_list {
+    display: none;
+    // overflow: hidden;
+    position: absolute;
+    width: 228px;
+    top: 105px;
+    right: 40px;
+    z-index: 999;
+    box-shadow: 0px 0px 12px #888;
+    .event_title {
+        font-size: 12px;
+        color: #666;
+        overflow: hidden;
+        background: rgba(88, 88, 88, 0.9);
+        width: 228px;
+        height: 36px;
+        line-height: 36px;
+        span {
+            color: #fff;
+            font-size: 14px;
+            height: 36px;
+            line-height: 36px;
+            margin: 0px 15px;
+        }
+        .close_event {
+            display: inline-block;
+            width: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            background: url(/src/images/map/closed.png) center no-repeat;
+            margin-right: 10px;
+        }
+    }
+    .event_detail {
+        overflow: hidden;
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+        width: 228px;
+        background: #fff;
+        border: 2px solid #ececec;
+        border-top: none;
+        .event_show,
+        .event_image {
+            margin: 10px;
+            background: #f9f9f9;
+            color: #6a6a6a;
+            font-size: 12px;
+            .event_tab {
+                margin: 10px 0px 0px 5px;
+                overflow: hidden;
+                .left {
+                    float: left;
+                    width: 50px;
+                }
+                .right {
+                    border-left: 1px solid #eaeaea;
+                    padding-left: 8px;
+                    margin-left: 55px;
+                    width: auto;
+                }
+                .address1 {
+                    background: #ebebeb url(/src/images/event/map_h.png) 5px 3px no-repeat;
+                    background-size: 10px;
+                    padding: 2px;
+                    span {
+                        margin-left: 15px;
+                    }
+                }
+                img {
+                    width: 64px;
+                    height: 64px;
+                    display: inline-block;
+                    margin: 3px 0.5px;
+                    ;
+                }
+            }
+            .eventdesc {
+                background: #ebebeb;
+                margin-top: 3px;
+                padding: 3px;
+            }
+            .eventpic_list {
+                margin-top: -10px;
+                overflow: hidden;
+                ul {
+                    padding: 0;
+                    margin: 0;
+                    list-style: none;
+                    overflow: hidden;
+                    li {
+                        float: left;
+                        background: #fff;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        .view_detail {
+            margin: 10px;
+            border: 1px solid #5ab7fd;
+            overflow: hidden;
+            border-radius: 5px;
+            .btn {
+                background: #fff;
+                width: 100%;
+                text-align: center;
+                color: #5ab7fd;
+                font-size: 12px;
+            }
+        }
+        .first_event {
+            padding-top: 10px;
+        }
+        .last_event {
+            padding-bottom: 10px;
+        }
+        .audioPlay {
+            background: url(/src/images/task/play.png) no-repeat;
+            width: 82px;
+            height: 26px;
+            border: none;
+            display: inline-block;
+            outline: none;
+        }
+        .audioPlayIn {
+            background: url(/src/images/task/playIn.gif) no-repeat;
+            width: 82px;
+            height: 26px;
+            border: none;
+            display: inline-block;
+            outline: none
+        }
+    }
+}
+
+.result {
+    min-height: 50px;
+    max-height: 200px;
+    // ul {
+    //     height: 100%;
+    //     overflow: auto;
+    // }
+}

@@ -1,0 +1,567 @@
+#page-wrapper {
+    background: #edf1f2;
+    padding: 15px;
+    .data_tab {
+        background: #fff;
+        border-radius: 5px;
+        border: 1px solid #e1e5e6;
+        padding: 10px 0;
+        box-shadow: 2px 1px #e1e5e6;
+        font-size: 14px;
+        margin-top: 15px;
+        .dealtTask {
+            color: #ffffff;
+            background: #ffac28;
+            font-size: 12px;
+            height: 20px;
+            line-height: 20px;
+            display: inline-block;
+            border-radius: 10px;
+            padding: 0 5px;
+        }
+        .atatus_0 {
+            background: #51deef;
+            width: 70px;
+            display: inline-block;
+            line-height: 26px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .atatus_1 {
+            background: #5cb7ff;
+            width: 70px;
+            display: inline-block;
+            line-height: 26px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .atatus_2 {
+            background: #3ad079;
+            width: 70px;
+            display: inline-block;
+            line-height: 26px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .atatus_3 {
+            background: #b4b5b7;
+            width: 70px;
+            display: inline-block;
+            line-height: 26px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .atatus_4 {
+            background: #ff9e34;
+            width: 70px;
+            display: inline-block;
+            line-height: 26px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .home_EHS_001 {
+            background: #5bb3fa;
+            width: 70px;
+            display: inline-block;
+            line-height: 26px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .home_EHS_002 {
+            background: #ff4748;
+            width: 70px;
+            display: inline-block;
+            line-height: 26px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .home_EHS_003 {
+            background: #ffa137;
+            width: 70px;
+            display: inline-block;
+            line-height: 26px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .delete {
+            i {
+                display: inline-block;
+                width: 16px;
+                height: 18px;
+                background: url(/src/images/security/delete.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+                &:hover {
+                    background: url(/src/images/security/delete_h.png) no-repeat;
+                }
+            }
+        }
+        .delete_end {
+            cursor: default;
+            i {
+                display: inline-block;
+                width: 16px;
+                height: 18px;
+                background: url(/src/images/security/delete_e.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+            }
+        }
+        .look {
+            i {
+                display: inline-block;
+                width: 22px;
+                height: 16px;
+                background: url(/src/images/event/look.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+                &:hover {
+                    background: url(/src/images/event/look_h.png) no-repeat;
+                }
+            }
+        }
+        .range {
+            i {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                background: url(/src/images/user/detail.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+                &:hover {
+                    background: url(/src/images/user/detail_h.png) no-repeat;
+                }
+            }
+        }
+        .clone {
+            i {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                background: url(/src/images/security/clone.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+                &:hover {
+                    background: url(/src/images/security/clone_h.png) no-repeat;
+                }
+            }
+        }
+        .modify {
+            i {
+                display: inline-block;
+                width: 19px;
+                height: 21px;
+                background: url(/src/images/security/modify.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+                &:hover {
+                    background: url(/src/images/security/modify_h.png) no-repeat;
+                }
+            }
+        }
+        .modify_end {
+            cursor: default;
+            i {
+                display: inline-block;
+                width: 19px;
+                height: 21px;
+                background: url(/src/images/security/modify_e.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+            }
+        }
+        .closed {
+            i {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                background: url(/src/images/task/closed.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+                &:hover {
+                    background: url(/src/images/task/closed_h.png) no-repeat;
+                }
+            }
+        }
+        .closed_end {
+            cursor: default;
+            i {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                background: url(/src/images/task/closed_e.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+            }
+        }
+    }
+}
+
+//模态框
+#addPlanFrame {
+    font-size: 14px;
+    .modal-lg {
+        .modal-content {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            .modal-header {
+                height: 40px;
+                background: #344052;
+                color: #fff;
+                padding: 0;
+                margin: 0;
+                h3 {
+                    line-height: 40px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin: 0;
+                    a {
+                        color: #fff;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                        font-weight: none;
+                        opacity: 1;
+                    }
+                }
+            }
+            .modal-body {
+                padding: 15px;
+                overflow-y: auto;
+                height: 510px;
+                background: #e7e8ec;
+                .planMain {
+                    padding-top: 15px;
+                    padding-bottom: 20px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    .planList {
+                        overflow: hidden;
+                        margin-top: 15px;
+                        .planListHalf {
+                            width: 50%;
+                            float: left;
+                        }
+                        .planListLeft {
+                            width: 90px;
+                            float: left;
+                            text-align: right;
+                            line-height: 36px;
+                            i {
+                                color: red;
+                                vertical-align: middle;
+                                margin-right: 5px;
+                                font-size: 20px;
+                            }
+                        }
+                        .planListRight {
+                            margin-left: 90px;
+                            width: auto;
+                            padding: 0 20px 0 10px;
+                            input {
+                                height: 36px;
+                                &.pointer {
+                                    cursor: pointer;
+                                    background: #ffffff;
+                                }
+                            }
+                            textarea {
+                                height: 120px;
+                                position: relative;
+                                resize: none;
+                            }
+                        }
+                        .textarea_text {
+                            position: relative;
+                            .text_num {
+                                color: #999;
+                                position: absolute;
+                                bottom: 2px;
+                                right: 30px;
+                            }
+                            p {
+                                margin: 0;
+                                text-align: right;
+                                padding-top: 10px;
+                                span {
+                                    width: 90px;
+                                    height: 30px;
+                                    line-height: 30px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    border-radius: 3px;
+                                    background: #59b6fc;
+                                    color: #fff;
+                                    font-size: 16px;
+                                    display: inline-block;
+                                    margin-left: 30px;
+                                }
+                            }
+                        }
+                        .has-feedback {
+                            .form-control {
+                                padding-right: 38px;
+                                background: #fff;
+                                cursor: pointer;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: hidden;
+                            }
+                            .form-control-feedback {
+                                right: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                text-align: center;
+                background: #344052;
+                height: 50px;
+                padding: 0;
+                margin: 0;
+                button {
+                    height: 36px;
+                    border: none;
+                    width: 120px;
+                    margin-top: 7px;
+                    font-size: 16px;
+                    margin: 7px 20px 0 20px;
+                }
+                .submit {
+                    background: #59b6fc;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+#stakeholder {
+    @extend #addPlanFrame;
+    .modal-lg {
+        .modal-content {
+            width: 500px;
+        }
+    }
+}
+
+#modifyPlanFrame {
+    @extend #addPlanFrame;
+}
+
+#planDetailsFrame {
+    @extend #addPlanFrame;
+    .modal-lg {
+        .modal-content {
+            .modal-body {
+                .planDetails {
+                    padding: 15px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    .planDetailsMain {
+                        border: 1px solid #ddd;
+                        background: #f7f7f7;
+                        .planList {
+                            border-bottom: 1px solid #ddd;
+                            overflow: hidden;
+                            &:last-child {
+                                border: none;
+                            }
+                            .planListLeft {
+                                width: 100px;
+                                float: left;
+                                text-align: right;
+                                line-height: 36px;
+                                padding-right: 10px;
+                                color: #666;
+                            }
+                            .planListRight {
+                                background: #fff;
+                                margin-left: 100px;
+                                width: auto;
+                                padding: 0 10px;
+                                border-left: 1px solid #ddd;
+                                p {
+                                    margin: 0;
+                                    min-height: 36px;
+                                    padding: 7px 0;
+                                    line-height: 22px;
+                                    color: #000;
+                                    word-wrap: break-word;
+                                    word-break: normal;
+                                    &.lookUserList {
+                                        text-align: right;
+                                        min-height: 24px;
+                                        line-height: 24px;
+                                        padding: 0;
+                                        span {
+                                            color: #59b6fc;
+                                            cursor: pointer;
+                                        }
+                                    }
+                                }
+                                ul {
+                                    margin: 0;
+                                    min-height: 36px;
+                                    padding: 8px 0 0 0;
+                                    color: #000;
+                                    overflow: hidden;
+                                    list-style: none;
+                                    margin-right: -10px;
+                                    li {
+                                        display: inline-block;
+                                        float: left;
+                                        overflow: hidden;
+                                        padding: 3px;
+                                        border: 1px solid #f1f1f1;
+                                        margin: 0 9px 8px 0;
+                                        cursor: pointer;
+                                    }
+                                }
+                            }
+                            .satisfaction {
+                                ul {
+                                    display: inline-block;
+                                    vertical-align: middle;
+                                    padding-top: 6px;
+                                    margin: 0;
+                                    li {
+                                        border: none;
+                                        padding: 0;
+                                        margin-bottom: 0;
+                                        height: 20px;
+                                    }
+                                }
+                                span {
+                                    display: inline-block;
+                                    vertical-align: middle;
+                                }
+                            }
+                            .planListHalf {
+                                width: 50%;
+                                float: left;
+                                &:first-child {
+                                    .planListRight {
+                                        border-right: 1px solid #ddd;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                .deletePlan {
+                    background: #fd6768;
+                    color: #fff;
+                }
+                .closePlan {
+                    background: #fbad3e;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+#historyRecordFrame {
+    @extend #planDetailsFrame;
+    .modal-lg {
+        .modal-content {
+            height: 400px;
+            margin-top: 130px;
+            .modal-body {
+                height: 310px;
+                .planDetails {
+                    min-height: 280px;
+                    .historyList {
+                        .planDetailsMain {
+                            margin-bottom: 20px;
+                            .planList {
+                                &.hideClass {
+                                    display: none;
+                                }
+                                &.showClass {
+                                    display: block;
+                                }
+                                .planListRight {
+                                    p {
+                                        .dangerC {
+                                            display: inline-block;
+                                            line-height: 24px;
+                                            color: #ec9029;
+                                            padding-right: 5px;
+                                            padding-left: 20px;
+                                            margin-right: 10px;
+                                            border-radius: 5px;
+                                            border: 1px solid #ec9029;
+                                            background: url(/src/images/security/yes.png) 3px center no-repeat;
+                                            margin-bottom: 7px;
+                                        }
+                                        &.hiddendangersT {
+                                            padding-bottom: 0;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#securityRecordFrame {
+    @extend #planDetailsFrame;
+    .modal-lg {
+        .modal-content {
+            .modal-body {
+                .planDetails {
+                    .gasMeterList {
+                        .planList {
+                            &:last-child {
+                                border-bottom: 1px solid #ddd;
+                            }
+                            .gasTitle {
+                                line-height: 36px;
+                                text-align: center;
+                                margin: 0;
+                            }
+                        }
+                    }
+                    .planList {
+                        .planListRight {
+                            p {
+                                .dangerC {
+                                    display: inline-block;
+                                    line-height: 24px;
+                                    color: #ec9029;
+                                    padding-right: 5px;
+                                    padding-left: 20px;
+                                    margin-right: 10px;
+                                    border-radius: 5px;
+                                    border: 1px solid #ec9029;
+                                    background: url(/src/images/security/yes.png) 3px center no-repeat;
+                                    margin-bottom: 7px;
+                                }
+                                &.hiddendangersT {
+                                    padding-bottom: 0;
+                                }
+                            }
+                        }
+                    }
+                    .lineWhite {
+                        height: 36px;
+                        background: #fff;
+                    }
+                }
+            }
+        }
+    }
+}

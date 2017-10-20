@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>巡线卫士_互联网+管道_管道巡线_管线巡检_管线安全管理</title>
+    <meta name="description" content="巡线卫士是一款为管线安全生产管理提供支撑的移动应用软件，通过云端巡检、闭环管理和移动互联，能够实时监控巡检动态、优化巡检流程，从而提高管线管理工作的效率。">
+    <meta name="Keywords" content="管道,巡检,巡线,管线安全">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/src/css/jasxxws.css" rel="stylesheet">
+    <link href="/src/css/topnav.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/favicon.ico" />
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <!--<img src="/src/images/main/icon_logo.png">
+                    <span>巡线卫士</span>
+                    <img src="/src/images/main/logo_desc.png">-->
+                    <!--<span class="new_company" id="new_company">
+                    </span>-->
+                </a>
+            </div>
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle photoImg" data-toggle="dropdown">
+                        <dl>
+                            <dt>
+                                <img class="person-img" src="/src/images/main/photo.png" alt="">
+                            </dt>
+                            <dd>
+                                <p class="userName">----</p>
+                                <p><span class="userEnterprise">----</span><img class="authentication" src="/src/images/main/authenticationNo.png" alt=""></p>
+                            </dd>
+                        </dl>
+                        <!--<img class="person-img" src="/src/images/main/photo.png" alt="">
+                        <span class="userName"></span>-->
+                    </a>
+                    <ul class="dropdown-menu alert-dropdown" style="width: 100%;min-width: 20px;text-align:center;">
+                        <li menuid="personal">
+                            <a href="#/personal">个人资料</a>
+                        </li>
+                        <li menuid="updatepass">
+                            <a href="#/updatepass">修改密码</span></a>
+                        </li>
+                        <li menuid="setLogin">
+                            <a href="#/setLogin">登录设置</span></a>
+                        </li>
+                    </ul>
+                </li>
+                <!--<li class="news">
+                    <div>3</div>
+                </li>-->
+                <li class="help" menuId="help">
+                    <div class="leftLine"></div>
+                    <a href="#/help" title="帮助中心" style="height:60px;">
+                        <img src="/src/images/main/help.png">
+                        <h1>
+                    </a>
+                </li>
+                <li class="help" menuId="signOut">
+                    <div class="leftLine"></div>
+                    <a href="#" title="注销登录" style="height:60px;">
+                        <img src="/src/images/main/signOut.png">
+                        <h1>
+                    </a>
+                </li>
+            </ul>
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="" menuid="index">
+                        <a href="#/index"><i class="fa fa-fw fa-home"></i> 首页</a>
+                    </li>
+                    <li>
+                        <a href="#/map"><i class="fa fa-fw fa-map-marker"></i> 一张图</a>
+                    </li>
+                    <li menuid="insrecord">
+                        <a href="#/track"><i class="fa fa-fw fa-pencil-square-o"></i> 巡线记录</a>
+                    </li>
+
+                    <li menuid="event">
+                        <a href="#/event"><i class="fa fa-fw fa-list-ul"></i> 事件管理</a>
+                    </li>
+                    <li menuid="task">
+                        <a href="#/task"><i class="fa fa-fw fa-file-text-o"></i> 任务管理</a>
+                    </li>
+                    <li menuid="maintenance">
+                        <a href="#/maintenance"><i class="fa fa-fw fa-wrench"></i> 维修维护</a>
+                    </li>
+                    <li class="security"> <a href="javascript:void(0)" data-toggle="collapse" data-target="#facilities"><i class="fa fa-fw fa-building-o"></i> 管网设施<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="facilities" class="collapse">
+                            <li><a href="#/pipeline"><i class="fa fa-fw"></i>管网地图</a></li>
+                            <li><a href="#/facilityList"><i class="fa fa-fw "></i>设施台账</a> </li>
+                            <li><a href="#/facilityInspect"><i class="fa fa-fw "></i>设施检查</a></li>
+                        </ul>
+                    </li>
+                    <li class="security"> <a href="javascript:void(0)" data-toggle="collapse" data-target="#security"><i class="fa fa-fw fa-shield"></i> 入户安检<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="security" class="collapse">
+                            <li><a href="#/securityPlan"><i class="fa fa-fw "></i>计划管理</a></li>
+                            <li><a href="#/securityRecord"><i class="fa fa-fw "></i>入户安检记录</a></li>
+                            <li><a href="#/userArea"><i class="fa fa-fw "></i>片区管理</a></li>
+                        </ul>
+                    </li>
+
+                    <!--<li class="userArchives"> <a href="javascript:void(0)" data-toggle="collapse" data-target="#archives"><i class="fa fa-fw fa-address-card-o"></i> 用户档案<i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="archives" class="collapse">
+                            <li><a href="#/userArea"><i class="fa fa-fw "></i>片区管理</a></li>
+                        </ul>
+                    </li>-->
+
+                    
+                </ul>
+            </div>
+        </nav>
+        <!--<div id="page-wrapper">
+        </div>-->
+        <!--暂时采用iframe进行数据加载-->
+        <iframe id="page-wrapper" frameborder=0 src=""></iframe>
+    </div>
+    <script src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script src="/lib/js/director.min.js"></script>
+    <script src="/lib/js/bootstrap.min.js"></script>
+    <script src="src/js/common/html5-storage.js"></script>
+    <script src="src/js/common/zhuge.js"></script>
+    <script src="src/js/main.js"></script>
+</body>
+
+</html>

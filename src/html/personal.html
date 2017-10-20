@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="/src/css/bootstrap-datetimepicker.min.css" rel="stylesheet">-->
+    <!--<link href="/src/css/jasxxws.css" rel="stylesheet">-->
+    <link href="/src/css/personal.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+                    <div class="panel panel-default user-base">
+                        <div class="panel-heading ">
+                            用户基础信息
+                        </div>
+                        <div class="panel-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-4 text-right userdes">姓名：</div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" id="name">
+                                    </div>
+                                    <div class="col-md-3 text-left note" id="namenote"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 text-right userdes">年龄：</div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" id="age" placeholder="请输入年龄">
+                                    </div>
+                                    <div class="col-md-3 text-left note" id="agenote"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 text-right userdes">性别：</div>
+                                    <div class="col-md-5">
+                                        <select class="form-control selectsex">
+                                        <option value="女" selected="false" >女</option>
+                                        <option value="男" selected="false">男</option>
+                                    </select>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 text-right userdes">头像：</div>
+                                    <div class="col-md-5 photo">
+                                        <div class="view_persoanl uploadpicture" id="view_persoanl">
+                                        </div>
+                                        <div class="persoanl_add">
+                                            <span class="uploadpicture"><img id="userImg" src="/src/images/event/upload.png" alt=""></span>
+                                            <input type="file" id="uploadfile" name="file" style="display:none" />
+
+                                        </div>
+                                        <p class="img-desc"> 建议上传图片尺寸为640*640，大小不超过1M</p>
+                                    </div>
+                                    <div class="col-md-3 text-left note" id="Imgnote"></div>
+                                </div>
+
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+                    <div class="panel panel-default user-position">
+                        <div class="panel-heading ">
+                            部门与职位
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4 text-right userdes">部门：</div>
+                                <div class="col-md-5 userdes umli100" id="dept">
+                                    巡检一部
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 text-right userdes">职位：</div>
+                                <div class="col-md-5 userdes umli100" id="position">
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+                    <div class="panel panel-default  user-contact">
+                        <div class="panel-heading ">
+                            通讯信息
+                        </div>
+                        <div class="panel-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-4 text-right userdes">手机号：</div>
+                                    <div class="col-md-5 userdes">
+                                        <p>
+                                            <span id="tel"></span>
+                                            <a href="/src/html/phoneModify.html"><span class="modifyPhoneBtn">修改手机号码</span></a>
+                                        </p>
+                                        <!--<input type="text" class="form-control" id="tel" placeholder="请输入手机号">-->
+                                    </div>
+                                    <div class="col-md-3 "></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 text-right userdes">QQ：</div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" id="qq" placeholder="请输入QQ">
+                                    </div>
+                                    <div class="col-md-3 text-left note" id="qqnote"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 text-right userdes">微信：</div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" id="weixin" placeholder="请输入微信">
+                                    </div>
+                                    <div class="col-md-3 text-left note" id="weixinnote"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 text-right userdes">邮箱：</div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" id="email" placeholder="请输入邮箱">
+                                    </div>
+                                    <div class="col-md-3 text-left note" id="emailnote"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            <div class="quite">
+                <button id="fat-btn" class="btn" type="button"> 确认修改
+                    </button>
+            </div>
+        </div>
+
+    </div>
+    <script src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script src="/lib/js/bootstrap.min.js"></script>
+    <script src="/src/js/common/md5.js"></script>
+    <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+    <script src="/src/js/common/html5-storage.js"></script>
+    <script type="text/javascript" src="/src/js/personal/ajaxFileUpload.js"></script>
+    <script type="text/javascript" src="/src/js/personal/personal.js"></script>
+
+</body>
+
+</html>

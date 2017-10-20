@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/src/css/map.css" rel="stylesheet">
+    <link href="/src/css/common/view.pic.css" rel="stylesheet">
+    <link href="/src/css/map_test.css" rel="stylesheet">
+    <link href="/src/css/task.css" rel="stylesheet">
+    <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="mdl_wrapper">
+        <!-- 左上角tab切换 开始-->
+        <div class="tab_wrapper">
+            <ul class="item_wrapper">
+                <li id="people_title" class="item" data-tab="people">人员信息</li>
+                <li class="border"></li>
+                <li id="event_title" class="item" data-tab="event">事件信息</li>
+                <li class="border"></li>
+                <li id="location_title" class="item" data-tab="location">地图搜索</li>
+                <li class="border"></li>
+                <li id="tool_title" class="item" data-tab="tool">工具</li>
+                <li class="border"></li>
+                <li id="gf_refresh" class="fresh">刷新</li>
+                <!--<div class="refresh">
+
+
+                </div>-->
+            </ul>
+            <div class="result_wrapper">
+                <div id="people" class=" hide sub_wrapper">
+                    <div class="title">
+                        <span>总人数<span class="num patrolNum">0</span></span>
+                        <span>今日已巡人数<span class="num inspectOnline">0</span></span>
+                        <span class="close_btn" id="people_closed">X</span>
+                    </div>
+                    <div class="search_wrapper">
+                        <input class="search_people" type="text" placeholder="搜索人员关键词">
+                        <span id="search_people" class=""></span>
+                    </div>
+                    <div class="people result scrollContainer" style="max-height: 260px">
+                        <ul>
+                            <!--<li class="active">
+                                <span class="name">张三</span>
+                                <span class="dept">巡线一部</span>
+                                <span class="task">巡线工作人员</span>
+                            </li>
+                            <li>
+                                <span class="name">张三</span>
+                                <span class="dept">巡线一部</span>
+                                <span class="task">巡线工作人员</span>
+                            </li>
+                            <li>
+                                <span class="name">张三</span>
+                                <span class="dept">巡线一部</span>
+                                <span class="task">巡线工作人员</span>
+                            </li>-->
+                        </ul>
+                    </div>
+                </div>
+                <div id="_event" class="hide sub_wrapper">
+                    <div class="title">
+                        <span>处理中事件<span class="num eventAll">0</span></span>
+                        <span>今日新增事件<span class="num eventNew">0</span></span>
+                        <span class="close_btn" id="event_closed">X</span>
+                    </div>
+                    <div class="search_wrapper">
+                        <input class="search_event" type="text" placeholder="搜索事件关键词" id="search">
+                        <span class="" id="search_event"></span>
+                    </div>
+                    <div class="event result scrollContainer" style="max-height: 260px">
+                        <ul>
+                            <!--<li class="active">
+                                <div class="line01">
+                                    <span class="type">自然灾害-泥石流</span>
+                                    <span class="name">张三丰</span>
+                                    <span class="date">20161022 14:30</span>
+                                </div>
+                                <div class="loca_desc">
+                                    北京市海淀区学院路33号北京科技大学西门
+                                </div>
+                            </li>
+                            <li class="">
+                                <div class="line01">
+                                    <span class="type">自然灾害-泥石流</span>
+                                    <span class="name">张三丰</span>
+                                    <span class="date">20161022 14:30</span>
+                                </div>
+                                <div class="loca_desc">
+                                    北京市海淀区学院路33号北京科技大学西门
+                                </div>
+                            </li>
+                            <li class="">
+                                <div class="line01">
+                                    <span class="type">自然灾害-泥石流</span>
+                                    <span class="name">张三丰</span>
+                                    <span class="date">20161022 14:30</span>
+                                </div>
+                                <div class="loca_desc">
+                                    北京市海淀区学院路33号北京科技大学西门
+                                </div>
+                            </li>-->
+                        </ul>
+                    </div>
+                </div>
+                <div id="location" class="hide search_location">
+                    <div class="search_wrapper">
+                        <input id="location_search" type="text" placeholder="搜索地名关键词">
+                    </div>
+                    <!--<div class="title">
+                        <span class="close_btn">X</span>
+                    </div>-->
+                    <!--<div class="search_wrapper">
+                        <input id="location_search" type="text" placeholder="搜索地名关键词">
+                        <span class=""></span>
+                    </div>-->
+                    <!--<div class="location result scrollContainer" style="max-height: 260px">
+                        <ul>
+                            <li class="active">
+                                <div class="loca">北京科技大学</div>
+                                <div class="loca_desc">
+                                    北京市海淀区学院路33号北京科技大学西门
+                                </div>
+                            </li>
+                            <li class="">
+                                <div class="loca">北京科技大学</div>
+                                <div class="loca_desc">
+                                    北京市海淀区学院路33号北京科技大学西门
+                                </div>
+                            </li>
+                        </ul>
+                    </div>-->
+                </div>
+                <div id="tool" class="hide tool_wrapper">
+                    <div class="distance" onclick="toolsBarForDistance();">测距</div>
+                    <!--<div class="area">测面</div>
+                    <div class="output">导出地图</div>-->
+                </div>
+            </div>
+        </div>
+        <!-- 左上角tab切换 结束-->
+        <!-- 播放器 开始 -->
+        <div class="player_wrapper" style="display: none">
+            <div class="btn_close">x</div>
+            <div class="title">
+                <div class="date">
+                    -
+                </div>
+                <span class="time">
+                    <span class="now">-</span>
+                <span> / </span>
+                <span class="end">-</span>
+                </span>
+                <div class="speed">
+                    <span>播放速度：</span>
+                    <span class="item ">x&nbsp;1</span>
+                    <span class="item active">x&nbsp;30</span>
+                    <span class="item ">x&nbsp;60</span>
+                    <span class="item ">x&nbsp;120</span>
+                    <span class="item ">x&nbsp;240</span>
+                </div>
+            </div>
+            <div class="time_line">
+                <div class="btn_play active"></div>
+                <div class="border"></div>
+                <div class="line_wrapper">
+                    <div class="line_bar">
+                        <div class="line_bar_active"></div>
+                        <div class="stick_bar">
+                            <!--<div class="stick"></div>-->
+                        </div>
+                        <div class="time_mark">
+                            <div class="time">-</div>
+                        </div>
+                        <div class="event_line">
+
+                        </div>
+                        <div class="time_now">-</div>
+                        <div class="mask_bar"></div>
+                        <div class="move_bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 播放器 结束 -->
+        <!-- 地图容器 开始 -->
+        <div id="container" class="map_wrapper">
+        </div>
+        <!-- 地图容器 结束 -->
+    </div>
+    <!--人员与事件图层控制-->
+    <div class="change">
+        <div class="renyuan fl">人员 <span class="inspectBtn active"></span></div>
+        <div class="shijian fl">事件 <span class="eventBtn active"></span></div>
+        <div class="network fl">管网 <span class="networkBtn active"></span></div>
+    </div>
+    <!--人员信息列表-->
+    <div class="panel-group" id="accordion">
+        <!--<div class="null"></div>-->
+        <div class="personnel">
+            <span>人员</span><span class="fr close_inspect">&nbsp;</span>
+        </div>
+        <div class="message">
+            <div class="essentialInformation">
+                <div class="peopleInformation">
+                    <div class="left fl"><img class="inspectImg" src="/src/images/map/close.png" alt=""></div>
+                    <div class="right fl">
+                        <p> <span class="pr5 inspectUseName fl">--</span>
+                            <img class="isOnline" src="/src/images/map/line.png" alt=""><img class="dynamicTitle" src="/src/images/map/phone.png" alt="">
+                            <span class="status isPolling">今日已巡</span>
+                        </p>
+                        <!--<p><span class="pr5 inspectsex">男</span><img style="width:13px;height:13px;" src="/src/images/map/nan.png" alt=""></p>-->
+                        <p><span class="pr15 fl inspectDepartment">--</span></p>
+                        <p><span class="pr15 fl inspectRoleName">--</span></p>
+                        <!--<p><img style="width:10px;height:17px;" src="/src/images/map/phone.png" alt=""><span class="pl5 inspectNumber">18829250216</span></p>-->
+                    </div>
+                </div>
+                <div class="patrolInformation">
+                    <div class="left">
+                        <p>本日巡检</p>
+                        <p class="inspectCount">--</p>
+                    </div>
+                    <div class="center">
+                        <p>本日里程</p>
+                        <p class="inspectKm">--</p>
+                    </div>
+                    <div class="right">
+                        <p>本日事件</p>
+                        <p class="inspectQi">--</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title font14">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">巡检记录</a>
+                    <span class="glyphicon1 glyphicon glyphicon-menu-up fr"></span>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="searchStyle">
+                    <div class="fl"><input class="inputStyle form_datetime" readonly id="datetimeStartInspect" type="text" placeholder="开始时间">&nbsp;至&nbsp;</div>
+                    <div class="fl"><input class="inputStyle form_datetime" readonly id="datetimeEndInspect" type="text" placeholder="结束时间"></div>
+                    <button class="fl buttonStyle inspectDate">搜索</button>
+                </div>
+                <div class="scrollContainer" style="max-height:325px;">
+                    <div class="peopleList contentOne ">
+                        <!--<div class="record_details">
+                            <p class="pb10 pt10"><span class="fr5 width">开始时间</span><span class="borderLeft fl block">2016-12-15 14:53</span></p>
+                            <p class="pb10 pt10"><span class="fr5 width">结束时间</span><span class="borderLeft fl block">2016-12-15 14:53</span></p>
+                            <p class="pb10 pt10"><span class="fr5 width">时长</span><span class="borderLeft fl block">1小时30分</span></p>
+                            <p class="pb10 pt10"><span class="fr5 width">巡线状态</span><span class="borderLeft fl block">已完成</span></p>
+                            <p class="pb10 pt10"><span class="fr5 width">总里程</span><span class="borderLeft fl block">15KM</span></p>
+                            <p class="pb10 pt10" style="height:23px;line-height:23px"><span class="fr5 width">轨迹回放</span><span class="borderLeft fl block"><img src="/src/images/map/bofang.png" alt=""></span></p>
+                        </div>-->
+                    </div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm">
+                            <li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#">...</a></li>
+                            <li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title font14">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">事件记录</a>
+                    <span class="glyphicon2 glyphicon glyphicon-menu-down fr"></span>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="searchStyle">
+                    <div class="fl"><input class="inputStyle form_datetime" readonly id="datetimeStartEvent" type="text" placeholder="开始时间">&nbsp;至&nbsp;</div>
+                    <div class="fl"><input class="inputStyle form_datetime" readonly id="datetimeEndEvent" type="text" placeholder="结束时间"></div>
+                    <button class="fl buttonStyle eventDate">搜索</button>
+                </div>
+                <div class=" scrollContainer" style="max-height:325px;">
+                    <div class="eventListPage contentTwo"> </div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm">
+                            <li style="width:28px;">
+                                <a href="#" aria-label="Previous" style="width:28px;">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li style="width:28px;"><a style="width:28px;" href="#">...</a></li>
+                            <li style="width:28px;">
+                                <a href="#" aria-label="Next" style="width:28px;">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--事件信息列表-->
+    <div class="event_list">
+        <div class="event_title"><span>事件</span><span class="fr close_event"></span></div>
+        <div class="event_detail">
+            <div class="event_show">
+                <div class="event_tab first_event">
+                    <div class="left">
+                        <span class="event_desc">事件编号</span>
+                    </div>
+                    <div class="right">
+                        <span class="event_content event_code">--</span>
+                    </div>
+                </div>
+                <div class="event_tab">
+                    <div class="left">
+                        <span class="event_desc">事件类型</span>
+                    </div>
+                    <div class="right">
+                        <span class="event_content event_type">--</span>
+                    </div>
+                </div>
+                <div class="event_tab">
+                    <div class="left">
+                        <span class="event_desc">事件时间</span>
+                    </div>
+                    <div class="right">
+                        <span class="event_content event_date">--</span>
+                    </div>
+                </div>
+                <div class="event_tab">
+                    <div class="left">
+                        <span class="event_desc">上报人</span>
+                    </div>
+                    <div class="right">
+                        <span class="event_content report_man">--</span>
+                    </div>
+                </div>
+                <div class="event_tab">
+                    <div class="left">
+                        <span class="event_desc">详细位置</span>
+                    </div>
+                    <div class="right address1">
+                        <span class="event_content event_address">--</span>
+                    </div>
+                </div>
+                <div class="event_tab">
+                    <div class="left">
+                        <span class="event_desc ">事件描述</span>
+                    </div>
+                    <div class="right">
+                        <span class="event_content">&nbsp;</span>
+                    </div>
+                </div>
+                <div class="event_tab eventdesc">
+                    <span class="event_description"></span>
+                </div>
+                <div class="event_tab last_event">
+                    <div class="left">
+                        <span class="event_desc">语音</span>
+                    </div>
+                    <div class="right ">
+                        <span class="event_content event_audio_list">
+                                </span>
+                    </div>
+                </div>
+            </div>
+            <div class="event_image">
+                <div class="event_tab first_event last_event">
+                    <div class="left">
+                        <span class="event_desc">图片</span>
+                    </div>
+                    <div class="right">
+                        <span class="pic_des"></span>
+                    </div>
+                </div>
+                <div class="event_tab eventpic_list">
+                    <ul></ul>
+                </div>
+            </div>
+            <div class="view_detail">
+                <button type="button" onclick="view_detail(this)" class="btn detail_btn">查看详情</button>
+            </div>
+        </div>
+    </div>
+    <!--事件查看详情-->
+    <div id="details" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>事件详情<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs nav_details" role="tablist">
+                        <li role="presentation" class="active"><a href="#eventDetails" aria-controls="home" role="tab" data-toggle="tab">事件详情</a></li>
+                        <li role="presentation"><a href="#taskDetails" aria-controls="profile" role="tab" data-toggle="tab">任务处置</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="eventDetails">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">事件编号</div>
+                                    <div class="col-md-4 col-sm-4 details_text eventCode"></div>
+                                    <div class="col-md-2 col-sm-2 text-right details_title">事件时间</div>
+                                    <div class="col-md-4 col-sm-4 details_text occurrenceTime"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">事件类型</div>
+                                    <div class="col-md-4  col-sm-4 details_text fullTypeName"></div>
+                                    <div class="col-md-2 col-sm-2 text-right details_title">上报人</div>
+                                    <div class="col-md-4  col-sm-4 details_text inspectorName"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">详细位置</div>
+                                    <div class="col-md-10  col-sm-10 details_text details_map_main">
+                                        <p class="address"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">事件描述</div>
+                                    <div class="col-md-10  col-sm-10 details_text description"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">语音描述</div>
+                                    <div class="col-md-10 details_text col-sm-10 event_audio">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">照片</div>
+                                    <div class="col-md-10 details_text  col-sm-10 event_pic">
+                                        <ul></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="taskDetails">
+                            <div class="dispose_title">
+                                <p>任务编号：<span class="taskCode"></span></p>
+                            </div>
+                            <div class="dispose_content">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/amrnb.js"></script>
+    <script type="text/javascript" src="/lib/js/amrnb-play.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="/lib/js/common_base.js"></script>
+    <script type="text/javascript" src="/src/js/common/linq.min.js"></script>
+
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+
+    <script src="/src/js/common/html5-storage.js"></script>
+    <script src="/src/js/common/json-linq.js"></script>
+    <script src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/src/js/common/bootstrap.modal.alert.js"></script>
+
+    <script src="/src/js/common/mapObj.js"></script>
+    <script type="text/javascript" src="/src/js/common/view.pic.js"></script>
+    <script src="/src/js/map.js"></script>
+    <script src="/src/js/map/map1.js"></script>
+    <script src="/src/js/common/pipelineObj.js"></script>
+    <script>
+        $(".scrollContainer").mCustomScrollbar({
+            advanced: {
+                updateOnContentResize: true
+            }
+        });
+        $(function() {
+            pipeLineObj.init(mapObj.$bdMap);
+        });
+    </script>
+</body>
+
+</html>

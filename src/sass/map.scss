@@ -1,0 +1,559 @@
+$blue: #51b7ff;
+.hide {
+    display: none;
+}
+
+label {
+    max-width: none;
+}
+
+@mixin hidd {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* 大容器开始 */
+
+.mdl_wrapper {
+    position: relative;
+    height: 100%;
+    min-width: 600px;
+    .map_wrapper {
+        height: 100%;
+    }
+}
+
+
+/* 大容器结束 */
+
+
+/* tab切换模块开始 */
+
+.tab_wrapper {
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+            margin: 0;
+            padding: 0;
+        }
+    }
+    position: absolute;
+    font-size: 12px;
+    color: #666;
+    top: 40px;
+    left: 40px;
+    z-index: 999;
+    .item_wrapper {
+        box-shadow: 0px 0px 12px #888;
+        overflow: hidden;
+        background: rgba(88, 88, 88, .9);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        .border {
+            width: 1px;
+            height: 22px;
+            margin-top: 6px;
+            background: #fff;
+            float: left;
+        }
+        .item {
+            float: left;
+            box-sizing: border-box;
+            width: 87px;
+            padding-left: 11px;
+            font-size: 12px;
+            color: white;
+            line-height: 36px;
+            cursor: pointer;
+            &:hover {
+                background-color: rgba(11, 11, 11, .4) !important;
+            }
+            &.active {
+                background-color: rgba(11, 11, 11, .4) !important;
+            }
+            &:nth-child(1) {
+                background: url(/src/images/map/icon_down.png) no-repeat 69px center;
+            }
+            &:nth-child(3) {
+                background: url(/src/images/map/icon_down.png) no-repeat 69px center;
+            }
+            &:nth-child(5) {
+                background: url(/src/images/map/icon_search.png) no-repeat 65px center;
+                background-size: 13px;
+            }
+            &:nth-child(7) {
+                background: url(/src/images/map/icon_down.png) no-repeat 56px center;
+                padding-left: 24px;
+            }
+        }
+        .fresh {
+            float: left;
+            box-sizing: border-box;
+            width: 87px;
+            padding-left: 21px;
+            font-size: 12px;
+            color: white;
+            line-height: 36px;
+            cursor: pointer;
+            background: url(/src/images/map/icon_reload.png) no-repeat 52px center;
+            background-size: 14px;
+            &:hover {
+                background-color: rgba(11, 11, 11, .4) !important;
+            }
+        }
+    }
+    .result_wrapper {
+        width: 351px;
+        margin-top: 5px;
+        /*box-shadow:0px 0px 12px #ccc;*/
+        .sub_wrapper {
+            box-shadow: 0px 0px 12px #888;
+            background: #fff;
+            border: 2px solid #ececec;
+            padding-bottom: 10px;
+            .title {
+                padding-left: 20px;
+                box-sizing: border-box;
+                line-height: 28px;
+                overflow: hidden;
+                .num {
+                    color: $blue;
+                    margin-right: 25px;
+                    padding-left: 6px;
+                }
+                .close_btn {
+                    float: right;
+                    padding: 0 8px;
+                    margin-right: 10px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    &:hover {
+                        color: $blue;
+                    }
+                }
+            }
+            .search_wrapper {
+                overflow: hidden;
+                border: 2px solid $blue;
+                height: 31px;
+                width: 330px;
+                margin: 10px auto;
+                background: #fff;
+                input {
+                    float: left;
+                    height: 27px;
+                    width: 280px;
+                    line-height: 27px;
+                    outline: none;
+                    -webkit-appearance: none;
+                    border: none;
+                    padding-left: 8px;
+                }
+                span {
+                    cursor: pointer;
+                    float: right;
+                    width: 44px;
+                    height: 27px;
+                    background: $blue url(/src/images/map/icon_search.png) no-repeat center center;
+                }
+            }
+            .result {
+                max-height: 500px;
+                overflow-y: auto;
+                ul {
+                    li {
+                        height: 35px;
+                        line-height: 31px;
+                        border: 2px solid #fff;
+                        cursor: pointer;
+                        &:hover {
+                            background: #edf7ff;
+                        }
+                        &.active {
+                            border-color: $blue;
+                            background: #edf7ff;
+                        }
+                    }
+                }
+                &.people {
+                    ul {
+                        li {
+                            span {
+                                display: inline-block;
+                                &.peoicon {
+                                    @include hidd;
+                                    background: #b9b9b9;
+                                    border-radius: 4px;
+                                    height: 20px;
+                                    margin: 0 6px 6px 10px;
+                                    padding: 0 6px 0 5px;
+                                    line-height: 20px;
+                                    color: white;
+                                    font-size: 12px;
+                                    &.active{
+                                        background: #51b7ff;
+                                    }
+                                }
+                                &.name {
+                                    @include hidd;
+                                    width: 60px;
+                                    margin: 0 6px 0 6px;
+                                }
+                                &.dept {
+                                    @include hidd;
+                                    width: 80px;
+                                    margin: 0 6px;
+                                }
+                                &.task {
+                                    @include hidd;
+                                    width: 80px;
+                                    margin: 0 10px 0 6px;
+                                }
+                            }
+                        }
+                    }
+                }
+                &.event ul li {
+                    line-height: 24px;
+                    height: auto;
+                    padding: 8px 18px;
+                    .line01 {
+                        height: 24px;
+                        span {
+                            display: inline-block;
+                        }
+                        .type {
+                            @include hidd;
+                            width: 120px;
+                            margin-right: 10px;
+                        }
+                        .name {
+                            @include hidd;
+                            width: 50px;
+                        }
+                        .date {
+                            @include hidd;
+                            padding-left: 20px;
+                            background: url(/src/images/map/icon_clock.png) no-repeat 0 center;
+                        }
+                    }
+                    .loca_desc {
+                        @include hidd;
+                        padding-left: 20px;
+                        background: url(/src/images/index/icon_loca.png) no-repeat 0 center;
+                        background-size: 13px 16px;
+                    }
+                }
+                &.location ul li {
+                    padding: 6px 20px;
+                    line-height: 24px;
+                    height: auto;
+                    .loca {
+                        @include hidd;
+                    }
+                    .loca_desc {
+                        @include hidd;
+                        padding-left: 20px;
+                        background: url(/src/images/index/icon_loca.png) no-repeat 0 center;
+                        background-size: 13px 16px;
+                    }
+                }
+            }
+        }
+        .tool_wrapper {
+            width: 86px;
+            box-shadow: 0px 0px 12px #888;
+            position: absolute;
+            right: 88px;
+            line-height: 36px;
+            background: #fff;
+            padding: 0 8px;
+            div {
+                cursor: pointer;
+                padding: 0 0 0 22px;
+                &.distance {
+                    background: url(/src/images/map/i_dis.png) no-repeat 0 center;
+                    &:hover {
+                        color: $blue;
+                        background-image: url(/src/images/map/i_dis_a.png)
+                    }
+                }
+                &.area {
+                    background: url(/src/images/map/i_area.png) no-repeat 0 center;
+                    &:hover {
+                        color: $blue;
+                        background-image: url(/src/images/map/i_area_a.png)
+                    }
+                }
+                &.output {
+                    background: url(/src/images/map/i_out.png) no-repeat 0 center;
+                    &:hover {
+                        color: $blue;
+                        background-image: url(/src/images/map/i_out_a.png)
+                    }
+                }
+            }
+        }
+        .search_location {
+            .search_wrapper {
+                overflow: hidden;
+                border: 2px solid $blue;
+                height: 31px;
+                width: 330px;
+                margin: 10px auto;
+                background: #fff;
+                input {
+                    float: left;
+                    height: 27px;
+                    width: 100%;
+                    line-height: 27px;
+                    outline: none;
+                    -webkit-appearance: none;
+                    border: none;
+                    padding-left: 8px;
+                }
+                span {
+                    cursor: pointer;
+                    float: right;
+                    width: 44px;
+                    height: 27px;
+                    background: $blue url(/src/images/map/icon_search.png) no-repeat center center;
+                }
+            }
+        }
+    }
+}
+
+
+/* tab切换模块结束 */
+
+
+/* 播放器模块开始 */
+
+.player_wrapper {
+    position: absolute;
+    z-index: 999;
+    left: 50%;
+    bottom: 20px;
+    width: 740px;
+    margin-left: -370px;
+    padding: 0 10px;
+    border-radius: 6px;
+    background: rgba(11, 11, 11, .7);
+    box-shadow: 0px 0px 12px #888;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    .btn_close {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        background: rgba(11, 11, 11, .7);
+        border-radius: 50%;
+        font-size: 12px;
+        cursor: pointer;
+    }
+    .title {
+        border-bottom: 1px solid #333;
+        line-height: 24px;
+        .date {
+            position: absolute;
+            left: 12px;
+            top: 0;
+        }
+        .speed {
+            position: absolute;
+            top: 0;
+            right: 28px;
+            .item {
+                padding: 0 5px;
+                cursor: pointer;
+                border-radius: 2px;
+                margin: 0 3px;
+                &.active {
+                    background: $blue;
+                }
+            }
+        }
+    }
+    .time_line {
+        height: 64px;
+        position: relative;
+        border-top: 1px solid rgba(222, 222, 222, 0.4);
+        .btn_play {
+            position: absolute;
+            top: 50%;
+            margin-top: -14px;
+            left: 16px;
+            width: 26px;
+            height: 28px;
+            cursor: pointer;
+            background: url(/src/images/map/btn_play.png) no-repeat 0px 0px;
+            &.active {
+                background: url(/src/images/map/btn_pause.png) no-repeat 0px 0px;
+            }
+        }
+        .border {
+            position: absolute;
+            height: 26px;
+            top: 50%;
+            margin-top: -13px;
+            left: 60px;
+            border-right: 1px solid rgba(222, 222, 222, 0.4);
+            border-left: 1px solid #333;
+        }
+        .line_wrapper {
+            padding-left: 62px;
+            width: 100%;
+            height: 100%;
+            .line_bar {
+                position: absolute;
+                top: 26px;
+                left: 50%;
+                margin-left: -265px;
+                height: 12px;
+                width: 600px;
+                background: #666;
+                border-radius: 6px;
+                .line_bar_active {
+                    border-radius: 6px;
+                    width: 0px;
+                    height: 100%;
+                    background: $blue;
+                }
+                .mask_bar {
+                    height: 100%;
+                    width: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    cursor: pointer;
+                }
+                .event_line {
+                    height: 100%;
+                    width: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    .item {
+                        position: absolute;
+                        left: 0;
+                        bottom: 8px;
+                        ;
+                        margin-left: -9px;
+                        height: 26px;
+                        width: 18px;
+                        cursor: pointer;
+                        &.dis1 {
+                            background: url(/src/images/event/dis1.png) no-repeat 0 0;
+                            background-size: 18px 26px;
+                        }
+                        &.dis2 {
+                            background: url(/src/images/event/dis2.png) no-repeat 0 0;
+                            background-size: 18px 26px;
+                        }
+                        &.dis1 {
+                            background: url(/src/images/event/dis1.png) no-repeat 0 0;
+                            background-size: 18px 26px;
+                        }
+                        &.dis1 {
+                            background: url(/src/images/event/dis1.png) no-repeat 0 0;
+                            background-size: 18px 26px;
+                        }
+                        &.dis1 {
+                            background: url(/src/images/event/dis1.png) no-repeat 0 0;
+                            background-size: 18px 26px;
+                        }
+                        &.dis1 {
+                            background: url(/src/images/event/dis1.png) no-repeat 0 0;
+                            background-size: 18px 26px;
+                        }
+                        &.dis1 {
+                            background: url(/src/images/event/dis1.png) no-repeat 0 0;
+                            background-size: 18px 26px;
+                        }
+                        &.dis1 {
+                            background: url(/src/images/event/dis1.png) no-repeat 0 0;
+                            background-size: 18px 26px;
+                        }
+                    }
+                }
+                .move_bar {
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    margin-left: -9px;
+                    margin-top: -9px;
+                    height: 18px;
+                    width: 18px;
+                    border: 6px solid white;
+                    border-radius: 50%;
+                    background: $blue;
+                    cursor: pointer;
+                }
+                .time_now {
+                    width: 56px;
+                    position: absolute;
+                    top: -20px;
+                    left: 0;
+                    margin-left: -28px;
+                }
+                .stick_bar {
+                    position: absolute;
+                    width: 100%;
+                    height: 5px;
+                    bottom: 0px;
+                    .stick {
+                        border-left: 1px solid white;
+                        height: 5px;
+                        position: absolute;
+                        &:nth-of-type(1) {
+                            left: 16.66%;
+                        }
+                        &:nth-of-type(2) {
+                            left: 33.32%;
+                        }
+                        &:nth-of-type(3) {
+                            left: 50%;
+                        }
+                        &:nth-of-type(4) {
+                            left: 16.66%;
+                        }
+                        &:nth-of-type(5) {
+                            left: 16.66%;
+                        }
+                    }
+                }
+                .time_mark {
+                    position: absolute;
+                    width: 100%;
+                    height: 5px;
+                    bottom: 0px;
+                    .time {
+                        width: 56px;
+                        position: absolute;
+                        top: 10px;
+                        margin-left: -28px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+/* 播放器模块结束 */

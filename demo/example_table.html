@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+
+    <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/src/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/src/css/jasxxws.css" rel="stylesheet">
+    <link href="/src/css/common/search_table.css" rel="stylesheet">
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">
+                    <img src="/src/images/main/icon_logo.png">
+                    <span>巡线卫士</span>
+                    <img src="/src/images/main/logo_desc.png">
+                </a>
+            </div>
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> 张三丰 <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown">
+                        <li>
+                            <a href="#">个人资料</a>
+                        </li>
+                        <li>
+                            <a href="#">修改密码</span></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown">
+                        <li>
+                            <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">View All</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown">
+                        <li>
+                            <a href="#">个人资料</a>
+                        </li>
+                        <li>
+                            <a href="#">修改密码</span></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="active">
+                        <a href="index.html"><i class="fa fa-fw fa-home"></i> 首页</a>
+                    </li>
+                    <li>
+                        <a href="/src/html/event.html"><i class="fa fa-fw fa-list-ul"></i> 事件管理</a>
+                    </li>
+                    <li>
+                        <a href="/src/html/task.html"><i class="fa fa-fw fa-file"></i> 任务管理</a>
+                    </li>
+                    <li>
+                        <a href="forms.html"><i class="fa fa-fw fa-map-marker"></i> 一张图</a>
+                    </li>
+                    <li>
+                        <a href="bootstrap-elements.html"><i class="fa fa-fw fa-wrench"></i> 设备管理</a>
+                    </li>
+                    <li>
+                        <a href="bootstrap-grid.html"><i class="fa fa-fw fa-bar-chart-o"></i> 统计分析</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-briefcase"></i> 企业管理 <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo" class="collapse">
+                            <li>
+                                <a href="#">Dropdown Item</a>
+                            </li>
+                            <li>
+                                <a href="#">Dropdown Item</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="blank-page.html"><i class="fa fa-fw fa-envelope"></i> 消息中心</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="page_bg_wrapper">
+                <div class="container-fluid search_item_wrapper">
+                    <div class="top">
+                        <div class="row search_title">
+                            <div class="col-lg-6 col-xs-12 btn_wrapper">
+                                <div class="col-xs-6">
+                                    <div class="item col-xs-4 ">今天</div>
+                                    <div class="item col-xs-4 active">本周</div>
+                                    <div class="item col-xs-4">本月</div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="item col-xs-4 active">全部</div>
+                                    <div class="item col-xs-4">有事件</div>
+                                    <div class="item col-xs-4">无事件</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12 right_wrapper">
+                                <div class="more">
+                                    高级搜索
+                                </div>
+                                <div class="search_wrapper">
+                                    <div class="input_wrapper">
+                                        <input class="" type="text" placeholder="输入关键字搜索">
+                                    </div>
+                                    <span class="mybtn">确定</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="more_item_wrapper">
+                            <div class="sub_wrapper">
+                                <b class="up_triangle">
+                                    <i></i>
+                                </b>
+                                <div class="son_wrapper">
+                                    <div class="line">
+                                        <div class="title">事件状态</div>
+                                        <div class="item_box">
+                                            <div class="item1">
+                                                <span class="item">全部</span>
+                                                <span class="item active">处理中</span>
+                                                <span class="item">已完成</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <div class="title">事件状态</div>
+                                        <div class="item_box">
+                                            <div class="item1">
+                                                <span class=" item active">全部</span>
+                                                <span class="item">第三方活动<i class="glyphicon glyphicon-menu-down"></i></span>
+                                                <span class="item">自然灾害<i class="glyphicon glyphicon-menu-down"></i></span>
+                                                <span class="item">管道设施<i class="glyphicon glyphicon-menu-down"></i></span>
+                                            </div>
+                                            <div class="item2">
+                                                <div class="item2_id">
+                                                    <b>（</b>
+                                                    <span class="item active">全部</span>
+                                                    <span class="item">施工</span>
+                                                    <span class="item">占压</span>
+                                                    <span class="item">圈闭或包封</span>
+                                                    <span class="item">碾压</span>
+                                                    <span class="item">耕种</span>
+                                                    <span class="item">疏浚与清淤</span>
+                                                    <span class="item">其他</span>
+                                                    <b>）</b>
+                                                </div>
+                                                <div class="item2_id active">
+                                                    <b>（</b>
+                                                    <span class="item active">全部</span>
+                                                    <span class="item">施工</span>
+                                                    <span class="item">占压</span>
+                                                    <span class="item">圈闭或包封</span>
+                                                    <span class="item">碾压</span>
+                                                    <span class="item">耕种</span>
+                                                    <span class="item">疏浚与清淤</span>
+                                                    <span class="item">其他</span>
+                                                    <b>）</b>
+                                                </div>
+                                                <div class="item2_id">
+                                                    <b>（</b>
+                                                    <span class="item active">全部</span>
+                                                    <span class="item">施工</span>
+                                                    <span class="item">占压</span>
+                                                    <span class="item">圈闭或包封</span>
+                                                    <span class="item">碾压</span>
+                                                    <span class="item">耕种</span>
+                                                    <span class="item">疏浚与清淤</span>
+                                                    <span class="item">其他</span>
+                                                    <b>）</b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <div class="title">时间</div>
+                                        <div class="item_box">
+                                            <div class="item1">
+                                                <span class="item">不限</span>
+                                                <span class="item active">今日</span>
+                                                <span class="item">本周</span>
+                                                <span class="item">本月</span>
+                                                <span class="date">
+                                                    <span class="diy">自定义：</span>
+                                                    <input size="16" type="text" id="datetimeStart" placeholder="选择起始时间" readonly class="form_datetime">
+                                                    <span>&nbsp;&nbsp;至&nbsp;&nbsp;</span>
+                                                    <input size="16" type="text" id="datetimeEnd" placeholder="选择结束时间" readonly class="form_datetime">
+                                                    <span class="item">确定</span>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <div class="title">人员</div>
+                                        <div class="item_box">
+                                            <div class="item1">
+                                                <span class="peo_wrapper">
+                                                    <span class="peo_border">
+                                                        <input class="peo_selected" readonly>
+                                                        <span class="mybtn"></span>
+                                                    </span>
+                                                    <span class="item">确定</span>
+                                                    <span class="clear">清空人员</span>
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="btn_wrapper">
+                                    <span class="clear">清空筛选条件</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table_wrapper">
+                    这是图表
+                </div>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <script src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script src="/lib/js/bootstrap.min.js"></script>
+    <script src="/lib/js/bootstrap-table.min.js"></script>
+    <script src="/src/js/event/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript">
+        $("#datetimeStart").datetimepicker({
+            format: 'yyyy-mm-dd',
+            minView: 'month',
+            language: 'zh-CN',
+            autoclose: true,
+            // startDate: new Date()
+        }).on("click", function() {
+            $("#datetimeStart").datetimepicker("setEndDate", $("#datetimeEnd").val())
+        });
+        $("#datetimeEnd").datetimepicker({
+            format: 'yyyy-mm-dd',
+            minView: 'month',
+            language: 'zh-CN',
+            autoclose: true,
+            // startDate: new Date()
+        }).on("click", function() {
+            $("#datetimeEnd").datetimepicker("setStartDate", $("#datetimeStart").val())
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+
+    <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/src/css/common/search_table.css" rel="stylesheet">
+    <link href="/src/css/common/view.pic.css" rel="stylesheet">
+    <link href="/src/css/security.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="page-wrapper">
+        <div class="wrapper-main">
+            <!--高级搜索-->
+            <div class="container-fluid search_item_wrapper">
+                <div class="top">
+                    <div class="row search_title">
+                        <div class="col-lg-6 col-xs-12 btn_wrapper">
+                            <div class="col-xs-8" data-class="enterhomeSituationTypeCode">
+                                <div class="item col-xs-3" data-value="">全部</div>
+                                <div class="item col-xs-3" data-value="EHS_001">成功入户</div>
+                                <div class="item col-xs-3" data-value="EHS_003">到访不遇</div>
+                                <div class="item col-xs-3" data-value="EHS_002">拒绝检查</div>
+                            </div>
+                            <div class="col-xs-4" data-class="status">
+                                <select id="planIdList" class="form-control" name="">
+                                    <option value="">请选择</option>
+                                    <!--<option value="1">太空计划</option>
+                                    <option value="2">下海计划</option>-->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xs-12 right_wrapper">
+                            <div class="search_btn_right">
+                                <div class="search_reset" id="gf_reset_Btn">重置</div>
+                                <div class="more" id="search_more">
+                                    高级搜索
+                                </div>
+                            </div>
+                            <div class="search_wrapper">
+                                <div class="input_wrapper">
+                                    <input class="" id="searchInput" type="text" placeholder="请输入计划名称、地址、安检人员、用户名称关键字搜索">
+                                </div>
+                                <span class="mybtn" id="gf_Btn">确定</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="more_item_wrapper">
+                        <div class="sub_wrapper">
+                            <b class="up_triangle">
+                                    <i></i>
+                                </b>
+                            <div class="son_wrapper">
+                                <div class="line">
+                                    <div class="title">用户类型</div>
+                                    <div class="item_box">
+                                        <div class="item1" data-class="enterhomeUserTypeCode">
+                                            <span class="item" data-value="">全部</span>
+                                            <span class="item" data-value="EHT_001">居民</span>
+                                            <span class="item" data-value="EHT_002">工业</span>
+                                            <span class="item" data-value="EHT_003">商业</span>
+                                            <span class="item" data-value="EHT_004">公共福利</span>
+                                            <span class="item" data-value="EHT_099">其他</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line">
+                                    <div class="title">安全隐患</div>
+                                    <div class="item_box">
+                                        <div class="item1" data-class="hasHiddenDanger">
+                                            <span class="item" data-value="">全部</span>
+                                            <span class="item" data-value="1">存在</span>
+                                            <span class="item" data-value="0">不存在</span>
+                                            <span class="item" data-value="-1">无</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line">
+                                    <div class="title">时间</div>
+                                    <div class="item_box">
+                                        <div class="item1" data-class="date">
+                                            <span class="item" data-value="all">不限</span>
+                                            <span class="item" data-value="day">今日</span>
+                                            <span class="item" data-value="week">本周</span>
+                                            <span class="item" data-value="month">本月</span>
+                                            <span class="date">
+                                                    <span id="item_diy" class="diy">自定义：</span>
+                                            <input size="16" type="text" onchange="dateChangeForSearch();" id="datetimeStart" placeholder="选择起始时间" readonly class="form_datetime">
+                                            <span>&nbsp;&nbsp;至&nbsp;&nbsp;</span>
+                                            <input size="16" type="text" onchange="dateChangeForSearch();" id="datetimeEnd" placeholder="选择结束时间" readonly class="form_datetime">
+                                            <span class="itemBtn" id="diyDateBtn" data-value="diy">确定</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="line">
+                                    <div class="title">特殊筛选</div>
+                                    <div class="item_box">
+                                        <div class="item1" data-class="specialFilter">
+                                            <span class="item" data-value="0">无</span>
+                                            <span class="item" data-value="1">地址存在重复</span>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/高级搜索-->
+            <!--表格-->
+            <div class="data_tab">
+                <div class="container-fluid">
+                    <div id="toolbar" class="btn-group">
+                        <button id="export_all" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-share" aria-hidden="true"></span>导出全部
+                        </button>
+                        <button id="export_choice" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>导出已选
+                        </button>
+                    </div>
+                    <table id="tablRrecord"></table>
+                </div>
+            </div>
+            <!--/表格-->
+        </div>
+    </div>
+
+    <!--安检记录-->
+    <div id="securityRecordFrame" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>安检记录<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="planDetails">
+                        <div class="planDetailsMain">
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        安检时间
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="securityCheckTime">----</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        安检人员
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="createUserName">----</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        入户计划
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="planName">----</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        入户情况
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="enterhomeSituationTypeName">----</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        用户名称
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="userFileName">----</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        用户编号
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="userFileCode">----</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        用户类型
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="enterhomeUserTypeName">----</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        联系人
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="contactUser">----</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        联系电话
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="contactPhone">----</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        备用电话
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="alternativePhone">----</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    详细地址
+                                </div>
+                                <div class="planListRight has-feedback">
+                                    <p data-name="address">----</p>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        安全隐患
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="isdangerT">----</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        整改时间
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="remediationTime">----</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--燃气表的插入开始-->
+                            <div class="gasMeterList">
+                                <!--<div class="planList">
+                                    <p data-name="gasTitle">燃气表一</p>
+                                </div>
+                                <div class="planList">
+                                    <div class="planListHalf">
+                                        <div class="planListLeft">
+                                            编号
+                                        </div>
+                                        <div class="planListRight">
+                                            <p data-name="">----</p>
+                                        </div>
+                                    </div>
+                                    <div class="planListHalf">
+                                        <div class="planListLeft">
+                                            燃气表读数
+                                        </div>
+                                        <div class="planListRight">
+                                            <p data-name="">----</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="planList">
+                                    <div class="planListLeft">
+                                        左右表
+                                    </div>
+                                    <div class="planListRight">
+                                        <p data-name="">----</p>
+                                    </div>
+                                </div>-->
+                            </div>
+                            <!--燃气表的插入结束-->
+                            <div class="planList lineWhite"></div>
+                            <div class="planList isHasDanger">
+                                <div class="planListLeft">
+                                    隐患情况
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="hiddendangersT">----</p>
+                                </div>
+                            </div>
+                            <div class="planList isHasDanger">
+                                <div class="planListLeft">
+                                    隐患措施告知
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p>隐患整改措施已告知用户并解释清楚</p>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    备注
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p data-name="remark">----</p>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    照片
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <ul class="recordImg"></ul>
+                                </div>
+                            </div>
+                            <div class="planList isSuccess">
+                                <div class="planListLeft">
+                                    用户签字
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <ul class="userImg"></ul>
+                                </div>
+                            </div>
+                            <div class="planList isSuccess">
+                                <div class="planListLeft">
+                                    用户满意度
+                                </div>
+                                <div class="planListRight satisfaction">
+                                    <ul>
+                                        <li><img src="/src/images/security/star.png" width="20" alt=""></li>
+                                        <li><img src="/src/images/security/star.png" width="20" alt=""></li>
+                                        <li><img src="/src/images/security/star.png" width="20" alt=""></li>
+                                        <li><img src="/src/images/security/star.png" width="20" alt=""></li>
+                                        <li><img src="/src/images/security/star.png" width="20" alt=""></li>
+                                    </ul>
+                                    <span>非常满意</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button class="btn deletePlan deleteRecord">删除</button>-->
+                    <button class="btn submit openHistory">历史记录</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--历史记录-->
+    <div id="historyRecordFrame" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>历史记录<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="planDetails">
+                        <div class="historyList">
+                            <!--<div class="planDetailsMain">
+                                <div class="planList">
+                                    <div class="planListHalf">
+                                        <div class="planListLeft">
+                                            安检时间
+                                        </div>
+                                        <div class="planListRight">
+                                            <p class="">--</p>
+                                        </div>
+                                    </div>
+                                    <div class="planListHalf">
+                                        <div class="planListLeft">
+                                            入户情况
+                                        </div>
+                                        <div class="planListRight">
+                                            <p class="">--</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="planList">
+                                    <div class="planListLeft">
+                                        安检人
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="">--</p>
+                                    </div>
+                                </div>
+                                <div class="planList">
+                                    <div class="planListLeft">
+                                        备注
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="">--</p>
+                                    </div>
+                                </div>
+                                <div class="planList">
+                                    <div class="planListLeft">
+                                        照片
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="">--</p>
+                                    </div>
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/lib/js/common_base.js"></script>
+    <script type="text/javascript" src="/src/js/common/common.js"></script>
+    <script type="text/javascript" src="/src/js/common/view.pic.js"></script>
+    <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+    <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+    <script type="text/javascript" src="/src/js/common/form.js"></script>
+    <script type="text/javascript" src="/src/js/security/securityRecord.js"></script>
+</body>
+<script>
+</script>
+
+</html>

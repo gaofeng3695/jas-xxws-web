@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="/lib/css/zTreeStyle.css"  rel="stylesheet"></link>
+</head>
+<body>
+
+    <div >
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+
+
+    <script src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script src="/lib/js/jquery.ztree.all.min.js"></script>
+    <script>
+		var setting = {
+			view: {
+				showLine: true
+			},
+			data: {
+				simpleData: {
+					enable: true
+				},
+                key : {
+                    isParent : 'yes'
+                }
+			}
+
+		};
+
+		var zNodes =[
+			{ id:1, pId:0, name:"父节点1", open:true},
+			{ id:11, pId:1, name:"叶子节点1"},
+			{ id:12, pId:2, name:"叶子节点2"},
+			{ id:13, pId:2, name:"叶子节点3"},
+			{ id:2, pId:1, name:"父节点2", open:true},
+			{ id:21, pId:2, name:"叶子节点1"},
+			{ id:22, pId:2, name:"叶子节点2"},
+			{ id:23, pId:2, name:"叶子节点3"},
+			{ id:3, pId:1, name:"父节点3", open:true },
+			{ id:31, pId:3, name:"叶子节点1"},
+			{ id:32, pId:3, name:"叶子节点2"},
+			{ id:33, pId:3, name:"叶子节点3",yes:true}
+		];
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
+request();
+
+
+
+		});
+
+function request(){
+        $.ajax({
+            type: "GET",
+            url: "/cloudlink-core-framework/organization/getTree",
+            ///cloudlink-inspection-event/inspectionRecord/web/v1/get
+            ///cloudlink-inspection-event/eventInfo/web/v1/get
+            contentType: "application/json",
+            data: {
+                token: '98059ddb-2f44-4c5c-890c-eba343f6b104',
+                enterpriseId: 'e13bb03e-b424-4e25-8a8b-9f9ec5b3fc07'
+            },
+			async: {
+				enable: true,
+				url:"../asyncData/getNodes.php",
+				autoParam:["id", "name=n", "level=lv"],
+				otherParam:{"otherParam":"zTreeAsyncTest"},
+				//dataFilter: filter
+			},
+            dataType: "json",
+            success: function (data) {
+                console.log(JSON.stringify(data.rows));
+                if (data.success != 1) {
+                    alert('网络连接出错！code:-1')
+                    return;
+                }
+               // $.fn.zTree.init($("#treeDemo"), setting, data.rows);
+                // that.showModal();
+                // that.renderDetails(data.rows[0]);
+            },
+            statusCode: {
+                404: function () {
+                    alert('网络连接出错！code:404');
+                }
+            }
+        });
+}
+
+    </script>
+</body>
+</html>

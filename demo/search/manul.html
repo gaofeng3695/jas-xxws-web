@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="src/codemirror.css">
+    <script src="src/codemirror.js"></script>
+    <script src="src/javascript.js"></script>
+    <script src="src/runmode.js"></script>
+    <script src="src/colorize.js"></script>
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0 ;
+            padding: 0;
+        }
+        html,body{
+            height: 100%;
+        }
+        .center{
+            width: 100%;
+            max-width: 1000px;
+            min-height: 100%;
+            margin: 0 auto;
+            background: #ececec;
+            color: #333;
+            box-sizing: border-box;
+        }
+        .p15{
+            padding: 15px;
+        }
+        .mrl15{
+            margin: 0 15px;
+        }
+        .mr15{
+            margin-right: 15px;
+        }
+        .conner{
+            border-radius: 5px;
+        }
+        .bgfff{
+            background: #fff;
+        }
+
+        .name{
+            font-weight: 900;
+            font-size: 18px;
+            margin-right: 15px;
+        }
+        .must{
+            background: #f44336;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: white;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .type{
+            background: #2196f3;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: white;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center p15">
+
+        <div class=" conner bgfff">
+            <div class="p15 "><span class="name">wrapper</span><span class="must">必填</span><span class="type">string</span></div>
+            <hr class="mrl15">
+            <div class="p15">
+                jquery选择器
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+    <script>
+        // var myCodeMirror = CodeMirror(document.body, {
+        // value: "function myScript(){return 100;}\n",
+        // mode:  "javascript"
+        // });
+
+
+    </script>
+    <script>setTimeout(function(){CodeMirror.colorize();}, 20);</script>
+</body>
+</html>

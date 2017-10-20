@@ -1,0 +1,59 @@
+#departmentSelect {
+    font-size: 14px;
+    .modal-lg {
+        .modal-content {
+            width: 400px;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            .modal-header {
+                height: 40px;
+                background: #344052;
+                color: #fff;
+                padding: 0;
+                margin: 0;
+                h3 {
+                    line-height: 40px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin: 0;
+                    a {
+                        color: #fff;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                        font-weight: none;
+                        opacity: 1;
+                    }
+                }
+            }
+            .modal-body {
+                padding: 10px 20px 0 20px;
+                height: 510px;
+                overflow-y: auto;
+                .department_select {
+                    padding-bottom: 10px;
+                }
+            }
+            .modal-footer {
+                text-align: center;
+                background: #344052;
+                height: 50px;
+                padding: 0;
+                margin: 0;
+                button {
+                    height: 36px;
+                    border: none;
+                    width: 120px;
+                    margin-top: 7px;
+                    font-size: 16px;
+                    margin: 7px 20px 0 20px;
+                }
+                .submit {
+                    background: #59b6fc;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

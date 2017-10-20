@@ -1,0 +1,27 @@
+//管网按钮样式
+.pipelineDiv {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    height: 36px;
+    line-height: 36px;
+    color: #fff;
+    background: #686866;
+    box-shadow: 0px 0px 12px #888;
+    border-radius: 3px;
+    .pipelineBtn {
+        padding: 0 10px;
+        span {
+            display: inline-block;
+            width: 29px;
+            height: 16px;
+            cursor: pointer;
+            vertical-align: middle;
+            margin-left: 3px;
+            background: url(/src/images/map/close.png) no-repeat;
+            &.active {
+                background: url(/src/images/map/open.png) no-repeat;
+            }
+        }
+    }
+}

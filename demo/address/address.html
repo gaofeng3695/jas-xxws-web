@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        select{
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <!--dom结构部分-->
+    <div>
+        <select name="" id="provinceSelector">
+            <!--<option value="123">山东省</option>-->
+        </select>
+        <select name="" id="citySelector">
+            <!--<option value="1243">潍坊市</option>-->
+        </select>
+        <select name="" id="countySelector">
+            <!--<option value="123">高密市</option>-->
+        </select>
+        <select name="" id="townSelector">
+            <!--<option value="123">朝阳街道</option>-->
+        </select>
+    </div>
+
+    <!--dom结构部分-->
+    <div>
+        <select name="" id="provinceSelector2">
+            <!--<option value="123">山东省</option>-->
+        </select>
+        <select name="" id="citySelector2">
+            <!--<option value="1243">潍坊市</option>-->
+        </select>
+        <select name="" id="countySelector2">
+            <!--<option value="123">高密市</option>-->
+        </select>
+        <select name="" id="townSelector2">
+            <!--<option value="123">朝阳街道</option>-->
+        </select>
+    </div>
+
+
+    <script src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script src="/src/js/common/html5-storage.js"></script>
+    <script src="common_selectAddress.js"></script>
+    <script>
+/**
+ * 地区选择插件，依赖jQuery
+ * 使用方法：
+ *  var oAddress = setAddress({
+        defalutId : '150525100000', // 镇编码，可以不传，或传空，传入错误编码会使select无选择
+        provinceSelector : '#provinceSelector', //省选择器
+        citySelector : '#citySelector', //市选择器
+        countySelector : '#countySelector', //县选择器
+        townSelector : '#townSelector', //镇选择器
+    });
+ * setAddress()运行此方法生成一个地区选择实例对象，支持多对象创建
+ * 获取结果：
+ *  oAddress.result = {
+        provinceCode : '',
+        cityCode : '',
+        countyCode : '',
+        townCode : obj.defalutId,
+        provinceName : '',
+        cityName : '',
+        countyName : '',
+        townName : '',
+        address : ''
+ * }
+ *
+ *
+ **/
+
+    var oAddress = setAddress({
+        defalutId : '150525100000', // 选填，镇编码，可以不传，或传空，传入错误编码会使select无选择
+        dataUrl : '/demo/address/city.json', //必填， json包地址
+        provinceSelector : '#provinceSelector', //必填， 省选择器
+        citySelector : '#citySelector', //必填， 市选择器
+        countySelector : '#countySelector', //必填， 县选择器
+        townSelector : '#townSelector', //必填， 镇选择器
+    });
+
+    console.log(oAddress.result)
+
+
+    </script>
+</body>
+
+</html>

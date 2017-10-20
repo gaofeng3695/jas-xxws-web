@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+
+    <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/src/css/common/search_table.css" rel="stylesheet">
+    <link href="/src/css/common/view.pic.css" rel="stylesheet">
+    <link href="/src/css/dispose_common.css" rel="stylesheet">
+    <link href="/src/css/task.css" rel="stylesheet">
+    <link href="/src/css/common/pipelineswitch.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <!--地图-->
+            <div class="row">
+                <div class="task_map">
+                    <div id="task_map"></div>
+                    <div class="bottom_btn text-center">
+                        <div id="drafting_down"></div>
+                        <span class="map_up"></span>
+                    </div>
+                </div>
+            </div>
+            <!--/地图-->
+        </div>
+        <div class="wrapper-main">
+            <!--高级搜索-->
+            <div id="search_wrapper"></div>
+            <!--<div class="container-fluid search_item_wrapper">
+                <div class="top">
+                    <div class="row search_title">
+                        <div class="col-lg-6 col-xs-12 btn_wrapper">
+                            <div class="col-xs-6" data-class="status">
+                                <div class="item col-xs-4" data-value="20,21">全部</div>
+                                <div class="item col-xs-4" data-value="20">处理中</div>
+                                <div class="item col-xs-4" data-value="21">已完成</div>
+                            </div>
+                            <div class="col-xs-6" data-class="date">
+                                <span class="item col-xs-4" data-value="all">不限</span>
+                                <div class="item col-xs-4" data-value="day">今天</div>
+                                <div class="item col-xs-4" data-value="week">本周</div>
+                                <!--<div class="item col-xs-4" data-value="month">本月</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-lg-6 col-xs-12 right_wrapper">-->
+            <!--<div class="search_btn_right">
+            <div class="search_reset" id="gf_reset_Btn">重置</div>
+            <div class="more" id="search_more">
+                高级搜索
+            </div>
+        </div>
+        <div class="search_wrapper">
+            <div class="input_wrapper">
+                <input class="" id="searchInput" type="text" placeholder="输入关键字搜索">
+            </div>
+            <span class="mybtn" id="gf_Btn">确定</span>
+        </div>
+
+    </div>
+    </div>
+    <div class="more_item_wrapper">
+        <div class="sub_wrapper">
+            <b class="up_triangle">
+                                    <i></i>
+                                </b>
+            <div class="son_wrapper">-->
+            <!--<div class="line">
+                                    <div class="title">事件状态</div>
+                                    <div class="item_box">
+                                        <div class="item1" data-class="status">
+                                            <span class="item" data-value="20,21">全部</span>
+                                            <span class="item" data-value="20">处理中</span>
+                                            <span class="item" data-value="21">已完成</span>
+                                        </div>
+                                    </div>
+                                </div>-->
+            <!--<div class="line">
+                    <div class="title">事件类型</div>
+                    <div class="item_box">
+                        <div class="item1" data-class="typeParent">
+                            <span class="item" data-value="0">全部</span>
+                            <span class="item" data-value="1">第三方活动<i class="glyphicon glyphicon-menu-down"></i></span>
+                            <span class="item" data-value="2">自然灾害<i class="glyphicon glyphicon-menu-down"></i></span>
+                            <span class="item" data-value="3">管道设施<i class="glyphicon glyphicon-menu-down"></i></span>
+                        </div>
+                        <div class="item2">
+                            <div class="item2_id" data-class="type">
+                                <b>（</b>
+                                <span class="item" data-value="4,5,6,7,8,9,10">全部</span>
+                                <span class="item" data-value="4">施工</span>
+                                <span class="item" data-value="5">占压</span>
+                                <span class="item" data-value="6">圈闭或包封</span>
+                                <span class="item" data-value="7">碾压</span>
+                                <span class="item" data-value="8">耕种</span>
+                                <span class="item" data-value="9">疏浚与清淤</span>
+                                <span class="item" data-value="10">其他</span>
+                                <b>）</b>
+                            </div>
+                            <div class="item2_id" data-class="type">
+                                <b>（</b>
+                                <span class="item active" data-value="11,12,13,14,15,16,17">全部</span>
+                                <span class="item" data-value="11">地面沉降或塌陷</span>
+                                <span class="item" data-value="12">边坡变化</span>
+                                <span class="item" data-value="13">深根植物倾倒</span>
+                                <span class="item" data-value="14">水淹</span>
+                                <span class="item" data-value="15">泥石流</span>
+                                <span class="item" data-value="16">山体滑坡</span>
+                                <span class="item" data-value="17">其他</span>
+                                <b>）</b>
+                            </div>
+                            <div class="item2_id" data-class="type">
+                                <b>（</b>
+                                <span class="item" data-value="18,19">全部</span>
+                                <span class="item" data-value="18">本体</span>
+                                <span class="item" data-value="19">附属设施</span>
+                                <b>）</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="line">
+                    <div class="title">时间</div>
+                    <div class="item_box">
+                        <div class="item1" data-class="date">
+                            <span class="item" data-value="all">不限</span>
+                            <span class="item" data-value="day">今日</span>
+                            <span class="item" data-value="week">本周</span>
+                            <span class="item" data-value="month">本月</span>
+                            <span class="date">
+                                                    <span id="item_diy" class="diy">自定义：</span>
+                            <input size="16" type="text" onchange="dateChangeForSearch();" id="datetimeStart" placeholder="选择起始时间" readonly class="form_datetime">
+                            <span>&nbsp;&nbsp;至&nbsp;&nbsp;</span>
+                            <input size="16" type="text" onchange="dateChangeForSearch();" id="datetimeEnd" placeholder="选择结束时间" readonly class="form_datetime">
+                            <span class="itemBtn" id="diyDateBtn" data-value="diy">确定</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>-->
+            <!--</div>-->
+            <!--/高级搜索-->
+            <!--表格-->
+            <div class="data_tab">
+                <div class="container-fluid">
+                    <div id="toolbar" class="btn-group">
+                        <button id="export_all" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-share" aria-hidden="true"></span>导出全部
+                        </button>
+                        <button id="export_choice" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>导出已选
+                        </button>
+                        <button id="map_choice" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>多点定位
+                        </button>
+                    </div>
+                    <table id="task_table"></table>
+                </div>
+            </div>
+            <!--/表格-->
+        </div>
+    </div>
+    <!--查看详情-->
+    <div id="details" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>任务详情<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs nav_details" role="tablist">
+                        <li role="presentation"><a href="#eventDetails" aria-controls="home" role="tab" data-toggle="tab">事件详情</a></li>
+                        <li role="presentation" class="active"><a href="#taskDetails" aria-controls="profile" role="tab" data-toggle="tab">任务处置</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane" id="eventDetails">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">事件编号</div>
+                                    <div class="col-md-4 col-sm-4 details_text eventCode"></div>
+                                    <div class="col-md-2 col-sm-2 text-right details_title">事件时间</div>
+                                    <div class="col-md-4 col-sm-4 details_text occurrenceTime"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">事件类型</div>
+                                    <div class="col-md-4  col-sm-4 details_text fullTypeName"></div>
+                                    <div class="col-md-2 col-sm-2 text-right details_title">上报人</div>
+                                    <div class="col-md-4  col-sm-4 details_text inspectorName"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">详细位置</div>
+                                    <div class="col-md-10  col-sm-10 details_text details_map_main">
+                                        <p class="address"></p>
+                                        <div id="details_address_map"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">事件描述</div>
+                                    <div class="col-md-10  col-sm-10 details_text description"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">语音描述</div>
+                                    <div class="col-md-10 details_text col-sm-10 event_audio">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 text-right details_title">照片</div>
+                                    <div class="col-md-10 details_text  col-sm-10 event_pic">
+                                        <ul></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane active" id="taskDetails">
+                            <div class="dispose_title">
+                                <p>任务编号：<span class="taskCode"></span></p>
+                            </div>
+                            <div class="dispose_content">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn disposeTask">填写信息</button>
+                    <button class="btn closeTask">关闭任务</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--处置填写-->
+    <div id="dispose" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>填写信息<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form_task">
+                            <div class="form_list">
+                                <div class="list_left text-right">
+                                    处置时间
+                                </div>
+                                <div class="list_right has-feedback">
+                                    <p id="datetime"></p>
+                                </div>
+                            </div>
+                            <div class="form_line"></div>
+                            <div class="form_list">
+                                <div class="form_part">
+                                    <div class="list_left text-right">
+                                        信息类型
+                                    </div>
+                                    <div class="list_right has-feedback radio">
+                                        <label>
+                                            <input type="radio" name="taskType" value="10" checked>
+                                            记录
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="taskType" value="20">
+                                            请示
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="taskType" value="30">
+                                            意见
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form_list">
+                                <div class="list_left text-right">
+                                    信息描述
+                                </div>
+                                <div class="list_right textarea_text">
+                                    <textarea id="event_description" oninput="checkLen(this)" class="form-control"></textarea>
+                                    <span class="text_num">(160字)</span>
+                                </div>
+                            </div>
+                            <div class="form_list">
+                                <div class="list_left text-right">
+                                    照片
+                                </div>
+                                <div class="list_right">
+                                    <div class="feedback_img">
+                                        <div class="feedback_img_list">
+                                        </div>
+                                        <div class="feedback_img_file">
+                                            <input type="file" onchange="handleFiles(this);" class="upload_file" />
+                                        </div>
+                                        <div class="feedback_img_add">
+                                            <span class="addImg"><img src="/src/images/event/upload.png" alt=""></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form_line"></div>
+                            <div class="form_list">
+                                <div class="list_left text-right">
+                                    报送人
+                                </div>
+                                <div class="list_right has-feedback">
+                                    <input type="text" class="form-control" name="receiveUser" placeholder="请选择报送人" readonly>
+                                    <span class="form-control-feedback" aria-hidden="true">
+                                        <img src="/src/images/event/slaff.png" alt="">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit">提交</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--人员信息-->
+    <div id="stakeholder" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>人员添加<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="sub_wrapper">
+                        <ul id="people_list" class="ztree"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_selectPeople" type="button" class="btn modal_active btn-primary">确定</button>
+                    <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 历史类型 -->
+    <div id="hisData" class="modal big_modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" id="gridSystemModalLabel">历史类型筛选</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="sub_wrapper">
+                        <ul id="eventType_list" class="ztree"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_hisData" type="button" class="btn modal_active btn-primary">确定</button>
+
+                    <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/lib/js/amrnb.js"></script>
+    <script type="text/javascript" src="/lib/js/amrnb-play.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/lib/js/common_base.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
+    <script type="text/javascript" src="/src/js/event/upload.js"></script>
+    <script type="text/javascript" src="/src/js/event/ajaxFileUpload.js"></script>
+    <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+
+    <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+
+    <script type="text/javascript" src="/src/js/common/drafting.js"></script>
+    <script type="text/javascript" src="/src/js/common/common.js"></script>
+    <script type="text/javascript" src="/src/js/common/view.pic.js"></script>
+    <script type="text/javascript" src="/src/js/common/dispose_common.js"></script>
+    <script type="text/javascript" src="/src/js/common/zhuge.js"></script>
+    <script type="text/javascript" src="/src/js/common/search.template.js"></script>
+    <script type="text/javascript" src="/src/js/task/task.js"></script>
+
+    <script type="text/javascript" src="/src/js/common/pipelineObj.js"></script>
+    <script type="text/javascript" src="/src/js/common/pipelineswitch.js"></script>
+</body>
+<script>
+</script>
+
+</html>

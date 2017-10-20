@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/src/css/common/search_table.css" rel="stylesheet">
+</head>
+<body>
+    <div id="search_wrapper"></div>
+    <div id="search_wrapper2"></div>
+
+    <script src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="search.template.js"></script>
+    <script>
+
+        var obj = {
+            wrapper : '#search_wrapper', //必填 jquery选择器
+            topItem : { //必填 要显示在左上部的数据
+                widthRate : [6,6], //必填 宽度比 数值1-12,总和为12，可参考bootstrap的栅格系统
+                data : [ //必填 数组，数组项：对象，'date', html字符串模板
+                    /**
+                    * 对象
+                    *
+                    **/
+                    { // 搜索的一个类别
+                        title : {  //类别分类名称
+                            name : '完成状态',
+                            value : 'status', //类别的value值，可作为数据传回后台
+                        },
+                        items : [
+                            {
+                                name : '顺子', //类别单项
+                                value : '512311', //类别单项value值
+                            },
+                            {
+                                name : '飞机',
+                                value : '51232311',
+                            },
+                            {
+                                name : '王炸',
+                                value : '5122322311',
+                            }
+                        ]
+                    },
+                    'date',//'date'，自动生成日期类别
+                    // html字符串模板
+                ]
+            },
+            itemArr : [ //数组，必填 高级搜索内的类别集合
+                { //搜索的一个类别
+                    title : { //类别分类名称
+                        name : '事件类型',
+                        value : 'type', //类别的value值，可作为数据传回后台
+                    },
+                    items : [ //必填 数组或者自定义html字符串
+                        {
+                            name : '全部', //类别单项
+                            value : '0', //类别单项value值
+                        },
+                        {
+                            name : '第三方活动',
+                            value : '1',
+                            subValue : '4,5,51', //选填，如果存在children则为必填，值为children内默认项的value
+                            children : [ //选填
+                                {
+                                    name : '全部',
+                                    value : '4,5,51',
+                                },
+                                {
+                                    name : '施工',
+                                    value : '4',
+                                },
+                                {
+                                    name : '占压',
+                                    value : '5',
+                                },
+                                {
+                                    name : '洪水',
+                                    value : '51',
+                                }
+                            ],
+                        },
+                        {
+                            name : '自然灾害',
+                            value : '3',
+                            subValue : '41,511,5111',
+                            children : [
+                                {
+                                    name : '全部',
+                                    value : '41,511,5111',
+                                },
+                                {
+                                    name : '狂风',
+                                    value : '41',
+                                },
+                                {
+                                    name : '暴雨',
+                                    value : '511',
+                                },
+                                {
+                                    name : '地震',
+                                    value : '5111',
+                                }
+                            ],
+                        },
+                        [
+                            '<input/>',
+                            '<span>这是自定义</span>'
+                        ].join('')
+                    ]
+                },
+                {
+                    title : {
+                        name : '水果',
+                        value : 'fruit',
+                    },
+                    items : [
+                        {
+                            name : '全部',
+                            value : '0',
+                        },
+                        {
+                            name : '苹果',
+                            value : 'apple',
+                        },
+                        {
+                            name : '桔子',
+                            value : 'orange',
+                        }
+                    ]
+                },
+                {
+                    title : {
+                        name : '自定义',
+                        value : 'fruit2',
+                    },
+                    items : '<input/><h2>这里可以填写自定义html</h2>'
+                },
+                'date',
+            ],
+            queryObj :{ //对象，必填，传输给后台的对象，也会用来初始化html视图展示，高亮显示
+                status :512311,  //类别vlaue值 ：类别内项目value值
+                type : '0',
+                fruit : '0',
+
+                date : 'all', //all,day,week,month //时间类别
+                startDate : '',
+                endDate : '',
+            },
+            callback : function(data){ //初始化和更新queryObj后的回调，默认传入queryObj
+                console.log(data)
+                $.ajax();
+            }
+        }
+        var s = createSearhTemplate(obj);
+
+
+        var obj2 = {
+            wrapper : '#search_wrapper2',
+            topItem : {
+                widthRate : [8,4],
+                data : [
+                    {
+                        title : {
+                            name : '完成状态',
+                            value : 'status',
+                        },
+                        items : [
+                            {
+                                name : '顺子',
+                                value : '512311',
+                            },
+                            {
+                                name : '飞机',
+                                value : '51232311',
+                            },
+                            {
+                                name : '王炸',
+                                value : '5122322311',
+                            },
+                            {
+                                name : '抢地主',
+                                value : '5122123223211',
+                            }
+                        ]
+                    },
+                    [
+                        '<select style="width:100%;">',
+                            '<option>12323123</option>',
+                            '<option>12312sdaf 3</option>',
+                            '<option>1231asdd23</option>',
+                        '</select>'
+                    ].join('')
+
+                ]
+            },
+            itemArr : [
+                {
+                    title : {
+                        name : '事件类型',
+                        value : 'type',
+                    },
+                    items : [
+                        {
+                            name : '全部',
+                            value : '0',
+                        },
+                        {
+                            name : '第三方活动',
+                            value : '1',
+                            subValue : '4,5,51',
+                            children : [
+                                {
+                                    name : '全部',
+                                    value : '4,5,51',
+                                },
+                                {
+                                    name : '施工',
+                                    value : '4',
+                                },
+                                {
+                                    name : '占压',
+                                    value : '5',
+                                },
+                                {
+                                    name : '洪水',
+                                    value : '51',
+                                }
+                            ],
+                        },
+                        {
+                            name : '自然灾害',
+                            value : '3',
+                            subValue : '41,511,5111',
+                            children : [
+                                {
+                                    name : '全部',
+                                    value : '41,511,5111',
+                                },
+                                {
+                                    name : '狂风',
+                                    value : '41',
+                                },
+                                {
+                                    name : '暴雨',
+                                    value : '511',
+                                },
+                                {
+                                    name : '地震',
+                                    value : '5111',
+                                }
+                            ],
+                        },
+
+                    ]
+                },
+                {
+                    title : {
+                        name : '水果',
+                        value : 'fruit',
+                    },
+                    items : [
+                        {
+                            name : '全部',
+                            value : '0',
+                        },
+                        {
+                            name : '苹果',
+                            value : 'apple',
+                        },
+                        {
+                            name : '桔子',
+                            value : 'orange',
+                        }
+                    ]
+                }
+            ],
+            queryObj :{
+                status :5122322311,
+                type : '4',
+                fruit : '0',
+                date : 'all', //all,day,week,month
+                startDate : '',
+                endDate : '',
+            },
+            callback : function(dom){
+                console.log(dom)
+            }
+        }
+        var s2 = createSearhTemplate(obj2);
+
+    </script>
+</body>
+</html>

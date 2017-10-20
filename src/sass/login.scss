@@ -1,0 +1,266 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body,
+html {
+    background-color: #fff;
+    width: 100%;
+    min-width: 939px;
+    height: 100%;
+    min-height: 600px;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.common {
+    height: 30px;
+    border-left: 1px solid #BBBBBB;
+    margin-left: 30px;
+    margin-top: 3px;
+}
+
+#bgcontent {
+    width: 100%;
+    height: 100%;
+    background: url(/src/images/loginImg/loginbg.jpg);
+    background-size: cover;
+    .loginContent {
+        width: 1040px;
+        height: 100%;
+        margin: 0 auto;
+        position: relative;
+        background: url(/src/images/loginImg/loginsg.png) no-repeat 0 center;
+        .poskuai {
+            width: 420px;
+            height: 480px;
+            background: #fff;
+            border-radius: 20px;
+            position: absolute;
+            right: 50px;
+            top: 50%;
+            margin-top: -240px;
+            display: inline-block;
+            #versionInformation {
+                padding-right: 20px;
+                padding-top: 20px;
+                font-size: 16px;
+                text-align: right;
+            }
+            .message {
+                margin: 0 auto;
+                width: 310px;
+                height: 100%;
+                .logoImg {
+                    width: 112px;
+                    height: 96px;
+                    margin: 0 auto;
+                    margin-top: 12px;
+                    background: url(/src/images/loginImg/logo.png) no-repeat 0 0;
+                }
+                .info {
+                    width: 300px;
+                    margin: 0 auto;
+                    margin-top: 45px;
+                    .name {
+                        width: 100%;
+                        height: 35px;
+                        border: 1px solid #BBBBBB;
+                        border-radius: 5px;
+                        .nameImg {
+                            width: 30px;
+                            height: 35px;
+                            float: left;
+                            background: url(/src/images/loginImg/nameImg1.png) no-repeat 8px 8px;
+                        }
+                        input {
+                            width: 260px;
+                            height: 20px;
+                            margin-top: 5px;
+                            padding-left: 5px;
+                            border: none;
+                            outline: none;
+                            font-size: 14px;
+                        }
+                    }
+                    .hidkuai1 {
+                        width: 300px;
+                        height: 30px;
+                        span {
+                            width: 100%;
+                            height: 100%;
+                            color: red;
+                            font-size: 14px;
+                            line-height: 30px;
+                        }
+                    }
+                    .hidkuai2 {
+                        width: 300px;
+                        height: 50px;
+                        span {
+                            width: 100%;
+                            height: 100%;
+                            color: red;
+                            font-size: 14px;
+                            line-height: 30px;
+                        }
+                    }
+                    .password {
+                        width: 100%;
+                        height: 35px;
+                        border: 1px solid #BBBBBB;
+                        border-radius: 5px;
+                        .passwordImg {
+                            width: 30px;
+                            height: 35px;
+                            float: left;
+                            background: url(/src/images/loginImg/password.png) no-repeat 8px 8px;
+                        }
+                        input {
+                            width: 260px;
+                            height: 20px;
+                            margin-top: 5px;
+                            padding-left: 5px;
+                            border: none;
+                            outline: none;
+                            font-size: 14px;
+                        }
+                    }
+                }
+                .btn {
+                    width: 300px;
+                    height: 35px;
+                    margin: 0 auto;
+                    display: block;
+                    border-radius: 5px;
+                    border: none;
+                    background: #5EB6F9;
+                    color: #fff;
+                    font-size: 20px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+                .Twobtn {
+                    width: 300px;
+                    height: 30px;
+                    margin-top: 20px;
+                    .forget {
+                        width: 80px;
+                        height: 30px;
+                        float: left;
+                        border: none;
+                        outline: none;
+                        background: #fff;
+                        color: #5EB6F9;
+                        font-size: 16px;
+                        cursor: pointer;
+                    }
+                    .immediately {
+                        height: 30px;
+                        float: right;
+                        border: none;
+                        outline: none;
+                        background: #fff;
+                        color: #5EB6F9;
+                        font-size: 16px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+    .words {
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+        position: absolute;
+        // left: 50%;
+        bottom: 20px;
+        // transform: translateX(-50%);
+        span {
+            vertical-align: middle;
+            font-size: 26px;
+            margin-left: 5px;
+            margin-right: 5px
+        }
+    }
+}
+
+#versionmodal {
+    .modal-lg {
+        .modal-content {
+            width: 500px;
+            margin: 200px auto;
+            border-radius: 8px;
+            overflow: hidden;
+            .modal-header {
+                height: 40px;
+                background: #344052;
+                color: #fff;
+                padding: 0;
+                margin: 0;
+                h3 {
+                    line-height: 40px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin: 0;
+                    a {
+                        color: #E7E8EC;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                        font-weight: none;
+                        opacity: 1;
+                    }
+                }
+            }
+            .modal-body {
+                position: relative;
+                padding: 15px;
+                min-height: 200px;
+                overflow-x: hidden;
+                overflow-y: auto;
+                background: #E7E8EC;
+                .content {
+                    width: 100%;
+                    height: 220px;
+                    border-radius: 8px;
+                    background: #fff;
+                    h4 {
+                        height: 50px;
+                        line-height: 50px;
+                        padding-left: 20px;
+                        margin: 0;
+                    }
+                    ul {
+                        border-top: 1px solid #e4e4e4;
+                        padding-top: 10px;
+                        padding-left: 40px;
+                        li {
+                            line-height: 30px;
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                text-align: center;
+                background: #344052;
+                height: 50px;
+                padding: 0;
+                margin: 0;
+                button {
+                    height: 36px;
+                    border: none;
+                    width: 120px;
+                    margin-top: 7px;
+                    font-size: 16px;
+                    background: #E7E8EC;
+                    border-radius: 8px;
+                    margin: 7px 20px 0 20px;
+                }
+            }
+        }
+    }
+}

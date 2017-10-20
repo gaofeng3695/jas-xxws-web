@@ -1,0 +1,298 @@
+#page-wrapper {
+    padding-top: 15px;
+    .wrapper-main {
+        background: #edf1f2;
+        padding: 0 15px 15px 15px;
+        .data_tab {
+            background: #fff;
+            border-radius: 5px;
+            border: 1px solid #e1e5e6;
+            padding: 10px 0;
+            box-shadow: 2px 1px #e1e5e6;
+            font-size: 14px;
+            margin-top: 15px;
+            .delete {
+                i {
+                    display: inline-block;
+                    width: 16px;
+                    height: 18px;
+                    background: url(/demoHtml/images/table_icon/delete.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                    &:hover {
+                        background: url(/demoHtml/images/table_icon/delete_h.png) no-repeat;
+                    }
+                }
+            }
+            .delete_end {
+                cursor: default;
+                i {
+                    display: inline-block;
+                    width: 16px;
+                    height: 18px;
+                    background: url(/demoHtml/images/table_icon/delete_e.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                }
+            }
+            .closed {
+                i {
+                    display: inline-block;
+                    width: 18px;
+                    height: 18px;
+                    background: url(/demoHtml/images/table_icon/closed.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                    &:hover {
+                        background: url(/demoHtml/images/table_icon/closed_h.png) no-repeat;
+                    }
+                }
+            }
+            .closed_end {
+                cursor: default;
+                i {
+                    display: inline-block;
+                    width: 18px;
+                    height: 18px;
+                    background: url(/demoHtml/images/table_icon/closed_e.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                }
+            }
+            .look {
+                i {
+                    display: inline-block;
+                    width: 22px;
+                    height: 16px;
+                    background: url(/demoHtml/images/table_icon/look.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                    &:hover {
+                        background: url(/demoHtml/images/table_icon/look_h.png) no-repeat;
+                    }
+                }
+            }
+            .modify {
+                i {
+                    display: inline-block;
+                    width: 19px;
+                    height: 21px;
+                    background: url(/demoHtml/images/table_icon/modify.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                    &:hover {
+                        background: url(/demoHtml/images/table_icon/modify_h.png) no-repeat;
+                    }
+                }
+            }
+            .modify_end {
+                cursor: default;
+                i {
+                    display: inline-block;
+                    width: 19px;
+                    height: 21px;
+                    background: url(/demoHtml/images/table_icon/modify_e.png) no-repeat;
+                    vertical-align: middle;
+                    margin: 0 5px;
+                }
+            }
+        }
+    }
+}
+
+#addFormFrame {
+    font-size: 14px;
+    .modal-lg {
+        .modal-content {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            .modal-header {
+                height: 40px;
+                background: #344052;
+                color: #fff;
+                padding: 0;
+                margin: 0;
+                h3 {
+                    line-height: 40px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin: 0;
+                    a {
+                        color: #fff;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                        font-weight: none;
+                        opacity: 1;
+                    }
+                }
+            }
+            .modal-body {
+                padding: 15px;
+                overflow-y: auto;
+                height: 510px;
+                background: #e7e8ec;
+                .formMain {
+                    padding-top: 15px;
+                    padding-bottom: 20px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    .formTitle {
+                        width: 100%;
+                        height: 40px;
+                        p {
+                            margin: 0;
+                            text-align: center;
+                            font-size: 18px;
+                            line-height: 40px;
+                            font-weight: bold;
+                        }
+                    }
+                    .formList {
+                        overflow: hidden;
+                        margin-top: 15px;
+                        .formListHalf {
+                            width: 50%;
+                            float: left;
+                            overflow: hidden;
+                        }
+                        .formListLeft {
+                            width: 90px;
+                            float: left;
+                            text-align: right;
+                            line-height: 36px;
+                            i {
+                                color: red;
+                                vertical-align: middle;
+                                margin-right: 5px;
+                                font-size: 20px;
+                            }
+                        }
+                        .formListRight {
+                            margin-left: 90px;
+                            width: auto;
+                            padding: 0 20px 0 10px;
+                            input {
+                                height: 36px;
+                                &.pointer {
+                                    cursor: pointer;
+                                    background: #ffffff;
+                                }
+                                &.shortInput {
+                                    display: inline-block;
+                                    width: 90px;
+                                }
+                            }
+                            textarea {
+                                height: 120px;
+                                position: relative;
+                                resize: none;
+                            }
+                        }
+                        .textarea_text {
+                            position: relative;
+                            .text_num {
+                                color: #999;
+                                position: absolute;
+                                bottom: 2px;
+                                right: 30px;
+                            }
+                        }
+                        .has-feedback {
+                            .form-control {
+                                padding-right: 38px;
+                                background: #fff;
+                                cursor: pointer;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: hidden;
+                            }
+                            .form-control-feedback {
+                                right: 20px;
+                            }
+                        }
+                        p.line {
+                            border-bottom: 1px solid #ddd;
+                            margin: 10px 15px;
+                            ;
+                        }
+                    }
+                    .formBorder {
+                        padding: 0px 15px 20px 15px;
+                        .formBorderMain {
+                            border: 1px solid #ddd;
+                            padding-bottom: 15px;
+                            .formTitle {
+                                border-bottom: 1px solid #ddd;
+                            }
+                            .formList {
+                                overflow: hidden;
+                                margin-top: 15px;
+                                .formListHalf {
+                                    width: 50%;
+                                    float: left;
+                                    overflow: hidden;
+                                    .formListHalfB {
+                                        width: 50%;
+                                        float: left;
+                                        .formListLeft {
+                                            width: 60px;
+                                            float: left;
+                                            text-align: right;
+                                        }
+                                        .formListRight {
+                                            margin-left: 60px;
+                                            width: auto;
+                                            padding: 0 20px 0 10px;
+                                        }
+                                    }
+                                }
+                                .formListLeft {
+                                    width: 80px;
+                                    float: left;
+                                    text-align: right;
+                                }
+                                .formListRight {
+                                    margin-left: 80px;
+                                    width: auto;
+                                    padding: 0 20px 0 10px;
+                                }
+                                .formLongLeft {
+                                    width: 110px;
+                                }
+                                .formLongright {
+                                    margin-left: 110px;
+                                }
+                                .form-group {
+                                    margin-bottom: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                text-align: center;
+                background: #344052;
+                height: 50px;
+                padding: 0;
+                margin: 0;
+                button {
+                    height: 36px;
+                    border: none;
+                    width: 120px;
+                    margin-top: 7px;
+                    font-size: 16px;
+                    margin: 7px 20px 0 20px;
+                }
+                .submit {
+                    background: #59b6fc;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

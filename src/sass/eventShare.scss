@@ -1,0 +1,201 @@
+html {
+    height: 100%;
+    background: #f1f1f1;
+    body {
+        height: 100%;
+        background: #f1f1f1;
+    }
+    ul,
+    li {
+        list-style: none;
+        padding: 0;
+    }
+}
+
+.main {
+    background: #f1f1f1;
+    font-size: 12px;
+    color: #333;
+    .title {
+        height: 60px;
+        border-bottom: 1px solid #59b6fc;
+        margin-top: 1px;
+        background: #fff;
+        overflow: hidden;
+        div.title_left {
+            line-height: 60px;
+            float: left;
+            img {
+                height: 40px;
+            }
+        }
+        div.title_right {
+            line-height: 60px;
+            float: right;
+            img {
+                height: 36px;
+            }
+        }
+    }
+    .nav_btn {
+        background: #fff;
+        margin-bottom: 10px;
+        ul.nav-tabs {
+            border: none;
+            li {
+                width: 50%;
+                a {
+                    text-align: center;
+                    border: none;
+                    color: #333;
+                    background: #fff;
+                    font-size: 14px;
+                }
+                &.active {
+                    a {
+                        color: #59b6fc;
+                        border-bottom: 1px solid #59b6fc;
+                    }
+                }
+            }
+        }
+    }
+    #details_nav {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background: #fff;
+        .tab-content {
+            overflow: hidden;
+        }
+        #event {
+            .row {
+                &:last-child {
+                    .event_list {
+                        border: none;
+                    }
+                }
+                .event_list {
+                    overflow: hidden;
+                    line-height: 36px;
+                    border-bottom: 1px solid #ececec;
+                    .list_left {
+                        width: 80px;
+                        float: left;
+                        color: #666;
+                    }
+                    .list_right {
+                        margin-left: 80px;
+                        width: auto;
+                        padding: 6px 0;
+                        p {
+                            border-left: 1px solid #ececec;
+                            line-height: 20px;
+                            padding: 2px 0 2px 10px;
+                            margin: 0;
+                            color: #333;
+                        }
+                    }
+                    .event_pic {
+                        li {
+                            padding-top: 15px;
+                            text-align: center;
+                            padding-left: 0;
+                            padding-right: 0;
+                        }
+                    }
+                }
+            }
+        }
+        .taskMain {
+            background: url(/src/images/task/dian.png) 65px repeat-y;
+            .task_day {
+                overflow: hidden;
+                padding-bottom: 10px;
+                &:last-child {
+                    background: url(/src/images/task/day.png) 39px bottom no-repeat;
+                }
+                h3 {
+                    margin: 0;
+                    line-height: 25px;
+                    background: url(/src/images/task/day.png) 39px top no-repeat;
+                    font-size: 18px;
+                    padding-left: 90px;
+                }
+                ul {
+                    li {
+                        overflow: hidden;
+                        span.time {
+                            width: 80px;
+                            display: inline-block;
+                            line-height: 30px;
+                            background: url(/src/images/task/time.png) 43px 16px no-repeat;
+                            float: left;
+                            padding-top: 10px;
+                        }
+                        div.task_con {
+                            margin-left: 80px;
+                            width: auto;
+                            padding-top: 10px;
+                            .task_title {
+                                line-height: 30px;
+                                .title_r {
+                                    float: right;
+                                }
+                            }
+                            .task_text {
+                                line-height: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.overMain {
+    min-height: 100%;
+    background: #fff;
+    font-size: 12px;
+    color: #333;
+    .title {
+        height: 60px;
+        border-bottom: 1px solid #59b6fc;
+        margin-top: 1px;
+        background: #fff;
+        overflow: hidden;
+        div.title_left {
+            line-height: 60px;
+            float: left;
+            img {
+                height: 40px;
+            }
+        }
+        div.title_right {
+            line-height: 60px;
+            float: right;
+            img {
+                height: 36px;
+            }
+        }
+    }
+    .overdue {
+        overflow: hidden;
+        padding-top: 140px;
+        dl {
+            dt {
+                text-align: center;
+                img {
+                    width: 140px;
+                }
+            }
+            dd {
+                text-align: center;
+                color: #666;
+                font-size: 14px;
+                line-height: 40px;
+                padding-top: 10px;
+            }
+        }
+    }
+}

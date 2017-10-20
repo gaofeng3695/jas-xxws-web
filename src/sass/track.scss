@@ -1,0 +1,187 @@
+$blue: #59b6fc;
+$bgclr: #e7e8ec;
+@mixin modal_size($width:800px, $height:600px) {
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    width: $width;
+    margin-left: -$width/2;
+    height: $height;
+    margin-top: -$height/2;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.big_modal .modal-dialog {
+    //@include modal_size();
+    /*position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    margin-left: -400px;
+    height: 600px;
+    margin-top: -320px;
+    border-radius: 8px;
+    overflow: hidden;*/
+    .modal-content {
+        .modal-header {
+            background: #344052;
+            color: #fff;
+            height: 40px;
+            padding: 0;
+            h3 {
+                line-height: 40px;
+                font-size: 16px;
+                text-align: center;
+                margin: 0;
+            }
+            button.close {
+                right: 0;
+                position: absolute;
+                height: 40px;
+                width: 40px;
+                outline: none;
+                opacity: .9;
+                text-shadow: none;
+                span {
+                    color: white;
+                }
+            }
+        }
+        .modal-body {
+            position: relative;
+            padding: 15px;
+            height: 510px;
+            overflow: scroll;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background: $bgclr;
+            .sub_wrapper {
+                color: #666;
+                padding: 15px;
+                border-radius: 4px;
+                background: white;
+            }
+        }
+        .modal-footer {
+            text-align: center;
+            background: #344052;
+            height: 50px;
+            padding: 0;
+            margin: 0;
+            button {
+                height: 36px;
+                border: none;
+                width: 120px;
+                margin-top: 7px;
+                font-size: 16px;
+                margin: 6px 22px 0 22px;
+                &.modal_close {
+                    background-color: #e6e6e6;
+                }
+                &.modal_active {
+                    background-color: $blue;
+                }
+            }
+        }
+    }
+}
+
+
+/* 轨迹详情正文样式 */
+
+#gf_detail {
+    .modal-dialog {
+        width: 800px;
+        //@include modal_size(540px); /* 自定义模态框宽度 */
+    }
+    .title {
+        padding: 0 15px;
+        line-height: 54px;
+        .date {
+            float: right;
+        }
+    }
+    table {
+        margin-bottom: 10px;
+        width: 100%;
+        tr.height {
+            height: 80px;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #dcdcdc;
+            &.bg {
+                background: #f7f7f7;
+            }
+            &.key {
+                width: 122px;
+                text-align: center;
+            }
+            &.key02 {
+                width: 118px;
+            }
+            &.newkey {
+                width: 60px;
+            }
+            &.value {
+                width: 248px;
+            }
+            &.center {
+                text-align: center;
+            }
+        }
+        &.middle {
+            .noPadding {
+                padding: 4px;
+                ;
+            }
+            td {
+                padding: 18px 10px;
+            }
+        }
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+
+/* 人员列表正文样式 */
+
+#gf_people {
+    .modal-dialog {
+        width: 400px;
+        //@include modal_size(540px); /* 自定义模态框宽度 */
+    }
+}
+
+
+/* 表格小图标样式 */
+
+a.see {
+    i {
+        display: inline-block;
+        width: 22px;
+        height: 16px;
+        background: url(/src/images/event/look.png) no-repeat;
+        vertical-align: middle;
+        &:hover{
+            background: url(/src/images/event/look_h.png) no-repeat;
+        }
+    }
+}
+a.out {
+    i {
+        display: inline-block;
+        width: 22px;
+        height: 17px;
+        background: url(/src/images/event/out.png) no-repeat;
+        vertical-align: middle;
+        &:hover{
+            background: url(/src/images/event/out_h.png) no-repeat;
+        }
+    }
+}

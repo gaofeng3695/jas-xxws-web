@@ -1,0 +1,108 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+html,
+body {
+    height: 100%
+}
+
+#page-wrapper {
+    background: #edf1f2;
+    height: 100%;
+    .container-fluid {
+        height: 100%;
+        padding: 15px 15px;
+    }
+    /*check美化样式*/
+    .allenterprised {
+        input {
+            display: none;
+        }
+        .radio {
+            background: url("../images/loginImg/radio.png") no-repeat;
+            margin: 10px;
+        }
+        .on_check {
+            background: url("../images/loginImg/radio_checked.png") no-repeat;
+        }
+        .radiobox {
+            opacity: 0;
+            cursor: pointer;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            filter: alpha(opacity=0);
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+        }
+        span {
+            margin-left: 5px;
+        }
+    }
+    .Loginset {
+        background: #fff;
+        border-radius: 5px;
+        padding: 15px 10px;
+        // box-shadow: 2px 1px #e1e5e6;
+        font-size: 14px;
+        height: 100%;
+        overflow: hidden;
+        // box-shadow: 0px 1px 8px #d3d3d3;
+        .panel-heading {
+            text-align: center;
+            border: 1px solid #e1e5e6;
+            height: 42px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+        }
+        .row {
+            height: 100%;
+            .col-md-6 {
+                height: 100%;
+                .panel-default {
+                    height: 100%;
+                    margin: 0;
+                    border: none;
+                    position: relative;
+                    box-shadow: none;
+                    .panel-body {
+                        border: 1px solid #e1e5e6;
+                        border-top: none;
+                        border-bottom: none;
+                        padding-top: 55px;
+                        padding-bottom: 80px;
+                        max-height: 100%;
+                        overflow-y: auto;
+                    }
+                    .panel-foot {
+                        height: 76px;
+                        padding: 20px 0;
+                        margin-top: -76px;
+                        background: #fff;
+                        position: relative;
+                        overflow: hidden;
+                        border-top: 1px solid #e1e5e6;
+                        .foot-btn {
+                            height: 36px;
+                            text-align: center;
+                            width: 50%;
+                            float: left;
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .quite {
+        text-align: center;
+        margin: 20px 0px;
+        button {
+            background: #59b6fc;
+            width: 120px;
+            color: #fff;
+        }
+    }
+}

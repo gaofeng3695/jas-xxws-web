@@ -1,0 +1,364 @@
+ul,
+li {
+    list-style: none;
+}
+
+#repairDetails {
+    font-size: 14px;
+    .modal-lg {
+        .modal-content {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            .modal-header {
+                height: 40px;
+                background: #344052;
+                color: #fff;
+                padding: 0;
+                margin: 0;
+                h3 {
+                    line-height: 40px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin: 0;
+                    a {
+                        color: #fff;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                        font-weight: none;
+                        opacity: 1;
+                    }
+                }
+            }
+            .modal-body {
+                background: #e7e8ec;
+                overflow-y: auto;
+                height: 510px;
+                .frameDetails {
+                    min-height: 480px;
+                    overflow: hidden;
+                    .frameDetailsNav {
+                        height: 40px;
+                        ul {
+                            height: 40px;
+                            padding-left: 20px;
+                            li {
+                                float: left;
+                                height: 40px;
+                                width: 130px;
+                                text-align: center;
+                                line-height: 40px;
+                                margin-right: 10px;
+                                border-top: 3px solid #ddd;
+                                background: #ddd;
+                                border-top-left-radius: 5px;
+                                border-top-right-radius: 5px;
+                                color: #666;
+                                cursor: pointer;
+                                font-size: 16px;
+                                &.active {
+                                    background: #ffffff;
+                                    border-top: 3px solid #59b6fc;
+                                    color: #59b6fc;
+                                }
+                            }
+                        }
+                    }
+                }
+                .frameDetailsNavMian {
+                    padding: 0 15px 15px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 440px;
+                    p.detailsCode {
+                        height: 36px;
+                        line-height: 36px;
+                        text-align: right;
+                        margin: 0;
+                    }
+                    .frameDetailsMain {
+                        border: 1px solid #ddd;
+                        background: #f7f7f7;
+                        margin-bottom: 10px;
+                        .frameList {
+                            border-bottom: 1px solid #ddd;
+                            overflow: hidden;
+                            &:last-child {
+                                border: none;
+                            }
+                            .frameListLeft {
+                                width: 110px;
+                                float: left;
+                                text-align: right;
+                                line-height: 36px;
+                                padding-right: 10px;
+                                color: #666;
+                            }
+                            .frameListRight {
+                                background: #fff;
+                                margin-left: 110px;
+                                width: auto;
+                                padding: 0 10px;
+                                border-left: 1px solid #ddd;
+                                p {
+                                    margin: 0;
+                                    min-height: 36px;
+                                    padding: 7px 0;
+                                    line-height: 22px;
+                                    color: #000;
+                                    word-wrap: break-word;
+                                    word-break: normal;
+                                    &.repairModify {
+                                        em {
+                                            display: inline-block;
+                                            width: 18px;
+                                            height: 22px;
+                                            float: right;
+                                            background: url(/src/images/common/repairMan.png) no-repeat center center;
+                                            cursor: pointer;
+                                        }
+                                        span {
+                                            display: block;
+                                            margin-right: 20px;
+                                            width: auto;
+                                        }
+                                    }
+                                }
+                                ul {
+                                    margin: 0;
+                                    min-height: 36px;
+                                    padding: 8px 0 0 0;
+                                    color: #000;
+                                    overflow: hidden;
+                                    list-style: none;
+                                    margin-right: -10px;
+                                    li {
+                                        display: inline-block;
+                                        float: left;
+                                        overflow: hidden;
+                                        padding: 3px;
+                                        border: 1px solid #f1f1f1;
+                                        margin: 0 7px 8px 0;
+                                        cursor: pointer;
+                                    }
+                                }
+                                div.detailsAddressMap {
+                                    margin: 0 -10px;
+                                    height: 200px;
+                                }
+                                &.satisfaction {
+                                    ul {
+                                        display: inline-block;
+                                        vertical-align: middle;
+                                        padding-top: 6px;
+                                        margin: 0;
+                                        li {
+                                            border: none;
+                                            padding: 0;
+                                            margin-bottom: 0;
+                                            height: 20px;
+                                            cursor: inherit;
+                                        }
+                                    }
+                                    span {
+                                        display: inline-block;
+                                        vertical-align: middle;
+                                    }
+                                }
+                            }
+                            .frameListHalf {
+                                width: 50%;
+                                float: left;
+                                &:first-child {
+                                    .frameListRight {
+                                        border-right: 1px solid #ddd;
+                                    }
+                                }
+                            }
+                            .frameListThird {
+                                width: 33.33%;
+                                float: left;
+                                &:first-child {
+                                    .frameListRight {
+                                        border-right: 1px solid #ddd;
+                                    }
+                                }
+                            }
+                        }
+                        .frameDetailsTitle {
+                            height: 40px;
+                            text-align: center;
+                            line-height: 40px;
+                            font-size: 16px;
+                            border-bottom: 1px solid #ddd;
+                        }
+                        .priceList {
+                            .frameList {
+                                &:last-child {
+                                    border-bottom: 1px solid #ddd;
+                                }
+                            }
+                        }
+                    }
+                    .frameAxisMian {
+                        border-top: 1px solid #ddd;
+                        padding-bottom: 25px;
+                        padding-top: 10px;
+                        .axisDay {
+                            background: url(/src/images/task/dian.png) repeat-y 75px center;
+                            .axisDayTitle {
+                                padding-left: 100px;
+                                height: 25px;
+                                line-height: 25px;
+                                background: url(/src/images/task/day.png) no-repeat 65px center;
+                            }
+                            .axisTime {
+                                padding: 0 0 15px 0;
+                                .axisTimeList {
+                                    min-height: 50px;
+                                    line-height: 50px;
+                                    span {
+                                        display: inline-block;
+                                        width: 100px;
+                                        float: left;
+                                        text-align: right;
+                                        padding-right: 45px;
+                                        color: #666;
+                                        background: url(/src/images/task/time.png) no-repeat 68px center;
+                                    }
+                                    p {
+                                        margin-left: 100px;
+                                        width: auto;
+                                        margin-bottom: 0;
+                                        line-height: 26px;
+                                        padding: 12px 0;
+                                        color: #666;
+                                        i {
+                                            color: #333;
+                                            padding: 0 10px 0 15px;
+                                            font-style: normal;
+                                        }
+                                    }
+                                    &:last-child {
+                                        p {
+                                            border-bottom: 1px solid #ddd;
+                                        }
+                                    }
+                                }
+                            }
+                            &:last-child {
+                                .axisTime {
+                                    overflow: hidden;
+                                    padding-bottom: 0;
+                                    background: url(/src/images/task/day.png) no-repeat 65px bottom;
+                                    .axisTimeList {
+                                        &:last-child {
+                                            margin-bottom: 15px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                text-align: center;
+                background: #344052;
+                height: 50px;
+                padding: 0;
+                margin: 0;
+                button {
+                    height: 36px;
+                    border: none;
+                    width: 120px;
+                    margin-top: 7px;
+                    font-size: 16px;
+                    margin: 7px 20px 0 20px;
+                }
+                .submit {
+                    background: #59b6fc;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+#repairHistory {
+    @extend #repairDetails;
+    .modal-lg {
+        .modal-content {
+            width: 1000px;
+            .modal-body {
+                .historySeach {
+                    text-align: center;
+                    height: 50px;
+                    .historySeachMain {
+                        border-radius: 16px 0 0 16px;
+                        height: 36px;
+                        width: 60%;
+                        position: relative;
+                        display: inline-block;
+                        margin-right: 80px;
+                        border: 1px solid #e3e3e3;
+                        padding-left: 30px;
+                        background: url(/src/images/common/icon_search.png) no-repeat 10px center;
+                        input {
+                            color: #333;
+                            float: left;
+                            height: 34px;
+                            width: 100%;
+                            outline: none;
+                            -webkit-appearance: none;
+                            border: none;
+                        }
+                        span.historySeachBtn {
+                            height: 36px;
+                            line-height: 36px;
+                            color: white;
+                            background: #58b7f7;
+                            border-radius: 0 16px 16px 0;
+                            width: 80px;
+                            float: right;
+                            text-align: center;
+                            position: absolute;
+                            right: -80px;
+                            top: -1px;
+                            cursor: pointer;
+                        }
+                    }
+                }
+                .historyMain {
+                    padding: 15px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    .look {
+                        i {
+                            display: inline-block;
+                            width: 22px;
+                            height: 16px;
+                            background: url(/src/images/event/look.png) no-repeat;
+                            vertical-align: middle;
+                            margin: 0 5px;
+                            &:hover {
+                                background: url(/src/images/event/look_h.png) no-repeat;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    #repairHistory {
+        .modal-lg {
+            width: 1000px;
+        }
+    }
+}

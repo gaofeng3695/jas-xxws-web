@@ -1,0 +1,559 @@
+#choiceAreaFrame {
+    font-size: 14px;
+    .modal-lg {
+        .modal-content {
+            width: 1000px;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            .modal-header {
+                height: 40px;
+                background: #344052;
+                color: #fff;
+                padding: 0;
+                margin: 0;
+                h3 {
+                    line-height: 40px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin: 0;
+                    a {
+                        color: #fff;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                        font-weight: none;
+                        opacity: 1;
+                    }
+                }
+            }
+            .modal-body {
+                padding: 15px;
+                overflow-y: auto;
+                height: 510px;
+                background: #e7e8ec;
+                .areaMain {
+                    padding-bottom: 20px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    .areaTitle {
+                        height: 30px;
+                        background: #dceefc;
+                        color: #63625e;
+                        p {
+                            line-height: 30px;
+                            margin: 0;
+                            text-align: center;
+                        }
+                    }
+                    .areaSearch {
+                        height: 60px;
+                        border-bottom: 1px solid #ebebeb;
+                        padding-top: 12px;
+                        text-align: center;
+                        .searchListBtn {
+                            display: inline-block;
+                            height: 36px;
+                            vertical-align: middle;
+                            margin-right: 60px;
+                            ul {
+                                display: inline-block;
+                                height: 36px;
+                                padding: 0;
+                                li {
+                                    list-style: none;
+                                    height: 36px;
+                                    line-height: 36px;
+                                    width: 70px;
+                                    text-align: center;
+                                    margin-right: 15px;
+                                    border: 1px solid #5ab7fd;
+                                    color: #4eb5fa;
+                                    background: #eff8ff;
+                                    border-radius: 20px;
+                                    float: left;
+                                    cursor: pointer;
+                                    &.active {
+                                        color: #ffffff;
+                                        background: #5ab7fd;
+                                    }
+                                }
+                            }
+                        }
+                        .searchText {
+                            display: inline-block;
+                            height: 36px;
+                            vertical-align: middle;
+                            overflow: hidden;
+                            .searchBorder {
+                                width: 360px;
+                                height: 36px;
+                                overflow: hidden;
+                                float: left;
+                                .input_wrapper {
+                                    padding-left: 30px;
+                                    border-radius: 16px 0 0 16px;
+                                    border: 1px solid #e3e3e3;
+                                    background: url(/src/images/common/icon_search.png) no-repeat 10px center;
+                                    float: left;
+                                    width: 290px;
+                                    input {
+                                        color: #333;
+                                        height: 34px;
+                                        width: 100%;
+                                        outline: none;
+                                        -webkit-appearance: none;
+                                        border: none;
+                                    }
+                                }
+                                span {
+                                    display: inline-block;
+                                    height: 36px;
+                                    line-height: 36px;
+                                    color: white;
+                                    background: #58b7f7;
+                                    border-radius: 0 16px 16px 0;
+                                    width: 70px;
+                                    float: right;
+                                    text-align: center;
+                                    cursor: pointer;
+                                }
+                            }
+                            .resetBtn {
+                                height: 36px;
+                                float: left;
+                                padding-left: 30px;
+                                span {
+                                    display: inline-block;
+                                    height: 36px;
+                                    line-height: 36px;
+                                    color: white;
+                                    background: #58b7f7;
+                                    border-radius: 16px;
+                                    width: 70px;
+                                    text-align: center;
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                    }
+                    .areaPlaceMain {
+                        text-align: center;
+                        padding: 15px 0 10px 0;
+                        .areaPlace {
+                            overflow: hidden;
+                            display: inline-block;
+                            width: 936px;
+                            .areaList {
+                                float: left;
+                                background: #ededed;
+                                border-radius: 8px;
+                                overflow: hidden;
+                                width: 220px;
+                                box-shadow: 0px 2px 2px #e3e3e3;
+                                margin: 0 7px 15px 7px;
+                                dl {
+                                    overflow: hidden;
+                                    margin: 0;
+                                    dt {
+                                        float: left;
+                                        width: 40px;
+                                        height: 140px;
+                                        line-height: 140px;
+                                        text-align: center;
+                                        input[type='checkbox'] {
+                                            cursor: pointer;
+                                        }
+                                    }
+                                    dd {
+                                        float: right;
+                                        width: 180px;
+                                        height: 140px;
+                                        padding-right: 5px;
+                                        p {
+                                            text-align: left;
+                                            line-height: 16px;
+                                            margin: 0;
+                                            padding: 7px 0;
+                                            &.areaNameP {
+                                                text-overflow: ellipsis;
+                                                white-space: nowrap;
+                                                overflow: hidden;
+                                                font-size: 16px;
+                                                font-weight: bold;
+                                                span {
+                                                    color: #333;
+                                                }
+                                            }
+                                            &.areaSurvey {
+                                                padding-top: 5px;
+                                                padding-bottom: 0;
+                                                text-align: right;
+                                                a {
+                                                    display: inline-block;
+                                                    cursor: pointer;
+                                                    width: 20px;
+                                                    height: 20px;
+                                                    background: url(/src/images/user/survey.png) no-repeat;
+                                                    background-size: 100%;
+                                                    outline: none;
+                                                }
+                                            }
+                                            span {
+                                                color: #58b7f7;
+                                                font-weight: bold;
+                                            }
+                                            button {
+                                                background: #59b6fc;
+                                                color: #fff;
+                                                margin-top: 5px;
+                                                width: 140px;
+                                            }
+                                        }
+                                    }
+                                }
+                                // &:nth-child(4n+0) {
+                                //     margin-right: 0px;
+                                // }
+                            }
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                text-align: center;
+                background: #344052;
+                height: 50px;
+                padding: 0;
+                margin: 0;
+                button {
+                    height: 36px;
+                    border: none;
+                    width: 120px;
+                    margin-top: 7px;
+                    font-size: 16px;
+                    margin: 7px 20px 0 20px;
+                }
+                .submit {
+                    background: #59b6fc;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+#choiceUserFrame {
+    @extend #choiceAreaFrame;
+    .modal-lg {
+        .modal-content {
+            .modal-body {
+                .userChoiceMain {
+                    .areaInformation {
+                        padding: 0 15px;
+                        p {
+                            margin: 0;
+                            line-height: 30px;
+                            span {
+                                padding-right: 15px;
+                                &.choiceAreaName {
+                                    padding-right: 80px;
+                                }
+                            }
+                        }
+                    }
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    padding: 10px 15px 20px 15px;
+                    .search_item_wrapper {
+                        box-shadow: 0px 1px 1px #e3e3e3;
+                        .search_wrapper {
+                            margin-right: 100px;
+                        }
+                        .search_btn_right {
+                            width: 80px;
+                        }
+                        .more_item_wrapper {
+                            display: block;
+                        }
+                        .sub_wrapper {
+                            padding: 10px 15px;
+                            .line {
+                                padding: 0;
+                            }
+                        }
+                    }
+                    .data_tab {
+                        background: #fff;
+                        border-radius: 5px;
+                        border: 1px solid #e1e5e6;
+                        padding: 10px 0;
+                        box-shadow: 2px 1px #e1e5e6;
+                        font-size: 14px;
+                        margin-top: 15px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#choiceRegionFrame {
+    @extend #choiceAreaFrame;
+    .modal-lg {
+        .modal-content {
+            .modal-body {
+                .regionMain {
+                    padding-bottom: 20px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    .regionTitle {
+                        height: 30px;
+                        background: #dceefc;
+                        color: #63625e;
+                        p {
+                            line-height: 30px;
+                            margin: 0;
+                            text-align: center;
+                        }
+                    }
+                    .regionSearch {
+                        height: 60px;
+                        border-bottom: 1px solid #ebebeb;
+                        padding-top: 12px;
+                        text-align: center;
+                        .regionSearchListBtn {
+                            display: inline-block;
+                            height: 36px;
+                            vertical-align: middle;
+                            margin-right: 60px;
+                            ul {
+                                display: inline-block;
+                                height: 36px;
+                                padding: 0;
+                                li {
+                                    list-style: none;
+                                    height: 36px;
+                                    line-height: 36px;
+                                    width: 70px;
+                                    text-align: center;
+                                    margin-right: 15px;
+                                    border: 1px solid #5ab7fd;
+                                    color: #4eb5fa;
+                                    background: #eff8ff;
+                                    border-radius: 20px;
+                                    float: left;
+                                    cursor: pointer;
+                                    &.active {
+                                        color: #ffffff;
+                                        background: #5ab7fd;
+                                    }
+                                }
+                            }
+                        }
+                        .searchText {
+                            display: inline-block;
+                            height: 36px;
+                            vertical-align: middle;
+                            overflow: hidden;
+                            .searchBorder {
+                                width: 360px;
+                                height: 36px;
+                                overflow: hidden;
+                                float: left;
+                                .input_wrapper {
+                                    padding-left: 30px;
+                                    border-radius: 16px 0 0 16px;
+                                    border: 1px solid #e3e3e3;
+                                    background: url(/src/images/common/icon_search.png) no-repeat 10px center;
+                                    float: left;
+                                    width: 290px;
+                                    input {
+                                        color: #333;
+                                        height: 34px;
+                                        width: 100%;
+                                        outline: none;
+                                        -webkit-appearance: none;
+                                        border: none;
+                                    }
+                                }
+                                span {
+                                    display: inline-block;
+                                    height: 36px;
+                                    line-height: 36px;
+                                    color: white;
+                                    background: #58b7f7;
+                                    border-radius: 0 16px 16px 0;
+                                    width: 70px;
+                                    float: right;
+                                    text-align: center;
+                                    cursor: pointer;
+                                }
+                            }
+                            .regionResetBtn {
+                                height: 36px;
+                                float: left;
+                                padding-left: 30px;
+                                span {
+                                    display: inline-block;
+                                    height: 36px;
+                                    line-height: 36px;
+                                    color: white;
+                                    background: #58b7f7;
+                                    border-radius: 16px;
+                                    width: 70px;
+                                    text-align: center;
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                    }
+                    .regionPlaceMain {
+                        text-align: center;
+                        padding: 15px 0 10px 0;
+                        .regionPlace {
+                            overflow: hidden;
+                            display: inline-block;
+                            width: 936px;
+                            .regionList {
+                                float: left;
+                                background: #ededed;
+                                border-radius: 8px;
+                                overflow: hidden;
+                                width: 220px;
+                                box-shadow: 0px 2px 2px #e3e3e3;
+                                margin: 0 7px 15px 7px;
+                                dl {
+                                    overflow: hidden;
+                                    margin: 0;
+                                    dt {
+                                        float: left;
+                                        width: 40px;
+                                        height: 120px;
+                                        line-height: 120px;
+                                        text-align: center;
+                                        input[type='checkbox'] {
+                                            cursor: pointer;
+                                        }
+                                    }
+                                    dd {
+                                        float: right;
+                                        width: 180px;
+                                        height: 120px;
+                                        padding-right: 5px;
+                                        p {
+                                            text-align: left;
+                                            line-height: 16px;
+                                            margin: 0;
+                                            padding: 7px 0;
+                                            &.regionNameP {
+                                                text-overflow: ellipsis;
+                                                white-space: nowrap;
+                                                overflow: hidden;
+                                                font-size: 16px;
+                                                font-weight: bold;
+                                                margin-top: 10px;
+                                                span {
+                                                    color: #333;
+                                                }
+                                            }
+                                            &.regionSurvey {
+                                                padding-top: 5px;
+                                                padding-bottom: 0;
+                                                text-align: right;
+                                                a {
+                                                    display: inline-block;
+                                                    cursor: pointer;
+                                                    width: 20px;
+                                                    height: 20px;
+                                                    background: url(/src/images/user/survey.png) no-repeat;
+                                                    background-size: 100%;
+                                                    outline: none;
+                                                }
+                                            }
+                                            &.regionContent {
+                                                padding: 0;
+                                                margin-top: 3px;
+                                                height: 36px;
+                                                color: #666;
+                                                line-height: 18px;
+                                                display: -webkit-box;
+                                                -webkit-box-orient: vertical;
+                                                -webkit-line-clamp: 2;
+                                                // text-overflow: ellipsis;
+                                                // white-space: nowrap;
+                                                overflow: hidden;
+                                            }
+                                            span {
+                                                color: #58b7f7;
+                                                font-weight: bold;
+                                            }
+                                            button {
+                                                background: #59b6fc;
+                                                color: #fff;
+                                                margin-top: 5px;
+                                                width: 140px;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#viewDetailFrame {
+    @extend #choiceUserFrame;
+    .modal-lg {
+        .modal-content {
+            .modal-body {
+                .areaDetailMain {
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    padding: 10px 15px 20px 15px;
+                    .areaRangeName {
+                        height: 40px;
+                        line-height: 40px;
+                        padding-left: 15px;
+                    }
+                    .search_item_wrapper {
+                        box-shadow: 0px 1px 1px #e3e3e3;
+                        .search_wrapper {
+                            margin-right: 100px;
+                        }
+                        .search_btn_right {
+                            width: 80px;
+                        }
+                        .more_item_wrapper {
+                            display: block;
+                        }
+                        .sub_wrapper {
+                            padding: 10px 15px;
+                            .line {
+                                padding: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    #choiceAreaFrame,
+    #choiceUserFrame,
+    #viewDetailFrame {
+        .modal-lg {
+            width: 1000px;
+        }
+    }
+}

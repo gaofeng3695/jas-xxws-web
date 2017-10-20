@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+
+    <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/src/css/common/search_table.css" rel="stylesheet">
+    <link href="/src/css/common/view.pic.css" rel="stylesheet">
+    <link href="/src/css/detailsRepair.css" rel="stylesheet">
+    <link href="/src/css/facility.css" rel="stylesheet">
+    <link href="/src/css/common/pipelineswitch.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="page-wrapper">
+        <!--地图-->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="facility_map">
+                    <div id="facilityMap"></div>
+                    <div class="bottom_btn text-center">
+                        <div id="drafting_down"></div>
+                        <span class="map_up"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/地图-->
+        <div class="wrapper-main">
+            <!--高级搜索-->
+            <div class="container-fluid search_item_wrapper">
+                <div class="top">
+                    <div class="row search_title">
+                        <div class="col-lg-6 col-xs-12 btn_wrapper">
+                            <div class="col-xs-8" data-class="facilityStatusCode">
+                                <div class="item col-xs-3" data-value="">全部</div>
+                                <div class="item col-xs-3" data-value="FS_01">在用</div>
+                                <div class="item col-xs-3" data-value="FS_02">停用</div>
+                                <div class="item col-xs-3" data-value="FS_03">废弃</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xs-12 right_wrapper">
+                            <div class="search_btn_right">
+                                <div class="search_reset" id="gf_reset_Btn">重置</div>
+                                <div class="more" id="search_more">
+                                    高级搜索
+                                </div>
+                            </div>
+                            <div class="search_wrapper">
+                                <div class="input_wrapper">
+                                    <input class="" id="searchInput" type="text" placeholder="请输入设施名称、编号、详细位置等关键字搜索">
+                                </div>
+                                <span class="mybtn" id="gf_Btn">确定</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="more_item_wrapper">
+                        <div class="sub_wrapper">
+                            <b class="up_triangle">
+                                    <i></i>
+                                </b>
+                            <div class="son_wrapper">
+                                <div class="line">
+                                    <div class="title">管网类型</div>
+                                    <div class="item_box">
+                                        <div class="item1" data-class="pipelineTypeCode">
+                                            <span class="item" data-value="">全部</span>
+                                            <span class="item" data-value="PT_01">低压</span>
+                                            <span class="item" data-value="PT_02">中压</span>
+                                            <span class="item" data-value="PT_03">次高压</span>
+                                            <span class="item" data-value="PT_04">高压</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="line">
+                                    <div class="title">设施类型</div>
+                                    <div class="item_box">
+                                        <div class="item1" data-class="facilityTypeCodeList">
+                                            <span class="item" data-value="">全部</span>
+                                            <span class="item" data-value="FT_01">调压设备</span>
+                                            <span class="item" data-value="FT_02">阀室</span>
+                                            <span class="item" data-value="FT_03">阀门</span>
+                                            <span class="item" data-value="FT_04">井</span>
+                                            <span class="item" data-value="FT_05">缸</span>
+                                            <span class="item" data-value="FT_06">三通</span>
+                                            <span class="item" data-value="FT_07">四通</span>
+                                            <span class="item" data-value="FT_08">桩</span>
+                                            <span class="item" data-value="FT_09">警示牌</span>
+                                            <span class="item" data-value="FT_10">流量计</span>
+                                            <span class="item" data-value="FT_11">压力表</span>
+                                            <span class="item" data-value="FT_99">其他</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="line">
+                                    <div class="title">时间</div>
+                                    <div class="item_box">
+                                        <div class="item1" data-class="date">
+                                            <span class="item" data-value="all">不限</span>
+                                            <span class="item" data-value="day">今日</span>
+                                            <span class="item" data-value="week">本周</span>
+                                            <span class="item" data-value="month">本月</span>
+                                            <span class="date">
+                                                    <span id="item_diy" class="diy">自定义：</span>
+                                            <input size="16" type="text" onchange="dateChangeForSearch();" id="datetimeStart" placeholder="选择起始时间" readonly class="form_datetime">
+                                            <span>&nbsp;&nbsp;至&nbsp;&nbsp;</span>
+                                            <input size="16" type="text" onchange="dateChangeForSearch();" id="datetimeEnd" placeholder="选择结束时间" readonly class="form_datetime">
+                                            <span class="itemBtn" id="diyDateBtn" data-value="diy">确定</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/高级搜索-->
+            <!--表格-->
+            <div class="data_tab">
+                <div class="container-fluid">
+                    <div id="toolbar" class="btn-group">
+                        <button id="addFacility" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新建设施
+                        </button>
+                        <button id="export_all" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-share" aria-hidden="true"></span>导出全部台账
+                        </button>
+                        <button id="export_choice" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>导出已选台账
+                        </button>
+                        <button id="map_choice" type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>多点定位
+                        </button>
+                    </div>
+                    <table id="tableFacility"></table>
+                </div>
+            </div>
+            <!--/表格-->
+        </div>
+    </div>
+
+    <!--新建设施-->
+    <div id="addFacilityFrame" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>新建设施<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body" id='addFacilityFrameT'>
+                    <form>
+                        <div class="planMain facilityAdd">
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        <i>*</i>设施名称
+                                    </div>
+                                    <div class="planListRight">
+                                        <input type="text" name="facilityName" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        <i>*</i>设施编号
+                                    </div>
+                                    <div class="planListRight">
+                                        <input type="text" name="facilityCode" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        <i>*</i>设施类型
+                                    </div>
+                                    <div class="planListRight">
+                                        <select class="form-control" name="facilityTypeCode">
+                                            <option value="FT_01">调压设备</option>
+                                            <option value="FT_02">阀室</option>
+                                            <option value="FT_03">阀门</option>
+                                            <option value="FT_04">井</option>
+                                            <option value="FT_05">缸</option>
+                                            <option value="FT_06">三通</option>
+                                            <option value="FT_07">四通</option>
+                                            <option value="FT_08">桩</option>
+                                            <option value="FT_09">警示牌</option>
+                                            <option value="FT_10">流量计</option>
+                                            <option value="FT_11">压力表</option>
+                                            <option value="FT_99">其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        <i>*</i>管网类型
+                                    </div>
+                                    <div class="planListRight">
+                                        <select class="form-control" name="pipelineTypeCode">
+                                            <option value="PT_01">低压</option>
+                                            <option value="PT_02">中压</option>
+                                            <option value="PT_03">次高压</option>
+                                            <option value="PT_04">高压</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        <i>*</i>设施状态
+                                    </div>
+                                    <div class="planListRight">
+                                        <select class="form-control" name="facilityStatusCode">
+                                            <option value="FS_01">在用</option>
+                                            <option value="FS_02">停用</option>
+                                            <option value="FS_03">废弃</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    <i>*</i>详细位置
+                                </div>
+                                <div class="planListRight has-feedback">
+                                    <input type="text" class="form-control pointer" name="addressSelect" placeholder="请在地图上选取位置" readonly>
+                                    <span class="form-control-feedback" aria-hidden="true">
+                                        <img src="/src/images/event/map_r.png" alt="">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <p class="line"></p>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        安装日期
+                                    </div>
+                                    <div class="planListRight has-feedback">
+                                        <input type="text" name="installationTime" class="form-control form_datetime" readonly id="dateTimeAdd">
+                                        <span class="form-control-feedback" aria-hidden="true">
+                                            <img src="/src/images/event/time.png" alt="">
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        投产日期
+                                    </div>
+                                    <div class="planListRight has-feedback">
+                                        <input type="text" name="investmentTime" class="form-control form_datetime" readonly id="investmentTimeAdd">
+                                        <span class="form-control-feedback" aria-hidden="true">
+                                            <img src="/src/images/event/time.png" alt="">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    生产厂家
+                                </div>
+                                <div class="planListRight">
+                                    <input type="text" name="manufacturer" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格
+                                </div>
+                                <div class="planListRight">
+                                    <input type="text" name="specification" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <p class="line"></p>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    负&nbsp;&nbsp;责&nbsp;人
+                                </div>
+                                <div class="planListRight has-feedback">
+                                    <input type="text" class="form-control pointer" name="personSelect" placeholder="请选择安检人员" readonly>
+                                    <span class="form-control-feedback" aria-hidden="true">
+                                        <img src="/src/images/event/slaff.png" alt="">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    巡检频次
+                                </div>
+                                <div class="planListRight">
+                                    <input type="text" name="inspectionCount" class="form-control shortInput">
+                                    <span>次/</span>
+                                    <input type="text" name="inspectionDays" class="form-control shortInput">
+                                    <span>天</span>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    照&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;片
+                                </div>
+                                <div class="planListRight">
+                                    <div class="feedback_img facilityFileAdd">
+                                        <div class="feedback_img_list">
+                                        </div>
+                                        <div class="feedback_img_file">
+                                            <input type="file" onchange="handleFiles(this);" class="upload_file">
+                                        </div>
+                                        <div class="feedback_img_add">
+                                            <span class="addImg"><img src="/src/images/event/upload.png" alt=""></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        录&nbsp;入&nbsp;&nbsp;人
+                                    </div>
+                                    <div class="planListRight">
+                                        <input type="text" class="form-control" name="createUserName" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit addSubmit">确认提交</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--编辑设施-->
+    <div id="modifyFacilityFrame" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>编辑<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body" id='modifyFacilityFrameT'>
+                    <form>
+                        <div class="planMain facilityModify">
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        <i>*</i>设施名称
+                                    </div>
+                                    <div class="planListRight">
+                                        <input type="text" name="facilityName" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        <i>*</i>设施编号
+                                    </div>
+                                    <div class="planListRight">
+                                        <input type="text" name="facilityCode" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        <i>*</i>设施类型
+                                    </div>
+                                    <div class="planListRight">
+                                        <select class="form-control" name="facilityTypeCode">
+                                            <option value="FT_01">调压设备</option>
+                                            <option value="FT_02">阀室</option>
+                                            <option value="FT_03">阀门</option>
+                                            <option value="FT_04">井</option>
+                                            <option value="FT_05">缸</option>
+                                            <option value="FT_06">三通</option>
+                                            <option value="FT_07">四通</option>
+                                            <option value="FT_08">桩</option>
+                                            <option value="FT_09">警示牌</option>
+                                            <option value="FT_10">流量计</option>
+                                            <option value="FT_11">压力表</option>
+                                            <option value="FT_99">其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        <i>*</i>管网类型
+                                    </div>
+                                    <div class="planListRight">
+                                        <select class="form-control" name="pipelineTypeCode">
+                                            <option value="PT_01">低压</option>
+                                            <option value="PT_02">中压</option>
+                                            <option value="PT_03">次高压</option>
+                                            <option value="PT_04">高压</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        <i>*</i>设施状态
+                                    </div>
+                                    <div class="planListRight">
+                                        <select class="form-control" name="facilityStatusCode">
+                                            <option value="FS_01">在用</option>
+                                            <option value="FS_02">停用</option>
+                                            <option value="FS_03">废弃</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    <i>*</i>详细位置
+                                </div>
+                                <div class="planListRight has-feedback">
+                                    <input type="text" class="form-control pointer" name="addressSelect" placeholder="请在地图上选取位置" readonly>
+                                    <span class="form-control-feedback" aria-hidden="true">
+                                        <img src="/src/images/event/map_r.png" alt="">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <p class="line"></p>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        安装日期
+                                    </div>
+                                    <div class="planListRight has-feedback">
+                                        <input type="text" name="installationTime" class="form-control form_datetime" readonly id="dateTimeModify">
+                                        <span class="form-control-feedback" aria-hidden="true">
+                                            <img src="/src/images/event/time.png" alt="">
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        投产日期
+                                    </div>
+                                    <div class="planListRight has-feedback">
+                                        <input type="text" name="investmentTime" class="form-control form_datetime" readonly id="investmentTimeModify">
+                                        <span class="form-control-feedback" aria-hidden="true">
+                                            <img src="/src/images/event/time.png" alt="">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    生产厂家
+                                </div>
+                                <div class="planListRight">
+                                    <input type="text" name="manufacturer" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格
+                                </div>
+                                <div class="planListRight">
+                                    <input type="text" name="specification" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <p class="line"></p>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    负&nbsp;&nbsp;责&nbsp;人
+                                </div>
+                                <div class="planListRight has-feedback">
+                                    <input type="text" class="form-control pointer" name="personSelect" placeholder="请选择安检人员" readonly>
+                                    <span class="form-control-feedback" aria-hidden="true">
+                                        <img src="/src/images/event/slaff.png" alt="">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    巡检频次
+                                </div>
+                                <div class="planListRight">
+                                    <input type="text" name="inspectionCount" class="form-control shortInput">
+                                    <span>次/</span>
+                                    <input type="text" name="inspectionDays" class="form-control shortInput">
+                                    <span>天</span>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    照&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;片
+                                </div>
+                                <div class="planListRight">
+                                    <div class="feedback_img facilityFileModity">
+                                        <div class="feedback_img_list">
+                                        </div>
+                                        <div class="feedback_img_file">
+                                            <input type="file" onchange="handleFiles(this);" class="upload_file">
+                                        </div>
+                                        <div class="feedback_img_add">
+                                            <span class="addImg"><img src="/src/images/event/upload.png" alt=""></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        录&nbsp;入&nbsp;&nbsp;人
+                                    </div>
+                                    <div class="planListRight">
+                                        <input type="text" class="form-control" name="createUserName" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit modifySubmit">保存</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--设施详情-->
+    <div id="facilityDetailsFrame" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>设施详情<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body" id='facilityDetailsFrameT'>
+                    <div class="planDetails">
+                        <div class="planDetailsMain">
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        设施名称
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="facilityNameT">--</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        设施编号
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="facilityCodeT">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        创建时间
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="createTimeT">--</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        设施类型
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="facilityTypeNameT">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        管网类型
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="pipelineTypeNameT">--</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        设施状态
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="facilityStatusNameT">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    详细位置
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="addressT">--</p>
+                                    <div class="detailsAddressMap" id="detailsAddressMap"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="planDetailsMain">
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        安装日期
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="installationTimeT">--</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        投产日期
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="investmentTimeT">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    生产厂家
+                                </div>
+                                <div class="planListRight">
+                                    <p class="manufacturerT">--</p>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    规格
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="specificationT">--</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="planDetailsMain">
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    负责人
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="relationshipPersonNamesT">--</p>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    巡检频次
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="inspectionFrequencyT">
+                                        <!--<span class="inspectionCountT">--</span>次/<span class="inspectionDaysT">--</span>天-->
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    照片
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <ul class="facilityImg"></ul>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    录入人
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="createUserNameT">--</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn deletePlan deleteFacility">删除</button>
+                    <button class="btn submit getHistory">历史维修记录</button>
+                    <button class="btn submit getMeasurement">测量统计</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--历史检查-->
+    <div id="historyFrame" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>历史检查<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body" id="historyFrameT">
+                    <div class="historyMain">
+                        <table id="tableHistory"></table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--历史检查详情模态框-->
+    <div id="historyDetailsFrame" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>设施检查记录详情<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body" id="historyDetailsFrameT">
+                    <div class="planDetails">
+                        <div class="planDetailsMain">
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        检查时间
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="facilityCheckTimeH">--</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        检查人
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="createUserNameH">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        设施类型
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="facilityTypeNameH">--</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        设施名称
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="facilityNameH">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    详细位置
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="addressH">--</p>
+                                    <div class="detailsAddressMap" id="historyAddressMap"></div>
+                                </div>
+                            </div>
+                            <!--<div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        管网类型
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="pipelineTypeNameT">--</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        设施状态
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="facilityStatusNameT">--</p>
+                                    </div>
+                                </div>
+                            </div>-->
+                        </div>
+                        <div class="planDetailsMain">
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        是否漏气
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="isLeakageNameH">--</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        可燃气体浓度
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="combustibleGasConcentrationH">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    设施运行情况
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="isFacilityWorkNameH">--</p>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    设施运行描述
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="facilityWorkDescH">--</p>
+                                </div>
+                            </div>
+                            <div class="additionalBox"></div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    检查结果
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="facilityCheckResultNameH">--</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="planDetailsMain">
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    语音描述
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="historyAudio">--</p>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    照片
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <ul class="historyImg"></ul>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    备注
+                                </div>
+                                <div class="planListRight textarea_text">
+                                    <p class="remarkH">--</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn deletePlan deleteHistory">删除</button>
+                    <button class="btn submit exportHistory">导出</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--测量曲线-->
+    <div id="measurementFrame" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>测量统计<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body" id="measurementFrameT">
+                    <div class="planDetails">
+                        <div class="planDetailsMain">
+                            <div class="planList">
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        设施名称
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="facilityNameT">--</p>
+                                    </div>
+                                </div>
+                                <div class="planListHalf">
+                                    <div class="planListLeft">
+                                        设施类型
+                                    </div>
+                                    <div class="planListRight">
+                                        <p class="facilityTypeNameT">--</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="planList">
+                                <div class="planListLeft">
+                                    地理位置
+                                </div>
+                                <div class="planListRight">
+                                    <p class="addressT">--</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="planDetailsMain">
+                            <div class="chartContent">
+                                <div class="chartTitle">
+                                    <h1>可燃气体浓度</h1>
+                                </div>
+                                <div class="chartCondition" data-key='gas'>
+                                    <span class="timeLeft">时间范围：</span>
+                                    <span class="timeBtn" data-value="week">本周</span>
+                                    <span class="timeBtn" data-value="month">本月</span>
+                                    <span class="diy">自定义：</span>
+                                    <input size="16" type="text" onchange="dateChangeForSearchGas();" id="datetimeStartGas" placeholder="选择起始时间" readonly class="form_datetime">
+                                    <span>&nbsp;&nbsp;至&nbsp;&nbsp;</span>
+                                    <input size="16" type="text" onchange="dateChangeForSearchGas();" id="datetimeEndGas" placeholder="选择结束时间" readonly class="form_datetime">
+                                    <i class="timeBtnSearch timeBtn" id="diyDateBtnGas" data-value="diy">确定</i>
+                                </div>
+                                <div class="chartMain">
+                                    <div id="gasChart" style="height: 400px;width: 900px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="planDetailsMain pressureMain">
+                            <div class="chartContent">
+                                <div class="chartTitle">
+                                    <h1>进出口压力</h1>
+                                </div>
+                                <div class="chartCondition" data-key='pressure'>
+                                    <span class="timeLeft">时间范围：</span>
+                                    <span class="timeBtn" data-value="week">本周</span>
+                                    <span class="timeBtn" data-value="month">本月</span>
+                                    <span class="diy">自定义：</span>
+                                    <input size="16" type="text" onchange="dateChangeForSearchPressure();" id="datetimeStartPressure" placeholder="选择起始时间" readonly class="form_datetime">
+                                    <span>&nbsp;&nbsp;至&nbsp;&nbsp;</span>
+                                    <input size="16" type="text" onchange="dateChangeForSearchPressure();" id="datetimeEndPressure" placeholder="选择结束时间" readonly class="form_datetime">
+                                    <i class="timeBtnSearch timeBtn" id="diyDateBtnPressure" data-value="diy">确定</i>
+                                </div>
+                                <div class="chartMain">
+                                    <div id="pressureChart" style="height: 400px;width: 900px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--地图选择-->
+    <div id="addressMapFrame" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>详细位置<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div id="address_map"></div>
+                    <div class="map_search text-center">
+                        <div class="search_btn">
+                            <div class="search_btn_l"><input type="text" class="search-query search_address" placeholder="输入关键词搜索"></div>
+                            <div class="search_btn_r">
+                                <!--<input type="button" class="btn search_botton" value="确定">-->
+                                <span class="search_botton">确定</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span>标记位置：</span>
+                    <input type="text" name="map_address">
+                    <button class="btn dataPass">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--人员信息-->
+    <div id="stakeholder" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>人员添加<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="sub_wrapper">
+                        <ul id="people_list" class="ztree"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_selectPeople" type="button" class="btn modal_active btn-primary">确定</button>
+                    <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--历史维修记录-->
+    <div id="repairHistory" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>历史维修记录<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="historyMain">
+                        <div class="historySeach">
+                            <div class="historySeachMain">
+                                <input type="text" placeholder="请输入关键字搜索" />
+                                <span class="historySeachBtn">确定</span>
+                            </div>
+                        </div>
+                        <table id="repairTableHistory"></table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--维修详情模态框-->
+    <div id="repairDetails" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>{{frameName}}<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="frameDetails">
+                        <div class="frameDetailsNav">
+                            <ul>
+                                <li v-bind:class="{active:detailsShow}" @click="tabChange('details')">维修详情</li>
+                                <li v-bind:class="{active:axisShow}" @click="tabChange('axis')">维修任务轴</li>
+                            </ul>
+                        </div>
+                        <div class="frameDetailsNavMian">
+                            <p class="detailsCode">维修编号：{{maintenanceCode}}</p>
+                            <!--维修详情-->
+                            <div class="frameDetailsMain" v-show="detailsShow">
+                                <component v-bind:is="which_to_show" v-bind:modifybtn="modifyShow" v-bind:openperson="openPerson" v-bind:my-msgdetails="dataBasics"></component>
+                            </div>
+                            <!--维修任务轴-->
+                            <div class="frameAxisMian" v-show="axisShow">
+                                <axis-html v-bind:my-msgaxis="dataAxis"></axis-html>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit" v-show="modifyShow" @click="modifySave">保存</button>
+                    <button class="btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/lib/js/amrnb.js"></script>
+    <script type="text/javascript" src="/lib/js/amrnb-play.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/lib/js/common_base.js"></script>
+    <script type="text/javascript" src="/src/js/common/common.js"></script>
+    <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+    <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
+    <script type="text/javascript" src="/lib/js/echarts.common.min.js"></script>
+    <script type="text/javascript" src="/src/js/common/coordTransform.js"></script>
+    <script type="text/javascript" src="/src/js/common/drafting.js"></script>
+    <script type="text/javascript" src="/src/js/event/ajaxFileUpload.js"></script>
+    <script type="text/javascript" src="/src/js/common/view.pic.js"></script>
+    <script type="text/javascript" src="/src/js/common/map.address.js"></script>
+    <script type="text/javascript" src="/src/js/common/people.tree.js"></script>
+    <script type="text/javascript" src="/src/js/common/history.details.js"></script>
+    <script type="text/javascript" src="/src/js/facility/facility.list.js"></script>
+
+    <script type="text/javascript" src="/src/js/common/pipelineObj.js"></script>
+    <script type="text/javascript" src="/src/js/common/pipelineswitch.js"></script>
+    <script type="text/javascript" src="/src/js/common/vue.js"></script>
+    <script type="text/javascript" src="/src/js/maintenance/details.js"></script>
+</body>
+<script>
+</script>
+
+</html>

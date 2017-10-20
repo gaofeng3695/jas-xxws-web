@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>巡线卫士-事件分享</title>
+    <meta name="description" content="巡线卫士是一款为管线安全生产管理提供支撑的移动应用软件，通过云端巡检、闭环管理和移动互联，能够实时监控巡检动态、优化巡检流程，从而提高管线管理工作的效率。">
+    <meta name="Keywords" content="管道,巡检,巡线,管线安全">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/src/css/eventShare.css" rel="stylesheet">
+    <link href="/src/css/common/style.share.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main container-fluid" id="div_event">
+        <div class="row">
+            <div class="col-md-12 title">
+                <div class="title_left"><img src="/src/images/common/app_name.png" alt=""></div>
+                <div class="title_right">
+                    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=cn.jasgroup.mapserver"><img src="/src/images/common/app_open.png" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row nav_btn">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#event" id='eventBtn' aria-controls="home" role="tab" data-toggle="tab">事件信息</a></li>
+                    <li role="presentation"><a href="#task" id='taskBtn' aria-controls="profile" role="tab" data-toggle="tab">任务信息</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id='details_nav'>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="event">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 event_list">
+                                <div class="list_left">事件时间</div>
+                                <div class="list_right">
+                                    <p class="occurrenceTimeT">------</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 event_list">
+                                <div class="list_left">事件类型</div>
+                                <div class="list_right">
+                                    <p class="fullTypeNameT">------</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 event_list">
+                                <div class="list_left">事件编号</div>
+                                <div class="list_right">
+                                    <p class="eventCodeT">------</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 event_list">
+                                <div class="list_left">上报人</div>
+                                <div class="list_right">
+                                    <p class="inspectorNameT">------</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 event_list">
+                                <div class="list_left">详细位置</div>
+                                <div class="list_right">
+                                    <p class="addressT">------</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 event_list">
+                                <div class="list_left">语音描述</div>
+                                <div class="list_right">
+                                    <p class="">------</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 event_list">
+                                <div class="list_left">事件描述</div>
+                                <div class="list_right">
+                                    <p class="descriptionT">------</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 event_list">
+                                <div class="list_left">事件照片</div>
+                                <div class="list_right">
+                                    <p>
+                                        <span class="picMun">0</span>/5
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 event_list">
+                                <div class="event_pic container-fluid">
+                                    <ul class="row">
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="task">
+                        <div class="row">
+                            <div class="col-xs-12 taskMain"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<script type="text/tpl" id="tpl">
+        <div class='swiper'></div>
+    </script>-->
+    <div class="overMain container-fluid" id="div_noevent" style="display: none">
+        <div class="row">
+            <div class="col-md-12 title">
+                <div class="title_left"><img src="/src/images/common/app_name.png" alt=""></div>
+                <div class="title_right">
+                    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=cn.jasgroup.mapserver"><img src="/src/images/common/app_open.png" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row overdue">
+            <div class="col-md-12">
+                <dl>
+                    <dt><img src="/src/images/common/overdue.png" alt=""></dt>
+                    <dd>该事件分享已经过期，无法查看详情</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <script type="text/tpl" id="tpl">
+        <div class="swiper zoomIn">
+            <div class="swiper-list">
+                <div class="swiper-list-body">
+                </div>
+            </div>
+            <div class="swiper-num">
+                <span class="current-index">1</span class="total-count">/<span class='total-mun'>5</span>
+            </div>
+            <div class="swiper-menu">
+                <div class="menu-pop">
+                    <div class="main-list">
+                        <a class="menu-item" href="javascript:void(0)">保存到手机</a>
+                        <a class="menu-item" href="javascript:void(0)">发送给 QQ 好友</a>
+                        <a class="menu-item" href="javascript:void(0)">发送给微信好友</a>
+                        <a class="menu-item" href="javascript:void(0)">收藏</a>
+                    </div>
+                    <div class="cancel">
+                        <a href="javascript:void(0)">取消</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/javascript" src="/lib/js/amrnb.js"></script>
+    <script type="text/javascript" src="/lib/js/amrnb-play.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/src/js/common/linq.min.js"></script>
+    <script type="text/javascript" src="/src/js/common/toucher.js"></script>
+    <script type="text/javascript" src="/src/js/common/swipe.images.js"></script>
+    <script type="text/javascript" src="/src/js/share/event.share.js"></script>
+</body>
+
+</html>

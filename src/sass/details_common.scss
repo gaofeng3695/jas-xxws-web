@@ -1,0 +1,144 @@
+#details {
+    // top: 50%;
+    // left: 50%;
+    // width: 800px;
+    // margin-left: -400px;
+    // height: 600px;
+    // margin-top: -300px;
+    font-size: 14px;
+    // overflow: hidden;
+    .modal-lg {
+        // margin: 0;
+        // width: 100%;
+        .modal-content {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            .modal-header {
+                height: 40px;
+                background: #344052;
+                color: #fff;
+                padding: 0;
+                margin: 0;
+                h3 {
+                    line-height: 40px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin: 0;
+                    a {
+                        color: #fff;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                        font-weight: none;
+                        opacity: 1;
+                    }
+                }
+            }
+            .modal-body {
+                padding: 20px 20px 0 20px;
+                overflow-y: auto;
+                height: 510px;
+                .details_main {
+                    background: #fff;
+                    min-height: 490px;
+                    border: 1px solid #fcfcfc;
+                    padding-bottom: 20px;
+                    .container-fluid {
+                        border: 1px solid #ddd;
+                        .row {
+                            border-bottom: 1px solid #ddd;
+                            background: #f7f7f7;
+                            &:last-child {
+                                border: none;
+                            }
+                            .details_title {
+                                line-height: 36px;
+                                padding-right: 10px;
+                                color: #666;
+                                border-left: 1px solid #ddd;
+                                &:first-child {
+                                    border-left: none;
+                                }
+                            }
+                            .details_text {
+                                line-height: 24px;
+                                padding: 6px 10px;
+                                background: #fff;
+                                min-height: 36px;
+                                border-left: 1px solid #ddd;
+                                word-wrap: break-word;
+                                word-break: normal;
+                                p {
+                                    margin: 0;
+                                }
+                                #details_address_map {
+                                    height: 200px;
+                                    width: 100%;
+                                }
+                            }
+                            .audioPlay {
+                                background: url(/src/images/task/play.png) no-repeat;
+                                width: 82px;
+                                height: 26px;
+                                border: none;
+                                display: inline-block;
+                                outline: none;
+                            }
+                            .audioPlayIn {
+                                background: url(/src/images/task/playIn.gif) no-repeat;
+                                width: 82px;
+                                height: 26px;
+                                border: none;
+                                display: inline-block;
+                                outline: none;
+                            }
+                            .details_map_main {
+                                padding: 0;
+                                p {
+                                    padding: 6px 10px;
+                                }
+                            }
+                            .event_pic {
+                                overflow: hidden;
+                                ul {
+                                    padding: 0;
+                                    margin: 0;
+                                    list-style: none;
+                                    overflow: hidden;
+                                    li {
+                                        float: left;
+                                        border: 1px solid #f1f1f1;
+                                        background: #fff;
+                                        margin: 0 6px 10px 0;
+                                        cursor: pointer;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                text-align: center;
+                background: #344052;
+                height: 50px;
+                padding: 0;
+                margin: 0;
+                button {
+                    height: 36px;
+                    border: none;
+                    width: 120px;
+                    margin-top: 7px;
+                    font-size: 16px;
+                    margin: 7px 20px 0 20px;
+                    &.getHistory {
+                        background: #59b6fc;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+}

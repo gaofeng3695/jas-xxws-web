@@ -1,0 +1,61 @@
+html,
+body,
+.app {
+    height: 100%;
+    width: 100%;
+}
+
+.index_wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.pipeline_baidumap {
+    height: 100%;
+    flex-grow: 1;
+    position: relative;
+    .mapContainer {
+        height: 100%;
+    }
+    .btnWrapper {
+        border: 1px solid #59b6fc;
+        border-left: none;
+        position: absolute;
+        top: 40px;
+        left: 60px;
+        z-index: 999;
+        background: #fff;
+        color: #59b6fc;
+        .item {
+            line-height: 30px;
+            padding: 0 5px 0 36px;
+            border-left: 1px solid #59b6fc;
+            float: left;
+            cursor: pointer;
+        }
+        .active {
+            color: #fff;
+        }
+        .draw {
+            background: url(/src/images/pipeline_map/operation.png) no-repeat 6px center;
+            &.active {
+                background: #59b6fc url(/src/images/pipeline_map/operation_h.png) no-repeat 6px center;
+            }
+        }
+        .keep {
+            background: url(/src/images/pipeline_map/draw.png) no-repeat 6px center;
+            &.active {
+                background: #59b6fc url(/src/images/pipeline_map/draw_h.png) no-repeat 6px center;
+            }
+        }
+        .save {
+            background: url(/src/images/pipeline_map/save.png) no-repeat 6px center;
+            &.active {
+                background: #59b6fc url(/src/images/pipeline_map/save_h.png) no-repeat 6px center;
+            }
+        }
+    }
+}

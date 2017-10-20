@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+    <!--<link href="/src/css/common/modal.css" rel="stylesheet">-->
+</head>
+
+<body>
+    <button onclick="showTip()">打开模态框</button>
+
+    <script src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script src="/lib/js/bootstrap.min.js"></script>
+    <script src="/src/js/common/bootstrap.modal.alert.js"></script>
+    <script>
+
+        //var myModal = new ModalTip('GF_MODAL1'); //每次new都会实例一个模态框
+        var s = '这里是要显示的内容！';
+        function callBack(){
+            alert('这是回调');
+        }
+        function showTip(){
+            xxwsWindowObj.xxwsAlert(s,callBack) //可以多次调用此方法
+        }
+    </script>
+</body>
+
+</html>

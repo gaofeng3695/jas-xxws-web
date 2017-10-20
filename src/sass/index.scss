@@ -1,0 +1,343 @@
+.dashboard {
+    border: 10px solid #f4f4f4;
+    background: #f4f4f4;
+    border-bottom: none;
+    .box {
+        border: 10px solid #f4f4f4;
+        color: #666;
+        padding: 0;
+        font-size: 16px;
+        padding-left: 80px;
+        height: 90px;
+        background: white;
+        display: table;
+        .title {
+            height: 100%;
+            width: 100%;
+            padding-right: 88px;
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .qtty {
+            padding: 5px 10px 0 8px;
+            position: absolute;
+            right: 5px;
+            height: 60px;
+            .num {
+                font-size: 42px;
+                margin-right: 5px;
+            }
+        }
+        &:nth-of-type(1) {
+            background: #fff url(/src/images/index/p_all.png) no-repeat 12px center;
+        }
+        &:nth-of-type(2) {
+            background: #fff url(/src/images/index/p_checking.png) no-repeat 12px center;
+        }
+        &:nth-of-type(3) {
+            background: #fff url(/src/images/index/p_event.png) no-repeat 12px center;
+        }
+        &:nth-of-type(4) {
+            background: #fff url(/src/images/index/p_task.png) no-repeat 12px center;
+        }
+    }
+}
+
+.row_main {
+    border: 10px solid #f4f4f4;
+    border-top: none;
+    .mainbox {
+        padding: 0 20px 15px 20px;
+        background: #fff;
+        height: 489px;
+        border: 10px solid #f4f4f4;
+        .title {
+            font-size: 16px;
+            line-height: 36px;
+            .more {
+                cursor: pointer;
+                float: right;
+                color: #5ab5fc;
+            }
+        }
+        .tip {
+            display: none;
+            text-align: center;
+            line-height: 500px;
+            font-size: 16px;
+            height: 280px;
+            color: #999;
+        }
+        /*任务图表*/
+        &:nth-of-type(1) {
+            .sub_title {
+                color: white;
+                overflow: hidden;
+                margin-bottom: 10px;
+                .box01 {
+                    height: 85px;
+                    padding: 8px;
+                    text-align: center;
+                    font-size: 12px;
+                    float: left;
+                    width: 33.33%;
+                    box-sizing: border-box;
+                    border: 10px solid #fff;
+                    .num {
+                        line-height: normal;
+                        font-size: 28px;
+                    }
+                    &:nth-of-type(1) {
+                        background: #64bd63;
+                    }
+                    &:nth-of-type(2) {
+                        background: #59b6fc;
+                    }
+                    &:nth-of-type(3) {
+                        background: #ec7243;
+                    }
+                }
+            }
+            .chart {
+                height: 310px;
+            }
+        }
+        /*任务列表*/
+        &:nth-of-type(2) {
+            .line {
+                color: #999;
+                border-top: 1px solid #f3f3f3;
+                padding: 10px 0 15px 0;
+                &:last-child {
+                    border-bottom: 1px solid #f3f3f3;
+                }
+                .line_title {
+                    font-size: 12px;
+                    padding: 0 0 8px 0;
+                    .person {
+                        float: right;
+                    }
+                }
+                .sub_wrap {
+                    overflow: hidden;
+                    .icon {
+                        height: 70px;
+                        width: 60px;
+                        float: left;
+                        &.record {
+                            background: url(/src/images/index/t_record.png) no-repeat 5px 4px;
+                        }
+                        &.ask {
+                            background: url(/src/images/index/t_ask.png) no-repeat 5px 4px;
+                        }
+                        &.advise {
+                            background: url(/src/images/index/t_advise.png) no-repeat 5px 4px;
+                        }
+                    }
+                    .content {
+                        padding: 0 60px;
+                        .desc {
+                            padding: 10px 0;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                        }
+                        .dis_title {
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            line-height: 24px;
+                            .person {
+                                margin-right: 14px;
+                            }
+                            .handle {
+                                font-size: 16px;
+                                color: #333;
+                            }
+                            .date {
+                                margin-left: 50px;
+                            }
+                        }
+                        .dispose {
+                            line-height: 24px;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                        }
+                    }
+                    .mybtn {
+                        float: right;
+                        width: 60px;
+                        margin-left: 10px;
+                        margin-top: 45px;
+                        background: #5dd25d;
+                        line-height: 30px;
+                        color: white;
+                        font-size: 14px;
+                        text-align: center;
+                        cursor: pointer;
+                    }
+                }
+            }
+            .tip {
+                background: url(/src/images/index/tip_task.png) no-repeat center center;
+            }
+        }
+        /*事件图表*/
+        &:nth-of-type(3) {
+            .chart {
+                height: 100%;
+                .chart_tip{
+                    background: url(/src/images/index/tip_chart.png) no-repeat center center;
+                    text-align: center;
+                    line-height: 500px;
+                    font-size: 16px;
+                    height: 280px;
+                    color: #999;
+                }
+            }
+
+            .sub_title {
+                .line {
+                    overflow: hidden;
+                }
+                .ceil {
+                    display: inline-block;
+                    font-size: 12px;
+                    width: 50%;
+                    .ceil_box {
+                        padding-left: 30px;
+                        width: 170px;
+                        margin: 0 auto;
+                        line-height: 36px;
+                        .numBtn {
+                            margin-left: 4px;
+                            color: white;
+                            padding: 2px 4px;
+                            border-radius: 4px;
+                        }
+                        &.e_all {
+                            background: url(/src/images/index/e_all.png) no-repeat 2px center;
+                            background-size: 20px;
+                        }
+                        &.e_nature {
+                            background: url(/src/images/index/e_nature.png) no-repeat 0 center;
+                            background-size: 24px;
+                            .numBtn {
+                                background: #64bd63;
+                            }
+                        }
+                        &.e_other {
+                            background: url(/src/images/index/e_other.png) no-repeat 0 center;
+                            background-size: 24px;
+                            .numBtn {
+                                background: #9186e4;
+                            }
+                        }
+                        &.e_self {
+                            background: url(/src/images/index/e_self.png) no-repeat 0 center;
+                            background-size: 24px;
+                            .numBtn {
+                                background: #59b6fc;
+                            }
+                        }
+                    }
+                    &:last-child {
+                        float: right;
+                    }
+                }
+            }
+        }
+        /*事件列表*/
+        &:nth-of-type(4) {
+            .tip {
+                background: url(/src/images/index/tip_event.png) no-repeat center center;
+            }
+            .line {
+                color: #999;
+                border-top: 1px solid #f3f3f3;
+                padding: 10px 0 11px 0;
+                &:last-child {
+                    border-bottom: 1px solid #f3f3f3;
+                }
+                .line_title {
+                    font-size: 12px;
+                    padding: 0 0 8px 0;
+                    .perosn {
+                        float: right;
+                    }
+                }
+                .sub_wrap {
+                    overflow: hidden;
+                    .icon {
+                        height: 70px;
+                        width: 60px;
+                        float: left;
+
+                        &.other {
+                            background: url(/src/images/index/e_other.png) no-repeat 5px 4px;
+                        }
+                        &.nature {
+                            background: url(/src/images/index/e_nature.png) no-repeat 5px 4px;
+                        }
+                        &.self {
+                            background: url(/src/images/index/e_self.png) no-repeat 5px 4px;
+                        }
+                    }
+                    .content {
+                        padding: 0 0 0 60px;
+                        .con_title {
+                            padding: 10px 0;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            .type {
+                                font-size: 16px;
+                                color: #333;
+                                margin-right: 15px;
+                            }
+                            .scope {
+                                color: #5ab5fc;
+                            }
+                            .date {
+                                float: right;
+                            }
+                        }
+                        .des_wrap {
+                            .desc {
+                                margin-right: 60px;
+                                line-height: 24px;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: hidden;
+                            }
+                            .dist {
+                                margin-right: 60px;
+                                padding: 0 0 0 21px;
+                                height: 24px;
+                                line-height: 24px;
+                                background: url(/src/images/index/icon_loca.png) no-repeat 0 center;
+                                background-size: 14px 18px;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: hidden;
+                            }
+                            .mybtn {
+                                float: right;
+                                width: 60px;
+                                margin-left: 10px;
+                                margin-top: 10px;
+                                background: #60b9fb;
+                                line-height: 30px;
+                                color: white;
+                                font-size: 14px;
+                                text-align: center;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

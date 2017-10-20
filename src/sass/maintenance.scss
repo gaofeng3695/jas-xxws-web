@@ -1,0 +1,586 @@
+.fl {
+    float: left;
+}
+
+//维修维护列表页面
+.maintenance {
+    padding: 20px;
+    .data_tab {
+        background: #fff;
+        border-radius: 5px;
+        border: 1px solid #e1e5e6;
+        box-shadow: 2px 1px #e1e5e6;
+        font-size: 14px;
+        .container-fluid {
+            margin-bottom: 20px;
+            #toolbar {
+                .btn-group {
+                    margin-right: 10px;
+                }
+                .dropdown-menu {
+                    text-align: center;
+                    min-width: 108px;
+                    li {
+                        border-bottom: 1px solid #e4e4e4;
+                        line-height: 30px;
+                        cursor: pointer;
+                    }
+                    li:nth-child(4) {
+                        border-bottom: none;
+                    }
+                }
+            }
+        }
+        .underline {
+            border-bottom: none!important;
+        }
+        .look {
+            i {
+                display: inline-block;
+                width: 22px;
+                height: 16px;
+                background: url(/src/images/household/look.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+                &:hover {
+                    background: url(/src/images/household/look_h.png) no-repeat;
+                }
+            }
+        }
+        .export {
+            i {
+                display: inline-block;
+                width: 25px;
+                height: 18px;
+                background: url(/src/images/household/out.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+                &:hover {
+                    background: url(/src/images/household/out_h.png) no-repeat;
+                }
+            }
+        }
+        .modify {
+            i {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                background: url(/src/images/household/modify.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+                background-size: 100%;
+                &:hover {
+                    width: 18px;
+                    height: 18px;
+                    background: url(/src/images/household/modify_h.png) no-repeat;
+                    background-size: 100%;
+                }
+            }
+        }
+        .modify_end {
+            cursor: default;
+            i {
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                background: url(/src/images/household/modify_e.png) no-repeat;
+                vertical-align: middle;
+                margin: 0 5px;
+                background-size: 100%;
+            }
+        }
+        .atatus_people {
+            max-width: 160px;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .atatus_3 {
+            background: #b4b5b7;
+            width: 70px;
+            display: inline-block;
+            line-height: 26px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .atatus_2 {
+            background: #ff9e34;
+            width: 70px;
+            display: inline-block;
+            line-height: 26px;
+            border-radius: 5px;
+            color: #fff;
+        }
+    }
+}
+
+//新建维修模态框
+#maintenanceAdd {
+    font-size: 14px;
+    .hand {
+        cursor: pointer;
+    }
+    .modal-lg {
+        .modal-content {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            .modal-header {
+                height: 40px;
+                background: #344052;
+                color: #fff;
+                padding: 0;
+                margin: 0;
+                h3 {
+                    line-height: 40px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin: 0;
+                    a {
+                        color: #fff;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                        font-weight: none;
+                        opacity: 1;
+                    }
+                }
+            }
+            .modal-body {
+                padding: 15px;
+                overflow-y: auto;
+                height: 510px;
+                background: #e7e8ec;
+                .householdMain {
+                    padding-top: 15px;
+                    padding-bottom: 20px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    .formTitle {
+                        width: 100%;
+                        height: 30px;
+                        p {
+                            margin: 0;
+                            text-align: center;
+                            font-size: 16px;
+                            line-height: 30px;
+                        }
+                    }
+                    .householdList {
+                        overflow: hidden;
+                        margin-top: 15px;
+                        .householdHalf {
+                            width: 50%;
+                            float: left;
+                        }
+                        .ellipsis {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                        .householdHalfLeft {
+                            width: 90px;
+                            float: left;
+                            text-align: right;
+                            line-height: 36px;
+                            i {
+                                color: red;
+                                vertical-align: middle;
+                                margin-right: 5px;
+                                font-size: 20px;
+                            }
+                        }
+                        .householdHalfRight {
+                            margin-left: 90px;
+                            width: auto;
+                            padding: 0 20px 0 10px;
+                            input {
+                                height: 36px;
+                                &.pointer {
+                                    cursor: pointer;
+                                    background: #ffffff;
+                                }
+                                &.shortInput {
+                                    display: inline-block;
+                                    width: 90px;
+                                }
+                            }
+                            .adressLogo {
+                                display: block;
+                                background: url(/src/images/household/adress.png) center no-repeat;
+                                width: 23px;
+                                height: 25px;
+                                background-size: 16px 20px;
+                                float: right;
+                                margin-top: -30px;
+                                margin-right: 5px;
+                                cursor: pointer;
+                            }
+                            .repairerLogo {
+                                display: block;
+                                background: url(/src/images/household/repairer.png) center no-repeat;
+                                width: 20px;
+                                height: 23px;
+                                background-size: 16px 18px;
+                                float: right;
+                                margin-top: -30px;
+                                margin-right: 5px;
+                                cursor: pointer;
+                            }
+                            .termLogo {
+                                display: block;
+                                background: url(/src/images/household/term.png) center no-repeat;
+                                right: 20px;
+                            }
+                            .facchooseLogo {
+                                display: block;
+                                background: url(/src/images/household/choosefac.png) center no-repeat;
+                                width: 24px;
+                                height: 24px;
+                                background-size: 18px 18px;
+                                float: right;
+                                margin-top: -30px;
+                                margin-right: 5px;
+                                cursor: pointer;
+                            }
+                            .contactLogo {
+                                display: block;
+                                background: url(/src/images/household/choosecontacts.png) center no-repeat;
+                                width: 24px;
+                                height: 24px;
+                                background-size: 18px 18px;
+                                float: right;
+                                margin-top: -30px;
+                                margin-right: 5px;
+                                cursor: pointer;
+                            }
+                            .eventLogo {
+                                display: block;
+                                background: url(/src/images/household/chooseevent.png) center no-repeat;
+                                width: 20px;
+                                height: 25px;
+                                background-size: 19px 17px;
+                                float: right;
+                                margin-top: -30px;
+                                margin-right: 5px;
+                                cursor: pointer;
+                            }
+                            select {
+                                width: 100px;
+                                height: 30px;
+                                margin-top: 3px;
+                                &.pointer {
+                                    background: #ffffff;
+                                    cursor: pointer;
+                                }
+                            }
+                            textarea {
+                                height: 120px;
+                                position: relative;
+                                resize: none;
+                            }
+                            .textarea_text {
+                                position: relative;
+                                .text_num {
+                                    color: #999;
+                                    position: absolute;
+                                    bottom: 2px;
+                                    right: 30px;
+                                }
+                            }
+                        }
+                        .textarea_text {
+                            position: relative;
+                            .text_num {
+                                color: #999;
+                                position: absolute;
+                                bottom: 2px;
+                                right: 30px;
+                            }
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                text-align: center;
+                background: #344052;
+                height: 50px;
+                padding: 0;
+                margin: 0;
+                button {
+                    height: 36px;
+                    border: none;
+                    width: 120px;
+                    margin-top: 7px;
+                    font-size: 16px;
+                    margin: 7px 20px 0 20px;
+                }
+                .submit {
+                    background: #59b6fc;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+//选择维修人模态框
+#chooseRepairer {
+    font-size: 14px;
+    .modal-lg {
+        .modal-content {
+            width: 400px;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            .modal-header {
+                height: 40px;
+                background: #344052;
+                color: #fff;
+                padding: 0;
+                margin: 0;
+                h3 {
+                    line-height: 40px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin: 0;
+                    a {
+                        color: #fff;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                        font-weight: none;
+                        opacity: 1;
+                    }
+                }
+            }
+            .modal-body {
+                padding: 15px;
+                overflow-y: auto;
+                height: 510px;
+                background: #e7e8ec;
+                .planMain {
+                    padding-top: 15px;
+                    padding-bottom: 20px;
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    .planList {
+                        overflow: hidden;
+                        margin-top: 15px;
+                        .planListHalf {
+                            width: 50%;
+                            float: left;
+                        }
+                        .planListLeft {
+                            width: 90px;
+                            float: left;
+                            text-align: right;
+                            line-height: 36px;
+                            i {
+                                color: red;
+                                vertical-align: middle;
+                                margin-right: 5px;
+                                font-size: 20px;
+                            }
+                        }
+                        .planListRight {
+                            margin-left: 90px;
+                            width: auto;
+                            padding: 0 20px 0 10px;
+                            input {
+                                height: 36px;
+                                &.pointer {
+                                    cursor: pointer;
+                                    background: #ffffff;
+                                }
+                            }
+                            textarea {
+                                height: 120px;
+                                position: relative;
+                                resize: none;
+                            }
+                        }
+                        .textarea_text {
+                            position: relative;
+                            .text_num {
+                                color: #999;
+                                position: absolute;
+                                bottom: 2px;
+                                right: 30px;
+                            }
+                            p {
+                                margin: 0;
+                                text-align: right;
+                                padding-top: 10px;
+                                span {
+                                    width: 90px;
+                                    height: 30px;
+                                    line-height: 30px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    border-radius: 3px;
+                                    background: #59b6fc;
+                                    color: #fff;
+                                    font-size: 16px;
+                                    display: inline-block;
+                                    margin-left: 30px;
+                                }
+                            }
+                        }
+                        .has-feedback {
+                            .form-control {
+                                padding-right: 38px;
+                                background: #fff;
+                                cursor: pointer;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: hidden;
+                            }
+                            .form-control-feedback {
+                                right: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                text-align: center;
+                background: #344052;
+                height: 50px;
+                padding: 0;
+                margin: 0;
+                button {
+                    height: 36px;
+                    border: none;
+                    width: 120px;
+                    margin-top: 7px;
+                    font-size: 16px;
+                    margin: 7px 20px 0 20px;
+                }
+                .submit {
+                    background: #59b6fc;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+//用户地址 设施选择 事件选择模态框
+#choiceUserFrame,
+#choiceFacFrame,
+#choiceEventFrame {
+    font-size: 14px;
+    .modal-lg {
+        .modal-content {
+            width: 1080px;
+            height: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            .modal-header {
+                height: 40px;
+                background: #344052;
+                color: #fff;
+                padding: 0;
+                margin: 0;
+                h3 {
+                    line-height: 40px;
+                    font-size: 16px;
+                    text-align: center;
+                    margin: 0;
+                    a {
+                        color: #fff;
+                        margin-top: 6px;
+                        margin-right: 10px;
+                        font-weight: none;
+                        opacity: 1;
+                    }
+                }
+            }
+            .modal-body {
+                padding: 15px;
+                overflow-y: auto;
+                height: 510px;
+                background: #e7e8ec;
+                .userChoiceMain {
+                    background: #ffffff;
+                    border-radius: 6px;
+                    min-height: 480px;
+                    padding: 10px 15px 20px 15px;
+                    .container-fluid {
+                        padding-right: 15px;
+                        padding-left: 15px;
+                    }
+                    .search_item_wrapper {
+                        box-shadow: 0px 1px 1px #e3e3e3;
+                        .search_wrapper {
+                            margin-right: 100px;
+                        }
+                        .search_btn_right {
+                            width: 80px;
+                        }
+                        .more_item_wrapper {
+                            display: block;
+                        }
+                        .sub_wrapper {
+                            padding: 10px 15px;
+                            .line {
+                                padding: 6px 0;
+                                .peo_border {
+                                    width: 220px !important;
+                                    .peo_selected {
+                                        width: 186px !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .modal-footer {
+                text-align: center;
+                background: #344052;
+                height: 50px;
+                padding: 0;
+                margin: 0;
+                button {
+                    height: 36px;
+                    border: none;
+                    width: 120px;
+                    margin-top: 7px;
+                    font-size: 16px;
+                    margin: 7px 20px 0 20px;
+                }
+                .submit {
+                    background: #59b6fc;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+//历史类型模态框
+#hisData {
+    @extend #chooseRepairer;
+    .modal-dialog {
+        width: 400px;
+        //@include modal_size(540px); /* 自定义模态框宽度 */
+    }
+}
+
+//用户地址 设施选择 事件选择模态框居中
+@media (min-width: 992px) {
+    #choiceUserFrame,
+    #choiceFacFrame,
+    #choiceEventFrame {
+        .modal-lg {
+            width: 1080px;
+        }
+    }
+}
