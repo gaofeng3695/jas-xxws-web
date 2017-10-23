@@ -318,8 +318,8 @@
                                             管线名称<span>：</span><span v-text="item.pipeLineName"></span>
                                         </div>
 
-                                        <span class="btn_close" @click.stop="deleteLine(item)"></span>
-                                        <span class="btn_editd"></span>
+                                        <span class="btn_close" @click.stop="deleteLine(item)" title="删除管线"></span>
+                                        <span class="btn_editd" title="编辑管线"></span>
                                     </div>
                                     <div class="line_title">
                                         <div class="umli100">
@@ -387,9 +387,9 @@
                                             <!--</label>-->
                                         </div>
                                         <div class="btns">
-                                            <div class="btn_close" @click.stop="deleteNet(item)">
+                                            <div class="btn_close" @click.stop="deleteNet(item)" title="删除管网">
                                             </div>
-                                            <div class="btn_edit" @click="enterInto(item);clickLi(item)">
+                                            <div class="btn_edit" @click="enterInto(item);clickLi(item)" title="进入管网">
                                             </div>
                                         </div>
                                     </div>
@@ -403,7 +403,7 @@
         </div>
     </script>
 
-    <script type="text/javascript" src="/lib/js/vue.js"></script>
+    <script type="text/javascript" src="/lib/js/vue.min.js"></script>
     <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="/lib/js/common_base.js"></script>
     <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
