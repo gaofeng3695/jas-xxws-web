@@ -1,1 +1,0 @@
-var jsonFuzzyQuery=function(r,n,e){var i=[];if(void 0==e&&(e=""),0==e.length)for(var f=0;f<r.length;f++)for(var a in r[f]){var o=null==r[f][a]?"":r[f][a].toString();if(o.indexOf(n)>-1){i.push(r[f]);break}}else for(var f=0;f<r.length;f++)for(var a in r[f]){var o=null==r[f][a]?"":r[f][a].toString();if(e.indexOf(a)>-1&&o.indexOf(n)>-1){i.push(r[f]);break}}return i};
