@@ -44,6 +44,10 @@ a:hover .icon-c-pipe-facility:before {
     color: #fff;
 }
 
+a:focus .icon-c-pipe-facility:before {
+    color: #fff;
+}
+
 a.active .icon-c-enterhome:before {
     color: #fff;
 }
@@ -52,10 +56,18 @@ a:hover .icon-c-enterhome:before {
     color: #fff;
 }
 
+a:focus .icon-c-enterhome:before {
+    color: #fff;
+}
+
 a.active .icon-c-inspection:before {
     color: #fff;
 }
 
 a:hover .icon-c-inspection:before {
+    color: #fff;
+}
+
+a:focus .icon-c-inspection:before {
     color: #fff;
 }
