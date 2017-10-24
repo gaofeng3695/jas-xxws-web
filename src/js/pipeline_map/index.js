@@ -1,7 +1,7 @@
-window.onerror = function(msg, url, line) {
-    alert("erro" + msg + "\n" + url + ":" + line);
-    return true;
-};
+// window.onerror = function(msg, url, line) {
+//     alert("erro" + msg + "\n" + url + ":" + line);
+//     return true;
+// };
 var util = {
     updateArrayById: function(arr, sId, newVal) {
         for (var i = 0; i < arr.length; i++) {
