@@ -1,9 +1,17 @@
+//var del = require('del');
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var uglify = require("gulp-uglify");
 var minifyCss = require("gulp-clean-css");
 var minifyHtml = require("gulp-htmlmin");
 var imagemin = require('gulp-imagemin');
+var runSequence = require('run-sequence');
+var clean = require('gulp-clean');
+
+gulp.task('clean', function(){
+	return gulp.src('./dist/', {read: false})
+    .pipe(clean());
+});
 
 gulp.task('html', function() {
     gulp.src(['./**/*.html', '!{node_modules,demo,dist,demoHtml}/**/*.html'])
@@ -64,4 +72,8 @@ gulp.task('sass:watch', function() {
     gulp.watch('./src/sass/**/*.scss', ['sass']);
 });
 
-gulp.task('all', ['html', 'css', 'js', 'img', 'font', 'ico','json']);
+gulp.task('all1', ['html']);
+
+gulp.task('all', ['clean'],function(callback) {
+    runSequence(['html', 'css', 'js', 'img', 'font', 'ico','json']);
+});
