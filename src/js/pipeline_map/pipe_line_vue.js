@@ -385,7 +385,7 @@ var pipe_left = {
                 pipeThickness: this.inputobj.pipeThickness.trim(),
                 pipeFactLength: this.inputobj.pipeLength.trim(),
                 pipeLineRemark: this.inputobj.pipeLineRemark.trim(),
-                pipeColor: "#59B6FC",
+                pipeColor: "#2ecf03",
                 pipeStyle: "solid",
                 pipeWeight: "3",
             };
