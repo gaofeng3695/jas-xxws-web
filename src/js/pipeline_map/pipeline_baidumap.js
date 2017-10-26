@@ -136,6 +136,12 @@ var pipeline_baidumap = {
                         strokeOpacity: 1,
                         enableEditing: that.isEditable || false,
                     });
+
+                    topline.addEventListener('click',function(){
+                        //alert(item.objectId);
+                        that.$emit('clickline', item.objectId);
+                    });
+
                     if ((that.isEditable || that.isDrawable) && index === 0) { //如果处于编辑状态，添加线的更新事件
                         //that.topline = '';
                         that.topline = topline;
@@ -161,6 +167,8 @@ var pipeline_baidumap = {
                             that.$emit('changeline', oDetail);
                         })
                     }
+
+
                 }
                 if (!that.isEditable && !that.isDrawable) { //不是编辑和划线状态才会设置视野范围
                     aPoints = aPoints.concat(item.line.map(function(item) {
