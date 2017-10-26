@@ -25,7 +25,14 @@
                 @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
 
 
-            <pipeline-baidumap :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :istabshow="sLineId_choosed" @changeline="editLineDetail" @savedetail="saveLineStyleAndPoint"></pipeline-baidumap>
+            <pipeline-baidumap
+                :linedetails="aLineDetailsToShow"
+                :linedetailsedited="olineDetail_edited"
+                :istabshow="sLineId_choosed"
+                @changeline="editLineDetail"
+                @clickline="setsLineIds_toThow"
+                @savedetail="saveLineStyleAndPoint"
+            ></pipeline-baidumap>
 
 
             <pipeline-edit :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine" @saveline="updateLineDetailById" @savework="updateNetDetailById" @changelinefn="editLineDetail"></pipeline-edit>

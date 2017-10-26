@@ -33,6 +33,7 @@ var vm = new Vue({
     data: {
         sNetId_choosed: '', //被选中的管网的ID
         sLineId_choosed: '', //被选中的管线的ID
+        sLineIds_toThow : '',//要显示详情的管线ID
         olineDetail_edited: '', //存在已被编辑的管线
         // onetDetaul_edited: false, //存在已被编辑的管网信息
         isLineList_entered: false, //是否进入了管线列表
@@ -144,6 +145,10 @@ var vm = new Vue({
         // updateNetDetail: function(flag) {
         //     this.onetDetaul_edited = flag;
         // },
+        setsLineIds_toThow : function(sId){ //设定要被展示管线详情的ID
+            this.sLineIds_toThow = sId || '';
+            console.log('要被展示管线详情的ID: ',this.sLineIds_toThow);
+        },
         chooseNet: function(sNetId) { //选择管网，清空则传空
             this.sNetId_choosed = sNetId || '';
         },
@@ -241,8 +246,8 @@ var vm = new Vue({
                             //         return that.aLineDetails.splice(index, 1, data.rows[0]);
                             //     }
                             // });
-                            console.log(data.rows[0])
-                            console.log(that.aLineDetails)
+                            // console.log(data.rows[0])
+                            // console.log(that.aLineDetails)
                             that.aLineDetails = util.updateArrayById(that.aLineDetails, sId, data.rows[0]);
                         }
                         that.updateNetDetailById(that.sNetId_choosed, 3);
@@ -253,11 +258,11 @@ var vm = new Vue({
             });
         },
         editLineDetail: function(OLineDetail) { //变更坐标点，更改线的样式，传入关键点，点击保存
-            console.log('管线的坐标或者样式发生改变');
+            //console.log('管线的坐标或者样式发生改变');
             this.olineDetail_edited = OLineDetail;
         },
         saveLineStyleAndPoint: function() {
-            console.log('——————————开始保存修改的管线数据数据')
+            //console.log('——————————开始保存修改的管线数据数据')
             var that = this;
             var _data = JSON.parse(JSON.stringify(this.olineDetail_edited));
             delete _data.createTime;
