@@ -139,7 +139,7 @@ var pipeline_baidumap = {
 
                     topline.addEventListener('click',function(){
                         //alert(item.objectId);
-                        that.$emit('clickline', item.objectId);
+                        that.$emit('clickline', item);
                     });
 
                     if ((that.isEditable || that.isDrawable) && index === 0) { //如果处于编辑状态，添加线的更新事件
