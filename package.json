@@ -3,7 +3,8 @@
   "version": "1.6.0",
   "description": "xun_xian_wei_shi package.json",
   "scripts": {
-    "start": " gulp sass && concurrently  \"lite-server\" \"gulp sass:watch\" ",
+    "start": " gulp sass && concurrently  \"lite-server\" \"gulp sass:watch\"",
+    "devintest": " gulp sass && concurrently  \"lite-server 212\" \"gulp sass:watch\"",
     "build": "gulp all"
   },
   "keywords": [],
