@@ -50,7 +50,8 @@ Vue.component('modal-vue', {
             return {
                 height: (this.styleobj.height - 106) + "px",
             }
-        }
+        },
+
     }
 });
 
@@ -132,6 +133,40 @@ Vue.component('input-vue', {
         '</div></div>',
     ].join(" "),
 });
+Vue.component('input-two-vue', {
+    props: {
+        title: {
+            type: String,
+        },
+        name: {
+            type: String,
+        },
+        inputobj: {
+            type: Object,
+        },
+        required: {
+            type: Boolean,
+        },
+        placeholder: {
+            type: String
+        }
+    },
+    template: [
+        '<div class="form_part" >',
+        '<div class="list_left">',
+        '<i v-if="required">*</i>{{title}}</div>',
+        '<div class="list_right">',
+        '<input type="text"  :placeholder="placeholder" class="form-control" :name="name" v-model="inputobj[name]">',
+        '</div>',
+        '</div>',
+    ].join(" "),
+    mounted: function() {
+
+    },
+
+});
+
+
 Vue.component('textarea-vue', {
     props: {
         title: {
@@ -170,21 +205,56 @@ Vue.component('textarea-vue', {
         }
     }
 });
-Vue.component('input-two-vue', {
+Vue.component('textarea-view-vue', {
     props: {
         title: {
             type: String,
         },
-        name: {
+        text: {
             type: String,
         },
-        inputobj: {
-            type: Object,
+
+    },
+    template: [
+        '<div class="form_list"><div class="list_left text-right">',
+        '{{title}}',
+        '</div>',
+        '<div class="list_right textarea_text">',
+        '<span class="form-control hLine remark" v-text="text"></span>',
+        '</div></div>',
+    ].join(" "),
+});
+
+Vue.component('span-vue', {
+    props: {
+        title: {
+            type: String,
         },
         required: {
             type: Boolean,
         },
-        placeholder: {
+        text: {
+            type: String,
+        }
+    },
+    template: [
+        '<div class="form_list"><div class="list_left text-right">',
+        '<i v-if="required">*</i><span >{{title}}</span>',
+        '</div>',
+        '<div class="list_right">',
+        '<span class="form-control umlin100"  v-text="text"></span>',
+        '</div></div>',
+    ].join(" "),
+});
+Vue.component('span-two-vue', {
+    props: {
+        title: {
+            type: String,
+        },
+        required: {
+            type: Boolean,
+        },
+        text: {
             type: String
         }
     },
@@ -193,12 +263,37 @@ Vue.component('input-two-vue', {
         '<div class="list_left">',
         '<i v-if="required">*</i>{{title}}</div>',
         '<div class="list_right">',
-        '<input type="text"  :placeholder="placeholder" class="form-control" :name="name" v-model="inputobj[name]">',
+        '<span  class="form-control umlin100" v-text="text">',
         '</div>',
         '</div>',
     ].join(" "),
-    mounted: function() {
-
+});
+Vue.component('select-vue', {
+    props: {
+        title: {
+            type: String,
+        },
+        required: {
+            type: Boolean,
+        },
+        optiondata: {
+            type: Array,
+        },
+        name: {
+            type: String,
+        },
+        inputobj: {
+            type: Object,
+        },
     },
+    template: [
+        '<div class="form_part" >',
+        '<div class="list_left">',
+        '<i v-if="required">*</i>{{title}}</div>',
+        '<div class="list_right">',
+        '<select  class="form-control" v-model="inputobj[name]"><option v-for="data in optiondata" :value="data.code">{{data.value}}</option><select>',
+        '</div>',
+        '</div>',
 
+    ].join(" "),
 });

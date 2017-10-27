@@ -33,12 +33,13 @@ var vm = new Vue({
     data: {
         sNetId_choosed: '', //被选中的管网的ID
         sLineId_choosed: '', //被选中的管线的ID
-        oLine_toThow : '',//要显示详情的管线ID
+        oLine_toThow: '', //要显示详情的管线ID
         olineDetail_edited: '', //存在已被编辑的管线
         // onetDetaul_edited: false, //存在已被编辑的管网信息
         isLineList_entered: false, //是否进入了管线列表
         aNetDetails: [], //所有管网的详情数组
         aLineDetails: [], //所有管线的详情数组s
+        domainValue: [], //所有的域值
     },
     computed: {
         aNetId_active: function() {
@@ -98,9 +99,28 @@ var vm = new Vue({
     mounted: function() {
         console.log('#app mounted');
         this._requestNetDetails();
+        this.initOption();
         //this._requestLineDetails();
     },
     methods: {
+        initOption: function() {
+            var that = this;
+            $.ajax({
+                type: "POST",
+                url: "/cloudlink-inspection-event/domain/getListByDomainName?token=" + lsObj.getLocalStorage('token'),
+                contentType: "application/json",
+                data: JSON.stringify({ "domainNameList": ["pipe_line_type", "pipe_material", "pipe_pressure_grade", "pipe_using_state"] }),
+                dataType: "json",
+                success: function(data) {
+                    if (data.success == 1) {
+                        that.domainValue = data.rows;
+                    } else {
+                        xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                    }
+                }
+            });
+
+        },
         _requestNetDetails: function() { //请求管网详情列表
             var that = this;
             $.ajax({
@@ -145,9 +165,9 @@ var vm = new Vue({
         // updateNetDetail: function(flag) {
         //     this.onetDetaul_edited = flag;
         // },
-        setsLine_toThow : function(oLine){ //设定要被展示管线详情的ID
+        setsLine_toThow: function(oLine) { //设定要被展示管线详情的ID
             this.oLine_toThow = oLine || '';
-            console.log('要被展示管线详情的ID: ',this.oLine_toThow);
+            console.log('要被展示管线详情的ID: ', this.oLine_toThow);
         },
         chooseNet: function(sNetId) { //选择管网，清空则传空
             this.sNetId_choosed = sNetId || '';
