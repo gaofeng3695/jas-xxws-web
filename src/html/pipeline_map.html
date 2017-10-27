@@ -28,7 +28,8 @@
             <pipeline-baidumap :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :istabshow="sLineId_choosed" @changeline="editLineDetail" @savedetail="saveLineStyleAndPoint"></pipeline-baidumap>
 
 
-            <pipeline-edit :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine" @saveline="updateLineDetailById" @savework="updateNetDetailById" @changelinefn="editLineDetail"></pipeline-edit>
+            <pipeline-edit :domainvalue="domainValue" :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine" @saveline="updateLineDetailById" @savework="updateNetDetailById"
+                @changelinefn="editLineDetail"></pipeline-edit>
         </div>
 
         <!-- <pipe-net-example></pipe-net-example> -->
@@ -123,35 +124,103 @@
     <!-- 右侧切换内容 属性组件 -->
     <script type="text/x-template" id="pipe-right-content-attribute">
         <div class="right-content-attribute borderRadius">
-            <div class="modify-item">
-                <p><i>*</i>管线名称：</p>
-                <div class="pipe-name"><input type="text" class="form-control" disabled="true" name="pipeLineName" v-model='changeObj.pipeLineName'></div>
-            </div>
-            <div class="modify-item">
-                <p><span class="w2">材质</span>：</p>
-                <div class="pipe-type"><input type="text" class="form-control" disabled="true" name="pipeMaterial" v-model="changeObj.pipeMaterial"></div>
-            </div>
-            <div class="modify-item">
-                <p><span class="w2">管径</span>：</p>
-                <div class="pipe-diameter"><input type="text" class="form-control" disabled="true" name="pipeDiameter" v-model="changeObj.pipeDiameter"></div>
-            </div>
-            <div class="modify-item">
-                <p><span class="w2">壁厚</span>：</p>
-                <div class="wall-thickness"><input type="text" class="form-control" disabled="true" name="pipeThickness" v-model="changeObj.pipeThickness"></div>
-            </div>
-            <div class="modify-item">
-                <p>管线长度：（km）</p>
-                <div class="pipe-length"><span>{{detail.pipeLength}}</span></div>
-            </div>
-            <div class="modify-item">
-                <p>实际长度：（km）</p>
-                <div class="actual-length"><input type="text" class="form-control" disabled="true" name="pipeFactLength" v-model="changeObj.pipeFactLength"></div>
-            </div>
-            <div class="piple-remarks">
-                <p><span class="w2">备注</span>：</p>
-                <div class="actual-length">
-                    <!-- @input="checkLen($event)" -->
-                    <textarea class="form-control" disabled="true" maxLength="200" name="pipeLineRemark" v-model="changeObj.pipeLineRemark"></textarea>
+            <div class="scrollpointer" style="max-height:420px;height:420px;">
+                <div class="modify-item">
+                    <p><i>*</i>管线名称：</p>
+                    <div class="pipe-name"><input type="text" class="form-control" disabled="true" name="pipeLineName" v-model='changeObj.pipeLineName'></div>
+                </div>
+                <div class="modify-item">
+                    <p>管线编码：</p>
+                    <!--<div class="pipe-line-code"><span>{{detail.pipeLineCode}}</span></div>-->
+                    <div class="pipe-line-code"><input type="text" class="form-control" disabled="true" name="pipeLineCode" v-model='changeObj.pipeLineCode'></div>
+                </div>
+                <div class="modify-item">
+                    <p>管线类型：</p>
+                    <div class="pipe-line-type-code">
+                        <select class="form-control" disabled="true" name="pipeLineTypeName" v-model="options.value">
+                            <option v-for="option in options" v-bind:value="options.value">{{option.text}}</option>
+                            <!--<option value="PLT_02">煤气</option>
+                            <option value="PLT_03">液化气</option>
+                            <option value="PLT_04">原油</option>
+                            <option value="PLT_05">成品油</option>
+                            <option value="PLT_99">其他</option>-->
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w2">材质</span>：</p>
+                    <div class="pipe-type">
+                        <select class="form-control" disabled="true" name="pipeMaterialName" v-model="changeObj.pipeMaterialName">
+                            <option value="PM_01">玻璃钢</option>
+                            <option value="PM_02">钢</option>
+                            <option value="PM_03">光纤</option>
+                            <option value="PM_04">PE</option>
+                            <option value="PM_05">PVC</option>
+                            <option value="PM_06">球墨铸铁</option>
+                            <option value="PM_07">石</option>
+                            <option value="PM_08">石棉</option>
+                            <option value="PM_09">砼</option>
+                            <option value="PM_10">陶瓷</option>
+                            <option value="PM_11">铜</option>
+                            <option value="PM_12">铜芯铝绞线</option>
+                            <option value="PM_13">砖</option>
+                            <option value="PM_14">砖石</option>
+                            <option value="PM_15">铸铁</option>
+                            <option value="PM_99">其他</option>                            
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w2">管径</span>：</p>
+                    <div class="pipe-diameter"><input type="text" class="form-control" disabled="true" name="pipeDiameter" v-model="changeObj.pipeDiameter"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w2">壁厚</span>：</p>
+                    <div class="wall-thickness"><input type="text" class="form-control" disabled="true" name="pipeThickness" v-model="changeObj.pipeThickness"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span>压力等级</span>：</p>
+                    <div class="">
+                        <select class="form-control" disabled="true" name="pipePressureGradeName" v-model="changeObj.pipePressureGradeName">
+                            <option value="PPG_01">高压</option>
+                            <option value="PPG_02">中压</option>
+                            <option value="PPG_03">低压</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w3">压力值</span>：</p>
+                    <div><input type="text" class="form-control" disabled="true" name="pipePressureValue" v-model="changeObj.pipePressureValue"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span>建设时间</span>：</p>
+                    <div><input type="text" class="form-control" disabled="true" name="pipeConstructionDate" v-model="changeObj.pipeConstructionDate"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span>使用状态</span>：</p>
+                    <div class="">
+                        <select class="form-control" disabled="true" name="pipeUsingStateName" v-model="changeObj.pipeUsingStateName">
+                            <option value="PUS_01">规划</option>
+                            <option value="PUS_02">在建</option>
+                            <option value="PUS_03">在用</option>
+                            <option value="PUS_04">废弃</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p>管线长度：（km）</p>
+                    <div class="pipe-length"><span>{{detail.pipeLength}}</span></div>
+                </div>
+                <div class="modify-item">
+                    <p>实际长度：（km）</p>
+                    <div class="actual-length"><input type="text" class="form-control" disabled="true" name="pipeFactLength" v-model="changeObj.pipeFactLength"></div>
+                </div>
+                <div class="piple-remarks">
+                    <p><span class="w2">备注</span>：</p>
+                    <div class="actual-length">
+                        <!-- @input="checkLen($event)" -->
+                        <textarea class="form-control" disabled="true" maxLength="200" name="pipeLineRemark" v-model="changeObj.pipeLineRemark"></textarea>
+                    </div>
                 </div>
             </div>
             <div class="footer">

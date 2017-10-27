@@ -13,11 +13,20 @@ var pipe_right_content_attribute = { //右侧属性组件
     template: '#pipe-right-content-attribute',
     data: function() {
         return {
-            changeObj: {}
+            changeObj: {},
+            options: [
+                { text: '天然气', value: 'PLT_01' },
+                { text: '煤气', value: 'PLT_02' },
+                { text: '液化气', value: 'PLT_03' },
+                { text: '原油', value: 'PLT_04' },
+                { text: '成品油', value: 'PLT_05' },
+                { text: '其他', value: 'PLT_99' }
+            ]
         }
     },
     watch: {
         detail: function() {
+            console.log(this.changeObj);
             $.extend(this.changeObj, this.detail);
             $(".attributeBtn").html("修改");
             $(".right-content-attribute input").prop({ disabled: true });
@@ -33,6 +42,7 @@ var pipe_right_content_attribute = { //右侧属性组件
                 $(e.currentTarget).html("保存")
                 $(".right-content-attribute input").prop({ disabled: false });
                 $(".right-content-attribute textarea").prop({ disabled: false });
+                $(".right-content-attribute select").prop({ disabled: false });
             } else {
                 this.verifyPipe();
             }
@@ -48,16 +58,23 @@ var pipe_right_content_attribute = { //右侧属性组件
                 objectId: that.detail.objectId, //管线主键ID
                 pipeNetworkId: that.detail.pipeNetworkId, //所属管网主键
                 pipeLineName: that.changeObj.pipeLineName, //管线名称
-                pipeLineRemark: that.changeObj.pipeLineRemark, //备注
-                pipeMaterial: that.changeObj.pipeMaterial, //材质
+                pipeLineCode: that.changeObj.pipeLineCode, //管线编码
+                pipeLineTypeCode: that.changeObj.pipeLineTypeCode, //管线类型
+                pipeMaterialCode: that.changeObj.pipeMaterialCode, //材质
                 pipeDiameter: that.changeObj.pipeDiameter, //管径
                 pipeThickness: that.changeObj.pipeThickness, //壁厚
-                pipeFactLength: pipeFactLength, //管线实际长度（人工输入的长度）
+                pipePressureGradeCode: that.changeObj.pipePressureGradeCode, //压力等级
+                pipePressureValue: that.changeObj.pipePressureValue, //压力值
+                pipeConstructionDate: that.changeObj.pipeConstructionDate, //建设时间
+                pipeUsingStateCode: that.changeObj.pipeUsingStateCode, //使用状态
                 pipeLength: that.detail.pipeLength, //管线长度
+                pipeFactLength: pipeFactLength, //管线实际长度（人工输入的长度）
+                pipeLineRemark: that.changeObj.pipeLineRemark, //备注
                 // pipeColor: that.detail.pipeColor, //管线颜色
                 // pipeStyle: that.detail.pipeStyle, //设置是为实线或虚线 (solid或dashed)
                 // pipeWeight: that.detail.pipeWeight, //管线宽度（1~20）
             };
+            console.log(_data);
             $.ajax({
                 type: "POST",
                 url: "/cloudlink-inspection-event/pipemapline/updateProperty?token=" + lsObj.getLocalStorage('token'),
@@ -71,18 +88,21 @@ var pipe_right_content_attribute = { //右侧属性组件
                             $(".attributeBtn").html("修改");
                             $(".right-content-attribute  input").prop({ disabled: true });
                             $(".right-content-attribute  textarea").prop({ disabled: true });
+                            $(".right-content-attribute  select").prop({ disabled: true });
                         });
                     } else {
                         $(".attributeBtn").html("修改");
                         $(".right-content-attribute  input").prop({ disabled: true });
                         $(".right-content-attribute  textarea").prop({ disabled: true });
+                        $(".right-content-attribute  select").prop({ disabled: true });
                         xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                     }
                 },
-                error: function() {
+                error: function(data) {
                     $(".attributeBtn").html("修改");
                     $(".right-content-attribute  input").prop({ disabled: true });
                     $(".right-content-attribute  textarea").prop({ disabled: true });
+                    $(".right-content-attribute  select").prop({ disabled: true });
                     xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                 }
             });
@@ -96,10 +116,10 @@ var pipe_right_content_attribute = { //右侧属性组件
             } else if (this.changeObj.pipeLineName.trim().length > 50) {
                 xxwsWindowObj.xxwsAlert("管线名称长度不能超过50个字");
                 return false;
-            } else if (this.changeObj.pipeMaterial.trim().length > 50) {
-                //针对材质写正则
-                xxwsWindowObj.xxwsAlert("管线材质长度不能超过50个字");
-                return false;
+                // } else if (this.changeObj.pipeMaterialName.trim().length > 50) {
+                //     //针对材质写正则
+                //     xxwsWindowObj.xxwsAlert("管线材质长度不能超过50个字");
+                //     return false;
             } else if (this.changeObj.pipeDiameter.trim().length > 50) {
                 //针对管径写正则
                 xxwsWindowObj.xxwsAlert("管线管径长度不能超过50个字");
@@ -122,7 +142,7 @@ var pipe_right_content_attribute = { //右侧属性组件
             } else {
                 this.lineModify(this.changeObj)
             }
-        },
+        }
     },
 };
 
