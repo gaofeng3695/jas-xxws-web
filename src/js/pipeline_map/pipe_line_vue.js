@@ -87,7 +87,7 @@ var pipe_line_list = {
                 "pipeMaterial": "",
                 "pipeDiameter": "",
                 "pipeThickness": "",
-                "pipeLength": "",
+                "pipeFactLength": "",
                 "pipeLineRemark": "",
                 "pipeLineCode": "",
                 "pipeLineTypeCode": "",
@@ -326,7 +326,7 @@ var pipe_left = {
                 format: 'yyyy-mm-dd',
                 minView: 'month',
                 autoclose: true,
-
+                endDate: new Date(),
             });
             $(this).datetimepicker('show').on('changeDate', function() {
                 $(this).datetimepicker('hide');
@@ -432,7 +432,7 @@ var pipe_left = {
                 pipeLineName: this.inputobj.pipeLineName.trim(), //管线名称
                 pipeDiameter: this.inputobj.pipeDiameter.trim(), //管线管径
                 pipeThickness: this.inputobj.pipeThickness.trim(), //管线壁厚
-                pipeFactLength: this.inputobj.pipeLength.trim(), //管线实际长度
+                pipeFactLength: this.inputobj.pipeFactLength.trim(), //管线实际长度
                 pipeLineRemark: this.inputobj.pipeLineRemark.trim(), //管线备注
                 pipeLineCode: this.inputobj.pipeLineCode.trim(), //管线编码
                 pipeMaterialCode: this.inputobj.pipeMaterialCode, //管线材质
@@ -453,6 +453,7 @@ var pipe_left = {
                     data: JSON.stringify(_data),
                     dataType: "json",
                     success: function(data) {
+                        alert(JSON.stringify(data));
                         if (data.success == 1) {
                             /*此处针对BO进行重新存储*/
                             xxwsWindowObj.xxwsAlert("新增管线成功", function() {
@@ -517,16 +518,16 @@ var pipe_left = {
                 var flag = true;
                 var regNum = /^[0-9]{1,1}\d{0,5}(\.\d{1,2})?$/;
                 if (!regNum.test(this.inputobj.pipePressureValue.trim())) {
-                    xxwsWindowObj.xxwsAlert("管线实际长度格式错误");
+                    xxwsWindowObj.xxwsAlert("管线压力格式错误");
                     flag = false;
                 }
                 return flag;
             }
-            if (this.inputobj.pipeLength.trim().length > 0) {
+            if (this.inputobj.pipeFactLength.trim().length > 0) {
                 //针对管线长度写正则
                 var flag = true;
                 var regNum = /^[0-9]{1,1}\d{0,8}(\.\d{1,3})?$/;
-                if (!regNum.test(this.inputobj.pipeLength.trim())) {
+                if (!regNum.test(this.inputobj.pipeFactLength.trim())) {
                     xxwsWindowObj.xxwsAlert("管线实际长度格式错误");
                     flag = false;
                 }
@@ -540,7 +541,6 @@ var pipe_left = {
             return true;
         },
         fieldValue: function() {
-            console.log("渲染域值" + this.domainvalue);
             this.pipeLineTypeOption = this.domainvalue.filter(function(item, index) {
 
                 return item.domainName == "pipe_line_type";
