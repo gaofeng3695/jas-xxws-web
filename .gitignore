@@ -1,6 +1,7 @@
 /.svn/
 /node_modules/
 
+/dist/
 .DS_Store
 node_modules/
 npm-debug.log

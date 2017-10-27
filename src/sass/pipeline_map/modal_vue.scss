@@ -47,11 +47,11 @@
             padding: 10px;
             // height: 260px;
             background: #e7e8ec;
-            overflow: auto;
+            overflow-y: auto;
             width: 100%;
             .tablevue {
-                height: 100%;
-                // overflow: hidden;
+                // height: 100%;
+                // overflow: auto;
                 background: #fff;
                 border-radius: 5px;
                 padding: 20px;
@@ -123,15 +123,19 @@
         }
         .textarea_text {
             position: relative;
+            .remark,
             textarea {
                 resize: none;
                 height: 120px;
-                position: relative
+                // position: relative
+            }
+            .hLine {
+                word-wrap: break-word;
             }
             .text_num {
                 color: #999;
                 position: absolute;
-                bottom: 2px;
+                bottom: -2px;
                 right: 30px;
             }
         }
@@ -149,4 +153,10 @@
 
 {
     opacity: 1
+}
+
+.umlin100 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
