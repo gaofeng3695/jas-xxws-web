@@ -8,7 +8,8 @@
 
     <link href="/lib/css/bootstrap.css" rel="stylesheet">
     <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet">
-    <link rel="stylesheet" href="/lib/css/font-awesome.min.css"></link>
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <!-- 这里引入组件的css，每个人写的scss放在一个scss文件内，每个组件的css用一个class类包裹，避免混淆 -->
     <link href="/src/css/pipeline_map/pipelineright.css" rel="stylesheet">
     <link href="/src/css/pipeline_map/pipe_line.css" rel="stylesheet">
@@ -19,20 +20,11 @@
 <body>
     <div id="app" class="app">
         <div class="index_wrapper">
+            <pipe-left :pipenetdatas="aNetDetails" :domainvalue="domainValue" :pointerdatas="aLineDetails" :snetid="sNetId_choosed" :slineid="sLineId_choosed" :olinedetailedited="olineDetail_edited" :olinetoshow="oLine_toThow" @olinechange="setsLine_toThow" @choosenet="chooseNet"
+                @checkedline="chooseLine" @enterlinelist="enterLineList" @updatenetdetailbyid="updateNetDetailById" @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
 
 
-            <pipe-left :pipenetdatas="aNetDetails" :pointerdatas="aLineDetails" :snetid="sNetId_choosed" :slineid="sLineId_choosed" :olinedetailedited="olineDetail_edited" @choosenet="chooseNet" @checkedline="chooseLine" @enterlinelist="enterLineList" @updatenetdetailbyid="updateNetDetailById"
-                @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
-
-
-            <pipeline-baidumap
-                :linedetails="aLineDetailsToShow"
-                :linedetailsedited="olineDetail_edited"
-                :istabshow="sLineId_choosed"
-                @changeline="editLineDetail"
-                @clickline="setsLine_toThow"
-                @savedetail="saveLineStyleAndPoint"
-            ></pipeline-baidumap>
+            <pipeline-baidumap :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :istabshow="sLineId_choosed" @changeline="editLineDetail" @clickline="setsLine_toThow" @savedetail="saveLineStyleAndPoint"></pipeline-baidumap>
 
 
             <pipeline-edit :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine" @saveline="updateLineDetailById" @savework="updateNetDetailById" @changelinefn="editLineDetail"></pipeline-edit>
@@ -265,35 +257,86 @@
     <!--左侧整体组件-->
     <script type="text/x-template" id="pipe-left">
 
-        <div class="pipe-left" style=" transition: all .5s" :style="warpperslidestyle">
+        <div>
             <modal-vue v-if="netshow" :styleobj="styleobj" :footer="aFooters" @click1="createSave" @click2="createInfo">
                 <input-vue title="管网名称" placeholder="请输入管网名称" name="pipeNetworkName" :inputobj="inputobj" :required="true"></input-vue>
                 <textarea-vue title="备注" placeholder="请输入备注" name="pipeNetworkRemark" :inputobj="inputobj"></textarea-vue>
             </modal-vue>
             <modal-vue v-if="pipeshow" :styleobj="styleobj" :footer="aFooters" @click1="createSave" @click2="createInfo">
-                <input-vue title="管线名称" placeholder="请输入管线名称" name="pipeLineName" :inputobj="inputobj" :required="true"></input-vue>
                 <div class="form_list">
-                    <input-two-vue title="材质" placeholder="请输入管线材质" name="pipeMaterial" :inputobj="inputobj"></input-two-vue>
-                    <input-two-vue title="管径" placeholder="请输入管线的管径" name="pipeDiameter" :inputobj="inputobj"></input-two-vue>
+                    <input-two-vue title="管线名称" placeholder="请输入管线名称" name="pipeLineName" :inputobj="inputobj" :required="true"></input-two-vue>
+                    <input-two-vue title="管线编号" placeholder="请输入管线编号" name="pipeLineCode" :inputobj="inputobj"></input-two-vue>
                 </div>
                 <div class="form_list">
+                    <select-vue title="管线类型" :optiondata="pipeLineTypeOption" name="pipeLineTypeCode" :inputobj="inputobj"></select-vue>
+                    <select-vue title="材质" :optiondata="pipeMaterOption" name="pipeMaterialCode" :inputobj="inputobj"></select-vue>
+                </div>
+                <div class="form_list">
+                    <input-two-vue title="管径" placeholder="请输入管线的管径" name="pipeDiameter" :inputobj="inputobj"></input-two-vue>
                     <input-two-vue title="壁厚" placeholder="请输入管线壁厚" name="pipeThickness" :inputobj="inputobj"></input-two-vue>
+                </div>
+                <div class="form_list">
+                    <select-vue title="压力等级" :optiondata="pipePressureGrade" name="pipePressureGradeCode" :inputobj="inputobj"></select-vue>
+                    <input-two-vue title="压力" placeholder="请输入管线压力" name="pipePressureValue" :inputobj="inputobj"></input-two-vue>
+                </div>
+                <div class="form_list">
+                    <div class="form_part">
+                        <div class="list_left text-right">
+                            建设日期
+                        </div>
+                        <div class="list_right has-feedback">
+                            <input type="text" size="16" class="form-control pointer" id="pipeConstructionDate" name="pipeConstructionDate" placeholder="请选择建设时间" readonly>
+                            <span class="form-control-feedback" aria-hidden="true" style="right:20px;">
+                                    <img src="/src/images/event/time.png" alt="">
+                            </span>
+                        </div>
+                    </div>
                     <input-two-vue title="实际长度" placeholder="请输入管线实际长度（km）" name="pipeLength" :inputobj="inputobj"></input-two-vue>
+                </div>
+                <div class="form_list">
+                    <select-vue title="使用状态" :optiondata="pipeUsingState" name="pipeUsingStateCode" :inputobj="inputobj"></select-vue>
                 </div>
                 <textarea-vue title="备注" placeholder="请输入备注" name="pipeLineRemark" :inputobj="inputobj"></textarea-vue>
             </modal-vue>
+            <modal-vue v-if="pipeEditShow" :styleobj="styleeditobj" :footer="aFooters" @click2="canceledit">
+                <div class="form_list">
+                    <span-two-vue title="管线名称" :text="olinetoshow.pipeLineName" :required="true"></span-two-vue>
+                    <span-two-vue title="管线编号" :text="olinetoshow.pipeLineCode"></span-two-vue>
+                </div>
+                <div class="form_list">
+                    <span-two-vue title="管线类型" :text="olinetoshow.pipeLineTypeName"></span-two-vue>
+                    <span-two-vue title="材质" :text="olinetoshow.pipeMaterialName"></span-two-vue>
+                </div>
+                <div class="form_list">
+                    <span-two-vue title="管径" :text="olinetoshow.pipeDiameter"></span-two-vue>
+                    <span-two-vue title="壁厚" :text="olinetoshow.pipeThickness"></span-two-vue>
+                </div>
+                <div class="form_list">
+                    <span-two-vue title="压力等级" :text="olinetoshow.pipePressureGradeName"></span-two-vue>
+                    <span-two-vue title="压力(MPa)" :text="olinetoshow.pipePressureValue"></span-two-vue>
+                </div>
+                <div class="form_list">
+                    <span-two-vue title="建设时间" :text="olinetoshow.pipeConstructionDate"></span-two-vue>
+                    <span-two-vue title="实际长度" :text="olinetoshow.pipeFactLength"></span-two-vue>
+                </div>
+                <div class="form_list">
+                    <span-two-vue title="使用状态" :text="olinetoshow.pipeUsingStateName"></span-two-vue>
+                </div>
+                <textarea-view-vue title="备注" :text="olinetoshow.pipeLineRemark"></textarea-view-vue>
+            </modal-vue>
             <!--<div class="leftArea">-->
             <!-- 这里写管网组件模块和管线组件模块 -->
-            <div class="slide-content">
-                <div class="listwrapper slide" :style="slidestyle">
-                    <pipe-net-list :pipenetdatas="pipenetdatas" :snetid="snetid" :linetotal="lineTotal" @changelist="changelist" @chooseNet="chooseNet" @createinfo="createInfo" @updatenetdetailbyid="updateNetDetailById" @enterlinelist="enterlinelist" style="flex-grow:1;position:relative;"></pipe-net-list>
-                    <pipe-line-list :pointerdatas="chooseLine" :olinedetailedited="olinedetailedited" :linetotal="lineTotal" :slineid="slineid" :currentnetname="currentNetName" @changelist="changelist" @checkedline="checkedline" @createinfo="createInfo" @enterlinelist="enterlinelist"
-                        @updatelinedetailbyid="updateLineDetailById" style="flex-grow:1;position:relative;"></pipe-line-list>
+            <div class="pipe-left" style=" transition: all .5s" :style="warpperslidestyle">
+                <div class="slide-content">
+                    <div class="listwrapper slide" :style="slidestyle">
+                        <pipe-net-list :pipenetdatas="pipenetdatas" :snetid="snetid" :linetotal="lineTotal" @changelist="changelist" @chooseNet="chooseNet" @createinfo="createInfo" @updatenetdetailbyid="updateNetDetailById" @enterlinelist="enterlinelist" style="flex-grow:1;position:relative;"></pipe-net-list>
+                        <pipe-line-list :pointerdatas="chooseLine" :olinedetailedited="olinedetailedited" :linetotal="lineTotal" :slineid="slineid" :currentnetname="currentNetName" @changelist="changelist" @checkedline="checkedline" @createinfo="createInfo" @enterlinelist="enterlinelist"
+                            @updatelinedetailbyid="updateLineDetailById" style="flex-grow:1;position:relative;"></pipe-line-list>
+                    </div>
                 </div>
+                <span class="up_btn" @click="changeListShow"></span>
             </div>
-            <span class="up_btn" @click="changeListShow"></span>
         </div>
-
 
 
     </script>
@@ -412,8 +455,9 @@
 
     <script type="text/javascript" src="/lib/js/vue.min.js"></script>
     <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="/lib/js/common_base.js"></script>
     <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/lib/js/common_base.js"></script>
     <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
     <script type="text/javascript" src="https://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
     <script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
@@ -442,7 +486,6 @@
     <script src="/src/js/pipeline_map/index.js"></script>
 
 </body>
-<script>
-</script>
+
 
 </html>
