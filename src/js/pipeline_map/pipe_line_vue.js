@@ -541,20 +541,34 @@ var pipe_left = {
             return true;
         },
         fieldValue: function() {
-            this.pipeLineTypeOption = this.domainvalue.filter(function(item, index) {
-
+            this.pipeLineTypeOption = [{
+                code: "",
+                value: "请选择管线类型",
+            }];
+            this.pipeMaterOption = [{
+                code: "",
+                value: "请选择管线材质",
+            }];
+            this.pipePressureGrade = [{
+                code: "",
+                value: "请选择压力等级",
+            }];
+            this.pipeUsingState = [{
+                code: "",
+                value: "请选择使用状态",
+            }];
+            this.pipeLineTypeOption = this.pipeLineTypeOption.concat((this.domainvalue.filter(function(item, index) {
                 return item.domainName == "pipe_line_type";
-            });
-            this.pipeMaterOption = this.domainvalue.filter(function(item, index) {
-                return item.domainName == "pipe_material"
-            });
-            this.pipePressureGrade = this.domainvalue.filter(function(item, index) {
-                return item.domainName == "pipe_pressure_grade"
-            });
-            this.pipeUsingState = this.domainvalue.filter(function(item, index) {
-                return item.domainName == "pipe_using_state"
-            });
+            })));
+            this.pipeMaterOption = this.pipeMaterOption.concat((this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_material";
+            })));
+            this.pipePressureGrade = this.pipePressureGrade.concat((this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_pressure_grade";
+            })));
+            this.pipeUsingState = this.pipeUsingState.concat((this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_using_state";
+            })));
         }
-
     }
 }
