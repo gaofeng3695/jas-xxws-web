@@ -101,10 +101,6 @@ var pipe_right_content_attribute = { //右侧属性组件
             } else if (this.changeObj.pipeLineCode.trim().length > 20) {
                 xxwsWindowObj.xxwsAlert("管线编号不能超过20个字");
                 return false;
-                // } else if (this.changeObj.pipeMaterialName.trim().length > 50) {
-                //     //针对材质写正则
-                //     xxwsWindowObj.xxwsAlert("管线材质长度不能超过50个字");
-                //     return false;
             } else if (this.changeObj.pipeDiameter.trim().length > 50) {
                 //针对管径写正则
                 xxwsWindowObj.xxwsAlert("管线管径长度不能超过50个字");
