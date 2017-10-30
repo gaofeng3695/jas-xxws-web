@@ -84,14 +84,13 @@ var pipe_line_list = {
             };
             var inputobj = {
                 "pipeLineName": "",
-                "pipeMaterial": "",
                 "pipeDiameter": "",
                 "pipeThickness": "",
-                "pipeLength": "",
                 "pipeLineRemark": "",
                 "pipeLineCode": "",
                 "pipeLineTypeCode": "",
                 "pipePressureValue": "",
+                "pipeFactLength": "",
                 "pipeMaterialCode": "", //管线材质      
                 "pipePressureGradeCode": "", //压力等级     
                 "pipeUsingStateCode": "", //使用状态
@@ -326,7 +325,7 @@ var pipe_left = {
                 format: 'yyyy-mm-dd',
                 minView: 'month',
                 autoclose: true,
-
+                endDate: new Date(),
             });
             $(this).datetimepicker('show').on('changeDate', function() {
                 $(this).datetimepicker('hide');
@@ -432,7 +431,6 @@ var pipe_left = {
                 pipeLineName: this.inputobj.pipeLineName.trim(), //管线名称
                 pipeDiameter: this.inputobj.pipeDiameter.trim(), //管线管径
                 pipeThickness: this.inputobj.pipeThickness.trim(), //管线壁厚
-                pipeFactLength: this.inputobj.pipeLength.trim(), //管线实际长度
                 pipeLineRemark: this.inputobj.pipeLineRemark.trim(), //管线备注
                 pipeLineCode: this.inputobj.pipeLineCode.trim(), //管线编码
                 pipeMaterialCode: this.inputobj.pipeMaterialCode, //管线材质
@@ -441,6 +439,7 @@ var pipe_left = {
                 pipePressureValue: this.inputobj.pipePressureValue.trim(), //压力值
                 pipeConstructionDate: $("#pipeConstructionDate").val(), //建设时间
                 pipeUsingStateCode: this.inputobj.pipeUsingStateCode, //使用状态
+                pipeFactLength: this.inputobj.pipeFactLength.trim(), //管线实际长度
                 pipeColor: "#2ecf03",
                 pipeStyle: "solid",
                 pipeWeight: "3",
@@ -492,11 +491,6 @@ var pipe_left = {
                 xxwsWindowObj.xxwsAlert("管线名称长度不能超过50个字");
                 return false;
             }
-            if (this.inputobj.pipeMaterial.trim().length > 50) {
-                //针对材质写正则
-                xxwsWindowObj.xxwsAlert("管线材质长度不能超过50个字");
-                return false;
-            }
             if (this.inputobj.pipeLineCode.trim().length > 20) {
                 //针对材质写正则
                 xxwsWindowObj.xxwsAlert("管线编号不能超过20个字");
@@ -514,23 +508,19 @@ var pipe_left = {
             }
             if (this.inputobj.pipePressureValue.trim().length > 0) {
                 //针对管线长度写正则
-                var flag = true;
-                var regNum = /^[0-9]{1,1}\d{0,5}(\.\d{1,2})?$/;
-                if (!regNum.test(this.inputobj.pipePressureValue.trim())) {
-                    xxwsWindowObj.xxwsAlert("管线实际长度格式错误");
-                    flag = false;
+                var regNum1 = /^[0-9]{1,1}\d{0,5}(\.\d{1,2})?$/;
+                if (!regNum1.test(this.inputobj.pipePressureValue.trim())) {
+                    xxwsWindowObj.xxwsAlert("管线压力格式错误");
+                    return false;
                 }
-                return flag;
             }
-            if (this.inputobj.pipeLength.trim().length > 0) {
+            if (this.inputobj.pipeFactLength.trim().length > 0) {
                 //针对管线长度写正则
-                var flag = true;
                 var regNum = /^[0-9]{1,1}\d{0,8}(\.\d{1,3})?$/;
-                if (!regNum.test(this.inputobj.pipeLength.trim())) {
+                if (!regNum.test(this.inputobj.pipeFactLength.trim())) {
                     xxwsWindowObj.xxwsAlert("管线实际长度格式错误");
-                    flag = false;
+                    return false;
                 }
-                return flag;
             }
             if (this.inputobj.pipeLineRemark.trim().length > 201) {
                 //针对管线备注写正则
@@ -540,21 +530,34 @@ var pipe_left = {
             return true;
         },
         fieldValue: function() {
-            console.log("渲染域值" + this.domainvalue);
-            this.pipeLineTypeOption = this.domainvalue.filter(function(item, index) {
-
+            this.pipeLineTypeOption = [{
+                code: "",
+                value: "请选择管线类型",
+            }];
+            this.pipeMaterOption = [{
+                code: "",
+                value: "请选择管线材质",
+            }];
+            this.pipePressureGrade = [{
+                code: "",
+                value: "请选择压力等级",
+            }];
+            this.pipeUsingState = [{
+                code: "",
+                value: "请选择使用状态",
+            }];
+            this.pipeLineTypeOption = this.pipeLineTypeOption.concat((this.domainvalue.filter(function(item, index) {
                 return item.domainName == "pipe_line_type";
-            });
-            this.pipeMaterOption = this.domainvalue.filter(function(item, index) {
-                return item.domainName == "pipe_material"
-            });
-            this.pipePressureGrade = this.domainvalue.filter(function(item, index) {
-                return item.domainName == "pipe_pressure_grade"
-            });
-            this.pipeUsingState = this.domainvalue.filter(function(item, index) {
-                return item.domainName == "pipe_using_state"
-            });
+            })));
+            this.pipeMaterOption = this.pipeMaterOption.concat((this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_material";
+            })));
+            this.pipePressureGrade = this.pipePressureGrade.concat((this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_pressure_grade";
+            })));
+            this.pipeUsingState = this.pipeUsingState.concat((this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_using_state";
+            })));
         }
-
     }
 }

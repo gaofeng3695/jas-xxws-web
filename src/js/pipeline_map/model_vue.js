@@ -291,9 +291,19 @@ Vue.component('select-vue', {
         '<div class="list_left">',
         '<i v-if="required">*</i>{{title}}</div>',
         '<div class="list_right">',
-        '<select  class="form-control" v-model="inputobj[name]"><option v-for="data in optiondata" :value="data.code">{{data.value}}</option><select>',
+        '<select  class="form-control" :style="fontcolr" v-model="inputobj[name]"><option v-for="data in optiondata" :value="data.code" >{{data.value}}</option><select>',
         '</div>',
         '</div>',
 
     ].join(" "),
+    computed: {
+        fontcolr: function() {
+            if (!this.inputobj[this.name]) {
+                return {
+                    color: "#999"
+                }
+            }
+        }
+    }
+
 });

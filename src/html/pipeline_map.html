@@ -291,7 +291,7 @@
                             </span>
                         </div>
                     </div>
-                    <input-two-vue title="实际长度" placeholder="请输入管线实际长度（km）" name="pipeLength" :inputobj="inputobj"></input-two-vue>
+                    <input-two-vue title="实际长度" placeholder="请输入管线实际长度（km）" name="pipeFactLength" :inputobj="inputobj"></input-two-vue>
                 </div>
                 <div class="form_list">
                     <select-vue title="使用状态" :optiondata="pipeUsingState" name="pipeUsingStateCode" :inputobj="inputobj"></select-vue>
@@ -343,8 +343,9 @@
     <!--左边头部的组件-->
     <script type="text/x-template" id="pipe_left_top">
         <div class="pipe_left_top">
-            <!--<div class="left_top">-->
-            <div class="title" v-text="title" @click="click1">
+            <!--<div class="left_top"class=" ">-->
+            <div class="title" @click="click1">
+                <span class="fa fa-fw fa-plus-square-o"></span> {{title}}
             </div>
             <!--</div>-->
 
@@ -353,7 +354,7 @@
     <!--管线列表展示组件-->
     <script type="text/x-template" id="pipe_line_list">
         <div class="pipe_line_list">
-            <pipe-left-top title="新建管线+" @click1="createInfo"></pipe-left-top>
+            <pipe-left-top title="新建管线" @click1="createInfo"></pipe-left-top>
             <div class="left_content">
                 <div class="pipe_top umli100" v-text="currentnetname" style="padding:0px 10px;">
 
@@ -367,15 +368,27 @@
                                         <div class="umli100 wid200">
                                             管线名称<span>：</span><span v-text="item.pipeLineName"></span>
                                         </div>
-
                                         <span class="btn_close" @click.stop="deleteLine(item)" title="删除管线"></span>
                                         <span class="btn_editd" title="编辑管线"></span>
                                     </div>
                                     <div class="line_title">
+                                        <div class="umli100 fl">
+                                            管线类型<span>：</span><span v-text="item.pipeLineTypeName"></span>
+                                        </div>
+                                        <div class="umli100  mar10">
+                                            材质<span>：</span><span v-text="item.pipeMaterialName"></span>
+                                        </div>
+                                    </div>
+                                    <div class="line_title">
+                                        <div class="umli100 wid200">
+                                            使用状态<span>：</span><span v-text="item.pipeUsingStateName"></span>
+                                        </div>
+                                    </div>
+                                    <!--<div class="line_title">
                                         <div class="umli100">
                                             <span class="w2">备注</span><span>：</span><span v-text="item.pipeLineRemark"></span>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </li>
                         </ul>
@@ -391,7 +404,7 @@
     <!--管网列表展示组件-->
     <script type="text/x-template" id="pipe_net_list">
         <div class="pipe_net_list">
-            <pipe-left-top title="新建管网+" @click1="createInfo"></pipe-left-top>
+            <pipe-left-top title="新建管网" @click1="createInfo"></pipe-left-top>
             <div class="left_content left_net">
                 <div class="pipe_top">
                     <div class="num">
