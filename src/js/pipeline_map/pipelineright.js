@@ -111,7 +111,7 @@ var pipe_right_content_attribute = { //右侧属性组件
                 return false;
             } else if (this.changeObj.pipePressureValue != null && this.changeObj.pipePressureValue.trim().length > 0) {
                 if (!regNum.test(this.changeObj.pipePressureValue.trim())) {
-                    xxwsWindowObj.xxwsAlert("管线压力值格式不正确");
+                    xxwsWindowObj.xxwsAlert("管线压力格式不正确");
                     return false;
                 } else {
                     this.lineModify(this.changeObj)
