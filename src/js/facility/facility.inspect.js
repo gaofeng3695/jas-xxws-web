@@ -400,7 +400,7 @@ var searchObj = {
 };
 //导出文件
 var exportFileObj = {
-    $exportAll: $("#export_all"),
+    // $exportAll: $("#export_all"),
     $exportChoice: $("#export_choice"),
     expoerObj: {
         "facilityCheckResult": "",
@@ -416,10 +416,10 @@ var exportFileObj = {
     },
     init: function() {
         var _this = this;
-        this.$exportAll.click(function() {
-            _this.expoerObj.idList = [];
-            _this.expoerCondition();
-        });
+        // this.$exportAll.click(function() {
+        //     _this.expoerObj.idList = [];
+        //     _this.expoerCondition();
+        // });
         this.$exportChoice.click(function() {
             var selectionsData = $('#tableInspect').bootstrapTable('getSelections');
             _this.expoerObj.idList = [];
