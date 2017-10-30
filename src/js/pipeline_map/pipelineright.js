@@ -9,30 +9,38 @@ var pipe_right_title = { //右侧title组件
 };
 
 var pipe_right_content_attribute = { //右侧属性组件
-    props: ["detail"],
+    props: ["detail", "domainvalue"],
     template: '#pipe-right-content-attribute',
     data: function() {
         return {
-            changeObj: {}
+            isDisable: true,
+            changeObj: {},
+            pipeLineTypeOption: [],
+            pipeMaterOption: [],
+            pipePressureGrade: [],
+            pipeUsingState: [],
         }
     },
     watch: {
         detail: function() {
-            $.extend(this.changeObj, this.detail);
-            $(".attributeBtn").html("修改");
-            $(".right-content-attribute input").prop({ disabled: true });
-            $(".right-content-attribute textarea").prop({ disabled: true });
+            var that = this;
+            this.isDisable = true;
+            this.$nextTick(function() {
+                that.changeObj = {};
+                $.extend(that.changeObj, that.detail);
+            });
             // 切换管线 默认  属性模块打开
             $(".left-edit-shrink").removeClass("fa-chevron-down").addClass("fa-chevron-up");
             $(".rightcontent").show();
         },
+        domainvalue: function() {
+            this.fieldValue();
+        }
     },
     methods: {
         save_attribute: function(e) {
-            if ($(e.currentTarget).html() == "修改") {
-                $(e.currentTarget).html("保存")
-                $(".right-content-attribute input").prop({ disabled: false });
-                $(".right-content-attribute textarea").prop({ disabled: false });
+            if (this.isDisable) {
+                this.isDisable = false;
             } else {
                 this.verifyPipe();
             }
@@ -48,15 +56,18 @@ var pipe_right_content_attribute = { //右侧属性组件
                 objectId: that.detail.objectId, //管线主键ID
                 pipeNetworkId: that.detail.pipeNetworkId, //所属管网主键
                 pipeLineName: that.changeObj.pipeLineName, //管线名称
-                pipeLineRemark: that.changeObj.pipeLineRemark, //备注
-                pipeMaterial: that.changeObj.pipeMaterial, //材质
+                pipeLineCode: that.changeObj.pipeLineCode, //管线编码
+                pipeLineTypeCode: that.changeObj.pipeLineTypeCode, //管线类型
+                pipeMaterialCode: that.changeObj.pipeMaterialCode, //材质
                 pipeDiameter: that.changeObj.pipeDiameter, //管径
                 pipeThickness: that.changeObj.pipeThickness, //壁厚
-                pipeFactLength: pipeFactLength, //管线实际长度（人工输入的长度）
+                pipePressureGradeCode: that.changeObj.pipePressureGradeCode, //压力等级
+                pipePressureValue: that.changeObj.pipePressureValue, //压力值
+                pipeConstructionDate: $("#constructionDate").val(), //建设时间
+                pipeUsingStateCode: that.changeObj.pipeUsingStateCode, //使用状态
                 pipeLength: that.detail.pipeLength, //管线长度
-                // pipeColor: that.detail.pipeColor, //管线颜色
-                // pipeStyle: that.detail.pipeStyle, //设置是为实线或虚线 (solid或dashed)
-                // pipeWeight: that.detail.pipeWeight, //管线宽度（1~20）
+                pipeFactLength: pipeFactLength, //管线实际长度（人工输入的长度）
+                pipeLineRemark: that.changeObj.pipeLineRemark, //备注
             };
             $.ajax({
                 type: "POST",
@@ -68,26 +79,17 @@ var pipe_right_content_attribute = { //右侧属性组件
                     if (data.success == 1) {
                         xxwsWindowObj.xxwsAlert("修改管线属性成功", function() {
                             that.$emit('savelineattribute', _data.objectId, 3);
-                            $(".attributeBtn").html("修改");
-                            $(".right-content-attribute  input").prop({ disabled: true });
-                            $(".right-content-attribute  textarea").prop({ disabled: true });
                         });
                     } else {
-                        $(".attributeBtn").html("修改");
-                        $(".right-content-attribute  input").prop({ disabled: true });
-                        $(".right-content-attribute  textarea").prop({ disabled: true });
                         xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                     }
                 },
-                error: function() {
-                    $(".attributeBtn").html("修改");
-                    $(".right-content-attribute  input").prop({ disabled: true });
-                    $(".right-content-attribute  textarea").prop({ disabled: true });
+                error: function(data) {
                     xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                 }
             });
         },
-        //管线编辑长度验证
+        //管线编辑验证
         verifyPipe: function() {
             var regNum = /^[0-9]{1,1}\d{0,8}(\.\d{1,3})?$/;
             if (this.changeObj.pipeLineName.trim().length == 0) {
@@ -96,9 +98,8 @@ var pipe_right_content_attribute = { //右侧属性组件
             } else if (this.changeObj.pipeLineName.trim().length > 50) {
                 xxwsWindowObj.xxwsAlert("管线名称长度不能超过50个字");
                 return false;
-            } else if (this.changeObj.pipeMaterial.trim().length > 50) {
-                //针对材质写正则
-                xxwsWindowObj.xxwsAlert("管线材质长度不能超过50个字");
+            } else if (this.changeObj.pipeLineCode.trim().length > 20) {
+                xxwsWindowObj.xxwsAlert("管线编号不能超过20个字");
                 return false;
             } else if (this.changeObj.pipeDiameter.trim().length > 50) {
                 //针对管径写正则
@@ -108,6 +109,13 @@ var pipe_right_content_attribute = { //右侧属性组件
                 //针对壁厚写正则
                 xxwsWindowObj.xxwsAlert("管线壁厚长度不能超过50个字");
                 return false;
+            } else if (this.changeObj.pipePressureValue != null && this.changeObj.pipePressureValue.trim().length > 0) {
+                if (!regNum.test(this.changeObj.pipePressureValue.trim())) {
+                    xxwsWindowObj.xxwsAlert("管线压力格式不正确");
+                    return false;
+                } else {
+                    this.lineModify(this.changeObj)
+                }
             } else if (this.changeObj.pipeFactLength != null && this.changeObj.pipeFactLength.trim().length > 0) {
                 if (!regNum.test(this.changeObj.pipeFactLength.trim())) {
                     xxwsWindowObj.xxwsAlert("管线实际长度格式不正确");
@@ -123,6 +131,21 @@ var pipe_right_content_attribute = { //右侧属性组件
                 this.lineModify(this.changeObj)
             }
         },
+        //域值的渲染过滤
+        fieldValue: function() {
+            this.pipeLineTypeOption = this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_line_type";
+            });
+            this.pipeMaterOption = this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_material"
+            });
+            this.pipePressureGrade = this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_pressure_grade"
+            });
+            this.pipeUsingState = this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_using_state"
+            });
+        }
     },
 };
 
@@ -314,6 +337,7 @@ var pipenetwork_attribute = { //右侧管网属性组件
     template: '#pipenetwork-attribute',
     data: function() {
         return {
+            isNetDisable: true,
             pipeNetworkNameL: '',
             pipeNetworkRemarkL: ''
         }
@@ -322,19 +346,15 @@ var pipenetwork_attribute = { //右侧管网属性组件
         details: function() {
             this.pipeNetworkNameL = this.details.pipeNetworkName;
             this.pipeNetworkRemarkL = this.details.pipeNetworkRemark;
-            $(".attributeWorkBtn").html("修改");
-            $(".pipenetwork-attribute input").attr("disabled", true);
-            $(".pipenetwork-attribute textarea").attr("disabled", true);
+            this.isNetDisable = true;
             $(".pipeNetworkShrink").removeClass("fa-chevron-down").addClass("fa-chevron-up");
             $(".netrightcontent").show();
         }
     },
     methods: {
         save_workattribute: function(e) {
-            if ($(e.currentTarget).html() == "修改") {
-                $(e.currentTarget).html("保存");
-                $(".pipenetwork-attribute input").prop({ disabled: false });
-                $(".pipenetwork-attribute textarea").prop({ disabled: false });
+            if (this.isNetDisable) {
+                this.isNetDisable = false;
             } else {
                 this.verifyNet(this.details);
             }
@@ -358,26 +378,17 @@ var pipenetwork_attribute = { //右侧管网属性组件
                     if (data.success == 1) {
                         xxwsWindowObj.xxwsAlert("修改管网属性成功", function() {
                             that.$emit('saveworkattribute', _data.objectId, 3);
-                            $(".attributeWorkBtn").html("修改");
-                            $(".pipenetwork-attribute input").prop({ disabled: true });
-                            $(".pipenetwork-attribute textarea").prop({ disabled: true });
                         });
                     } else {
-                        $(".attributeWorkBtn").html("修改");
-                        $(".pipenetwork-attribute input").prop({ disabled: true });
-                        $(".pipenetwork-attribute textarea").prop({ disabled: true });
                         xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                     }
                 },
                 error: function() {
-                    $(".attributeWorkBtn").html("修改");
-                    $(".pipenetwork-attribute input").prop({ disabled: true });
-                    $(".pipenetwork-attribute textarea").prop({ disabled: true });
                     xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                 }
             });
         },
-        //管网编辑长度验证        
+        //管网编辑长度验证
         verifyNet: function(data) {
             //进行填报管网验证
             if (this.pipeNetworkNameL.trim().length == 0) {
@@ -414,6 +425,9 @@ var pipeline_edit = {
         editdetail: {
             type: [Object, String],
         },
+        domainvalue: {
+            type: [Object, String],
+        }
     },
     template: '#pipeline_edit',
     components: {
@@ -441,6 +455,17 @@ var pipeline_edit = {
             advanced: {
                 updateOnContentResize: true
             }
+        });
+        $(document).on("click", '#constructionDate', function() {
+            $(this).datetimepicker({
+                format: 'yyyy-mm-dd',
+                minView: 'month',
+                autoclose: true,
+
+            });
+            $(this).datetimepicker('show').on('changeDate', function() {
+                $(this).datetimepicker('hide');
+            });
         });
     },
     methods: {

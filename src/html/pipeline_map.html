@@ -27,7 +27,8 @@
             <pipeline-baidumap :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :istabshow="sLineId_choosed" @changeline="editLineDetail" @clickline="setsLine_toThow" @savedetail="saveLineStyleAndPoint"></pipeline-baidumap>
 
 
-            <pipeline-edit :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine" @saveline="updateLineDetailById" @savework="updateNetDetailById" @changelinefn="editLineDetail"></pipeline-edit>
+            <pipeline-edit :domainvalue="domainValue" :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine" @saveline="updateLineDetailById" @savework="updateNetDetailById"
+                @changelinefn="editLineDetail"></pipeline-edit>
         </div>
 
         <!-- <pipe-net-example></pipe-net-example> -->
@@ -93,7 +94,7 @@
                 <pipe-right-title @tabchange="tabchange"></pipe-right-title>
                 <!--<transition>-->
                 <div class="rightcontent">
-                    <pipe-right-content-attribute v-show="sCurrentTap === 'attributeShow'" :detail="linedata" @savelineattribute="savelineattribute"></pipe-right-content-attribute>
+                    <pipe-right-content-attribute v-show="sCurrentTap === 'attributeShow'" :domainvalue="domainvalue" :detail="linedata" @savelineattribute="savelineattribute"></pipe-right-content-attribute>
                     <pipe-right-content-style v-show="sCurrentTap === 'styleShow'" :detailstyle="linedata" @styleedit="changelinefn"></pipe-right-content-style>
                     <pipe-right-content-point v-show="sCurrentTap === 'pointShow'" :detailPointer="linedata" @pointedit="changelinefn" @pointerImport="pointerImport"></pipe-right-content-point>
                 </div>
@@ -122,39 +123,81 @@
     <!-- 右侧切换内容 属性组件 -->
     <script type="text/x-template" id="pipe-right-content-attribute">
         <div class="right-content-attribute borderRadius">
-            <div class="modify-item">
-                <p><i>*</i>管线名称：</p>
-                <div class="pipe-name"><input type="text" class="form-control" disabled="true" name="pipeLineName" v-model='changeObj.pipeLineName'></div>
-            </div>
-            <div class="modify-item">
-                <p><span class="w2">材质</span>：</p>
-                <div class="pipe-type"><input type="text" class="form-control" disabled="true" name="pipeMaterial" v-model="changeObj.pipeMaterial"></div>
-            </div>
-            <div class="modify-item">
-                <p><span class="w2">管径</span>：</p>
-                <div class="pipe-diameter"><input type="text" class="form-control" disabled="true" name="pipeDiameter" v-model="changeObj.pipeDiameter"></div>
-            </div>
-            <div class="modify-item">
-                <p><span class="w2">壁厚</span>：</p>
-                <div class="wall-thickness"><input type="text" class="form-control" disabled="true" name="pipeThickness" v-model="changeObj.pipeThickness"></div>
-            </div>
-            <div class="modify-item">
-                <p>管线长度：（km）</p>
-                <div class="pipe-length"><span>{{detail.pipeLength}}</span></div>
-            </div>
-            <div class="modify-item">
-                <p>实际长度：（km）</p>
-                <div class="actual-length"><input type="text" class="form-control" disabled="true" name="pipeFactLength" v-model="changeObj.pipeFactLength"></div>
-            </div>
-            <div class="piple-remarks">
-                <p><span class="w2">备注</span>：</p>
-                <div class="actual-length">
-                    <!-- @input="checkLen($event)" -->
-                    <textarea class="form-control" disabled="true" maxLength="200" name="pipeLineRemark" v-model="changeObj.pipeLineRemark"></textarea>
+            <div class="scrollpointer" style="max-height:420px;height:420px;">
+                <div class="modify-item">
+                    <p><i>*</i>管线名称：</p>
+                    <div class="pipe-name"><input type="text" class="form-control" :disabled="isDisable" name="pipeLineName" v-model='changeObj.pipeLineName'></div>
+                </div>
+                <div class="modify-item">
+                    <p>管线编号：</p>
+                    <div class="pipe-line-code"><input type="text" class="form-control" :disabled="isDisable" name="pipeLineCode" v-model='changeObj.pipeLineCode'></div>
+                </div>
+                <div class="modify-item">
+                    <p>管线类型：</p>
+                    <div class="pipe-line-type-code">
+                        <select class="form-control" :disabled="isDisable" name="pipeLineTypeCode" v-model="changeObj.pipeLineTypeCode">
+                            <option v-for="option in pipeLineTypeOption" v-bind:value="option.code">{{option.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w2">材质</span>：</p>
+                    <div class="pipe-type">
+                        <select class="form-control" :disabled="isDisable" name="pipeMaterialName" v-model="changeObj.pipeMaterialCode">
+                            <option v-for="option in pipeMaterOption" v-bind:value="option.code">{{option.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w2">管径</span>：</p>
+                    <div class="pipe-diameter"><input type="text" class="form-control" :disabled="isDisable" name="pipeDiameter" v-model="changeObj.pipeDiameter"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w2">壁厚</span>：</p>
+                    <div class="wall-thickness"><input type="text" class="form-control" :disabled="isDisable" name="pipeThickness" v-model="changeObj.pipeThickness"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span>压力等级</span>：</p>
+                    <div class="">
+                        <select class="form-control" :disabled="isDisable" name="pipePressureGradeName" v-model="changeObj.pipePressureGradeCode">
+                            <option v-for="option in pipePressureGrade" v-bind:value="option.code">{{option.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w2">压力</span>：</p>
+                    <div><input type="text" class="form-control" :disabled="isDisable" name="pipePressureValue" v-model="changeObj.pipePressureValue"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span>建设时间</span>：</p>
+                    <div><input type="text" class="form-control" :disabled="isDisable" id="constructionDate" name="pipeConstructionDate" v-model="changeObj.pipeConstructionDate"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span>使用状态</span>：</p>
+                    <div class="">
+                        <select class="form-control" :disabled="isDisable" name="pipeUsingStateName" v-model="changeObj.pipeUsingStateCode">
+                            <option v-for="option in pipeUsingState" v-bind:value="option.code">{{option.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p>管线长度：（km）</p>
+                    <div class="pipe-length"><span>{{detail.pipeLength}}</span></div>
+                </div>
+                <div class="modify-item">
+                    <p>实际长度：（km）</p>
+                    <div class="actual-length"><input type="text" class="form-control" :disabled="isDisable" name="pipeFactLength" v-model="changeObj.pipeFactLength"></div>
+                </div>
+                <div class="piple-remarks">
+                    <p><span class="w2">备注</span>：</p>
+                    <div class="actual-length">
+                        <!-- @input="checkLen($event)" -->
+                        <textarea class="form-control" :disabled="isDisable" maxLength="200" name="pipeLineRemark" v-model="changeObj.pipeLineRemark"></textarea>
+                    </div>
                 </div>
             </div>
             <div class="footer">
-                <button class="commonBtn attributeBtn btnBgcolor" @click="save_attribute($event)">修改</button>
+                <button class="commonBtn attributeBtn btnBgcolor" @click="save_attribute($event)">{{isDisable?'修改':'保存'}}</button>
             </div>
         </div>
     </script>
@@ -226,7 +269,7 @@
         <div class="pipenetwork-attribute borderRadius">
             <div class="networkName">
                 <p><i>*</i>管网名称：</p>
-                <div><input type="text" class="form-control" name="pipeNetworkName" disabled="true" v-model="pipeNetworkNameL"></div>
+                <div><input type="text" class="form-control" name="pipeNetworkName" :disabled="isNetDisable" v-model="pipeNetworkNameL"></div>
             </div>
             <!-- <div class="creatTime">
                 <ul>
@@ -246,10 +289,10 @@
             </div> -->
             <div class="networkRemarks">
                 <p><span class="w2">备注</span>：</p>
-                <div class="actual-length"><textarea name="pipeNetworkRemark" maxLength="200" class="form-control" disabled="true" v-model="pipeNetworkRemarkL"></textarea></div>
+                <div class="actual-length"><textarea name="pipeNetworkRemark" maxLength="200" class="form-control" :disabled="isNetDisable" v-model="pipeNetworkRemarkL"></textarea></div>
             </div>
             <div class="footer">
-                <button class="commonBtn btnBgcolor attributeWorkBtn" @click="save_workattribute">修改</button>
+                <button class="commonBtn btnBgcolor attributeWorkBtn" @click="save_workattribute">{{isNetDisable?'修改':'保存'}}</button>
             </div>
         </div>
     </script>
