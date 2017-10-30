@@ -130,7 +130,6 @@
                 </div>
                 <div class="modify-item">
                     <p>管线编码：</p>
-                    <!--<div class="pipe-line-code"><span>{{detail.pipeLineCode}}</span></div>-->
                     <div class="pipe-line-code"><input type="text" class="form-control" disabled="true" name="pipeLineCode" v-model='changeObj.pipeLineCode'></div>
                 </div>
                 <div class="modify-item">
@@ -171,7 +170,7 @@
                 </div>
                 <div class="modify-item">
                     <p><span>建设时间</span>：</p>
-                    <div><input type="text" class="form-control" disabled="true" name="pipeConstructionDate" v-model="changeObj.pipeConstructionDate"></div>
+                    <div><input type="text" class="form-control" disabled="true" id="constructionDate" name="pipeConstructionDate" v-model="changeObj.pipeConstructionDate"></div>
                 </div>
                 <div class="modify-item">
                     <p><span>使用状态</span>：</p>

@@ -65,16 +65,12 @@ var pipe_right_content_attribute = { //右侧属性组件
                 pipeThickness: that.changeObj.pipeThickness, //壁厚
                 pipePressureGradeCode: that.changeObj.pipePressureGradeCode, //压力等级
                 pipePressureValue: that.changeObj.pipePressureValue, //压力值
-                pipeConstructionDate: that.changeObj.pipeConstructionDate, //建设时间
+                pipeConstructionDate: $("#constructionDate").val(), //建设时间
                 pipeUsingStateCode: that.changeObj.pipeUsingStateCode, //使用状态
                 pipeLength: that.detail.pipeLength, //管线长度
                 pipeFactLength: pipeFactLength, //管线实际长度（人工输入的长度）
                 pipeLineRemark: that.changeObj.pipeLineRemark, //备注
-                // pipeColor: that.detail.pipeColor, //管线颜色
-                // pipeStyle: that.detail.pipeStyle, //设置是为实线或虚线 (solid或dashed)
-                // pipeWeight: that.detail.pipeWeight, //管线宽度（1~20）
             };
-            console.log(_data);
             $.ajax({
                 type: "POST",
                 url: "/cloudlink-inspection-event/pipemapline/updateProperty?token=" + lsObj.getLocalStorage('token'),
@@ -107,7 +103,7 @@ var pipe_right_content_attribute = { //右侧属性组件
                 }
             });
         },
-        //管线编辑长度验证
+        //管线编辑验证
         verifyPipe: function() {
             var regNum = /^[0-9]{1,1}\d{0,8}(\.\d{1,3})?$/;
             if (this.changeObj.pipeLineName.trim().length == 0) {
@@ -115,6 +111,9 @@ var pipe_right_content_attribute = { //右侧属性组件
                 return false;
             } else if (this.changeObj.pipeLineName.trim().length > 50) {
                 xxwsWindowObj.xxwsAlert("管线名称长度不能超过50个字");
+                return false;
+            } else if (this.changeObj.pipeLineCode.trim().length > 20) {
+                xxwsWindowObj.xxwsAlert("管线编号不能超过20个字");
                 return false;
                 // } else if (this.changeObj.pipeMaterialName.trim().length > 50) {
                 //     //针对材质写正则
@@ -128,6 +127,13 @@ var pipe_right_content_attribute = { //右侧属性组件
                 //针对壁厚写正则
                 xxwsWindowObj.xxwsAlert("管线壁厚长度不能超过50个字");
                 return false;
+            } else if (this.changeObj.pipePressureValue != null && this.changeObj.pipePressureValue.trim().length > 0) {
+                if (!regNum.test(this.changeObj.pipePressureValue.trim())) {
+                    xxwsWindowObj.xxwsAlert("管线压力值格式不正确");
+                    return false;
+                } else {
+                    this.lineModify(this.changeObj)
+                }
             } else if (this.changeObj.pipeFactLength != null && this.changeObj.pipeFactLength.trim().length > 0) {
                 if (!regNum.test(this.changeObj.pipeFactLength.trim())) {
                     xxwsWindowObj.xxwsAlert("管线实际长度格式不正确");
@@ -143,6 +149,7 @@ var pipe_right_content_attribute = { //右侧属性组件
                 this.lineModify(this.changeObj)
             }
         },
+        //域值的渲染过滤
         fieldValue: function() {
             this.pipeLineTypeOption = this.domainvalue.filter(function(item, index) {
                 return item.domainName == "pipe_line_type";
@@ -479,6 +486,17 @@ var pipeline_edit = {
             advanced: {
                 updateOnContentResize: true
             }
+        });
+        $(document).on("click", '#constructionDate', function() {
+            $(this).datetimepicker({
+                format: 'yyyy-mm-dd',
+                minView: 'month',
+                autoclose: true,
+
+            });
+            $(this).datetimepicker('show').on('changeDate', function() {
+                $(this).datetimepicker('hide');
+            });
         });
     },
     methods: {
