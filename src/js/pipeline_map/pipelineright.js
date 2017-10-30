@@ -337,6 +337,7 @@ var pipenetwork_attribute = { //右侧管网属性组件
     template: '#pipenetwork-attribute',
     data: function() {
         return {
+            isNetDisable: true,
             pipeNetworkNameL: '',
             pipeNetworkRemarkL: ''
         }
@@ -345,19 +346,15 @@ var pipenetwork_attribute = { //右侧管网属性组件
         details: function() {
             this.pipeNetworkNameL = this.details.pipeNetworkName;
             this.pipeNetworkRemarkL = this.details.pipeNetworkRemark;
-            $(".attributeWorkBtn").html("修改");
-            $(".pipenetwork-attribute input").attr("disabled", true);
-            $(".pipenetwork-attribute textarea").attr("disabled", true);
+            this.isNetDisable = true;
             $(".pipeNetworkShrink").removeClass("fa-chevron-down").addClass("fa-chevron-up");
             $(".netrightcontent").show();
         }
     },
     methods: {
         save_workattribute: function(e) {
-            if ($(e.currentTarget).html() == "修改") {
-                $(e.currentTarget).html("保存");
-                $(".pipenetwork-attribute input").prop({ disabled: false });
-                $(".pipenetwork-attribute textarea").prop({ disabled: false });
+            if (this.isNetDisable) {
+                this.isNetDisable = false;
             } else {
                 this.verifyNet(this.details);
             }
@@ -381,21 +378,12 @@ var pipenetwork_attribute = { //右侧管网属性组件
                     if (data.success == 1) {
                         xxwsWindowObj.xxwsAlert("修改管网属性成功", function() {
                             that.$emit('saveworkattribute', _data.objectId, 3);
-                            $(".attributeWorkBtn").html("修改");
-                            $(".pipenetwork-attribute input").prop({ disabled: true });
-                            $(".pipenetwork-attribute textarea").prop({ disabled: true });
                         });
                     } else {
-                        $(".attributeWorkBtn").html("修改");
-                        $(".pipenetwork-attribute input").prop({ disabled: true });
-                        $(".pipenetwork-attribute textarea").prop({ disabled: true });
                         xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                     }
                 },
                 error: function() {
-                    $(".attributeWorkBtn").html("修改");
-                    $(".pipenetwork-attribute input").prop({ disabled: true });
-                    $(".pipenetwork-attribute textarea").prop({ disabled: true });
                     xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                 }
             });

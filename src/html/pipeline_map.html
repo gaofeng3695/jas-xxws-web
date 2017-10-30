@@ -269,7 +269,7 @@
         <div class="pipenetwork-attribute borderRadius">
             <div class="networkName">
                 <p><i>*</i>管网名称：</p>
-                <div><input type="text" class="form-control" name="pipeNetworkName" disabled="true" v-model="pipeNetworkNameL"></div>
+                <div><input type="text" class="form-control" name="pipeNetworkName" :disabled="isNetDisable" v-model="pipeNetworkNameL"></div>
             </div>
             <!-- <div class="creatTime">
                 <ul>
@@ -289,10 +289,10 @@
             </div> -->
             <div class="networkRemarks">
                 <p><span class="w2">备注</span>：</p>
-                <div class="actual-length"><textarea name="pipeNetworkRemark" maxLength="200" class="form-control" disabled="true" v-model="pipeNetworkRemarkL"></textarea></div>
+                <div class="actual-length"><textarea name="pipeNetworkRemark" maxLength="200" class="form-control" :disabled="isNetDisable" v-model="pipeNetworkRemarkL"></textarea></div>
             </div>
             <div class="footer">
-                <button class="commonBtn btnBgcolor attributeWorkBtn" @click="save_workattribute">修改</button>
+                <button class="commonBtn btnBgcolor attributeWorkBtn" @click="save_workattribute">{{isNetDisable?'修改':'保存'}}</button>
             </div>
         </div>
     </script>
