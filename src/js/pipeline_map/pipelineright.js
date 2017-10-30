@@ -9,32 +9,32 @@ var pipe_right_title = { //右侧title组件
 };
 
 var pipe_right_content_attribute = { //右侧属性组件
-    props: ["detail"],
+    props: ["detail", "domainvalue"],
     template: '#pipe-right-content-attribute',
     data: function() {
         return {
             changeObj: {},
-            options: [
-                { text: '天然气', value: 'PLT_01' },
-                { text: '煤气', value: 'PLT_02' },
-                { text: '液化气', value: 'PLT_03' },
-                { text: '原油', value: 'PLT_04' },
-                { text: '成品油', value: 'PLT_05' },
-                { text: '其他', value: 'PLT_99' }
-            ]
+            pipeLineTypeOption: [],
+            pipeMaterOption: [],
+            pipePressureGrade: [],
+            pipeUsingState: [],
         }
     },
     watch: {
         detail: function() {
-            console.log(this.changeObj);
             $.extend(this.changeObj, this.detail);
+            console.log(this.changeObj);
             $(".attributeBtn").html("修改");
             $(".right-content-attribute input").prop({ disabled: true });
             $(".right-content-attribute textarea").prop({ disabled: true });
+            $(".right-content-attribute select").prop({ disabled: true });
             // 切换管线 默认  属性模块打开
             $(".left-edit-shrink").removeClass("fa-chevron-down").addClass("fa-chevron-up");
             $(".rightcontent").show();
         },
+        domainvalue: function() {
+            this.fieldValue();
+        }
     },
     methods: {
         save_attribute: function(e) {
@@ -142,7 +142,22 @@ var pipe_right_content_attribute = { //右侧属性组件
             } else {
                 this.lineModify(this.changeObj)
             }
+        },
+        fieldValue: function() {
+            this.pipeLineTypeOption = this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_line_type";
+            });
+            this.pipeMaterOption = this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_material"
+            });
+            this.pipePressureGrade = this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_pressure_grade"
+            });
+            this.pipeUsingState = this.domainvalue.filter(function(item, index) {
+                return item.domainName == "pipe_using_state"
+            });
         }
+
     },
 };
 
@@ -434,6 +449,9 @@ var pipeline_edit = {
         editdetail: {
             type: [Object, String],
         },
+        domainvalue: {
+            type: [Object, String],
+        }
     },
     template: '#pipeline_edit',
     components: {
