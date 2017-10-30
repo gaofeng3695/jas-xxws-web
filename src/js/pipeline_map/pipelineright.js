@@ -13,6 +13,7 @@ var pipe_right_content_attribute = { //右侧属性组件
     template: '#pipe-right-content-attribute',
     data: function() {
         return {
+            isDisable : true,
             changeObj: {},
             pipeLineTypeOption: [],
             pipeMaterOption: [],
@@ -22,12 +23,12 @@ var pipe_right_content_attribute = { //右侧属性组件
     },
     watch: {
         detail: function() {
-            $.extend(this.changeObj, this.detail);
-            console.log(this.changeObj);
-            $(".attributeBtn").html("修改");
-            $(".right-content-attribute input").prop({ disabled: true });
-            $(".right-content-attribute textarea").prop({ disabled: true });
-            $(".right-content-attribute select").prop({ disabled: true });
+            var that = this;
+            this.isDisable = true;
+            this.$nextTick(function(){
+                that.changeObj = {};
+                $.extend(that.changeObj, that.detail);
+            });
             // 切换管线 默认  属性模块打开
             $(".left-edit-shrink").removeClass("fa-chevron-down").addClass("fa-chevron-up");
             $(".rightcontent").show();
@@ -38,11 +39,8 @@ var pipe_right_content_attribute = { //右侧属性组件
     },
     methods: {
         save_attribute: function(e) {
-            if ($(e.currentTarget).html() == "修改") {
-                $(e.currentTarget).html("保存")
-                $(".right-content-attribute input").prop({ disabled: false });
-                $(".right-content-attribute textarea").prop({ disabled: false });
-                $(".right-content-attribute select").prop({ disabled: false });
+            if (this.isDisable) {
+                this.isDisable = false;
             } else {
                 this.verifyPipe();
             }
@@ -74,7 +72,7 @@ var pipe_right_content_attribute = { //右侧属性组件
                 // pipeStyle: that.detail.pipeStyle, //设置是为实线或虚线 (solid或dashed)
                 // pipeWeight: that.detail.pipeWeight, //管线宽度（1~20）
             };
-            console.log(_data);
+            //console.log(_data);
             $.ajax({
                 type: "POST",
                 url: "/cloudlink-inspection-event/pipemapline/updateProperty?token=" + lsObj.getLocalStorage('token'),
@@ -85,24 +83,12 @@ var pipe_right_content_attribute = { //右侧属性组件
                     if (data.success == 1) {
                         xxwsWindowObj.xxwsAlert("修改管线属性成功", function() {
                             that.$emit('savelineattribute', _data.objectId, 3);
-                            $(".attributeBtn").html("修改");
-                            $(".right-content-attribute  input").prop({ disabled: true });
-                            $(".right-content-attribute  textarea").prop({ disabled: true });
-                            $(".right-content-attribute  select").prop({ disabled: true });
                         });
                     } else {
-                        $(".attributeBtn").html("修改");
-                        $(".right-content-attribute  input").prop({ disabled: true });
-                        $(".right-content-attribute  textarea").prop({ disabled: true });
-                        $(".right-content-attribute  select").prop({ disabled: true });
                         xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                     }
                 },
                 error: function(data) {
-                    $(".attributeBtn").html("修改");
-                    $(".right-content-attribute  input").prop({ disabled: true });
-                    $(".right-content-attribute  textarea").prop({ disabled: true });
-                    $(".right-content-attribute  select").prop({ disabled: true });
                     xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                 }
             });
@@ -157,7 +143,6 @@ var pipe_right_content_attribute = { //右侧属性组件
                 return item.domainName == "pipe_using_state"
             });
         }
-
     },
 };
 
@@ -412,7 +397,7 @@ var pipenetwork_attribute = { //右侧管网属性组件
                 }
             });
         },
-        //管网编辑长度验证        
+        //管网编辑长度验证
         verifyNet: function(data) {
             //进行填报管网验证
             if (this.pipeNetworkNameL.trim().length == 0) {
