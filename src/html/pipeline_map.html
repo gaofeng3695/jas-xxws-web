@@ -126,16 +126,16 @@
             <div class="scrollpointer" style="max-height:420px;height:420px;">
                 <div class="modify-item">
                     <p><i>*</i>管线名称：</p>
-                    <div class="pipe-name"><input type="text" class="form-control" disabled="true" name="pipeLineName" v-model='changeObj.pipeLineName'></div>
+                    <div class="pipe-name"><input type="text" class="form-control" :disabled="isDisable" name="pipeLineName" v-model='changeObj.pipeLineName'></div>
                 </div>
                 <div class="modify-item">
                     <p>管线编码：</p>
-                    <div class="pipe-line-code"><input type="text" class="form-control" disabled="true" name="pipeLineCode" v-model='changeObj.pipeLineCode'></div>
+                    <div class="pipe-line-code"><input type="text" class="form-control" :disabled="isDisable" name="pipeLineCode" v-model='changeObj.pipeLineCode'></div>
                 </div>
                 <div class="modify-item">
-                    <p>管线类型：{{changeObj.pipeLineTypeCode}}</p>
+                    <p>管线类型：</p>
                     <div class="pipe-line-type-code">
-                        <select class="form-control" disabled="true" name="pipeLineTypeCode" v-model="changeObj.pipeLineTypeCode">
+                        <select class="form-control" :disabled="isDisable" name="pipeLineTypeCode" v-model="changeObj.pipeLineTypeCode">
                             <option v-for="option in pipeLineTypeOption" v-bind:value="option.code">{{option.value}}</option>
                         </select>
                     </div>
@@ -143,39 +143,39 @@
                 <div class="modify-item">
                     <p><span class="w2">材质</span>：</p>
                     <div class="pipe-type">
-                        <select class="form-control" disabled="true" name="pipeMaterialName" v-model="changeObj.pipeMaterialCode">
+                        <select class="form-control" :disabled="isDisable" name="pipeMaterialName" v-model="changeObj.pipeMaterialCode">
                             <option v-for="option in pipeMaterOption" v-bind:value="option.code">{{option.value}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="modify-item">
                     <p><span class="w2">管径</span>：</p>
-                    <div class="pipe-diameter"><input type="text" class="form-control" disabled="true" name="pipeDiameter" v-model="changeObj.pipeDiameter"></div>
+                    <div class="pipe-diameter"><input type="text" class="form-control" :disabled="isDisable" name="pipeDiameter" v-model="changeObj.pipeDiameter"></div>
                 </div>
                 <div class="modify-item">
                     <p><span class="w2">壁厚</span>：</p>
-                    <div class="wall-thickness"><input type="text" class="form-control" disabled="true" name="pipeThickness" v-model="changeObj.pipeThickness"></div>
+                    <div class="wall-thickness"><input type="text" class="form-control" :disabled="isDisable" name="pipeThickness" v-model="changeObj.pipeThickness"></div>
                 </div>
                 <div class="modify-item">
                     <p><span>压力等级</span>：</p>
                     <div class="">
-                        <select class="form-control" disabled="true" name="pipePressureGradeName" v-model="changeObj.pipePressureGradeCode">
+                        <select class="form-control" :disabled="isDisable" name="pipePressureGradeName" v-model="changeObj.pipePressureGradeCode">
                             <option v-for="option in pipePressureGrade" v-bind:value="option.code">{{option.value}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="modify-item">
                     <p><span class="w3">压力值</span>：</p>
-                    <div><input type="text" class="form-control" disabled="true" name="pipePressureValue" v-model="changeObj.pipePressureValue"></div>
+                    <div><input type="text" class="form-control" :disabled="isDisable" name="pipePressureValue" v-model="changeObj.pipePressureValue"></div>
                 </div>
                 <div class="modify-item">
                     <p><span>建设时间</span>：</p>
-                    <div><input type="text" class="form-control" disabled="true" id="constructionDate" name="pipeConstructionDate" v-model="changeObj.pipeConstructionDate"></div>
+                    <div><input type="text" class="form-control" :disabled="isDisable" id="constructionDate" name="pipeConstructionDate" v-model="changeObj.pipeConstructionDate"></div>
                 </div>
                 <div class="modify-item">
                     <p><span>使用状态</span>：</p>
                     <div class="">
-                        <select class="form-control" disabled="true" name="pipeUsingStateName" v-model="changeObj.pipeUsingStateCode">
+                        <select class="form-control" :disabled="isDisable" name="pipeUsingStateName" v-model="changeObj.pipeUsingStateCode">
                             <option v-for="option in pipeUsingState" v-bind:value="option.code">{{option.value}}</option>
                         </select>
                     </div>
@@ -186,18 +186,18 @@
                 </div>
                 <div class="modify-item">
                     <p>实际长度：（km）</p>
-                    <div class="actual-length"><input type="text" class="form-control" disabled="true" name="pipeFactLength" v-model="changeObj.pipeFactLength"></div>
+                    <div class="actual-length"><input type="text" class="form-control" :disabled="isDisable" name="pipeFactLength" v-model="changeObj.pipeFactLength"></div>
                 </div>
                 <div class="piple-remarks">
                     <p><span class="w2">备注</span>：</p>
                     <div class="actual-length">
                         <!-- @input="checkLen($event)" -->
-                        <textarea class="form-control" disabled="true" maxLength="200" name="pipeLineRemark" v-model="changeObj.pipeLineRemark"></textarea>
+                        <textarea class="form-control" :disabled="isDisable" maxLength="200" name="pipeLineRemark" v-model="changeObj.pipeLineRemark"></textarea>
                     </div>
                 </div>
             </div>
             <div class="footer">
-                <button class="commonBtn attributeBtn btnBgcolor" @click="save_attribute($event)">修改</button>
+                <button class="commonBtn attributeBtn btnBgcolor" @click="save_attribute($event)">{{isDisable?'修改':'保存'}}</button>
             </div>
         </div>
     </script>
