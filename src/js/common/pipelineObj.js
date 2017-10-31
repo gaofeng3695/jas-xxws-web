@@ -22,10 +22,10 @@
             this._requestData();
             this._createDom();
         },
-        _createDom: function() { //页面创建dom元素  进行挂载管线详情模态框
+        _createDom: function() { //页面创建dom元素  进行手动挂载管线详情模态框
             var modaldiv = "<div id='pipe'></div>";
             $("body").append(modaldiv);
-            window.pipelineModal();
+            pipelineDetailModal.$mount("#pipe");
         },
         _requestData: function() {
             var that = this;
@@ -122,71 +122,67 @@
     window.pipeLineObj = pipeLineObj;
 })(window, $, xxwsWindowObj);
 
-var pipelineDetailModal = null;
 
-function pipelineModal() {
-    pipelineDetailModal = new Vue({
-        el: "#pipe",
-        template: ['<modal-vue v-show="pipeEditShow" :styleobj="styleeditobj" :footer="aFooters" @click2="canceledit">',
-            '<div class="form_list">',
-            '<span-two-vue title="管线名称" :text="olinetoshow.pipeLineName" :required="true"></span-two-vue>',
-            '<span-two-vue title="管线编号" :text="olinetoshow.pipeLineCode"></span-two-vue>',
-            '</div>',
-            '<div class="form_list">',
-            '<span-two-vue title="管线类型" :text="olinetoshow.pipeLineTypeName"></span-two-vue>',
-            '<span-two-vue title="材质" :text="olinetoshow.pipeMaterialName"></span-two-vue>',
-            '</div>',
-            '<div class="form_list">',
-            '<span-two-vue title="管径" :text="olinetoshow.pipeDiameter"></span-two-vue>',
-            '<span-two-vue title="壁厚" :text="olinetoshow.pipeThickness"></span-two-vue>',
-            '</div>',
-            '<div class="form_list">',
-            '<span-two-vue title="压力等级" :text="olinetoshow.pipePressureGradeName"></span-two-vue>',
-            '<span-two-vue title="压力(MPa)" :text="olinetoshow.pipePressureValue"></span-two-vue>',
-            '</div>',
-            '<div class="form_list">',
-            '<span-two-vue title="建设时间" :text="olinetoshow.pipeConstructionDate"></span-two-vue>',
-            '<span-two-vue title="实际长度" :text="olinetoshow.pipeFactLength"></span-two-vue>',
-            '</div>',
-            '<div class="form_list">',
-            '<span-two-vue title="使用状态" :text="olinetoshow.pipeUsingStateName"></span-two-vue>',
-            '</div>',
-            '<textarea-view-vue title="备注" :text="olinetoshow.pipeLineRemark"></textarea-view-vue>',
-            '</modal-vue>',
-        ].join(""),
-        data: {
-            olinetoshow: {},
-            pipeEditShow: false,
-        },
-        watch: {
-            pipeEditShow: function() {
-                if (this.pipeEditShow) {
-                    $("body").css("overflow", "hidden");
-                } else {
-                    $("body").css("overflow", "none");
-                }
-            },
-        },
-        computed: {
-            styleeditobj: function() {
-                return {
-                    title: '管线详情',
-                    width: '800',
-                    height: '600',
-                }
-            },
-            aFooters: function() {
-                return [{ "title": "关闭", "bgcolor": "#fff", "color": "#333", "disabled": false }];
+var pipelineDetailModal = new Vue({
+    template: ['<modal-vue v-show="pipeEditShow" :styleobj="styleeditobj" :footer="aFooters" @click2="canceledit">',
+        '<div class="form_list">',
+        '<span-two-vue title="管线名称" :text="olinetoshow.pipeLineName" :required="true"></span-two-vue>',
+        '<span-two-vue title="管线编号" :text="olinetoshow.pipeLineCode"></span-two-vue>',
+        '</div>',
+        '<div class="form_list">',
+        '<span-two-vue title="管线类型" :text="olinetoshow.pipeLineTypeName"></span-two-vue>',
+        '<span-two-vue title="材质" :text="olinetoshow.pipeMaterialName"></span-two-vue>',
+        '</div>',
+        '<div class="form_list">',
+        '<span-two-vue title="管径" :text="olinetoshow.pipeDiameter"></span-two-vue>',
+        '<span-two-vue title="壁厚" :text="olinetoshow.pipeThickness"></span-two-vue>',
+        '</div>',
+        '<div class="form_list">',
+        '<span-two-vue title="压力等级" :text="olinetoshow.pipePressureGradeName"></span-two-vue>',
+        '<span-two-vue title="压力(MPa)" :text="olinetoshow.pipePressureValue"></span-two-vue>',
+        '</div>',
+        '<div class="form_list">',
+        '<span-two-vue title="建设时间" :text="olinetoshow.pipeConstructionDate"></span-two-vue>',
+        '<span-two-vue title="实际长度" :text="olinetoshow.pipeFactLength"></span-two-vue>',
+        '</div>',
+        '<div class="form_list">',
+        '<span-two-vue title="使用状态" :text="olinetoshow.pipeUsingStateName"></span-two-vue>',
+        '</div>',
+        '<textarea-view-vue title="备注" :text="olinetoshow.pipeLineRemark"></textarea-view-vue>',
+        '</modal-vue>',
+    ].join(""),
+    data: {
+        olinetoshow: {},
+        pipeEditShow: false,
+    },
+    watch: {
+        pipeEditShow: function() {
+            if (this.pipeEditShow) {
+                $("body").css("overflow", "hidden");
+            } else {
+                $("body").css("overflow", "none");
             }
         },
-        methods: {
-            canceledit: function() {
-                this.pipeEditShow = false;
-            },
-            setlinetoshow: function(olinedetail) {
-                this.pipeEditShow = true;
-                this.olinetoshow = olinedetail;
+    },
+    computed: {
+        styleeditobj: function() {
+            return {
+                title: '管线详情',
+                width: '800',
+                height: '600',
             }
+        },
+        aFooters: function() {
+            return [{ "title": "关闭", "bgcolor": "#fff", "color": "#333", "disabled": false }];
         }
-    });
-}
+    },
+    methods: {
+        canceledit: function() {
+            this.pipeEditShow = false;
+        },
+        setlinetoshow: function(olinedetail) {
+            this.pipeEditShow = true;
+            this.olinetoshow = olinedetail;
+        }
+    }
+});
