@@ -92,6 +92,7 @@ var pipe_right_content_attribute = { //右侧属性组件
         //管线编辑验证
         verifyPipe: function() {
             var regNum = /^[0-9]{1,1}\d{0,8}(\.\d{1,3})?$/;
+            var regPressure = /^[0-9]{1,1}\d{0,5}(\.\d{1,2})?$/;
             if (this.changeObj.pipeLineName.trim().length == 0) {
                 xxwsWindowObj.xxwsAlert("管线名称不能为空");
                 return false;
@@ -110,18 +111,18 @@ var pipe_right_content_attribute = { //右侧属性组件
                 xxwsWindowObj.xxwsAlert("管线壁厚长度不能超过50个字");
                 return false;
             } else if (this.changeObj.pipePressureValue != null && this.changeObj.pipePressureValue.trim().length > 0) {
-                if (!regNum.test(this.changeObj.pipePressureValue.trim())) {
-                    xxwsWindowObj.xxwsAlert("管线压力格式不正确");
+                if (!regPressure.test(this.changeObj.pipePressureValue.trim())) {
+                    xxwsWindowObj.xxwsAlert("管线压力格式不正确（最大999999.99）");
                     return false;
                 } else {
-                    this.lineModify(this.changeObj)
-                }
-            } else if (this.changeObj.pipeFactLength != null && this.changeObj.pipeFactLength.trim().length > 0) {
-                if (!regNum.test(this.changeObj.pipeFactLength.trim())) {
-                    xxwsWindowObj.xxwsAlert("管线实际长度格式不正确");
-                    return false;
-                } else {
-                    this.lineModify(this.changeObj)
+                    if (this.changeObj.pipeFactLength != null && this.changeObj.pipeFactLength.trim().length > 0) {
+                        if (!regNum.test(this.changeObj.pipeFactLength.trim())) {
+                            xxwsWindowObj.xxwsAlert("管线实际长度格式不正确（最大999999999.999）");
+                            return false;
+                        } else {
+                            this.lineModify(this.changeObj)
+                        }
+                    }
                 }
             } else if (this.changeObj.pipeLineRemark.trim().length > 200) {
                 //针对壁厚写正则
