@@ -80,7 +80,7 @@ var pipe_line_list = {
             var styleobj = {
                 title: '新增管线',
                 width: '800',
-                height: '450',
+                height: '600',
             };
             var inputobj = {
                 "pipeLineName": "",
@@ -286,7 +286,7 @@ var pipe_left = {
             this.styleeditobj = {
                 title: '管线详情',
                 width: '800',
-                height: '450',
+                height: '600',
             };
             this.aFooters = [{ "title": "关闭", "bgcolor": "#fff", "color": "#333", "disabled": false }, ];
             if (this.olinetoshow) {

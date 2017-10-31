@@ -163,7 +163,7 @@ function pipelineModal() {
                 return {
                     title: '管线详情',
                     width: '800',
-                    height: '450',
+                    height: '600',
                 }
             },
             aFooters: function() {
