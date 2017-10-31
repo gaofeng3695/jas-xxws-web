@@ -8,22 +8,28 @@
 */
 
 
-(function(window,$,xxwsWindowObj){ //依赖pipelineDetailModal，模态框实例
+(function(window, $, xxwsWindowObj) { //依赖pipelineDetailModal，模态框实例
     var pipeLineObj = {
-        _aLineData : null,
-        _aPolyline : [],
-        bdMap : null,
-        init : function(oBdMap){
-            if(!oBdMap){
+        _aLineData: null,
+        _aPolyline: [],
+        bdMap: null,
+        init: function(oBdMap) {
+            if (!oBdMap) {
                 alert('请传入百度地图的实例对象');
                 return;
             }
             this.bdMap = oBdMap;
             this._requestData();
+            this._createDom();
         },
-        _requestData : function(){
+        _createDom: function() { //页面创建dom元素  进行挂载管线详情模态框
+            var modaldiv = "<div id='pipe'></div>";
+            $("body").append(modaldiv);
+            window.pipelineModal();
+        },
+        _requestData: function() {
             var that = this;
-            if(this._aLineData){
+            if (this._aLineData) {
                 that.drawLines();
                 return;
             }
@@ -32,7 +38,7 @@
                 url: "/cloudlink-inspection-event/commonData/pipemaplinedetail/getPageList?token=" + lsObj.getLocalStorage('token'),
                 contentType: "application/json",
                 data: JSON.stringify({
-                    "pipeNetworkUsed" : '1',
+                    "pipeNetworkUsed": '1',
                     "pageNum": 1,
                     "pageSize": 200
                 }),
@@ -67,12 +73,11 @@
                         strokeStyle: item.pipeStyle, //dashed
                         strokeOpacity: 1,
                         enableEditing: that.isEditable || false,
-                        enableMassClear : false,
+                        enableMassClear: false,
                     });
-                    topline.addEventListener('click',function(){
-                        //alert(item.objectId);
-                        if(window.pipelineDetailModal){   //管线详情模态框vue实例
-                            pipelineDetailModal.$emit('setLine_toThow', item);
+                    topline.addEventListener('click', function() {
+                        if (window.pipelineDetailModal) { //管线详情模态框vue实例
+                            pipelineDetailModal.setlinetoshow(item);
                         }
                     });
                     that._aPolyline.push(topline);
@@ -83,13 +88,13 @@
             //     margins: [0, 0, 0, 0],
             // });
         },
-        _draw_line: function (aPoints, oStyle, isBdPoint) {
+        _draw_line: function(aPoints, oStyle, isBdPoint) {
             // aPoints : {
             //     bdLon : 123,
             //     bdLat : 123
             // }
             if (!isBdPoint) {
-                aPoints = aPoints.map(function (item, index, arr) {
+                aPoints = aPoints.map(function(item, index, arr) {
                     return new BMap.Point(item.bdLon, item.bdLat);
                 });
             }
@@ -99,21 +104,80 @@
                 strokeStyle: oStyle.strokeStyle || 'solid', //dashed
                 strokeOpacity: oStyle.strokeOpacity || 0.5,
                 enableEditing: oStyle.enableEditing || false,
-                enableMassClear : oStyle.enableMassClear || false,
+                enableMassClear: oStyle.enableMassClear || false,
             };
             //console.log(obj)
             var polyline = new BMap.Polyline(aPoints, obj);
             this.bdMap.addOverlay(polyline);
             return polyline;
         },
-        removeLines : function(){
+        removeLines: function() {
             var that = this;
-            this._aPolyline.forEach(function(item,index){
+            this._aPolyline.forEach(function(item, index) {
                 that.bdMap.removeOverlay(item);
             });
             this._aPolyline = [];
         }
     };
     window.pipeLineObj = pipeLineObj;
-})(window,$,xxwsWindowObj);
+})(window, $, xxwsWindowObj);
 
+var pipelineDetailModal = null;
+
+function pipelineModal() {
+    pipelineDetailModal = new Vue({
+        el: "#pipe",
+        template: ['<modal-vue v-show="pipeEditShow" :styleobj="styleeditobj" :footer="aFooters" @click2="canceledit">',
+            '<div class="form_list">',
+            '<span-two-vue title="管线名称" :text="olinetoshow.pipeLineName" :required="true"></span-two-vue>',
+            '<span-two-vue title="管线编号" :text="olinetoshow.pipeLineCode"></span-two-vue>',
+            '</div>',
+            '<div class="form_list">',
+            '<span-two-vue title="管线类型" :text="olinetoshow.pipeLineTypeName"></span-two-vue>',
+            '<span-two-vue title="材质" :text="olinetoshow.pipeMaterialName"></span-two-vue>',
+            '</div>',
+            '<div class="form_list">',
+            '<span-two-vue title="管径" :text="olinetoshow.pipeDiameter"></span-two-vue>',
+            '<span-two-vue title="壁厚" :text="olinetoshow.pipeThickness"></span-two-vue>',
+            '</div>',
+            '<div class="form_list">',
+            '<span-two-vue title="压力等级" :text="olinetoshow.pipePressureGradeName"></span-two-vue>',
+            '<span-two-vue title="压力(MPa)" :text="olinetoshow.pipePressureValue"></span-two-vue>',
+            '</div>',
+            '<div class="form_list">',
+            '<span-two-vue title="建设时间" :text="olinetoshow.pipeConstructionDate"></span-two-vue>',
+            '<span-two-vue title="实际长度" :text="olinetoshow.pipeFactLength"></span-two-vue>',
+            '</div>',
+            '<div class="form_list">',
+            '<span-two-vue title="使用状态" :text="olinetoshow.pipeUsingStateName"></span-two-vue>',
+            '</div>',
+            '<textarea-view-vue title="备注" :text="olinetoshow.pipeLineRemark"></textarea-view-vue>',
+            '</modal-vue>',
+        ].join(""),
+        data: {
+            olinetoshow: {},
+            pipeEditShow: false,
+        },
+        computed: {
+            styleeditobj: function() {
+                return {
+                    title: '管线详情',
+                    width: '800',
+                    height: '450',
+                }
+            },
+            aFooters: function() {
+                return [{ "title": "关闭", "bgcolor": "#fff", "color": "#333", "disabled": false }];
+            }
+        },
+        methods: {
+            canceledit: function() {
+                this.pipeEditShow = false;
+            },
+            setlinetoshow: function(olinedetail) {
+                this.pipeEditShow = true;
+                this.olinetoshow = olinedetail;
+            }
+        }
+    });
+}
