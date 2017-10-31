@@ -8,7 +8,7 @@
 */
 
 
-(function(window,$,xxwsWindowObj){
+(function(window,$,xxwsWindowObj){ //依赖pipelineDetailModal，模态框实例
     var pipeLineObj = {
         _aLineData : null,
         _aPolyline : [],
@@ -68,6 +68,12 @@
                         strokeOpacity: 1,
                         enableEditing: that.isEditable || false,
                         enableMassClear : false,
+                    });
+                    topline.addEventListener('click',function(){
+                        //alert(item.objectId);
+                        if(window.pipelineDetailModal){   //管线详情模态框vue实例
+                            pipelineDetailModal.$emit('setLine_toThow', item);
+                        }
                     });
                     that._aPolyline.push(topline);
                 }
