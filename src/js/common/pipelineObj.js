@@ -158,6 +158,15 @@ function pipelineModal() {
             olinetoshow: {},
             pipeEditShow: false,
         },
+        watch: {
+            pipeEditShow: function() {
+                if (this.pipeEditShow) {
+                    $("body").css("overflow", "hidden");
+                } else {
+                    $("body").css("overflow", "none");
+                }
+            },
+        },
         computed: {
             styleeditobj: function() {
                 return {
