@@ -308,6 +308,9 @@ var pipe_right_content_point = { //右侧坐标点组件
         pointerImport: function() { //导入坐标点
             this.$emit("pointerImport");
         },
+        aaaa: function(e) {
+            $(e).addClass("activeborder").siblings('div.point').removeClass("activeborder");
+        },
         downTemplate: function() { //下载坐标点模板
             var options = {
                 "url": '/cloudlink-inspection-event/templatedownload/excelDownload?token=' + lsObj.getLocalStorage('token'),
@@ -430,7 +433,7 @@ var pipeline_edit = {
             type: [Object, String],
         },
         domainvalue: {
-            type: [Object, String],
+            type: [Object, String, Array],
         }
     },
     template: '#pipeline_edit',

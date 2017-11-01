@@ -248,7 +248,7 @@
         <div class="right-content-point borderRadius">
             <div class="scrollpointer" style="max-height:310px;">
                 <div>
-                    <div class="point" v-for="(item,index) in (this.detailPointer.line)">
+                    <div class="point" v-for="(item,index) in (this.detailPointer.line)" @click="aaaa($event)">
                         <div class="point-left">{{index+1}}</div>
                         <div class="point-center">
                             <p>经度：<span>{{item.bdLon}}</span></p>
