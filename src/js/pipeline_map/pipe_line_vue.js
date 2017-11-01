@@ -250,7 +250,7 @@ var pipe_left = {
             type: [String, Object],
         },
         olinetoshow: {
-            type: String,
+            type: [String, Object],
         },
         domainvalue: {
             type: Array,
