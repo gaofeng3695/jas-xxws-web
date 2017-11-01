@@ -35,7 +35,8 @@ var vm = new Vue({
         sLineId_choosed: '', //被选中的管线的ID
         oLine_toThow: '', //要显示详情的管线ID
         olineDetail_edited: '', //存在已被编辑的管线
-        // onetDetaul_edited: false, //存在已被编辑的管网信息
+        markerPoint : {"bdlon": 116.203929,"bdLat": 40.227286},//地图上的标注点，点击坐标后在地图上做标注 {"bdlon": 116.203929,"bdLat": 40.227286} || ''
+
         isLineList_entered: false, //是否进入了管线列表
         aNetDetails: [], //所有管网的详情数组
         aLineDetails: [], //所有管线的详情数组s
@@ -97,13 +98,13 @@ var vm = new Vue({
         'pipeline-edit': pipeline_edit
     },
     mounted: function() {
-        console.log('#app mounted');
+        //console.log('#app mounted');
         this._requestNetDetails();
-        this.initOption();
+        this._initOption();
         //this._requestLineDetails();
     },
     methods: {
-        initOption: function() {
+        _initOption: function() {
             var that = this;
             $.ajax({
                 type: "POST",
@@ -165,9 +166,12 @@ var vm = new Vue({
         // updateNetDetail: function(flag) {
         //     this.onetDetaul_edited = flag;
         // },
+        setMarkerPoint : function(oPoint){
+            this.markerPoint = oPoint ? oPoint : '';
+        },
         setsLine_toThow: function(oLine) { //设定要被展示管线详情的ID
             this.oLine_toThow = oLine || '';
-            console.log('要被展示管线详情的ID: ', this.oLine_toThow);
+            //console.log('要被展示管线详情的ID: ', this.oLine_toThow);
         },
         chooseNet: function(sNetId) { //选择管网，清空则传空
             this.sNetId_choosed = sNetId || '';

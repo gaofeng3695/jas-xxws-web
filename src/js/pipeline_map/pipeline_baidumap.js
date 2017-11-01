@@ -2,6 +2,7 @@ var pipeline_baidumap = {
     template: '#pipeline_baidumap',
     props: {
         linedetails: {},
+        markerpoint : {},
         linedetailsedited: {},
         istabshow: {
             default: false
@@ -11,7 +12,6 @@ var pipeline_baidumap = {
         //alert(this.linedetails)
         return {
             sCurrentTap: '', //draw,edit,keep,save
-
         };
     },
     computed: {
@@ -61,6 +61,9 @@ var pipeline_baidumap = {
             //console.log('——————————数据来源发生改变')
             this._draw_lines();
         },
+        markerpoint : function(){
+            this._addPonitMarker();
+        }
     },
     mounted: function() {
         this.mapObj = createMap({ //创建地图实例
@@ -68,7 +71,7 @@ var pipeline_baidumap = {
         });
         this._addDrawLineEvent(this.mapObj.map);
         this._draw_lines(); //划线
-
+        console.log(this.markerPoint)
     },
     methods: {
         changeTab: function(sTab) { //tab切换
@@ -82,7 +85,9 @@ var pipeline_baidumap = {
             var that = this;
             var map = this.mapObj;
             var aline = this.aLineDetailsToShow;
+            this.$emit('setmarkerpoint');
             map.clearOverlays(); //清空所有覆盖物
+
 
             if (that.isDrawable) { //只有划线状态才会更改鼠标样式
                 map.map.setDefaultCursor('crosshair');
@@ -266,32 +271,12 @@ var pipeline_baidumap = {
                 }
             });
         },
-
-        // startDrawLine: function () { //开始画线
-        //     this.map.setDefaultCursor('crosshair');
-        //     this.map.setDraggingCursor('crosshair');
-        //     this.map.removeOverlay(this.lineDrawed);
-        //     this.isEditable = true;
-        // },
-        // editLine: function (oLine) { //编辑线
-        //     //this.mapObj.linePoints = this.topline.getPath();
-        //     //this.map.setDefaultCursor('crosshair');
-        //     this.map.setDraggingCursor('crosshair');
-        //     this._drawLineEditable(oLine);
-        // },
-        // stopDrawLine: function () {
-        //     this.map.setDefaultCursor(this.defaultCursor);
-        //     this.map.setDraggingCursor(this.draggingCursor);
-        //     this.map.removeOverlay(this.dashLineDrawed);
-        //     this.isEditable = false;
-        // },
-        // continueDrawLine: function (oLine) {
-        //     this.map.setDefaultCursor('crosshair');
-        //     this.map.setDraggingCursor('crosshair');
-        //     oLine = this.lineDrawed ? this.lineDrawed : oLine;
-        //     this._drawLineEditable(oLine);
-        //     this.isEditable = true;
-        // }
-
+        _addPonitMarker : function(){
+            if(!this.markerpoint){
+                this.mapObj.map.removeOverlay(this._pointMarker);
+                return;
+            }
+            this._pointMarker = this.mapObj.draw_pointMarker(this.markerpoint.bdlon,this.markerpoint.bdLat);
+        }
     },
 };
