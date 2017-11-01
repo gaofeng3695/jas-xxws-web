@@ -43,7 +43,7 @@ Vue.component('modal-vue', {
             return {
                 width: this.styleobj.width + "px",
                 height: this.styleobj.height + "px",
-                margin: "80px auto",
+                margin: "40px auto 10px auto",
             }
         },
         height: function() {
@@ -51,7 +51,6 @@ Vue.component('modal-vue', {
                 height: (this.styleobj.height - 106) + "px",
             }
         },
-
     }
 });
 
