@@ -272,11 +272,10 @@ var pipeline_baidumap = {
             });
         },
         _addPonitMarker : function(){
-            if(!this.markerpoint){
-                this.mapObj.map.removeOverlay(this._pointMarker);
-                return;
+            this.mapObj.map.removeOverlay(this._pointMarker);
+            if(this.markerpoint){
+                this._pointMarker = this.mapObj.draw_pointMarker(this.markerpoint.bdlon,this.markerpoint.bdLat);
             }
-            this._pointMarker = this.mapObj.draw_pointMarker(this.markerpoint.bdlon,this.markerpoint.bdLat);
         }
     },
 };
