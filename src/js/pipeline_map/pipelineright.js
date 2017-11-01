@@ -288,6 +288,10 @@ var pipe_right_content_point = { //右侧坐标点组件
     },
     methods: {
         setMarkPoint: function(item) {
+            if(!item){
+                this.$emit("setmarkerpoint", '');
+                return;
+            }
             var obj = { "bdlon": item.bdLon, "bdLat": item.bdLat };
             this.$emit("setmarkerpoint", obj);
         },
