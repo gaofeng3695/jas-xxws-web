@@ -92,7 +92,6 @@ var pipe_right_content_attribute = { //右侧属性组件
         //管线编辑验证
         verifyPipe: function() {
             var regNum = /^[0-9]{1,1}\d{0,8}(\.\d{1,3})?$/;
-            var regPressure = /^[0-9]{1,1}\d{0,5}(\.\d{1,2})?$/;
             if (this.changeObj.pipeLineName.trim().length == 0) {
                 xxwsWindowObj.xxwsAlert("管线名称不能为空");
                 return false;
@@ -110,24 +109,15 @@ var pipe_right_content_attribute = { //右侧属性组件
                 //针对壁厚写正则
                 xxwsWindowObj.xxwsAlert("管线壁厚长度不能超过50个字");
                 return false;
-            } else if (this.changeObj.pipePressureValue != null && this.changeObj.pipePressureValue.trim().length > 0) {
-                if (!regPressure.test(this.changeObj.pipePressureValue.trim())) {
-                    xxwsWindowObj.xxwsAlert("管线压力格式不正确（最大999999.99）");
+            } else if (this.verifyPressure() == false) {
+                return false;
+            } else if (this.changeObj.pipeFactLength != null && this.changeObj.pipeFactLength.trim().length > 0) {
+                if (!regNum.test(this.changeObj.pipeFactLength.trim())) {
+                    xxwsWindowObj.xxwsAlert("管线实际长度格式不正确（最大999999999.999）");
                     return false;
                 } else {
-                    if (this.changeObj.pipeFactLength != null && this.changeObj.pipeFactLength.trim().length > 0) {
-                        if (!regNum.test(this.changeObj.pipeFactLength.trim())) {
-                            xxwsWindowObj.xxwsAlert("管线实际长度格式不正确（最大999999999.999）");
-                            return false;
-                        } else {
-                            this.lineModify(this.changeObj)
-                        }
-                    }
+                    this.lineModify(this.changeObj)
                 }
-            } else if (this.changeObj.pipeLineRemark.trim().length > 200) {
-                //针对壁厚写正则
-                xxwsWindowObj.xxwsAlert("备注长度不能超过200个字");
-                return false;
             } else {
                 this.lineModify(this.changeObj)
             }
@@ -146,6 +136,19 @@ var pipe_right_content_attribute = { //右侧属性组件
             this.pipeUsingState = this.domainvalue.filter(function(item, index) {
                 return item.domainName == "pipe_using_state"
             });
+        },
+        verifyPressure: function() {
+            var regPressure = /^[0-9]{1,1}\d{0,5}(\.\d{1,2})?$/;
+            if (this.changeObj.pipePressureValue != null && this.changeObj.pipePressureValue.trim().length > 0) {
+                if (!regPressure.test(this.changeObj.pipePressureValue.trim())) {
+                    xxwsWindowObj.xxwsAlert("管线压力格式不正确（最大999999.99）");
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
         }
     },
 };
@@ -199,7 +202,7 @@ var pipe_right_content_style = { //右侧样式组件
         });
         //边线样式的设置
         $(".chooseStyle").change(function() {
-            var val = $('select').val();
+            var val = $('.chooseStyle').val();
             if (val == 1) {
                 $(".borderColorStyle").css("border-style", "solid");
                 var oDetail = JSON.parse(JSON.stringify(that.detailstyle));
@@ -279,11 +282,15 @@ var pipe_right_content_style = { //右侧样式组件
 
 var pipe_right_content_point = { //右侧坐标点组件
     template: '#pipe-right-content-point',
-    props: ["detailPointer"],
+    props: ["detailPointer", "markerpoint"],
     data: function() {
         return {};
     },
     methods: {
+        setMarkPoint: function(item) {
+            var obj = { "bdlon": item.bdLon, "bdLat": item.bdLat };
+            this.$emit("setmarkerpoint", obj);
+        },
         deletePointer: function(index) {
             var that = this;
             var defaultOptions = {
@@ -427,7 +434,10 @@ var pipeline_edit = {
             type: [Object, String],
         },
         domainvalue: {
-            type: [Object, String],
+            type: [Object, String, Array],
+        },
+        markerpoint: {
+            type: [Object, String, Array],
         }
     },
     template: '#pipeline_edit',
@@ -462,6 +472,7 @@ var pipeline_edit = {
                 format: 'yyyy-mm-dd',
                 minView: 'month',
                 autoclose: true,
+                endDate: new Date(),
 
             });
             $(this).datetimepicker('show').on('changeDate', function() {
@@ -649,6 +660,9 @@ var pipeline_edit = {
         },
         savelineattribute: function(id, num) {
             this.$emit('saveline', id, num);
+        },
+        setmarkerpoint: function(markpoint) {
+            this.$emit('setmarkerpoint', markpoint);
         }
     },
 };
