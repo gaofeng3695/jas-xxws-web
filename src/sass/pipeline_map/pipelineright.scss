@@ -112,6 +112,7 @@
             }
             #constructionDate[readonly] {
                 background: #fff;
+                cursor: pointer;
                 &[disabled] {
                     background: #eee;
                 }
