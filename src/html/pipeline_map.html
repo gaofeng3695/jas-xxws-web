@@ -24,20 +24,11 @@
                 @checkedline="chooseLine" @enterlinelist="enterLineList" @updatenetdetailbyid="updateNetDetailById" @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
 
 
-            <pipeline-baidumap
-                :markerpoint="markerPoint"
-                :linedetails="aLineDetailsToShow"
-                :linedetailsedited="olineDetail_edited"
-                :istabshow="sLineId_choosed"
-                @setmarkerpoint ="setMarkerPoint"
-                @changeline="editLineDetail"
-                @clickline="setsLine_toThow"
-                @savedetail="saveLineStyleAndPoint"
-            ></pipeline-baidumap>
+            <pipeline-baidumap :markerpoint="markerPoint" :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :istabshow="sLineId_choosed" @setmarkerpoint="setMarkerPoint" @changeline="editLineDetail" @clickline="setsLine_toThow" @savedetail="saveLineStyleAndPoint"></pipeline-baidumap>
 
 
-            <pipeline-edit :domainvalue="domainValue" :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine" @saveline="updateLineDetailById" @savework="updateNetDetailById"
-                @changelinefn="editLineDetail"></pipeline-edit>
+            <pipeline-edit :domainvalue="domainValue" :markerpoint="markerPoint" @setmarkerpoint="setMarkerPoint" :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine"
+                @saveline="updateLineDetailById" @savework="updateNetDetailById" @changelinefn="editLineDetail"></pipeline-edit>
         </div>
 
         <!-- <pipe-net-example></pipe-net-example> -->
@@ -105,7 +96,7 @@
                 <div class="rightcontent">
                     <pipe-right-content-attribute v-show="sCurrentTap === 'attributeShow'" :domainvalue="domainvalue" :detail="linedata" @savelineattribute="savelineattribute"></pipe-right-content-attribute>
                     <pipe-right-content-style v-show="sCurrentTap === 'styleShow'" :detailstyle="linedata" @styleedit="changelinefn"></pipe-right-content-style>
-                    <pipe-right-content-point v-show="sCurrentTap === 'pointShow'" :detailPointer="linedata" @pointedit="changelinefn" @pointerImport="pointerImport"></pipe-right-content-point>
+                    <pipe-right-content-point v-show="sCurrentTap === 'pointShow'" :detailPointer="linedata" @pointedit="changelinefn" @pointerImport="pointerImport" :markerpoint="markerpoint" @setmarkerpoint="setmarkerpoint"></pipe-right-content-point>
                 </div>
                 <div class="left-edit-close fa fa-fw fa-close" @click="pipeNeLineClose"></div>
                 <div class="left-edit-shrink fa fa-fw fa-chevron-down" @click="shrink"></div>
@@ -257,7 +248,7 @@
         <div class="right-content-point borderRadius">
             <div class="scrollpointer" style="max-height:310px;">
                 <div>
-                    <div class="point" v-for="(item,index) in (this.detailPointer.line)" @click="aaaa($event)">
+                    <div class="point" v-for="(item,index) in (this.detailPointer.line)" @mouseover="setMarkPoint(item)" :class="{'clickpoint' : item.bdLon == markerpoint.bdlon&&item.bdLat == markerpoint.bdLat }">
                         <div class="point-left">{{index+1}}</div>
                         <div class="point-center">
                             <p>经度：<span>{{item.bdLon}}</span></p>

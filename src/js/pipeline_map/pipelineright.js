@@ -202,7 +202,7 @@ var pipe_right_content_style = { //右侧样式组件
         });
         //边线样式的设置
         $(".chooseStyle").change(function() {
-            var val = $('select').val();
+            var val = $('.chooseStyle').val();
             if (val == 1) {
                 $(".borderColorStyle").css("border-style", "solid");
                 var oDetail = JSON.parse(JSON.stringify(that.detailstyle));
@@ -282,11 +282,15 @@ var pipe_right_content_style = { //右侧样式组件
 
 var pipe_right_content_point = { //右侧坐标点组件
     template: '#pipe-right-content-point',
-    props: ["detailPointer"],
+    props: ["detailPointer", "markerpoint"],
     data: function() {
         return {};
     },
     methods: {
+        setMarkPoint: function(item) {
+            var obj = { "bdlon": item.bdLon, "bdLat": item.bdLat };
+            this.$emit("setmarkerpoint", obj);
+        },
         deletePointer: function(index) {
             var that = this;
             var defaultOptions = {
@@ -307,9 +311,6 @@ var pipe_right_content_point = { //右侧坐标点组件
         },
         pointerImport: function() { //导入坐标点
             this.$emit("pointerImport");
-        },
-        aaaa: function(e) {
-            $(e).addClass("activeborder").siblings('div.point').removeClass("activeborder");
         },
         downTemplate: function() { //下载坐标点模板
             var options = {
@@ -434,6 +435,9 @@ var pipeline_edit = {
         },
         domainvalue: {
             type: [Object, String, Array],
+        },
+        markerpoint: {
+            type: [Object, String, Array],
         }
     },
     template: '#pipeline_edit',
@@ -468,6 +472,7 @@ var pipeline_edit = {
                 format: 'yyyy-mm-dd',
                 minView: 'month',
                 autoclose: true,
+                endDate: new Date(),
 
             });
             $(this).datetimepicker('show').on('changeDate', function() {
@@ -655,6 +660,9 @@ var pipeline_edit = {
         },
         savelineattribute: function(id, num) {
             this.$emit('saveline', id, num);
+        },
+        setmarkerpoint: function(markpoint) {
+            this.$emit('setmarkerpoint', markpoint);
         }
     },
 };

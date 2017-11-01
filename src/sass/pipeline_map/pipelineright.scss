@@ -110,6 +110,12 @@
                     font-size: 12px;
                 }
             }
+            #constructionDate[readonly] {
+                background: #fff;
+                &[disabled] {
+                    background: #eee;
+                }
+            }
         }
         .right-content-style {
             width: 225px;
@@ -257,6 +263,7 @@
             .point {
                 height: 50px;
                 overflow: hidden;
+                border: 2px solid #fff;
                 border-bottom: 1px solid #e4e4e4;
                 .point-left {
                     width: 35px;
@@ -292,8 +299,9 @@
                 text-align: center;
                 padding-top: 110px;
             }
-            .activeborder {
-                background: red;
+            .clickpoint {
+                background: rgba(237, 247, 255, 0.5);
+                border: 2px solid #59b6fc;
             }
         }
         .left-edit-close {
