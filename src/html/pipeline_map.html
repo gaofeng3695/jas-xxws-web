@@ -24,7 +24,16 @@
                 @checkedline="chooseLine" @enterlinelist="enterLineList" @updatenetdetailbyid="updateNetDetailById" @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
 
 
-            <pipeline-baidumap :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :istabshow="sLineId_choosed" @changeline="editLineDetail" @clickline="setsLine_toThow" @savedetail="saveLineStyleAndPoint"></pipeline-baidumap>
+            <pipeline-baidumap
+                :markerpoint="markerPoint"
+                :linedetails="aLineDetailsToShow"
+                :linedetailsedited="olineDetail_edited"
+                :istabshow="sLineId_choosed"
+                @setmarkerpoint ="setMarkerPoint"
+                @changeline="editLineDetail"
+                @clickline="setsLine_toThow"
+                @savedetail="saveLineStyleAndPoint"
+            ></pipeline-baidumap>
 
 
             <pipeline-edit :domainvalue="domainValue" :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine" @saveline="updateLineDetailById" @savework="updateNetDetailById"
@@ -512,7 +521,7 @@
         </div>
     </script>
 
-    <script type="text/javascript" src="/lib/js/vue.min.js"></script>
+    <script type="text/javascript" src="/lib/js/vue.js"></script>
     <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
