@@ -1,169 +1,250 @@
-* {
-    margin: 0px;
-    padding: 0px;
-}
-
-.forms {
-    // display: none;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    zoom: 1;
-    background: rgba(47, 46, 46, 0.5);
-    z-index: 1000;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    .modal {
-        margin: 40px auto;
-    }
-    .modal_table {
-        // width: 600px;
-        // height: 350px;
-        border-radius: 8px;
-        overflow: hidden;
-        position: relative;
-        z-index: 999;
-        -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
-        .top {
-            height: 40px;
-            line-height: 40px;
-            background: #344052;
-            color: #fff;
-            padding: 0;
-            margin: 0;
-            // position: absolute;
-            width: 100%;
-            text-align: center;
-            .closes {
-                position: absolute;
-                right: 10px;
-                top: 14px;
-                cursor: pointer;
-            }
-        }
-        .content {
-            padding: 10px;
-            // height: 260px;
-            background: #e7e8ec;
-            overflow-y: auto;
-            width: 100%;
-            .tablevue {
-                // height: 100%;
-                // overflow: auto;
-                background: #fff;
-                border-radius: 5px;
-                padding: 20px;
-                // margin: 0px 10px;
-            }
-        }
-        .footer {
-            text-align: center;
-            background: #344052;
-            height: 50px;
-            line-height: 50px;
-            border-top: 1px solid #e5e5e5;
-            // position: absolute;
-            // bottom: 0px;
-            width: 100%;
-            .btns {
-                display: inline-block;
-                cursor: pointer;
-                border: 1px solid transparent;
-                border-radius: 4px;
-                font-size: 14px;
-            }
-            button {
-                height: 36px;
-                line-height: 36px;
-                border-radius: 4px;
-                width: 120px;
-                // margin-top: 7px;
-                font-size: 16px;
-                margin: 7px 20px 0 20px;
-            }
-            .submit {
-                background: #59b6fc;
-                color: #fff;
-            }
-            .cancel {
-                background: #fff;
-            }
-        }
-    }
-    .w2 {
-        letter-spacing: 2em;
-        margin-right: -2em;
-    }
-    //针对输入框
-    .form_list {
-        overflow: hidden;
-        line-height: 30px;
-        padding-top: 15px;
-        .form_part {
-            width: 50%;
-            float: left;
-        }
-        .list_left {
-            width: 80px;
-            float: left;
-            // text-align: end;
-            text-align: right;
-            /*IE*/
-            // text-align: -moz-end;
-            // /*Firefox*/
-            // text-align: -webkit-end;
-            /*Chrome*/
-            i {
-                color: red;
-                vertical-align: middle;
-                margin-right: 5px;
-                font-size: 20px;
-            }
-        }
-        .list_right {
-            margin-left: 80px;
-            width: auto;
-            padding: 0 20px 0 10px;
-        }
-        .textarea_text {
-            position: relative;
-            .remark,
-            textarea {
-                resize: none;
-                height: 120px;
-                // position: relative
-            }
-            .hLine {
-                word-wrap: break-word;
-            }
-            .text_num {
-                color: #999;
-                position: absolute;
-                bottom: -2px;
-                right: 30px;
-            }
-        }
-    }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity .5s
-}
-
-.fade-enter,
-.fade-leave-to
-/* .fade-leave-active in below version 2.1.8 */
-
-{
-    opacity: 1
-}
-
-.umlin100 {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+   * {
+       margin: 0px;
+       padding: 0px;
+   }
+   
+   .forms {
+       // display: none;
+       position: fixed;
+       left: 0;
+       top: 0;
+       width: 100%;
+       zoom: 1;
+       background: rgba(47, 46, 46, 0.5);
+       z-index: 1000;
+       width: 100%;
+       height: 100%;
+       overflow-y: auto;
+       .modal {
+           margin: 40px auto;
+       }
+       .modal_table {
+           // width: 600px;
+           // height: 350px;
+           border-radius: 8px;
+           overflow: hidden;
+           position: relative;
+           z-index: 999;
+           -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+           box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+           .top {
+               height: 40px;
+               line-height: 40px;
+               background: #344052;
+               color: #fff;
+               padding: 0;
+               margin: 0;
+               // position: absolute;
+               width: 100%;
+               text-align: center;
+               .closes {
+                   position: absolute;
+                   right: 10px;
+                   top: 14px;
+                   cursor: pointer;
+               }
+           }
+           .content {
+               padding: 10px;
+               // height: 260px;
+               background: #e7e8ec;
+               overflow-y: auto;
+               width: 100%;
+               .tablevue {
+                   // height: 100%;
+                   // overflow: auto;
+                   background: #fff;
+                   border-radius: 5px;
+                   padding: 20px;
+                   // margin: 0px 10px;
+               }
+           }
+           .footer {
+               text-align: center;
+               background: #344052;
+               height: 50px;
+               line-height: 50px;
+               border-top: 1px solid #e5e5e5;
+               // position: absolute;
+               // bottom: 0px;
+               width: 100%;
+               .btns {
+                   display: inline-block;
+                   cursor: pointer;
+                   border: 1px solid transparent;
+                   border-radius: 4px;
+                   font-size: 14px;
+               }
+               button {
+                   height: 36px;
+                   line-height: 36px;
+                   border-radius: 4px;
+                   width: 120px;
+                   // margin-top: 7px;
+                   font-size: 16px;
+                   margin: 7px 20px 0 20px;
+               }
+               .submit {
+                   background: #59b6fc;
+                   color: #fff;
+               }
+               .cancel {
+                   background: #fff;
+               }
+           }
+       }
+   }
+   
+   .w2 {
+       letter-spacing: 2em;
+       margin-right: -2em;
+   }
+   
+   // 针对详情
+   .detail {
+       overflow: hidden;
+       line-height: 36px;
+       border-bottom: 1px solid #ddd;
+       border-right: 1px solid #ddd;
+       background: #f7f7f7;
+       .details_title {
+           line-height: 36px;
+           padding-right: 10px;
+           color: #666;
+           border-left: 1px solid #ddd;
+       }
+       .details_text {
+           line-height: 36px;
+           padding: 6px 10px;
+           background: #fff;
+           min-height: 36px;
+           border-left: 1px solid #ddd;
+           word-wrap: break-word;
+           word-break: normal;
+           span {
+               width: 100%;
+               display: block;
+           }
+       }
+       .form_part {
+           width: 50%;
+           float: left;
+       }
+       .list_left {
+           width: 80px;
+           float: left;
+           text-align: right;
+           i {
+               color: red;
+               vertical-align: middle;
+               margin-right: 5px;
+               font-size: 20px;
+           }
+       }
+       .list_right {
+           margin-left: 80px;
+           width: auto;
+           padding: 0 20px 0 10px;
+       }
+       &:first-child {
+           border-top: 1px solid #ddd;
+       }
+       .textarea_view {
+           //    line-height: 120px;
+           //    padding: 6px 10px;
+           background: #fff;
+           min-height: 120px;
+           border-left: 1px solid #ddd;
+           word-wrap: break-word;
+           word-break: normal;
+       }
+       .details_textarea_title {
+           height: 120px;
+           padding-right: 10px;
+           color: #666;
+           border-left: 1px solid #ddd;
+       }
+       .textarea_text {
+           position: relative;
+           span {
+               line-height: 22px;
+               display: block;
+               padding: 7px 0;
+           }
+           .remark {
+               resize: none;
+               height: 120px;
+               // position: relative
+           }
+       }
+   }
+   
+   //针对输入框
+   .form_list {
+       overflow: hidden;
+       line-height: 36px;
+       padding-top: 15px;
+       .form_part {
+           width: 50%;
+           float: left;
+       }
+       .list_left {
+           width: 80px;
+           float: left;
+           // text-align: end;
+           text-align: right;
+           /*IE*/
+           // text-align: -moz-end;
+           // /*Firefox*/
+           // text-align: -webkit-end;
+           /*Chrome*/
+           i {
+               color: red;
+               vertical-align: middle;
+               margin-right: 5px;
+               font-size: 20px;
+           }
+       }
+       .list_right {
+           margin-left: 80px;
+           width: auto;
+           padding: 0 20px 0 10px;
+       }
+       .textarea_text {
+           position: relative;
+           .remark,
+           textarea {
+               resize: none;
+               height: 120px;
+               // position: relative
+           }
+           .hLine {
+               word-wrap: break-word;
+           }
+           .text_num {
+               color: #999;
+               position: absolute;
+               bottom: -2px;
+               right: 30px;
+           }
+       }
+   }
+   
+   .fade-enter-active,
+   .fade-leave-active {
+       transition: opacity .5s
+   }
+   
+   .fade-enter,
+   .fade-leave-to
+   /* .fade-leave-active in below version 2.1.8 */
+   
+   {
+       opacity: 1
+   }
+   
+   .umlin100 {
+       white-space: nowrap;
+       overflow: hidden;
+       text-overflow: ellipsis;
+   }
