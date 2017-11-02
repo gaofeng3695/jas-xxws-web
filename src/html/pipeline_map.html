@@ -123,7 +123,7 @@
     <!-- 右侧切换内容 属性组件 -->
     <script type="text/x-template" id="pipe-right-content-attribute">
         <div class="right-content-attribute borderRadius">
-            <div class="scrollpointer" style="max-height:420px;height:420px;">
+            <div class="scrollpointer" style="max-height:420px;height:420px;width:100%;">
                 <div class="modify-item">
                     <p><i>*</i>管线名称：</p>
                     <div class="pipe-name"><input type="text" class="form-control" :disabled="isDisable" name="pipeLineName" v-model='changeObj.pipeLineName'></div>
@@ -205,14 +205,14 @@
     <script type="text/x-template" id="pipe-right-content-style">
         <div class="right-content-style borderRadius">
             <div class="title">
-                <p>边线颜色：</p>
+                <p>管线颜色：</p>
                 <div class="bgcolor">
                     <span class="bgColorStyle"></span>
                     <span class="chooseColor"></span>
                 </div>
             </div>
             <div class="title">
-                <p>边线样式：</p>
+                <p>管线样式：</p>
                 <div class="bordercolor">
                     <span class="borderColorStyle"></span>
                     <select class="chooseStyle">
@@ -222,7 +222,7 @@
                 </div>
             </div>
             <div class="title">
-                <p>边线宽度：</p>
+                <p>管线宽度：</p>
                 <div class="borderWidth">
                     <ul class="lanren">
                         <li>
@@ -246,9 +246,9 @@
     <!-- 右侧切换内容 坐标点组件 -->
     <script type="text/x-template" id="pipe-right-content-point">
         <div class="right-content-point borderRadius">
-            <div class="scrollpointer" style="max-height:310px;">
+            <div class="scrollpointer" style="max-height:310px;width:100%;">
                 <div>
-                    <div class="point" v-for="(item,index) in (this.detailPointer.line)" @mouseover="setMarkPoint(item)"  @mouseout="setMarkPoint('')" :class="{'clickpoint' : item.bdLon == markerpoint.bdlon&&item.bdLat == markerpoint.bdLat }">
+                    <div class="point" v-for="(item,index) in (this.detailPointer.line)" @mouseover="setMarkPoint(item)" @mouseout="setMarkPoint('')" :class="{'clickpoint' : item.bdLon == markerpoint.bdlon&&item.bdLat == markerpoint.bdLat }">
                         <div class="point-left">{{index+1}}</div>
                         <div class="point-center">
                             <p>经度：<span>{{item.bdLon}}</span></p>
