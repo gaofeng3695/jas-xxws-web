@@ -248,11 +248,7 @@
         <div class="right-content-point borderRadius">
             <div class="scrollpointer" style="max-height:310px;">
                 <div>
-<<<<<<< HEAD
-                    <div class="point" v-for="(item,index) in (this.detailPointer.line)" @mouseover="setMarkPoint(item)" @mouseout.self="setMarkPoint('')" :class="{'clickpoint' : item.bdLon == markerpoint.bdlon&&item.bdLat == markerpoint.bdLat }">
-=======
-                    <div class="point" v-for="(item,index) in (this.detailPointer.line)" @mouseover="setMarkPoint(item)"  @mouseout="setMarkPoint('')" :class="{'clickpoint' : item.bdLon == markerpoint.bdlon&&item.bdLat == markerpoint.bdLat }">
->>>>>>> v1.6
+                    <div class="point" v-for="(item,index) in (this.detailPointer.line)" @mouseover="setMarkPoint(item)" @mouseout="setMarkPoint('')" :class="{'clickpoint' : item.bdLon == markerpoint.bdlon&&item.bdLat == markerpoint.bdLat }">
                         <div class="point-left">{{index+1}}</div>
                         <div class="point-center">
                             <p>经度：<span>{{item.bdLon}}</span></p>
