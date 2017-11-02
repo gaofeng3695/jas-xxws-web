@@ -248,7 +248,7 @@
         <div class="right-content-point borderRadius">
             <div class="scrollpointer" style="max-height:310px;">
                 <div>
-                    <div class="point" v-for="(item,index) in (this.detailPointer.line)" @mouseover="setMarkPoint(item)"  @mouseout.self="setMarkPoint('')" :class="{'clickpoint' : item.bdLon == markerpoint.bdlon&&item.bdLat == markerpoint.bdLat }">
+                    <div class="point" v-for="(item,index) in (this.detailPointer.line)" @mouseover="setMarkPoint(item)" @mouseout.self="setMarkPoint('')" :class="{'clickpoint' : item.bdLon == markerpoint.bdlon&&item.bdLat == markerpoint.bdLat }">
                         <div class="point-left">{{index+1}}</div>
                         <div class="point-center">
                             <p>经度：<span>{{item.bdLon}}</span></p>
@@ -325,7 +325,7 @@
                 <div class="form_list">
                     <div class="form_part">
                         <div class="list_left text-right">
-                            建设日期
+                            建设时间
                         </div>
                         <div class="list_right has-feedback">
                             <input type="text" size="16" class="form-control pointer" id="pipeConstructionDate" name="pipeConstructionDate" placeholder="请选择建设时间" readonly>
