@@ -262,7 +262,7 @@ Vue.component('span-two-vue', {
         '<div class="list_left">',
         '<i v-if="required">*</i>{{title}}</div>',
         '<div class="list_right">',
-        '<span  class="form-control umlin100" v-text="text">',
+        '<span  class="form-control umlin100" v-text="text"></span>',
         '</div>',
         '</div>',
     ].join(" "),
@@ -290,7 +290,7 @@ Vue.component('select-vue', {
         '<div class="list_left">',
         '<i v-if="required">*</i>{{title}}</div>',
         '<div class="list_right">',
-        '<select  class="form-control" :style="fontcolr" v-model="inputobj[name]"><option v-for="data in optiondata" :value="data.code" >{{data.value}}</option><select>',
+        '<select  class="form-control" :style="fontcolr" v-model="inputobj[name]"><option v-for="data in optiondata" :value="data.code" >{{data.value}}</option></select>',
         '</div>',
         '</div>',
 
