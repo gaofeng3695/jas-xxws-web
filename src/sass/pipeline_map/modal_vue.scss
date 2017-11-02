@@ -109,7 +109,13 @@
         .list_left {
             width: 80px;
             float: left;
-            text-align: end;
+            // text-align: end;
+            text-align: right;
+            /*IE*/
+            // text-align: -moz-end;
+            // /*Firefox*/
+            // text-align: -webkit-end;
+            /*Chrome*/
             i {
                 color: red;
                 vertical-align: middle;
