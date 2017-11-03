@@ -80,7 +80,7 @@ var pipe_line_list = {
             var styleobj = {
                 title: '新增管线',
                 width: '800',
-                height: '600',
+                height: '610',
             };
             var inputobj = {
                 "pipeLineName": "",
@@ -168,7 +168,7 @@ var pipe_net_list = {
             var styleobj = {
                 title: '新增管网',
                 width: '600',
-                height: '350',
+                height: '356',
             };
             var inputobj = {
                 "pipeNetworkName": "",
@@ -286,7 +286,7 @@ var pipe_left = {
             this.styleeditobj = {
                 title: '管线详情',
                 width: '800',
-                height: '600',
+                height: '515',
             };
             this.aFooters = [{ "title": "关闭", "bgcolor": "#fff", "color": "#333", "disabled": false }, ];
             if (this.olinetoshow) {

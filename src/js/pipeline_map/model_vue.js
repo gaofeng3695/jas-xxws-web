@@ -215,11 +215,11 @@ Vue.component('textarea-view-vue', {
 
     },
     template: [
-        '<div class="form_list"><div class="list_left text-right">',
+        '<div class="detail"><div class="list_left text-right details_textarea_title">',
         '{{title}}',
         '</div>',
-        '<div class="list_right textarea_text">',
-        '<span class="form-control hLine remark" v-text="text"></span>',
+        '<div class="list_right textarea_text  textarea_view">',
+        '<span class=" hLine remark" v-text="text"></span>',
         '</div></div>',
     ].join(" "),
 });
@@ -229,19 +229,17 @@ Vue.component('span-vue', {
         title: {
             type: String,
         },
-        required: {
-            type: Boolean,
-        },
+
         text: {
             type: String,
         }
     },
     template: [
-        '<div class="form_list"><div class="list_left text-right">',
-        '<i v-if="required">*</i><span >{{title}}</span>',
+        '<div><div class="list_left text-right details_title">',
+        '<span >{{title}}</span>',
         '</div>',
-        '<div class="list_right">',
-        '<span class="form-control umlin100"  v-text="text"></span>',
+        '<div class="list_right details_text ">',
+        '<span class="umlin100" v-text="text"></span>',
         '</div></div>',
     ].join(" "),
 });
@@ -259,10 +257,10 @@ Vue.component('span-two-vue', {
     },
     template: [
         '<div class="form_part" >',
-        '<div class="list_left">',
+        '<div class="list_left details_title">',
         '<i v-if="required">*</i>{{title}}</div>',
-        '<div class="list_right">',
-        '<span  class="form-control umlin100" v-text="text"></span>',
+        '<div class="list_right details_text">',
+        '<span  class=" umlin100" v-text="text"></span>',
         '</div>',
         '</div>',
     ].join(" "),

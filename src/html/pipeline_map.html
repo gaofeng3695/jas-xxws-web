@@ -342,28 +342,28 @@
                 <textarea-vue title="备注" placeholder="请输入备注" name="pipeLineRemark" :inputobj="inputobj"></textarea-vue>
             </modal-vue>
             <modal-vue v-if="pipeEditShow" :styleobj="styleeditobj" :footer="aFooters" @click2="canceledit">
-                <div class="form_list">
+                <div class="detail">
                     <span-two-vue title="管线名称" :text="olinetoshow.pipeLineName" :required="true"></span-two-vue>
                     <span-two-vue title="管线编号" :text="olinetoshow.pipeLineCode"></span-two-vue>
                 </div>
-                <div class="form_list">
+                <div class="detail">
                     <span-two-vue title="管线类型" :text="olinetoshow.pipeLineTypeName"></span-two-vue>
                     <span-two-vue title="材质" :text="olinetoshow.pipeMaterialName"></span-two-vue>
                 </div>
-                <div class="form_list">
+                <div class=" detail">
                     <span-two-vue title="管径" :text="olinetoshow.pipeDiameter"></span-two-vue>
                     <span-two-vue title="壁厚" :text="olinetoshow.pipeThickness"></span-two-vue>
                 </div>
-                <div class="form_list">
+                <div class=" detail">
                     <span-two-vue title="压力等级" :text="olinetoshow.pipePressureGradeName"></span-two-vue>
                     <span-two-vue title="压力(MPa)" :text="olinetoshow.pipePressureValue"></span-two-vue>
                 </div>
-                <div class="form_list">
+                <div class="detail">
                     <span-two-vue title="建设时间" :text="olinetoshow.pipeConstructionDate"></span-two-vue>
                     <span-two-vue title="实际长度" :text="olinetoshow.pipeFactLength"></span-two-vue>
                 </div>
-                <div class="form_list">
-                    <span-two-vue title="使用状态" :text="olinetoshow.pipeUsingStateName"></span-two-vue>
+                <div class="detail">
+                    <span-vue title="使用状态" :text="olinetoshow.pipeUsingStateName"></span-vue>
                 </div>
                 <textarea-view-vue title="备注" :text="olinetoshow.pipeLineRemark"></textarea-view-vue>
             </modal-vue>
