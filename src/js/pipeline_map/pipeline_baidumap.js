@@ -184,12 +184,12 @@ var pipeline_baidumap = {
 
 
             });
-
-            map.map.setViewport(aPoints, { //设定视野范围
-                enableAnimation: true,
-                margins: [0, 0, 0, 0],
-            });
-
+            if(aPoints.length > 0){
+                map.map.setViewport(aPoints, { //设定视野范围
+                    enableAnimation: true,
+                    margins: [0, 0, 0, 0],
+                });
+            }
         },
         _addDrawLineEvent: function(oMap) {
             var that = this;
