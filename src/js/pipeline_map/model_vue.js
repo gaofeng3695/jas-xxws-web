@@ -258,7 +258,7 @@ Vue.component('span-two-vue', {
     template: [
         '<div class="form_part" >',
         '<div class="list_left details_title">',
-        '<i v-if="required">*</i>{{title}}</div>',
+        '{{title}}</div>',
         '<div class="list_right details_text">',
         '<span  class=" umlin100" v-text="text"></span>',
         '</div>',
