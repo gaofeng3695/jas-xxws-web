@@ -273,6 +273,7 @@ var vm = new Vue({
                             // console.log(data.rows[0])
                             // console.log(that.aLineDetails)
                             that.aLineDetails = util.updateArrayById(that.aLineDetails, sId, data.rows[0]);
+                            that.olineDetail_edited = '';
                         }
                         that.updateNetDetailById(that.sNetId_choosed, 3);
                     } else {
@@ -303,7 +304,6 @@ var vm = new Vue({
                     if (data.success == 1) {
                         //console.log(sId)
                         that.updateLineDetailById(sId, 3);
-                        that.olineDetail_edited = '';
                     } else {
                         xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                     }
