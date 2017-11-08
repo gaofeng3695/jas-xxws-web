@@ -10,7 +10,7 @@ $(function() {
     drafting('event_map', 'drafting_down'); //启动拖拽
 
     pipeLineObj.init(mapObj.$bdMap);
-    pipelinebtnObj.init($(".event_map"));
+    pipelinebtnObj.init($("#event_map"));
 });
 /*searchObj*/
 (function(window, $, createSearhTemplate) {
