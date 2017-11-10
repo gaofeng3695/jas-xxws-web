@@ -3,7 +3,8 @@
   "version": "1.6.0",
   "description": "xun_xian_wei_shi package.json",
   "scripts": {
-    "start": " gulp sass && concurrently  \"lite-server\" \"gulp sass:watch\" ",
+    "start": " gulp sass && concurrently  \"lite-server\" \"gulp sass:watch\"",
+    "devintest": " gulp sass && concurrently  \"lite-server 212\" \"gulp sass:watch\"",
     "build": "gulp all"
   },
   "keywords": [],
@@ -13,12 +14,15 @@
   "devDependencies": {
     "concurrently": "^3.1.0",
     "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
     "gulp-clean-css": "^3.9.0",
     "gulp-htmlmin": "^3.0.0",
     "gulp-imagemin": "^3.1.1",
     "gulp-sass": "^3.1.0",
     "gulp-uglify": "^2.1.0",
-    "lite-server": "^2.2.2"
+    "http-proxy-middleware": "^0.17.4",
+    "lite-server": "^2.2.2",
+    "run-sequence": "^2.2.0"
   },
   "repository": {}
 }

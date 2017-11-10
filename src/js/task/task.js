@@ -10,7 +10,7 @@ $(function() {
     tableOperationObj.init(); //表格上面的操作按钮
     drafting('task_map', 'drafting_down'); //启动拖拽
     pipeLineObj.init(mapObj.$bdMap);
-    pipelinebtnObj.init($(".task_map"));
+    pipelinebtnObj.init($("#task_map"));
 });
 /*searchObj*/
 (function(window, $, createSearhTemplate) {

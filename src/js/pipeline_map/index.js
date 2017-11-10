@@ -1,7 +1,7 @@
-window.onerror = function(msg, url, line) {
-    alert("erro" + msg + "\n" + url + ":" + line);
-    return true;
-};
+// window.onerror = function(msg, url, line) {
+//     alert("erro" + msg + "\n" + url + ":" + line);
+//     return true;
+// };
 var util = {
     updateArrayById: function(arr, sId, newVal) {
         for (var i = 0; i < arr.length; i++) {
@@ -33,11 +33,14 @@ var vm = new Vue({
     data: {
         sNetId_choosed: '', //被选中的管网的ID
         sLineId_choosed: '', //被选中的管线的ID
+        oLine_toThow: '', //要显示详情的管线ID
         olineDetail_edited: '', //存在已被编辑的管线
-        // onetDetaul_edited: false, //存在已被编辑的管网信息
+        markerPoint : {"bdlon": 116.203929,"bdLat": 40.227286},//地图上的标注点，点击坐标后在地图上做标注 {"bdlon": 116.203929,"bdLat": 40.227286} || ''
+
         isLineList_entered: false, //是否进入了管线列表
         aNetDetails: [], //所有管网的详情数组
         aLineDetails: [], //所有管线的详情数组s
+        domainValue: [], //所有的域值
     },
     computed: {
         aNetId_active: function() {
@@ -95,11 +98,30 @@ var vm = new Vue({
         'pipeline-edit': pipeline_edit
     },
     mounted: function() {
-        console.log('#app mounted');
+        //console.log('#app mounted');
         this._requestNetDetails();
+        this._initOption();
         //this._requestLineDetails();
     },
     methods: {
+        _initOption: function() {
+            var that = this;
+            $.ajax({
+                type: "POST",
+                url: "/cloudlink-inspection-event/domain/getListByDomainName?token=" + lsObj.getLocalStorage('token'),
+                contentType: "application/json",
+                data: JSON.stringify({ "domainNameList": ["pipe_line_type", "pipe_material", "pipe_pressure_grade", "pipe_using_state"] }),
+                dataType: "json",
+                success: function(data) {
+                    if (data.success == 1) {
+                        that.domainValue = data.rows;
+                    } else {
+                        xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                    }
+                }
+            });
+
+        },
         _requestNetDetails: function() { //请求管网详情列表
             var that = this;
             $.ajax({
@@ -144,6 +166,13 @@ var vm = new Vue({
         // updateNetDetail: function(flag) {
         //     this.onetDetaul_edited = flag;
         // },
+        setMarkerPoint : function(oPoint){
+            this.markerPoint = oPoint ? oPoint : '';
+        },
+        setsLine_toThow: function(oLine) { //设定要被展示管线详情的ID
+            this.oLine_toThow = oLine || '';
+            //console.log('要被展示管线详情的ID: ', this.oLine_toThow);
+        },
         chooseNet: function(sNetId) { //选择管网，清空则传空
             this.sNetId_choosed = sNetId || '';
         },
@@ -241,9 +270,10 @@ var vm = new Vue({
                             //         return that.aLineDetails.splice(index, 1, data.rows[0]);
                             //     }
                             // });
-                            console.log(data.rows[0])
-                            console.log(that.aLineDetails)
+                            // console.log(data.rows[0])
+                            // console.log(that.aLineDetails)
                             that.aLineDetails = util.updateArrayById(that.aLineDetails, sId, data.rows[0]);
+                            that.olineDetail_edited = '';
                         }
                         that.updateNetDetailById(that.sNetId_choosed, 3);
                     } else {
@@ -253,11 +283,11 @@ var vm = new Vue({
             });
         },
         editLineDetail: function(OLineDetail) { //变更坐标点，更改线的样式，传入关键点，点击保存
-            console.log('管线的坐标或者样式发生改变');
+            //console.log('管线的坐标或者样式发生改变');
             this.olineDetail_edited = OLineDetail;
         },
         saveLineStyleAndPoint: function() {
-            console.log('——————————开始保存修改的管线数据数据')
+            //console.log('——————————开始保存修改的管线数据数据')
             var that = this;
             var _data = JSON.parse(JSON.stringify(this.olineDetail_edited));
             delete _data.createTime;
@@ -274,7 +304,6 @@ var vm = new Vue({
                     if (data.success == 1) {
                         //console.log(sId)
                         that.updateLineDetailById(sId, 3);
-                        that.olineDetail_edited = '';
                     } else {
                         xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
                     }

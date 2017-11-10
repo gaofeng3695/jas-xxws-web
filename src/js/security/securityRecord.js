@@ -1065,7 +1065,7 @@ function previewPicture(e) {
 };
 //导出文件
 var exportFileObj = {
-    $exportAll: $("#export_all"),
+    // $exportAll: $("#export_all"),
     $exportChoice: $("#export_choice"),
     expoerObj: {
         "enterhomeSituationTypeCode": "", //20:处理中，21：已完成，:全部
@@ -1080,10 +1080,10 @@ var exportFileObj = {
     },
     init: function() {
         var _this = this;
-        this.$exportAll.click(function() {
-            _this.expoerObj.ids = [];
-            _this.expoerCondition();
-        });
+        // this.$exportAll.click(function() {
+        //     _this.expoerObj.ids = [];
+        //     _this.expoerCondition();
+        // });
         this.$exportChoice.click(function() {
             var selectionsData = $('#tablRrecord').bootstrapTable('getSelections');
             _this.expoerObj.ids = [];

@@ -43,14 +43,14 @@ Vue.component('modal-vue', {
             return {
                 width: this.styleobj.width + "px",
                 height: this.styleobj.height + "px",
-                margin: "80px auto",
+                margin: "40px auto 10px auto",
             }
         },
         height: function() {
             return {
                 height: (this.styleobj.height - 106) + "px",
             }
-        }
+        },
     }
 });
 
@@ -132,6 +132,40 @@ Vue.component('input-vue', {
         '</div></div>',
     ].join(" "),
 });
+Vue.component('input-two-vue', {
+    props: {
+        title: {
+            type: String,
+        },
+        name: {
+            type: String,
+        },
+        inputobj: {
+            type: Object,
+        },
+        required: {
+            type: Boolean,
+        },
+        placeholder: {
+            type: String
+        }
+    },
+    template: [
+        '<div class="form_part" >',
+        '<div class="list_left">',
+        '<i v-if="required">*</i>{{title}}</div>',
+        '<div class="list_right">',
+        '<input type="text"  :placeholder="placeholder" class="form-control" :name="name" v-model="inputobj[name]">',
+        '</div>',
+        '</div>',
+    ].join(" "),
+    mounted: function() {
+
+    },
+
+});
+
+
 Vue.component('textarea-vue', {
     props: {
         title: {
@@ -170,10 +204,77 @@ Vue.component('textarea-vue', {
         }
     }
 });
-Vue.component('input-two-vue', {
+Vue.component('textarea-view-vue', {
     props: {
         title: {
             type: String,
+        },
+        text: {
+            type: String,
+        },
+
+    },
+    template: [
+        '<div class="detail"><div class="list_left text-right details_textarea_title">',
+        '{{title}}',
+        '</div>',
+        '<div class="list_right textarea_text  textarea_view">',
+        '<span class=" hLine remark" v-text="text"></span>',
+        '</div></div>',
+    ].join(" "),
+});
+
+Vue.component('span-vue', {
+    props: {
+        title: {
+            type: String,
+        },
+
+        text: {
+            type: String,
+        }
+    },
+    template: [
+        '<div><div class="list_left text-right details_title">',
+        '<span >{{title}}</span>',
+        '</div>',
+        '<div class="list_right details_text ">',
+        '<span class="umlin100" v-text="text"></span>',
+        '</div></div>',
+    ].join(" "),
+});
+Vue.component('span-two-vue', {
+    props: {
+        title: {
+            type: String,
+        },
+        required: {
+            type: Boolean,
+        },
+        text: {
+            type: String
+        }
+    },
+    template: [
+        '<div class="form_part" >',
+        '<div class="list_left details_title">',
+        '{{title}}</div>',
+        '<div class="list_right details_text">',
+        '<span  class=" umlin100" v-text="text"></span>',
+        '</div>',
+        '</div>',
+    ].join(" "),
+});
+Vue.component('select-vue', {
+    props: {
+        title: {
+            type: String,
+        },
+        required: {
+            type: Boolean,
+        },
+        optiondata: {
+            type: Array,
         },
         name: {
             type: String,
@@ -181,24 +282,25 @@ Vue.component('input-two-vue', {
         inputobj: {
             type: Object,
         },
-        required: {
-            type: Boolean,
-        },
-        placeholder: {
-            type: String
-        }
     },
     template: [
         '<div class="form_part" >',
         '<div class="list_left">',
         '<i v-if="required">*</i>{{title}}</div>',
         '<div class="list_right">',
-        '<input type="text"  :placeholder="placeholder" class="form-control" :name="name" v-model="inputobj[name]">',
+        '<select  class="form-control" :style="fontcolr" v-model="inputobj[name]"><option v-for="data in optiondata" :value="data.code" >{{data.value}}</option></select>',
         '</div>',
         '</div>',
-    ].join(" "),
-    mounted: function() {
 
-    },
+    ].join(" "),
+    computed: {
+        fontcolr: function() {
+            if (!this.inputobj[this.name]) {
+                return {
+                    color: "#999"
+                }
+            }
+        }
+    }
 
 });

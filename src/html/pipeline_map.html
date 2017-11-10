@@ -8,7 +8,8 @@
 
     <link href="/lib/css/bootstrap.css" rel="stylesheet">
     <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet">
-    <link rel="stylesheet" href="/lib/css/font-awesome.min.css"></link>
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <!-- 这里引入组件的css，每个人写的scss放在一个scss文件内，每个组件的css用一个class类包裹，避免混淆 -->
     <link href="/src/css/pipeline_map/pipelineright.css" rel="stylesheet">
     <link href="/src/css/pipeline_map/pipe_line.css" rel="stylesheet">
@@ -19,16 +20,15 @@
 <body>
     <div id="app" class="app">
         <div class="index_wrapper">
+            <pipe-left :pipenetdatas="aNetDetails" :domainvalue="domainValue" :pointerdatas="aLineDetails" :snetid="sNetId_choosed" :slineid="sLineId_choosed" :olinedetailedited="olineDetail_edited" :olinetoshow="oLine_toThow" @olinechange="setsLine_toThow" @choosenet="chooseNet"
+                @checkedline="chooseLine" @enterlinelist="enterLineList" @updatenetdetailbyid="updateNetDetailById" @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
 
 
-            <pipe-left :pipenetdatas="aNetDetails" :pointerdatas="aLineDetails" :snetid="sNetId_choosed" :slineid="sLineId_choosed" :olinedetailedited="olineDetail_edited" @choosenet="chooseNet" @checkedline="chooseLine" @enterlinelist="enterLineList" @updatenetdetailbyid="updateNetDetailById"
-                @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
+            <pipeline-baidumap :markerpoint="markerPoint" :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :istabshow="sLineId_choosed" @setmarkerpoint="setMarkerPoint" @changeline="editLineDetail" @clickline="setsLine_toThow" @savedetail="saveLineStyleAndPoint"></pipeline-baidumap>
 
 
-            <pipeline-baidumap :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :istabshow="sLineId_choosed" @changeline="editLineDetail" @savedetail="saveLineStyleAndPoint"></pipeline-baidumap>
-
-
-            <pipeline-edit :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine" @saveline="updateLineDetailById" @savework="updateNetDetailById" @changelinefn="editLineDetail"></pipeline-edit>
+            <pipeline-edit :domainvalue="domainValue" :markerpoint="markerPoint" @setmarkerpoint="setMarkerPoint" :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine"
+                @saveline="updateLineDetailById" @savework="updateNetDetailById" @changelinefn="editLineDetail"></pipeline-edit>
         </div>
 
         <!-- <pipe-net-example></pipe-net-example> -->
@@ -94,9 +94,9 @@
                 <pipe-right-title @tabchange="tabchange"></pipe-right-title>
                 <!--<transition>-->
                 <div class="rightcontent">
-                    <pipe-right-content-attribute v-show="sCurrentTap === 'attributeShow'" :detail="linedata" @savelineattribute="savelineattribute"></pipe-right-content-attribute>
+                    <pipe-right-content-attribute v-show="sCurrentTap === 'attributeShow'" :domainvalue="domainvalue" :detail="linedata" @savelineattribute="savelineattribute"></pipe-right-content-attribute>
                     <pipe-right-content-style v-show="sCurrentTap === 'styleShow'" :detailstyle="linedata" @styleedit="changelinefn"></pipe-right-content-style>
-                    <pipe-right-content-point v-show="sCurrentTap === 'pointShow'" :detailPointer="linedata" @pointedit="changelinefn" @pointerImport="pointerImport"></pipe-right-content-point>
+                    <pipe-right-content-point v-show="sCurrentTap === 'pointShow'" :detailPointer="linedata" @pointedit="changelinefn" @pointerImport="pointerImport" :markerpoint="markerpoint" @setmarkerpoint="setmarkerpoint"></pipe-right-content-point>
                 </div>
                 <div class="left-edit-close fa fa-fw fa-close" @click="pipeNeLineClose"></div>
                 <div class="left-edit-shrink fa fa-fw fa-chevron-down" @click="shrink"></div>
@@ -123,39 +123,81 @@
     <!-- 右侧切换内容 属性组件 -->
     <script type="text/x-template" id="pipe-right-content-attribute">
         <div class="right-content-attribute borderRadius">
-            <div class="modify-item">
-                <p><i>*</i>管线名称：</p>
-                <div class="pipe-name"><input type="text" class="form-control" disabled="true" name="pipeLineName" v-model='changeObj.pipeLineName'></div>
-            </div>
-            <div class="modify-item">
-                <p><span class="w2">材质</span>：</p>
-                <div class="pipe-type"><input type="text" class="form-control" disabled="true" name="pipeMaterial" v-model="changeObj.pipeMaterial"></div>
-            </div>
-            <div class="modify-item">
-                <p><span class="w2">管径</span>：</p>
-                <div class="pipe-diameter"><input type="text" class="form-control" disabled="true" name="pipeDiameter" v-model="changeObj.pipeDiameter"></div>
-            </div>
-            <div class="modify-item">
-                <p><span class="w2">壁厚</span>：</p>
-                <div class="wall-thickness"><input type="text" class="form-control" disabled="true" name="pipeThickness" v-model="changeObj.pipeThickness"></div>
-            </div>
-            <div class="modify-item">
-                <p>管线长度：（km）</p>
-                <div class="pipe-length"><span>{{detail.pipeLength}}</span></div>
-            </div>
-            <div class="modify-item">
-                <p>实际长度：（km）</p>
-                <div class="actual-length"><input type="text" class="form-control" disabled="true" name="pipeFactLength" v-model="changeObj.pipeFactLength"></div>
-            </div>
-            <div class="piple-remarks">
-                <p><span class="w2">备注</span>：</p>
-                <div class="actual-length">
-                    <!-- @input="checkLen($event)" -->
-                    <textarea class="form-control" disabled="true" maxLength="200" name="pipeLineRemark" v-model="changeObj.pipeLineRemark"></textarea>
+            <div class="scrollpointer" style="max-height:420px;height:420px;width:100%;">
+                <div class="modify-item">
+                    <p><i>*</i>管线名称：</p>
+                    <div class="pipe-name"><input type="text" class="form-control" :disabled="isDisable" name="pipeLineName" v-model='changeObj.pipeLineName'></div>
+                </div>
+                <div class="modify-item">
+                    <p>管线编号：</p>
+                    <div class="pipe-line-code"><input type="text" class="form-control" :disabled="isDisable" name="pipeLineCode" v-model='changeObj.pipeLineCode'></div>
+                </div>
+                <div class="modify-item">
+                    <p>管线类型：</p>
+                    <div class="pipe-line-type-code">
+                        <select class="form-control" :disabled="isDisable" name="pipeLineTypeCode" v-model="changeObj.pipeLineTypeCode">
+                            <option v-for="option in pipeLineTypeOption" v-bind:value="option.code">{{option.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w2">材质</span>：</p>
+                    <div class="pipe-type">
+                        <select class="form-control" :disabled="isDisable" name="pipeMaterialName" v-model="changeObj.pipeMaterialCode">
+                            <option v-for="option in pipeMaterOption" v-bind:value="option.code">{{option.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w2">管径</span>：</p>
+                    <div class="pipe-diameter"><input type="text" class="form-control" :disabled="isDisable" name="pipeDiameter" v-model="changeObj.pipeDiameter"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w2">壁厚</span>：</p>
+                    <div class="wall-thickness"><input type="text" class="form-control" :disabled="isDisable" name="pipeThickness" v-model="changeObj.pipeThickness"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span>压力等级</span>：</p>
+                    <div class="">
+                        <select class="form-control" :disabled="isDisable" name="pipePressureGradeName" v-model="changeObj.pipePressureGradeCode">
+                            <option v-for="option in pipePressureGrade" v-bind:value="option.code">{{option.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p><span class="w2">压力</span>：（MPa）</p>
+                    <div><input type="text" class="form-control" :disabled="isDisable" name="pipePressureValue" v-model="changeObj.pipePressureValue"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span>建设时间</span>：</p>
+                    <div><input type="text" readonly class="form-control" :disabled="isDisable" id="constructionDate" name="pipeConstructionDate" v-model="changeObj.pipeConstructionDate"></div>
+                </div>
+                <div class="modify-item">
+                    <p><span>使用状态</span>：</p>
+                    <div class="">
+                        <select class="form-control" :disabled="isDisable" name="pipeUsingStateName" v-model="changeObj.pipeUsingStateCode">
+                            <option v-for="option in pipeUsingState" v-bind:value="option.code">{{option.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modify-item">
+                    <p>管线长度：（km）</p>
+                    <div class="pipe-length"><span>{{detail.pipeLength}}</span></div>
+                </div>
+                <div class="modify-item">
+                    <p>实际长度：（km）</p>
+                    <div class="actual-length"><input type="text" class="form-control" :disabled="isDisable" name="pipeFactLength" v-model="changeObj.pipeFactLength"></div>
+                </div>
+                <div class="piple-remarks">
+                    <p><span class="w2">备注</span>：</p>
+                    <div class="actual-length">
+                        <!-- @input="checkLen($event)" -->
+                        <textarea class="form-control" :disabled="isDisable" maxLength="200" name="pipeLineRemark" v-model="changeObj.pipeLineRemark"></textarea>
+                    </div>
                 </div>
             </div>
             <div class="footer">
-                <button class="commonBtn attributeBtn btnBgcolor" @click="save_attribute($event)">修改</button>
+                <button class="commonBtn attributeBtn btnBgcolor" @click="save_attribute($event)">{{isDisable?'修改':'保存'}}</button>
             </div>
         </div>
     </script>
@@ -163,14 +205,14 @@
     <script type="text/x-template" id="pipe-right-content-style">
         <div class="right-content-style borderRadius">
             <div class="title">
-                <p>边线颜色：</p>
+                <p>管线颜色：</p>
                 <div class="bgcolor">
                     <span class="bgColorStyle"></span>
                     <span class="chooseColor"></span>
                 </div>
             </div>
             <div class="title">
-                <p>边线样式：</p>
+                <p>管线线型：</p>
                 <div class="bordercolor">
                     <span class="borderColorStyle"></span>
                     <select class="chooseStyle">
@@ -180,7 +222,7 @@
                 </div>
             </div>
             <div class="title">
-                <p>边线宽度：</p>
+                <p>管线宽度：</p>
                 <div class="borderWidth">
                     <ul class="lanren">
                         <li>
@@ -204,9 +246,9 @@
     <!-- 右侧切换内容 坐标点组件 -->
     <script type="text/x-template" id="pipe-right-content-point">
         <div class="right-content-point borderRadius">
-            <div class="scrollpointer" style="max-height:310px;">
+            <div class="scrollpointer" style="max-height:310px;width:100%;">
                 <div>
-                    <div class="point" v-for="(item,index) in (this.detailPointer.line)">
+                    <div class="point" v-for="(item,index) in (this.detailPointer.line)" @mouseover="setMarkPoint(item)" @mouseout="setMarkPoint('')" :class="{'clickpoint' : item.bdLon == markerpoint.bdlon&&item.bdLat == markerpoint.bdLat }">
                         <div class="point-left">{{index+1}}</div>
                         <div class="point-center">
                             <p>经度：<span>{{item.bdLon}}</span></p>
@@ -227,7 +269,7 @@
         <div class="pipenetwork-attribute borderRadius">
             <div class="networkName">
                 <p><i>*</i>管网名称：</p>
-                <div><input type="text" class="form-control" name="pipeNetworkName" disabled="true" v-model="pipeNetworkNameL"></div>
+                <div><input type="text" class="form-control" name="pipeNetworkName" :disabled="isNetDisable" v-model="pipeNetworkNameL"></div>
             </div>
             <!-- <div class="creatTime">
                 <ul>
@@ -247,10 +289,10 @@
             </div> -->
             <div class="networkRemarks">
                 <p><span class="w2">备注</span>：</p>
-                <div class="actual-length"><textarea name="pipeNetworkRemark" maxLength="200" class="form-control" disabled="true" v-model="pipeNetworkRemarkL"></textarea></div>
+                <div class="actual-length"><textarea name="pipeNetworkRemark" maxLength="200" class="form-control" :disabled="isNetDisable" v-model="pipeNetworkRemarkL"></textarea></div>
             </div>
             <div class="footer">
-                <button class="commonBtn btnBgcolor attributeWorkBtn" @click="save_workattribute">修改</button>
+                <button class="commonBtn btnBgcolor attributeWorkBtn" @click="save_workattribute">{{isNetDisable?'修改':'保存'}}</button>
             </div>
         </div>
     </script>
@@ -258,43 +300,95 @@
     <!--左侧整体组件-->
     <script type="text/x-template" id="pipe-left">
 
-        <div class="pipe-left" style=" transition: all .5s" :style="warpperslidestyle">
+        <div style="height:100%">
             <modal-vue v-if="netshow" :styleobj="styleobj" :footer="aFooters" @click1="createSave" @click2="createInfo">
                 <input-vue title="管网名称" placeholder="请输入管网名称" name="pipeNetworkName" :inputobj="inputobj" :required="true"></input-vue>
                 <textarea-vue title="备注" placeholder="请输入备注" name="pipeNetworkRemark" :inputobj="inputobj"></textarea-vue>
             </modal-vue>
             <modal-vue v-if="pipeshow" :styleobj="styleobj" :footer="aFooters" @click1="createSave" @click2="createInfo">
-                <input-vue title="管线名称" placeholder="请输入管线名称" name="pipeLineName" :inputobj="inputobj" :required="true"></input-vue>
                 <div class="form_list">
-                    <input-two-vue title="材质" placeholder="请输入管线材质" name="pipeMaterial" :inputobj="inputobj"></input-two-vue>
-                    <input-two-vue title="管径" placeholder="请输入管线的管径" name="pipeDiameter" :inputobj="inputobj"></input-two-vue>
+                    <input-two-vue title="管线名称" placeholder="请输入管线名称" name="pipeLineName" :inputobj="inputobj" :required="true"></input-two-vue>
+                    <input-two-vue title="管线编号" placeholder="请输入管线编号" name="pipeLineCode" :inputobj="inputobj"></input-two-vue>
                 </div>
                 <div class="form_list">
+                    <select-vue title="管线类型" :optiondata="pipeLineTypeOption" name="pipeLineTypeCode" :inputobj="inputobj"></select-vue>
+                    <select-vue title="材质" :optiondata="pipeMaterOption" name="pipeMaterialCode" :inputobj="inputobj"></select-vue>
+                </div>
+                <div class="form_list">
+                    <input-two-vue title="管径" placeholder="请输入管线的管径" name="pipeDiameter" :inputobj="inputobj"></input-two-vue>
                     <input-two-vue title="壁厚" placeholder="请输入管线壁厚" name="pipeThickness" :inputobj="inputobj"></input-two-vue>
-                    <input-two-vue title="实际长度" placeholder="请输入管线实际长度（km）" name="pipeLength" :inputobj="inputobj"></input-two-vue>
+                </div>
+                <div class="form_list">
+                    <select-vue title="压力等级" :optiondata="pipePressureGrade" name="pipePressureGradeCode" :inputobj="inputobj"></select-vue>
+                    <input-two-vue title="压力" placeholder="请输入管线压力（MPa）" name="pipePressureValue" :inputobj="inputobj"></input-two-vue>
+                </div>
+                <div class="form_list">
+                    <div class="form_part">
+                        <div class="list_left text-right">
+                            建设时间
+                        </div>
+                        <div class="list_right has-feedback">
+                            <input type="text" size="16" class="form-control pointer" id="pipeConstructionDate" name="pipeConstructionDate" placeholder="请选择建设时间" readonly>
+                            <span class="form-control-feedback" aria-hidden="true" style="right:20px;">
+                                    <img src="/src/images/event/time.png" alt="">
+                            </span>
+                        </div>
+                    </div>
+                    <input-two-vue title="实际长度" placeholder="请输入管线实际长度（km）" name="pipeFactLength" :inputobj="inputobj"></input-two-vue>
+                </div>
+                <div class="form_list">
+                    <select-vue title="使用状态" :optiondata="pipeUsingState" name="pipeUsingStateCode" :inputobj="inputobj"></select-vue>
                 </div>
                 <textarea-vue title="备注" placeholder="请输入备注" name="pipeLineRemark" :inputobj="inputobj"></textarea-vue>
             </modal-vue>
+            <modal-vue v-if="pipeEditShow" :styleobj="styleeditobj" :footer="aFooters" @click2="canceledit">
+                <div class="detail">
+                    <span-two-vue title="管线名称" :text="olinetoshow.pipeLineName" :required="true"></span-two-vue>
+                    <span-two-vue title="管线编号" :text="olinetoshow.pipeLineCode"></span-two-vue>
+                </div>
+                <div class="detail">
+                    <span-two-vue title="管线类型" :text="olinetoshow.pipeLineTypeName"></span-two-vue>
+                    <span-two-vue title="材质" :text="olinetoshow.pipeMaterialName"></span-two-vue>
+                </div>
+                <div class=" detail">
+                    <span-two-vue title="管径" :text="olinetoshow.pipeDiameter"></span-two-vue>
+                    <span-two-vue title="壁厚" :text="olinetoshow.pipeThickness"></span-two-vue>
+                </div>
+                <div class=" detail">
+                    <span-two-vue title="压力等级" :text="olinetoshow.pipePressureGradeName"></span-two-vue>
+                    <span-two-vue title="压力(MPa)" :text="olinetoshow.pipePressureValue"></span-two-vue>
+                </div>
+                <div class="detail">
+                    <span-two-vue title="建设时间" :text="olinetoshow.pipeConstructionDate"></span-two-vue>
+                    <span-two-vue title="实际长度" :text="olinetoshow.pipeFactLength"></span-two-vue>
+                </div>
+                <div class="detail">
+                    <span-vue title="使用状态" :text="olinetoshow.pipeUsingStateName"></span-vue>
+                </div>
+                <textarea-view-vue title="备注" :text="olinetoshow.pipeLineRemark"></textarea-view-vue>
+            </modal-vue>
             <!--<div class="leftArea">-->
             <!-- 这里写管网组件模块和管线组件模块 -->
-            <div class="slide-content">
-                <div class="listwrapper slide" :style="slidestyle">
-                    <pipe-net-list :pipenetdatas="pipenetdatas" :snetid="snetid" :linetotal="lineTotal" @changelist="changelist" @chooseNet="chooseNet" @createinfo="createInfo" @updatenetdetailbyid="updateNetDetailById" @enterlinelist="enterlinelist" style="flex-grow:1;position:relative;"></pipe-net-list>
-                    <pipe-line-list :pointerdatas="chooseLine" :olinedetailedited="olinedetailedited" :linetotal="lineTotal" :slineid="slineid" :currentnetname="currentNetName" @changelist="changelist" @checkedline="checkedline" @createinfo="createInfo" @enterlinelist="enterlinelist"
-                        @updatelinedetailbyid="updateLineDetailById" style="flex-grow:1;position:relative;"></pipe-line-list>
+            <div class="pipe-left" style=" transition: all .5s" :style="warpperslidestyle">
+                <div class="slide-content">
+                    <div class="listwrapper slide" :style="slidestyle">
+                        <pipe-net-list :pipenetdatas="pipenetdatas" :snetid="snetid" :linetotal="lineTotal" @changelist="changelist" @chooseNet="chooseNet" @createinfo="createInfo" @updatenetdetailbyid="updateNetDetailById" @enterlinelist="enterlinelist" style="flex-grow:1;"></pipe-net-list>
+                        <pipe-line-list :pointerdatas="chooseLine" :olinedetailedited="olinedetailedited" :linetotal="lineTotal" :slineid="slineid" :currentnetname="currentNetName" @changelist="changelist" @checkedline="checkedline" @createinfo="createInfo" @enterlinelist="enterlinelist"
+                            @updatelinedetailbyid="updateLineDetailById" style="flex-grow:1;"></pipe-line-list>
+                    </div>
                 </div>
+                <span class="up_btn" @click="changeListShow"></span>
             </div>
-            <span class="up_btn" @click="changeListShow"></span>
         </div>
-
 
 
     </script>
     <!--左边头部的组件-->
     <script type="text/x-template" id="pipe_left_top">
         <div class="pipe_left_top">
-            <!--<div class="left_top">-->
-            <div class="title" v-text="title" @click="click1">
+            <!--<div class="left_top"class=" ">-->
+            <div class="title" @click="click1">
+                <span class="fa fa-fw fa-plus-square-o"></span> {{title}}
             </div>
             <!--</div>-->
 
@@ -303,7 +397,7 @@
     <!--管线列表展示组件-->
     <script type="text/x-template" id="pipe_line_list">
         <div class="pipe_line_list">
-            <pipe-left-top title="新建管线+" @click1="createInfo"></pipe-left-top>
+            <pipe-left-top title="新建管线" @click1="createInfo"></pipe-left-top>
             <div class="left_content">
                 <div class="pipe_top umli100" v-text="currentnetname" style="padding:0px 10px;">
 
@@ -317,15 +411,30 @@
                                         <div class="umli100 wid200">
                                             管线名称<span>：</span><span v-text="item.pipeLineName"></span>
                                         </div>
-
-                                        <span class="btn_close" @click.stop="deleteLine(item)"></span>
-                                        <span class="btn_editd"></span>
+                                        <span class="btn_close" @click.stop="deleteLine(item)" title="删除管线"></span>
+                                        <span class="btn_editd" title="编辑管线"></span>
                                     </div>
                                     <div class="line_title">
+                                        <!--<div class="umli100 fl">
+                                            管线类型<span>：</span><span v-text="item.pipeLineTypeName"></span>
+                                        </div>-->
+                                        <div class="umli100 wid200">
+                                            管线类型<span>：</span><span v-text="item.pipeLineTypeName"></span>
+                                        </div>
+                                    </div>
+                                    <div class="line_title">
+                                        <div class="umli100 wid200">
+                                            使用状态<span>：</span><span v-text="item.pipeUsingStateName"></span>
+                                        </div>
+                                        <!--<div class="umli100  mar10">
+                                            材质<span>：</span><span v-text="item.pipeMaterialName"></span>
+                                        </div>-->
+                                    </div>
+                                    <!--<div class="line_title">
                                         <div class="umli100">
                                             <span class="w2">备注</span><span>：</span><span v-text="item.pipeLineRemark"></span>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </li>
                         </ul>
@@ -341,7 +450,7 @@
     <!--管网列表展示组件-->
     <script type="text/x-template" id="pipe_net_list">
         <div class="pipe_net_list">
-            <pipe-left-top title="新建管网+" @click1="createInfo"></pipe-left-top>
+            <pipe-left-top title="新建管网" @click1="createInfo"></pipe-left-top>
             <div class="left_content left_net">
                 <div class="pipe_top">
                     <div class="num">
@@ -387,9 +496,9 @@
                                             <!--</label>-->
                                         </div>
                                         <div class="btns">
-                                            <div class="btn_close" @click.stop="deleteNet(item)">
+                                            <div class="btn_close" @click.stop="deleteNet(item)" title="删除管网">
                                             </div>
-                                            <div class="btn_edit" @click="enterInto(item);clickLi(item)">
+                                            <div class="btn_edit" @click="enterInto(item);clickLi(item)" title="进入管网">
                                             </div>
                                         </div>
                                     </div>
@@ -405,8 +514,9 @@
 
     <script type="text/javascript" src="/lib/js/vue.js"></script>
     <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="/lib/js/common_base.js"></script>
     <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/lib/js/common_base.js"></script>
     <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
     <script type="text/javascript" src="https://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
     <script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
@@ -435,7 +545,6 @@
     <script src="/src/js/pipeline_map/index.js"></script>
 
 </body>
-<script>
-</script>
+
 
 </html>
