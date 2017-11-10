@@ -31,11 +31,12 @@ var util = {
 var vm = new Vue({
     el: '#app',
     data: {
+        aNetId_toShow : [],//要显示的管网IDs
         sNetId_choosed: '', //被选中的管网的ID
         sLineId_choosed: '', //被选中的管线的ID
         oLine_toThow: '', //要显示详情的管线ID
         olineDetail_edited: '', //存在已被编辑的管线
-        markerPoint : {"bdlon": 116.203929,"bdLat": 40.227286},//地图上的标注点，点击坐标后在地图上做标注 {"bdlon": 116.203929,"bdLat": 40.227286} || ''
+        markerPoint : '',//地图上的标注点，点击坐标后在地图上做标注 {"bdlon": 116.203929,"bdLat": 40.227286} || ''
 
         isLineList_entered: false, //是否进入了管线列表
         aNetDetails: [], //所有管网的详情数组
@@ -44,9 +45,13 @@ var vm = new Vue({
     },
     computed: {
         aNetId_active: function() {
-            return this.aNetDetails.filter(function(item) {
-                return +item.pipeNetworkUsed === 1;
+            var arr = [];
+            this.aNetDetails.forEach(function(item) {
+                if(+item.pipeNetworkUsed === 1){
+                    arr.push(item.objectId);
+                }
             });
+            return arr;
         },
         oNetDetail_choosed: function() {
             var that = this;
@@ -76,8 +81,8 @@ var vm = new Vue({
                 });
             }
             return that.aLineDetails.filter(function(item) {
-                for (var i = 0; i < that.aNetId_active.length; i++) {
-                    if (that.aNetId_active[i].objectId === item.pipeNetworkId) {
+                for (var i = 0; i < that.aNetId_toShow.length; i++) {
+                    if (that.aNetId_toShow[i] === item.pipeNetworkId) {
                         return true;
                     }
                 }
@@ -87,9 +92,31 @@ var vm = new Vue({
         },
     },
     watch: {
+        aNetId_active : function(newval,oldval){
+            var arr = [].concat(this.aNetId_toShow);
+            var isChange = false;
+
+            newval.forEach(function(item){
+                if(oldval.indexOf(item) === -1 ){ //旧值中没有新值，就是新增的
+                    if(arr.indexOf(item) === -1){ //显示数组中没有该值，就加进去
+                        arr.push(item);
+                        isChange = true;
+                    }
+                }
+            });
+            oldval.forEach(function(item){
+                if(newval.indexOf(item) === -1 ){ //新值中没有旧值，就是删除的
+                    if(arr.indexOf(item) !== -1){ //显示数组中有该值，就从中剔除
+                        var index = arr.indexOf(item);
+                        arr.splice(index,1);
+                        isChange = true;
+                    }
+                }
+            });
+            isChange && (this.aNetId_toShow = arr);
+        },
         sLineId_choosed: function() {
             this.olineDetail_edited = '';
-
         }
     },
     components: {
@@ -281,6 +308,19 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        setNetIdToShow :function(sId){
+            if(!sId){
+                return;
+            }
+            var arr = [].concat(this.aNetId_toShow);
+            var index = this.aNetId_toShow.indexOf(sId);
+            if(index === -1){
+               arr.push(sId);
+            }else{
+                arr.splice(index,1);
+            }
+            this.aNetId_toShow = arr;
         },
         editLineDetail: function(OLineDetail) { //变更坐标点，更改线的样式，传入关键点，点击保存
             //console.log('管线的坐标或者样式发生改变');
