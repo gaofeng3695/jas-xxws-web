@@ -409,6 +409,71 @@
         </div>
     </script>
 
+    <!--管网列表展示组件-->
+    <script type="text/x-template" id="pipe_net_list">
+        <div class="pipe_net_list">
+            <pipe-left-top title="新建管网" @click1="createInfo"></pipe-left-top>
+            <div class="left_content left_net">
+                <div class="pipe_top">
+                    <div class="num">
+                        管网数量：{{pipenetdatas.length}}
+                    </div>
+                    <div class="total">
+                        <span>管线总数：</span><span v-text="linetotal"></span><span>/200</span>
+                    </div>
+                </div>
+                <div class="net_content">
+                    <div class="scroll" style="height:100%;">
+                        <ul>
+                            <li v-for="(item,index) in pipenetdatas" :class="{'clickon' : item.objectId == snetid }">
+                                <div class="content" @click="clickLi(item)">
+                                    <div class="line">
+                                        <div class="pipe_name umli100">
+                                            管网名称<span>：</span><span v-text="item.pipeNetworkName"></span>
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <div class="pipe_name umli100">
+                                            创建时间<span>：</span><span v-text="item.createTime"></span>
+                                        </div>
+                                    </div>
+                                    <div class="line">
+                                        <div class="pipe_name umli100">
+                                            <span class="w1">创建人</span><span>：</span><span v-text="item.createUserName"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="line">
+                                        <div class="pipe_name umli100">
+                                            管线数量<span>：</span><span v-text="item.pipeLineCount"></span>
+                                        </div>
+                                    </div>
+                                    <div class="line-footer ">
+                                        <div class="check inputbg" :class="{'inputbg_h':item.pipeNetworkUsed==1}">
+
+                                            <!--<input :id="checkbox(index)" class="styled" type="checkbox" :value="item.objectId" v-model="startuserpipe">-->
+                                            <span class="clr666" @click.stop="checkNetToS(item)">
+                                      启用管网
+                                     </span>
+                                            <!--</label>-->
+                                        </div>
+                                        <div class="btns">
+                                            <div class="btn_close" @click.stop="deleteNet(item)" title="删除管网">
+                                            </div>
+                                            <div class="btn_edit" @click="enterInto(item);clickLi(item)" title="进入管网">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
     <script type="text/javascript" src="/lib/js/vue.js"></script>
     <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
