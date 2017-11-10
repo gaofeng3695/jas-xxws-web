@@ -102,12 +102,12 @@
                 <div class="left-edit-shrink fa fa-fw fa-chevron-down" @click="shrink"></div>
                 <!--</transition>-->
             </div>
-            <div class="pipenetworkEdit" v-show="netdetail&&!linedata">
+            <!--<div class="pipenetworkEdit" v-show="netdetail&&!linedata">
                 <div class="rightTitle"><span class="pipeNetworkName">管网属性</span><span class="pipeNetworkClose fa fa-fw fa-close" @click="pipeNetworkClose"></span><span class="pipeNetworkShrink fa fa-fw fa-chevron-down" @click="networkshrink"></span></div>
                 <div class="netrightcontent shadow">
                     <pipenetwork-attribute :details="netdetail" @saveworkattribute="saveattribute"></pipenetwork-attribute>
                 </div>
-            </div>
+            </div>-->
         </div>
     </script>
     <!-- 右侧title组件 -->
@@ -123,7 +123,7 @@
     <!-- 右侧切换内容 属性组件 -->
     <script type="text/x-template" id="pipe-right-content-attribute">
         <div class="right-content-attribute borderRadius">
-            <div class="scrollpointer" style="max-height:420px;height:420px;width:100%;">
+            <div class="scrollpointer" style="max-height:316px;height:316px;width:100%;">
                 <div class="modify-item">
                     <p><i>*</i>管线名称：</p>
                     <div class="pipe-name"><input type="text" class="form-control" :disabled="isDisable" name="pipeLineName" v-model='changeObj.pipeLineName'></div>
@@ -261,38 +261,6 @@
             <div class="footer">
                 <button class="btnBgcolor" @click="pointerImport">导入坐标</button>
                 <button class="btnBgcolor" @click="downTemplate">下载模板</button>
-            </div>
-        </div>
-    </script>
-    <!-- 右侧管网 属性组件 -->
-    <script type="text/x-template" id="pipenetwork-attribute">
-        <div class="pipenetwork-attribute borderRadius">
-            <div class="networkName">
-                <p><i>*</i>管网名称：</p>
-                <div><input type="text" class="form-control" name="pipeNetworkName" :disabled="isNetDisable" v-model="pipeNetworkNameL"></div>
-            </div>
-            <!-- <div class="creatTime">
-                <ul>
-                    <li>
-                        <span class="left">创建时间</span>
-                        <span class="right">{{details.createTime}}</span>
-                    </li>
-                    <li>
-                        <span class="left">创&nbsp;&nbsp;建&nbsp;&nbsp;人</span>
-                        <span class="right">{{details.createUserName}}</span>
-                    </li>
-                    <li>
-                        <span class="left">管线数量</span>
-                        <span class="right">{{details.pipeLineCount}}</span>
-                    </li>
-                </ul>
-            </div> -->
-            <div class="networkRemarks">
-                <p><span class="w2">备注</span>：</p>
-                <div class="actual-length"><textarea name="pipeNetworkRemark" maxLength="200" class="form-control" :disabled="isNetDisable" v-model="pipeNetworkRemarkL"></textarea></div>
-            </div>
-            <div class="footer">
-                <button class="commonBtn btnBgcolor attributeWorkBtn" @click="save_workattribute">{{isNetDisable?'修改':'保存'}}</button>
             </div>
         </div>
     </script>

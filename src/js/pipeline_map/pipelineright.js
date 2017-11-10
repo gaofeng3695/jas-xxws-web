@@ -288,7 +288,7 @@ var pipe_right_content_point = { //右侧坐标点组件
     },
     methods: {
         setMarkPoint: function(item) {
-            if(!item){
+            if (!item) {
                 this.$emit("setmarkerpoint", '');
                 return;
             }
@@ -340,98 +340,10 @@ var pipe_right_content_point = { //右侧坐标点组件
         },
     }
 };
-var pipenetwork_attribute = { //右侧管网属性组件
-    props: {
-        details: {
-            type: [Object, String]
-        },
-    },
-    template: '#pipenetwork-attribute',
-    data: function() {
-        return {
-            isNetDisable: true,
-            pipeNetworkNameL: '',
-            pipeNetworkRemarkL: ''
-        }
-    },
-    watch: {
-        details: function() {
-            this.pipeNetworkNameL = this.details.pipeNetworkName;
-            this.pipeNetworkRemarkL = this.details.pipeNetworkRemark;
-            this.isNetDisable = true;
-            $(".pipeNetworkShrink").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-            $(".netrightcontent").show();
-        }
-    },
-    methods: {
-        save_workattribute: function(e) {
-            if (this.isNetDisable) {
-                this.isNetDisable = false;
-            } else {
-                this.verifyNet(this.details);
-            }
-        },
-        //管网修改提交
-        worklineModify: function(data) {
-            var that = this;
-            var _data = {
-                "objectId": data.objectId,
-                "pipeNetworkName": that.pipeNetworkNameL,
-                "pipeNetworkRemark": that.pipeNetworkRemarkL,
-                "pipeNetworkUsed": data.pipeNetworkUsed
-            };
-            $.ajax({
-                type: "POST",
-                url: "/cloudlink-inspection-event/commonData/pipemapnetwork/update?token=" + lsObj.getLocalStorage('token'),
-                contentType: "application/json",
-                data: JSON.stringify(_data),
-                dataType: "json",
-                success: function(data) {
-                    if (data.success == 1) {
-                        xxwsWindowObj.xxwsAlert("修改管网属性成功", function() {
-                            that.$emit('saveworkattribute', _data.objectId, 3);
-                        });
-                    } else {
-                        xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
-                    }
-                },
-                error: function() {
-                    xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
-                }
-            });
-        },
-        //管网编辑长度验证
-        verifyNet: function(data) {
-            //进行填报管网验证
-            if (this.pipeNetworkNameL.trim().length == 0) {
-                xxwsWindowObj.xxwsAlert("管网名称不能为空");
-                return false;
-            } else if (this.pipeNetworkNameL.trim().length > 50) {
-                xxwsWindowObj.xxwsAlert("管网名称长度不能超过50个字");
-                return false;
-            } else if (this.pipeNetworkRemarkL.trim().length > 200) {
-                xxwsWindowObj.xxwsAlert("备注长度不能超过200个字");
-                return false;
-            } else {
-                this.worklineModify(data);
-            }
-        },
-        // checkLen: function(e) {
-        //     if ($(e.currentTarget).val().trim().length > 199) {
-        //         $(e.currentTarget).val($(e.currentTarget).val().substring(0, 200));
-        //         $(e.currentTarget).blur();
-        //         xxwsWindowObj.xxwsAlert("备注最多可输入200字");
-        //     }
-        // }
-    },
-};
 //管线详细信息
 var pipeline_edit = {
     props: {
         linedetail: {
-            type: [Object, String],
-        },
-        netdetail: {
             type: [Object, String],
         },
         editdetail: {
@@ -450,7 +362,6 @@ var pipeline_edit = {
         'pipe-right-content-attribute': pipe_right_content_attribute,
         'pipe-right-content-style': pipe_right_content_style,
         'pipe-right-content-point': pipe_right_content_point,
-        'pipenetwork-attribute': pipenetwork_attribute,
     },
     computed: {
         linedata: function() {
@@ -500,24 +411,12 @@ var pipeline_edit = {
                 that.$emit('checkedcloseline');
             }
         },
-        //点击关闭右侧管网编辑属性
-        pipeNetworkClose: function() {
-            this.$emit('chooseclosenet');
-        },
         shrink: function(e) {
             $('.rightcontent').slideToggle(500);
             if ($(e.currentTarget).hasClass("fa-chevron-down")) {
                 $(e.currentTarget).removeClass("fa-chevron-down").addClass("fa-chevron-up");
             } else {
                 $(e.currentTarget).addClass("fa-chevron-down").removeClass("fa-chevron-up");
-            }
-        },
-        networkshrink: function() {
-            $('.netrightcontent').slideToggle(500);
-            if ($(".pipeNetworkShrink").hasClass("fa-chevron-down")) {
-                $(".pipeNetworkShrink").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-            } else {
-                $(".pipeNetworkShrink").addClass("fa-chevron-down").removeClass("fa-chevron-up");
             }
         },
         pointerImport: function() {
@@ -658,9 +557,6 @@ var pipeline_edit = {
         },
         changelinefn: function(obj) {
             this.$emit('changelinefn', obj);
-        },
-        saveattribute: function(id, num) {
-            this.$emit('savework', id, num);
         },
         savelineattribute: function(id, num) {
             this.$emit('saveline', id, num);
