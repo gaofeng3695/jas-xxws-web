@@ -1,6 +1,8 @@
 var pipeline_baidumap = {
     template: '#pipeline_baidumap',
     props: {
+        snetidchoosed: '', //被选中的管网的ID
+        slineidchoosed: '', //被选中的管线的ID
         linedetails: {},
         markerpoint : {},
         linedetailsedited: {},
@@ -41,12 +43,14 @@ var pipeline_baidumap = {
                 }
                 return false;
             }
-            // isShowTab: function () {
-            //     alert(this.isTabShow)
-            //     return this.isTabShow;
-            // }
+
     },
     watch: {
+        slineidchoosed : function(){
+            if(this.slineidchoosed){
+                this._draw_lines();
+            }
+        },
         sCurrentTap: function(newVal) {
             this._draw_lines();
             if (newVal === 'save') {
@@ -58,7 +62,7 @@ var pipeline_baidumap = {
             }
         },
         aLineDetailsToShow: function() {
-            //console.log('——————————数据来源发生改变')
+            console.log('——————————数据来源发生改变')
             this._draw_lines();
         },
         markerpoint : function(){
@@ -71,7 +75,7 @@ var pipeline_baidumap = {
         });
         this._addDrawLineEvent(this.mapObj.map);
         this._draw_lines(); //划线
-        console.log(this.markerPoint)
+        //console.log(this.markerPoint)
     },
     methods: {
         changeTab: function(sTab) { //tab切换
@@ -112,6 +116,10 @@ var pipeline_baidumap = {
                 if (!item.line || item.line.length === 0) { //没有坐标点就返回
                     return;
                 }
+                var isNoChoosed = !that.snetidchoosed && !that.slineidchoosed;
+                var isFocusNet = Boolean(that.snetidchoosed && !that.slineidchoosed && that.snetidchoosed === item.pipeNetworkId);
+                var isFocusLine = Boolean(that.slineidchoosed && that.slineidchoosed === item.objectId);
+
                 if (that.linedetailsedited) {
                     var length = (map.getDistance(item.line) / 1000).toFixed(3);
                     // console.log('计算距离：',length)
@@ -141,6 +149,10 @@ var pipeline_baidumap = {
                         strokeOpacity: 1,
                         enableEditing: that.isEditable || false,
                     });
+
+                    if(isFocusNet || isFocusLine){
+                        that._setlineBlink(item);
+                    }
 
                     topline.addEventListener('click',function(){
                         //alert(item.objectId);
@@ -176,12 +188,14 @@ var pipeline_baidumap = {
 
                 }
                 if (!that.isEditable && !that.isDrawable) { //不是编辑和划线状态才会设置视野范围
-                    aPoints = aPoints.concat(item.line.map(function(item) {
-                        return new BMap.Point(item.bdLon, item.bdLat);
-                    }));
+
+
+                    if( isNoChoosed || isFocusNet ||　isFocusLine ){
+                        aPoints = aPoints.concat(item.line.map(function(item) {
+                            return new BMap.Point(item.bdLon, item.bdLat);
+                        }));
+                    }
                 }
-
-
 
             });
             if(aPoints.length > 0){
@@ -276,6 +290,19 @@ var pipeline_baidumap = {
             if(this.markerpoint){
                 this._pointMarker = this.mapObj.draw_pointMarker(this.markerpoint.bdlon,this.markerpoint.bdLat);
             }
+        },
+        _setlineBlink: function(item){
+            var map = this.mapObj;
+            this[item.objectId+'_'] = map.draw_line(item.line, {
+                strokeColor: '#000',
+                strokeWeight: item.pipeWeight + 2,
+                strokeStyle: item.pipeStyle, //dashed
+                strokeOpacity: 1,
+            });
+            setInterval(function(){
+                map.map.removeOverlay(this[item.objectId+'_']);
+                if()
+            },100);
         }
     },
 };
