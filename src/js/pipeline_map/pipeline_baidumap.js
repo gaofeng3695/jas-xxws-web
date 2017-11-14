@@ -4,7 +4,7 @@ var pipeline_baidumap = {
         snetidchoosed: '', //被选中的管网的ID
         slineidchoosed: '', //被选中的管线的ID
         linedetails: {},
-        markerpoint : {},
+        markerpoint: {},
         linedetailsedited: {},
         istabshow: {
             default: false
@@ -38,16 +38,16 @@ var pipeline_baidumap = {
             return false;
         },
         isDrawable: function() { //控制是否启用新增管线的点
-                if (this.sCurrentTap === 'draw') {
-                    return true;
-                }
-                return false;
+            if (this.sCurrentTap === 'draw') {
+                return true;
             }
+            return false;
+        }
 
     },
     watch: {
-        slineidchoosed : function(){
-            if(this.slineidchoosed){
+        slineidchoosed: function() {
+            if (this.slineidchoosed) {
                 this._draw_lines();
             }
         },
@@ -65,7 +65,7 @@ var pipeline_baidumap = {
             console.log('——————————数据来源发生改变')
             this._draw_lines();
         },
-        markerpoint : function(){
+        markerpoint: function() {
             this._addPonitMarker();
         }
     },
@@ -150,11 +150,12 @@ var pipeline_baidumap = {
                         enableEditing: that.isEditable || false,
                     });
 
-                    if(isFocusNet || isFocusLine){
+                    if (isFocusNet || isFocusLine) {
                         that._setlineBlink(item);
                     }
 
-                    topline.addEventListener('click',function(){
+                    topline.addEventListener('click', function() {
+
                         //alert(item.objectId);
                         that.$emit('clickline', item);
                     });
@@ -190,7 +191,7 @@ var pipeline_baidumap = {
                 if (!that.isEditable && !that.isDrawable) { //不是编辑和划线状态才会设置视野范围
 
 
-                    if( isNoChoosed || isFocusNet ||　isFocusLine ){
+                    if (isNoChoosed || isFocusNet || 　isFocusLine) {
                         aPoints = aPoints.concat(item.line.map(function(item) {
                             return new BMap.Point(item.bdLon, item.bdLat);
                         }));
@@ -198,7 +199,7 @@ var pipeline_baidumap = {
                 }
 
             });
-            if(aPoints.length > 0){
+            if (aPoints.length > 0) {
                 map.map.setViewport(aPoints, { //设定视野范围
                     enableAnimation: true,
                     margins: [0, 0, 0, 0],
@@ -285,24 +286,24 @@ var pipeline_baidumap = {
                 }
             });
         },
-        _addPonitMarker : function(){
+        _addPonitMarker: function() {
             this.mapObj.map.removeOverlay(this._pointMarker);
-            if(this.markerpoint){
-                this._pointMarker = this.mapObj.draw_pointMarker(this.markerpoint.bdlon,this.markerpoint.bdLat);
+            if (this.markerpoint) {
+                this._pointMarker = this.mapObj.draw_pointMarker(this.markerpoint.bdlon, this.markerpoint.bdLat);
             }
         },
-        _setlineBlink: function(item){
+        _setlineBlink: function(item) {
             var map = this.mapObj;
-            this[item.objectId+'_'] = map.draw_line(item.line, {
+            this[item.objectId + '_'] = map.draw_line(item.line, {
                 strokeColor: '#000',
                 strokeWeight: item.pipeWeight + 2,
                 strokeStyle: item.pipeStyle, //dashed
                 strokeOpacity: 1,
             });
-            setInterval(function(){
-                map.map.removeOverlay(this[item.objectId+'_']);
-                if()
-            },100);
+            setInterval(function() {
+                map.map.removeOverlay(this[item.objectId + '_']);
+                if ()
+            }, 100);
         }
     },
 };

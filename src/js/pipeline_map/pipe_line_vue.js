@@ -127,6 +127,9 @@ var pipe_net_list = {
         linetotal: {
             type: Number,
         },
+        anetidtoshow: {
+            type: [Array, String, Object],
+        }
     },
     template: '#pipe_net_list',
     components: {
@@ -159,6 +162,22 @@ var pipe_net_list = {
                     }
                 });
             }, true);
+        },
+        editNet: function(item) {
+            //打开模态框，并且赋值
+            var styleobj = {
+                title: '修改管网',
+                width: '600',
+                height: '356',
+            };
+            var inputobj = {
+                "pipeNetworkName": item.pipeNetworkName,
+                "pipeNetworkRemark": item.pipeNetworkRemark,
+                "objectId": item.objectId,
+                "pipeNetworkUsed": item.pipeNetworkUsed,
+            };
+            var aFooters = [{ "title": "确定", "bgcolor": "#59b6fc", "color": "#fff", "disabled": false }, { "title": "取消", "bgcolor": "#fff", "color": "#333", "disabled": false }];
+            this.$emit('createinfo', styleobj, inputobj, aFooters);
         },
         enterInto: function(item) { //进入管线列表
             this.$emit('enterlinelist', true);
@@ -214,6 +233,7 @@ var pipe_net_list = {
                 dataType: "json",
                 success: function(data) {
                     if (data.success == 1) {
+                        that.$emit("setnetidtoshow", _data.objectId);
                         if (+_data.pipeNetworkUsed == "1") {
                             that.$emit("updatenetdetailbyid", _data.objectId, 3);
                             xxwsWindowObj.xxwsAlert("启用成功");
@@ -227,6 +247,9 @@ var pipe_net_list = {
                     }
                 }
             });
+        },
+        setNetIdToShow: function(sId) {
+            this.$emit("setnetidtoshow", sId);
         }
     },
 }
@@ -249,11 +272,14 @@ var pipe_left = {
         olinedetailedited: {
             type: [String, Object],
         },
-        olinetoshow: {
-            type: [String, Object],
-        },
+        // olinetoshow: {
+        //     type: [String, Object],
+        // },
         domainvalue: {
             type: Array,
+        },
+        anetidtoshow: {
+            type: [Array, String, Object],
         }
     },
     data: function() {
@@ -271,7 +297,6 @@ var pipe_left = {
             styleeditobj: {},
             aFooters: {},
             inputobj: {},
-
         }
     },
     watch: {
@@ -282,19 +307,19 @@ var pipe_left = {
             });
             that.lineTotal = that.pointerdatas.length;
         },
-        olinetoshow: function() {
-            this.styleeditobj = {
-                title: '管线详情',
-                width: '800',
-                height: '515',
-            };
-            this.aFooters = [{ "title": "关闭", "bgcolor": "#fff", "color": "#333", "disabled": false }, ];
-            if (this.olinetoshow) {
-                this.pipeEditShow = true;
-            } else {
-                this.pipeEditShow = false;
-            }
-        },
+        // olinetoshow: function() {
+        //     this.styleeditobj = {
+        //         title: '管线详情',
+        //         width: '800',
+        //         height: '515',
+        //     };
+        //     this.aFooters = [{ "title": "关闭", "bgcolor": "#fff", "color": "#333", "disabled": false }, ];
+        //     if (this.olinetoshow) {
+        //         this.pipeEditShow = true;
+        //     } else {
+        //         this.pipeEditShow = false;
+        //     }
+        // },
         domainvalue: function() {
             this.fieldValue();
         }
@@ -303,12 +328,12 @@ var pipe_left = {
     computed: {
         slidestyle: function() {
             return {
-                'margin-left': this.currentList === "net" ? '0px' : '-300px '
+                'margin-left': this.currentList === "net" ? '0px' : '-270px '
             };
         },
         warpperslidestyle: function() {
             return {
-                'margin-left': this.show ? '0px' : '-300px '
+                'margin-left': this.show ? '0px' : '-270px '
             };
         },
 
@@ -354,6 +379,9 @@ var pipe_left = {
         updateLineDetailById: function(objectId, flag) {
             this.$emit("updatelinedetailbyid", objectId, flag);
         },
+        setnetidtoshow: function(sId) {
+            this.$emit("setnetidtoshow", sId);
+        },
         changeListShow: function() {
             if (this.show) {
                 $(".up_btn").addClass("direction");
@@ -377,7 +405,7 @@ var pipe_left = {
             this.styleobj = styleobj;
             this.inputobj = inputobj;
             this.aFooters = aFooters;
-            if (this.styleobj.title == "新增管网") {
+            if (this.styleobj.title == "新增管网" || this.styleobj.title == "修改管网") {
                 this.netshow = !this.netshow;
             }
             if (this.styleobj.title == "新增管线") {
@@ -387,8 +415,41 @@ var pipe_left = {
         createSave: function() {
             if (this.styleobj.title == "新增管网") {
                 this.saveNet();
+            } else if (this.styleobj.title == "修改管网") {
+                this.updateNet();
             } else {
                 this.saveLine();
+            }
+        },
+        updateNet: function(data) {
+            var that = this;
+            var _data = {
+                "objectId": that.inputobj.objectId,
+                "pipeNetworkName": that.inputobj.pipeNetworkName.trim(),
+                "pipeNetworkRemark": that.inputobj.pipeNetworkRemark.trim(),
+                "pipeNetworkUsed": that.inputobj.pipeNetworkUsed,
+            };
+            if (that.verifyNet()) {
+                $.ajax({
+                    type: "POST",
+                    url: "/cloudlink-inspection-event/commonData/pipemapnetwork/update?token=" + lsObj.getLocalStorage('token'),
+                    contentType: "application/json",
+                    data: JSON.stringify(_data),
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.success == 1) {
+                            xxwsWindowObj.xxwsAlert("修改管网属性成功", function() {
+                                that.netshow = !that.netshow;
+                                that.$emit("updatenetdetailbyid", _data.objectId, 3);
+                            });
+                        } else {
+                            xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                        }
+                    },
+                    error: function() {
+                        xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                    }
+                });
             }
         },
         saveNet: function() {
@@ -410,6 +471,7 @@ var pipe_left = {
                         if (data.success == 1) {
                             /*此处针对BO进行重新存储*/
                             xxwsWindowObj.xxwsAlert("新增管网成功", function() {
+                                that.$emit("setnetidtoshow", _data.objectId);
                                 that.netshow = !that.netshow;
                                 that.$emit("updatenetdetailbyid", _data.objectId, 1);
                             });
