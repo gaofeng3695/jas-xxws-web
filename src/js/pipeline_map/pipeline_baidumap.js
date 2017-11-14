@@ -2,7 +2,7 @@ var pipeline_baidumap = {
     template: '#pipeline_baidumap',
     props: {
         linedetails: {},
-        markerpoint : {},
+        markerpoint: {},
         linedetailsedited: {},
         istabshow: {
             default: false
@@ -61,7 +61,7 @@ var pipeline_baidumap = {
             //console.log('——————————数据来源发生改变')
             this._draw_lines();
         },
-        markerpoint : function(){
+        markerpoint: function() {
             this._addPonitMarker();
         }
     },
@@ -142,7 +142,7 @@ var pipeline_baidumap = {
                         enableEditing: that.isEditable || false,
                     });
 
-                    topline.addEventListener('click',function(){
+                    topline.addEventListener('click', function() {
                         //alert(item.objectId);
                         that.$emit('clickline', item);
                     });
@@ -184,7 +184,7 @@ var pipeline_baidumap = {
 
 
             });
-            if(aPoints.length > 0){
+            if (aPoints.length > 0) {
                 map.map.setViewport(aPoints, { //设定视野范围
                     enableAnimation: true,
                     margins: [0, 0, 0, 0],
@@ -271,10 +271,10 @@ var pipeline_baidumap = {
                 }
             });
         },
-        _addPonitMarker : function(){
+        _addPonitMarker: function() {
             this.mapObj.map.removeOverlay(this._pointMarker);
-            if(this.markerpoint){
-                this._pointMarker = this.mapObj.draw_pointMarker(this.markerpoint.bdlon,this.markerpoint.bdLat);
+            if (this.markerpoint) {
+                this._pointMarker = this.mapObj.draw_pointMarker(this.markerpoint.bdlon, this.markerpoint.bdLat);
             }
         }
     },
