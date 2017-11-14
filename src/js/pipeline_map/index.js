@@ -69,15 +69,9 @@ var vm = new Vue({
         },
         aLineDetailsToShow: function() {
             var that = this;
-            //return (function () {
-            if (that.sNetId_choosed && !that.sLineId_choosed) {
+            if (that.sNetId_choosed && that.isLineList_entered) {
                 return that.aLineDetails.filter(function(item) {
                     return item.pipeNetworkId === that.sNetId_choosed;
-                });
-            }
-            if (that.sLineId_choosed) {
-                return that.aLineDetails.filter(function(item) {
-                    return item.objectId === that.sLineId_choosed;
                 });
             }
             return that.aLineDetails.filter(function(item) {
