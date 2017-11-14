@@ -20,22 +20,8 @@
 <body>
     <div id="app" class="app">
         <div class="index_wrapper">
-            <pipe-left
-                :pipenetdatas="aNetDetails"
-                :domainvalue="domainValue"
-                :pointerdatas="aLineDetails"
-                :snetid="sNetId_choosed"
-                :slineid="sLineId_choosed"
-                :olinedetailedited="olineDetail_edited"
-                :olinetoshow="oLine_toThow"
-                @olinechange="setsLine_toThow"
-                @choosenet="chooseNet"
-                @checkedline="chooseLine"
-                @enterlinelist="enterLineList"
-                @updatenetdetailbyid="updateNetDetailById"
-                @updatelinedetailbyid="updateLineDetailById"
-                ref="pipeleft"
-            ></pipe-left>
+            <pipe-left :anetidtoshow="aNetId_toShow" :pipenetdatas="aNetDetails" :domainvalue="domainValue" :pointerdatas="aLineDetails" :snetid="sNetId_choosed" :slineid="sLineId_choosed" :olinedetailedited="olineDetail_edited" @olinechange="setsLine_toThow" @choosenet="chooseNet"
+                @setnetidtoshow="setNetIdToShow" @checkedline="chooseLine" @enterlinelist="enterLineList" @updatenetdetailbyid="updateNetDetailById" @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
 
 
             <pipeline-baidumap :markerpoint="markerPoint" :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :istabshow="sLineId_choosed" @setmarkerpoint="setMarkerPoint" @changeline="editLineDetail" @clickline="setsLine_toThow" @savedetail="saveLineStyleAndPoint"></pipeline-baidumap>
@@ -355,7 +341,7 @@
                 </div>
                 <textarea-vue title="备注" placeholder="请输入备注" name="pipeLineRemark" :inputobj="inputobj"></textarea-vue>
             </modal-vue>
-            <modal-vue v-if="pipeEditShow" :styleobj="styleeditobj" :footer="aFooters" @click2="canceledit">
+            <!--<modal-vue v-if="pipeEditShow" :styleobj="styleeditobj" :footer="aFooters" @click2="canceledit">
                 <div class="detail">
                     <span-two-vue title="管线名称" :text="olinetoshow.pipeLineName" :required="true"></span-two-vue>
                     <span-two-vue title="管线编号" :text="olinetoshow.pipeLineCode"></span-two-vue>
@@ -380,13 +366,14 @@
                     <span-vue title="使用状态" :text="olinetoshow.pipeUsingStateName"></span-vue>
                 </div>
                 <textarea-view-vue title="备注" :text="olinetoshow.pipeLineRemark"></textarea-view-vue>
-            </modal-vue>
+            </modal-vue>-->
             <!--<div class="leftArea">-->
             <!-- 这里写管网组件模块和管线组件模块 -->
             <div class="pipe-left" style=" transition: all .5s" :style="warpperslidestyle">
                 <div class="slide-content">
                     <div class="listwrapper slide" :style="slidestyle">
-                        <pipe-net-list :pipenetdatas="pipenetdatas" :snetid="snetid" :linetotal="lineTotal" @changelist="changelist" @chooseNet="chooseNet" @createinfo="createInfo" @updatenetdetailbyid="updateNetDetailById" @enterlinelist="enterlinelist" style="flex-grow:1;"></pipe-net-list>
+                        <pipe-net-list :anetidtoshow="anetidtoshow" :pipenetdatas="pipenetdatas" :snetid="snetid" :linetotal="lineTotal" @changelist="changelist" @chooseNet="chooseNet" @createinfo="createInfo" @updatenetdetailbyid="updateNetDetailById" @enterlinelist="enterlinelist"
+                            @setnetidtoshow="setnetidtoshow" style="flex-grow:1;"></pipe-net-list>
                         <pipe-line-list :pointerdatas="chooseLine" :olinedetailedited="olinedetailedited" :linetotal="lineTotal" :slineid="slineid" :currentnetname="currentNetName" @changelist="changelist" @checkedline="checkedline" @createinfo="createInfo" @enterlinelist="enterlinelist"
                             @updatelinedetailbyid="updateLineDetailById" style="flex-grow:1;"></pipe-line-list>
                     </div>
@@ -426,7 +413,7 @@
                                             管线名称<span>：</span><span v-text="item.pipeLineName"></span>
                                         </div>
                                         <span class="btn_close" @click.stop="deleteLine(item)" title="删除管线"></span>
-                                        <span class="btn_editd" title="编辑管线"></span>
+
                                     </div>
                                     <div class="line_title">
                                         <!--<div class="umli100 fl">
@@ -455,8 +442,8 @@
                     </div>
                 </div>
             </div>
-            <div class="left_footer" @click="back">
-                <span>返回</span>
+            <div class="left_footer">
+                <span class="back" @click="back">返回</span>
             </div>
         </div>
     </script>
@@ -478,10 +465,13 @@
                     <div class="scroll" style="height:100%;">
                         <ul>
                             <li v-for="(item,index) in pipenetdatas" :class="{'clickon' : item.objectId == snetid }">
-                                <div class="content" @click="clickLi(item)">
+                                <div class="content" @click.stop="clickLi(item)" @dblclick.stop="enterInto(item)">
                                     <div class="line">
-                                        <div class="pipe_name umli100">
+                                        <div class=" wid200 umli100">
                                             管网名称<span>：</span><span v-text="item.pipeNetworkName"></span>
+                                        </div>
+                                        <div class="enter" @click="enterInto(item);clickLi(item)">
+                                            进入
                                         </div>
                                     </div>
                                     <div class="line">
@@ -512,7 +502,9 @@
                                         <div class="btns">
                                             <div class="btn_close" @click.stop="deleteNet(item)" title="删除管网">
                                             </div>
-                                            <div class="btn_edit" @click="enterInto(item);clickLi(item)" title="进入管网">
+                                            <div class="btn_edit" @click.stop="editNet(item)" title="修改管网">
+                                            </div>
+                                            <div class="btn_eye_h" :class="{'btn_eye':anetidtoshow.indexOf(item.objectId)===-1}" @click.stop="setNetIdToShow(item.objectId)" title="查看管网">
                                             </div>
                                         </div>
                                     </div>

@@ -31,12 +31,12 @@ var util = {
 var vm = new Vue({
     el: '#app',
     data: {
-        aNetId_toShow : [],//要显示的管网IDs
+        aNetId_toShow: [], //要显示的管网IDs
         sNetId_choosed: '', //被选中的管网的ID
         sLineId_choosed: '', //被选中的管线的ID
         oLine_toThow: '', //要显示详情的管线ID
         olineDetail_edited: '', //存在已被编辑的管线
-        markerPoint : '',//地图上的标注点，点击坐标后在地图上做标注 {"bdlon": 116.203929,"bdLat": 40.227286} || ''
+        markerPoint: '', //地图上的标注点，点击坐标后在地图上做标注 {"bdlon": 116.203929,"bdLat": 40.227286} || ''
 
         isLineList_entered: false, //是否进入了管线列表
         aNetDetails: [], //所有管网的详情数组
@@ -47,7 +47,7 @@ var vm = new Vue({
         aNetId_active: function() {
             var arr = [];
             this.aNetDetails.forEach(function(item) {
-                if(+item.pipeNetworkUsed === 1){
+                if (+item.pipeNetworkUsed === 1) {
                     arr.push(item.objectId);
                 }
             });
@@ -92,23 +92,23 @@ var vm = new Vue({
         },
     },
     watch: {
-        aNetId_active : function(newval,oldval){
+        aNetId_active: function(newval, oldval) {
             var arr = [].concat(this.aNetId_toShow);
             var isChange = false;
 
-            newval.forEach(function(item){
-                if(oldval.indexOf(item) === -1 ){ //旧值中没有新值，就是新增的
-                    if(arr.indexOf(item) === -1){ //显示数组中没有该值，就加进去
+            newval.forEach(function(item) {
+                if (oldval.indexOf(item) === -1) { //旧值中没有新值，就是新增的
+                    if (arr.indexOf(item) === -1) { //显示数组中没有该值，就加进去
                         arr.push(item);
                         isChange = true;
                     }
                 }
             });
-            oldval.forEach(function(item){
-                if(newval.indexOf(item) === -1 ){ //新值中没有旧值，就是删除的
-                    if(arr.indexOf(item) !== -1){ //显示数组中有该值，就从中剔除
+            oldval.forEach(function(item) {
+                if (newval.indexOf(item) === -1) { //新值中没有旧值，就是删除的
+                    if (arr.indexOf(item) !== -1) { //显示数组中有该值，就从中剔除
                         var index = arr.indexOf(item);
-                        arr.splice(index,1);
+                        arr.splice(index, 1);
                         isChange = true;
                     }
                 }
@@ -182,6 +182,7 @@ var vm = new Vue({
                 }),
                 dataType: "json",
                 success: function(data) {
+                    console.log(data)
                     if (data.success == 1) {
                         that.aLineDetails = data.rows;
                     } else {
@@ -193,7 +194,7 @@ var vm = new Vue({
         // updateNetDetail: function(flag) {
         //     this.onetDetaul_edited = flag;
         // },
-        setMarkerPoint : function(oPoint){
+        setMarkerPoint: function(oPoint) {
             this.markerPoint = oPoint ? oPoint : '';
         },
         setsLine_toThow: function(oLine) { //设定要被展示管线详情的ID
@@ -309,16 +310,16 @@ var vm = new Vue({
                 }
             });
         },
-        setNetIdToShow :function(sId){
-            if(!sId){
+        setNetIdToShow: function(sId) {
+            if (!sId) {
                 return;
             }
             var arr = [].concat(this.aNetId_toShow);
             var index = this.aNetId_toShow.indexOf(sId);
-            if(index === -1){
-               arr.push(sId);
-            }else{
-                arr.splice(index,1);
+            if (index === -1) {
+                arr.push(sId);
+            } else {
+                arr.splice(index, 1);
             }
             this.aNetId_toShow = arr;
         },
