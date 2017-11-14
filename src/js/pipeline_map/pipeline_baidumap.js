@@ -302,7 +302,7 @@ var pipeline_baidumap = {
             });
             setInterval(function() {
                 map.map.removeOverlay(this[item.objectId + '_']);
-                if ()
+                // if ()
             }, 100);
         }
     },
