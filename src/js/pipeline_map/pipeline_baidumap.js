@@ -14,14 +14,24 @@ var pipeline_baidumap = {
         //alert(this.linedetails)
         return {
             sCurrentTap: '', //draw,edit,keep,save
+            twinkleTimes: null,
         };
     },
     computed: {
         aLineDetailsToShow: function() {
+            var _this = this;
             if (!this.linedetailsedited) {
                 this.sCurrentTap = '';
             }
-            return (this.linedetails.length === 1 && this.linedetailsedited) ? [this.linedetailsedited] : this.linedetails;
+
+            this.linedetails.forEach(function(item, index) {
+                if (item.objectId == _this.linedetailsedited.objectId) {
+                    _this.linedetails.splice(index, 1);
+                    _this.linedetails.push(_this.linedetailsedited);
+                }
+            });
+            return this.linedetails;
+            // return (this.linedetails.length === 1 && this.linedetailsedited) ? [this.linedetailsedited] : this.linedetails;
         },
         isNoPoints: function() { //用来控制tab显示的标签
             if (this.aLineDetailsToShow.length === 1) {
@@ -111,7 +121,7 @@ var pipeline_baidumap = {
             var aPoints = [];
 
 
-
+            that._setlineBlink(aline);
             aline.forEach(function(item, index) {
                 if (!item.line || item.line.length === 0) { //没有坐标点就返回
                     return;
@@ -132,59 +142,77 @@ var pipeline_baidumap = {
                         return;
                     }
                 }
-                if (aline.length === 1) { //只有一条线的时候才会标注起止图表
-                    if (item.line.length > 0) {
-                        var startPoint = map.draw_pointMarker(item.line[0].bdLon, item.line[0].bdLat, map.startMarker);
-                    }
-                    if (item.line.length > 1) {
-                        var endMarker = map.draw_pointMarker(item.line[item.line.length - 1].bdLon, item.line[item.line.length - 1].bdLat, map.endMarker);
-                    }
-                }
-
+                // if (aline.length === 1) { //只有一条线的时候才会标注起止图表
+                //     if (item.line.length > 0) {
+                //         var startPoint = map.draw_pointMarker(item.line[0].bdLon, item.line[0].bdLat, map.startMarker);
+                //     }
+                //     if (item.line.length > 1) {
+                //         var endMarker = map.draw_pointMarker(item.line[item.line.length - 1].bdLon, item.line[item.line.length - 1].bdLat, map.endMarker);
+                //     }
+                // }
                 if (item.line.length > 1) { //含有两个坐标点以上，画线
-                    var topline = map.draw_line(item.line, {
-                        strokeColor: item.pipeColor,
-                        strokeWeight: item.pipeWeight,
-                        strokeStyle: item.pipeStyle, //dashed
-                        strokeOpacity: 1,
-                        enableEditing: that.isEditable || false,
-                    });
+                    if (item.objectId == that.slineidchoosed) { //当前选中的线
+                        var topline = map.draw_line(item.line, {
+                            strokeColor: item.pipeColor,
+                            strokeWeight: item.pipeWeight,
+                            strokeStyle: item.pipeStyle, //dashed
+                            strokeOpacity: 1,
+                            enableEditing: that.isEditable || false,
+                        });
+                        //起点
+                        var startPoint = map.draw_pointMarker(item.line[0].bdLon, item.line[0].bdLat, map.startMarker);
+                        //终点
+                        var endMarker = map.draw_pointMarker(item.line[item.line.length - 1].bdLon, item.line[item.line.length - 1].bdLat, map.endMarker);
+
+                        // if ((that.isEditable || that.isDrawable) && index === 0) { //如果处于编辑状态，添加线的更新事件
+                        if (that.isEditable || that.isDrawable) { //如果处于编辑状态，添加线的更新事件
+                            //that.topline = '';
+                            that.topline = topline;
+                            that.topline.lineData = item;
+                            that.topline.addEventListener('lineupdate', function() {
+                                var linePoints = that.topline.getPath();
+                                var lineLength = 0;
+                                var line = linePoints.map(function(item, index, arr) {
+                                    if (index > 0) {
+                                        lineLength += map.map.getDistance(new BMap.Point(arr[index - 1].lng, arr[index - 1].lat), new BMap.Point(item.lng, item.lat));
+                                    }
+                                    return {
+                                        "lon": "",
+                                        "lat": "",
+                                        "bdLon": item.lng,
+                                        "bdLat": item.lat,
+                                        "rowIndex": index
+                                    }
+                                });
+                                // var oDetail = JSON.parse(JSON.stringify(that.aLineDetailsToShow[0]));
+                                var oDetail = JSON.parse(JSON.stringify(item));
+                                oDetail.line = line;
+                                oDetail.pipeLength = (lineLength / 1000).toFixed(3);
+                                //console.log(oDetail);
+                                that.$emit('changeline', oDetail);
+                            })
+                        }
+                    } else {
+                        var topline = map.draw_line(item.line, {
+                            strokeColor: item.pipeColor,
+                            strokeWeight: item.pipeWeight,
+                            strokeStyle: item.pipeStyle, //dashed
+                            strokeOpacity: 1,
+                            enableEditing: false,
+                        });
+                    }
 
                     if (isFocusNet || isFocusLine) {
-                        that._setlineBlink(item);
+                        // that._setlineBlink(item);
                     }
 
                     topline.addEventListener('click', function() {
 
-                        //alert(item.objectId);
+                        // alert(item.objectId);
                         that.$emit('clickline', item);
                     });
 
-                    if ((that.isEditable || that.isDrawable) && index === 0) { //如果处于编辑状态，添加线的更新事件
-                        //that.topline = '';
-                        that.topline = topline;
-                        that.topline.addEventListener('lineupdate', function() {
-                            var linePoints = that.topline.getPath();
-                            var lineLength = 0;
-                            var line = linePoints.map(function(item, index, arr) {
-                                if (index > 0) {
-                                    lineLength += map.map.getDistance(new BMap.Point(arr[index - 1].lng, arr[index - 1].lat), new BMap.Point(item.lng, item.lat));
-                                }
-                                return {
-                                    "lon": "",
-                                    "lat": "",
-                                    "bdLon": item.lng,
-                                    "bdLat": item.lat,
-                                    "rowIndex": index
-                                }
-                            });
-                            var oDetail = JSON.parse(JSON.stringify(that.aLineDetailsToShow[0]));
-                            oDetail.line = line;
-                            oDetail.pipeLength = (lineLength / 1000).toFixed(3);
-                            //console.log(oDetail);
-                            that.$emit('changeline', oDetail);
-                        })
-                    }
+
 
 
                 }
@@ -223,7 +251,7 @@ var pipeline_baidumap = {
                 var point = new BMap.Point(e.point.lng, e.point.lat);
                 var aLine = that.aLineDetailsToShow[0].line;
 
-
+                console.log(that.topline)
                 if (that.topline) { //已经画过线
                     that.topline.setPath(that.topline.getPath().concat([point]));
                 } else {
@@ -258,17 +286,28 @@ var pipeline_baidumap = {
                     that.mapObj.map.removeOverlay(that.dashLineDrawed);
                 }
                 //console.log(that.aLineDetailsToShow)
-                var aLine = that.aLineDetailsToShow[0].line;
+                // var aLine = that.aLineDetailsToShow[0].line;
+                var aLine = that.topline.lineData.line;
                 if (aLine.length === 0) {
                     return;
                 }
                 var lastPoint = new BMap.Point(aLine[aLine.length - 1].bdLon, aLine[aLine.length - 1].bdLat);
 
-
+                that.mapObj.map.removeOverlay(that.label);
                 var lon = e.point.lng;
                 var lat = e.point.lat;
                 var newPointt = new BMap.Point(lon, lat);
                 //console.log(e.point.lng + "," + e.point.lat);
+
+                that.label = new BMap.Label("点击右键，结束绘制", { offset: new BMap.Size(10, -10), position: newPointt });
+                that.label.setStyle({
+                    color: "red",
+                    fontSize: "12px",
+                    padding: "2px 3px",
+                    backgroundColor: '#fff',
+                    fontFamily: "微软雅黑"
+                });
+                that.mapObj.map.addOverlay(that.label); // 将标注添加到地图中
 
                 that.dashLineDrawed = that.mapObj.draw_line([lastPoint, newPointt], {
                     strokeColor: that.aLineDetailsToShow[0].pipeColor || "blue",
@@ -292,18 +331,45 @@ var pipeline_baidumap = {
                 this._pointMarker = this.mapObj.draw_pointMarker(this.markerpoint.bdlon, this.markerpoint.bdLat);
             }
         },
-        _setlineBlink: function(item) {
+        _setlineBlink: function(items) { //线闪烁方法
+            var _this = this;
             var map = this.mapObj;
-            this[item.objectId + '_'] = map.draw_line(item.line, {
-                strokeColor: '#000',
-                strokeWeight: item.pipeWeight + 2,
-                strokeStyle: item.pipeStyle, //dashed
-                strokeOpacity: 1,
-            });
-            setInterval(function() {
-                map.map.removeOverlay(this[item.objectId + '_']);
-                // if ()
-            }, 100);
+            clearInterval(_this.twinkleTimes);
+
+            function twinkleOpen() { //添加闪烁线
+                items.forEach(function(item, index) {
+                    var isNoChoosed = !_this.snetidchoosed && !_this.slineidchoosed;
+                    var isFocusNet = Boolean(_this.snetidchoosed && !_this.slineidchoosed && _this.snetidchoosed === item.pipeNetworkId);
+                    var isFocusLine = Boolean(_this.slineidchoosed && _this.slineidchoosed === item.objectId);
+
+                    if (item.line.length > 1) {
+                        if (isFocusNet || isFocusLine) {
+                            _this[item.objectId + '_'] = map.draw_line(item.line, {
+                                strokeColor: "#00fff6",
+                                strokeWeight: item.pipeWeight + 3,
+                                strokeStyle: item.pipeStyle, //dashed
+                                strokeOpacity: 1,
+                            });
+                        }
+                    }
+                })
+            }
+
+            function twinkleClose() { //删除闪烁线
+                items.forEach(function(item, index) {
+                    map.map.removeOverlay(_this[item.objectId + '_']);
+                })
+            }
+            var m = 1;
+            _this.twinkleTimes = setInterval(function() {
+                m++;
+                twinkleClose();
+                if (m % 2 == 0) {
+                    twinkleOpen();
+                } else if (m > 6) {
+                    clearInterval(_this.twinkleTimes);
+                }
+            }, 300);
         }
     },
 };
