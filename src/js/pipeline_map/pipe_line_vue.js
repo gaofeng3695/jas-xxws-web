@@ -249,7 +249,16 @@ var pipe_net_list = {
             });
         },
         setNetIdToShow: function(sId) {
-            this.$emit("setnetidtoshow", sId);
+            var _this = this;
+            // clearTimeout(_this.TimeFn);
+            //执行延时
+            _this.TimeFn = setTimeout(function() {
+                //do function在此处写单击事件要执行的代码
+                _this.$emit("setnetidtoshow", sId);
+            }, 100);
+        },
+        stopBubble: function() {
+            clearTimeout(this.TimeFn);
         }
     },
 }

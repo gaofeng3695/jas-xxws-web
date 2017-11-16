@@ -16,6 +16,7 @@ var pipeline_baidumap = {
             sCurrentTap: '', //draw,edit,keep,save
             twinkleTimes: null, //闪烁定时器
             activeLineShow: '', //当前选中的管线
+            stopCenter: false,
         };
     },
     computed: {
@@ -78,6 +79,7 @@ var pipeline_baidumap = {
             } else {
                 _this.activeLineShow = '';
             }
+            console.log(_this.activeLineShow);
             console.log("管线选择改变")
         },
         sCurrentTap: function(newVal) {
@@ -114,7 +116,7 @@ var pipeline_baidumap = {
                 this.sCurrentTap = sTab;
             }
         },
-        getActiveLineShow: function() {
+        getActiveLineShow: function() { //获取选中管线数据
             var _this = this;
             if (_this.slineidchoosed) {
                 _this.aLineDetailsToShow.forEach(function(item, index) {
@@ -125,6 +127,17 @@ var pipeline_baidumap = {
             } else {
                 _this.activeLineShow = '';
             }
+        },
+        openInfo: function(content, e) {
+            var opts = {
+                width: 400, // 信息窗口宽度
+                height: 96, // 信息窗口高度
+                enableMessage: true //设置允许信息窗发送短息
+            };
+            var p = e.point;
+            var point = new BMap.Point(p.lng, p.lat);
+            var infoWindow = new BMap.InfoWindow(content, opts); // 创建信息窗口对象
+            this.mapObj.map.openInfoWindow(infoWindow, point); //开启信息窗口
         },
         _draw_lines: function() { //每次线的状态的改变都会触发此方法
             var that = this;
@@ -151,8 +164,9 @@ var pipeline_baidumap = {
             //console.log('绘制地图，清空所有覆盖物');
             var aPoints = [];
 
-
-            that._setlineBlink(aline);
+            if (that.isEditable || that.isDrawable) {} else {
+                that._setlineBlink(aline);
+            }
             aline.forEach(function(item, index) {
                 if (!item.line || item.line.length === 0) { //没有坐标点就返回
                     return;
@@ -241,10 +255,16 @@ var pipeline_baidumap = {
                         // that._setlineBlink(item);
                     }
 
-                    topline.addEventListener('click', function() {
-
+                    topline.addEventListener('click', function(e) {
+                        var showTxt = '<div class="lineDetails"><ul>\
+                            <li><p class="text">管线名称：' + item.pipeLineName + '</p><p>管线编号：' + (item.pipeLineCode || "") + '</p></li>\
+                            <li><p>管线类型：' + (item.pipeLineTypeName || "") + '</p><p>管线材质：' + (item.pipeMaterialName || "") + '</p></li>\
+                            <li><p>管线管径：' + (item.pipeDiameter || "") + '</p><p>管线壁厚：' + (item.pipeThickness || "") + '</p></li>\
+                            <li><p>使用状态：' + (item.pipeUsingStateName || "") + '</p><p>实际长度：' + (item.pipeFactLength || "") + '</p></li>\
+                            </ul></div>';
                         // alert(item.objectId);
-                        that.$emit('clickline', item);
+                        that.openInfo(showTxt, e);
+                        // that.$emit('clickline', item);
                     });
 
 
@@ -262,6 +282,10 @@ var pipeline_baidumap = {
                 }
 
             });
+            if (that.stopCenter) {
+                aPoints = [];
+                that.stopCenter = false;
+            }
             if (aPoints.length > 0) {
                 map.map.setViewport(aPoints, { //设定视野范围
                     enableAnimation: true,
@@ -287,7 +311,6 @@ var pipeline_baidumap = {
                 // var aLine = that.aLineDetailsToShow[0].line;
                 var aLine = that.activeLineShow.line;
 
-                console.log(that.topline)
                 if (that.topline) { //已经画过线
                     that.topline.setPath(that.topline.getPath().concat([point]));
                 } else {
@@ -354,8 +377,11 @@ var pipeline_baidumap = {
                 }, true);
             });
             oMap.addEventListener("rightclick", function(e) {
+                console.log("dd")
                 if (that.isEditable || that.isDrawable) {
+                    console.log("dccc")
                     that.sCurrentTap = '';
+                    that.stopCenter = true;
                     if (that.dashLineDrawed) {
                         that.mapObj.map.removeOverlay(that.dashLineDrawed);
                     }
