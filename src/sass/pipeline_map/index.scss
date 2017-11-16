@@ -59,6 +59,25 @@ body,
             }
         }
     }
+    .lineDetails {
+        width: 400px;
+        ul {
+            li {
+                width: 100%;
+                overflow: hidden;
+                p {
+                    width: 50%;
+                    float: left;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    height: 24px;
+                    line-height: 24px;
+                    margin: 0;
+                }
+            }
+        }
+    }
     label {
         display: inline-block;
         max-width: 300px;

@@ -467,7 +467,7 @@
                                             </div>
                                             <div class="btn_edit" @click.stop="editNet(item)" title="修改管网">
                                             </div>
-                                            <div class="btn_eye_h" :class="{'btn_eye':anetidtoshow.indexOf(item.objectId)===-1}" @click.stop="setNetIdToShow(item.objectId)" title="查看管网">
+                                            <div class="btn_eye_h" :class="{'btn_eye':anetidtoshow.indexOf(item.objectId)===-1}" @dblclick.stop="stopBubble" @click.stop="setNetIdToShow(item.objectId)" title="查看管网">
                                             </div>
                                         </div>
                                     </div>
