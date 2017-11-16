@@ -199,6 +199,7 @@ var vm = new Vue({
             this.sNetId_choosed = sNetId || '';
         },
         chooseLine: function(sLineId) { //选择管线，清空则传空
+            console.log(sLineId);
             this.sLineId_choosed = sLineId || '';
         },
         enterLineList: function(bol) {
