@@ -14,7 +14,8 @@ var pipeline_baidumap = {
         //alert(this.linedetails)
         return {
             sCurrentTap: '', //draw,edit,keep,save
-            twinkleTimes: null,
+            twinkleTimes: null, //闪烁定时器
+            activeLineShow: '', //当前选中的管线
         };
     },
     computed: {
@@ -23,19 +24,25 @@ var pipeline_baidumap = {
             if (!this.linedetailsedited) {
                 this.sCurrentTap = '';
             }
-
-            this.linedetails.forEach(function(item, index) {
+            var showLineAll = JSON.parse(JSON.stringify(_this.linedetails))
+            showLineAll.forEach(function(item, index) {
                 if (item.objectId == _this.linedetailsedited.objectId) {
-                    _this.linedetails.splice(index, 1);
-                    _this.linedetails.push(_this.linedetailsedited);
+                    showLineAll.splice(index, 1);
+                    showLineAll.push(_this.linedetailsedited);
+                    _this.activeLineShow = JSON.parse(JSON.stringify(_this.linedetailsedited));
                 }
             });
-            return this.linedetails;
+            return showLineAll;
             // return (this.linedetails.length === 1 && this.linedetailsedited) ? [this.linedetailsedited] : this.linedetails;
         },
         isNoPoints: function() { //用来控制tab显示的标签
-            if (this.aLineDetailsToShow.length === 1) {
-                if (this.aLineDetailsToShow[0].line.length === 0) {
+            // if (this.aLineDetailsToShow.length === 1) {
+            //     if (this.aLineDetailsToShow[0].line.length === 0) {
+            //         return true;
+            //     }
+            // }
+            if (this.activeLineShow) {
+                if (this.activeLineShow.line.length > 1) {
                     return true;
                 }
             }
@@ -57,9 +64,21 @@ var pipeline_baidumap = {
     },
     watch: {
         slineidchoosed: function() {
+            var _this = this;
+            //放弃上次编辑，显示的管线数据还原
+            _this.aLineDetailsToShow = JSON.parse(JSON.stringify(_this.linedetails));
+
             if (this.slineidchoosed) {
+                _this.aLineDetailsToShow.forEach(function(item, index) {
+                    if (item.objectId == _this.slineidchoosed) {
+                        _this.activeLineShow = JSON.parse(JSON.stringify(item));
+                    }
+                });
                 this._draw_lines();
+            } else {
+                _this.activeLineShow = '';
             }
+            console.log("管线选择改变")
         },
         sCurrentTap: function(newVal) {
             this._draw_lines();
@@ -93,6 +112,18 @@ var pipeline_baidumap = {
                 this.sCurrentTap = ''
             } else {
                 this.sCurrentTap = sTab;
+            }
+        },
+        getActiveLineShow: function() {
+            var _this = this;
+            if (_this.slineidchoosed) {
+                _this.aLineDetailsToShow.forEach(function(item, index) {
+                    if (item.objectId == _this.slineidchoosed) {
+                        _this.activeLineShow = JSON.parse(JSON.stringify(item));
+                    }
+                });
+            } else {
+                _this.activeLineShow = '';
             }
         },
         _draw_lines: function() { //每次线的状态的改变都会触发此方法
@@ -135,7 +166,8 @@ var pipeline_baidumap = {
                     // console.log('计算距离：',length)
                     // console.log('之前',item.pipeLength)
                     if (length !== item.pipeLength) {
-                        var oDetail = JSON.parse(JSON.stringify(that.aLineDetailsToShow[0]));
+                        // var oDetail = JSON.parse(JSON.stringify(that.aLineDetailsToShow[0]));
+                        var oDetail = JSON.parse(JSON.stringify(that.activeLineShow));
                         oDetail.pipeLength = length;
                         // console.log('距离不一样，重新计算距离')
                         that.$emit('changeline', oDetail);
@@ -150,7 +182,9 @@ var pipeline_baidumap = {
                 //         var endMarker = map.draw_pointMarker(item.line[item.line.length - 1].bdLon, item.line[item.line.length - 1].bdLat, map.endMarker);
                 //     }
                 // }
-                if (item.line.length > 1) { //含有两个坐标点以上，画线
+                if (item.line.length == 1) {
+                    var startPoint = map.draw_pointMarker(item.line[0].bdLon, item.line[0].bdLat, map.startMarker);
+                } else if (item.line.length > 1) { //含有两个坐标点以上，画线
                     if (item.objectId == that.slineidchoosed) { //当前选中的线
                         var topline = map.draw_line(item.line, {
                             strokeColor: item.pipeColor,
@@ -187,6 +221,7 @@ var pipeline_baidumap = {
                                 // var oDetail = JSON.parse(JSON.stringify(that.aLineDetailsToShow[0]));
                                 var oDetail = JSON.parse(JSON.stringify(item));
                                 oDetail.line = line;
+                                // that.activeLineShow.line = line;
                                 oDetail.pipeLength = (lineLength / 1000).toFixed(3);
                                 //console.log(oDetail);
                                 that.$emit('changeline', oDetail);
@@ -249,7 +284,8 @@ var pipeline_baidumap = {
                 var lon = e.point.lng;
                 var lat = e.point.lat;
                 var point = new BMap.Point(e.point.lng, e.point.lat);
-                var aLine = that.aLineDetailsToShow[0].line;
+                // var aLine = that.aLineDetailsToShow[0].line;
+                var aLine = that.activeLineShow.line;
 
                 console.log(that.topline)
                 if (that.topline) { //已经画过线
@@ -272,7 +308,8 @@ var pipeline_baidumap = {
                             "rowIndex": 2
                         }]);
                     }
-                    var oDetail = JSON.parse(JSON.stringify(that.aLineDetailsToShow[0]));
+                    // var oDetail = JSON.parse(JSON.stringify(that.aLineDetailsToShow[0]));
+                    var oDetail = JSON.parse(JSON.stringify(that.activeLineShow));
                     oDetail.line = line;
                     //console.log(oDetail);
                     that.$emit('changeline', oDetail);
@@ -287,7 +324,7 @@ var pipeline_baidumap = {
                 }
                 //console.log(that.aLineDetailsToShow)
                 // var aLine = that.aLineDetailsToShow[0].line;
-                var aLine = that.topline.lineData.line;
+                var aLine = that.activeLineShow.line;
                 if (aLine.length === 0) {
                     return;
                 }
@@ -310,8 +347,8 @@ var pipeline_baidumap = {
                 that.mapObj.map.addOverlay(that.label); // 将标注添加到地图中
 
                 that.dashLineDrawed = that.mapObj.draw_line([lastPoint, newPointt], {
-                    strokeColor: that.aLineDetailsToShow[0].pipeColor || "blue",
-                    strokeWeight: that.aLineDetailsToShow[0].pipeWeight || 2,
+                    strokeColor: that.activeLineShow.pipeColor || "blue",
+                    strokeWeight: that.activeLineShow.pipeWeight || 2,
                     strokeOpacity: 0.5,
                     strokeStyle: "dashed"
                 }, true);
