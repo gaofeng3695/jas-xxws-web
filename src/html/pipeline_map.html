@@ -24,16 +24,36 @@
             <pipe-left :anetidtoshow="aNetId_toShow" :pipenetdatas="aNetDetails" :domainvalue="domainValue" :pointerdatas="aLineDetails" :snetid="sNetId_choosed" :slineid="sLineId_choosed" :olinedetailedited="olineDetail_edited" @olinechange="setsLine_toThow" @choosenet="chooseNet"
                 @setnetidtoshow="setNetIdToShow" @checkedline="chooseLine" @enterlinelist="enterLineList" @updatenetdetailbyid="updateNetDetailById" @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
 
-            <pipeline-baidumap :markerpoint="markerPoint" :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :snetidchoosed="sNetId_choosed" :slineidchoosed="sLineId_choosed" :istabshow="sLineId_choosed" @setmarkerpoint="setMarkerPoint" @changeline="editLineDetail"
-                @clickline="setsLine_toThow" @savedetail="saveLineStyleAndPoint"></pipeline-baidumap>
+            <pipeline-baidumap ref="cmap" :markerpoint="markerPoint" :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :snetidchoosed="sNetId_choosed" :slineidchoosed="sLineId_choosed" :istabshow="sLineId_choosed" @setmarkerpoint="setMarkerPoint"
+                @changeline="editLineDetail" @clickline="setsLine_toThow" @savedetail="saveLineStyleAndPoint" @openguide="openGuide"></pipeline-baidumap>
 
 
             <pipeline-edit :domainvalue="domainValue" :markerpoint="markerPoint" @setmarkerpoint="setMarkerPoint" :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine"
                 @saveline="updateLineDetailById" @savework="updateNetDetailById" @changelinefn="editLineDetail"></pipeline-edit>
+            <!--//引导组件-->
+            <pipe-guide @guidedraw="guidedraw" ref="cguide"></pipe-guide>
         </div>
 
         <!-- <pipe-net-example></pipe-net-example> -->
     </div>
+    <script type="text/x-template" id="pipe_guide">
+        <div class="pipe_guide" v-show="guidestates">
+            <div class="guide_main">
+                <div class="guide_left">
+                    <span @click="startDraw">绘制</span>
+                </div>
+                <div class="guide_right">
+                    <dl>
+                        <dt><img src="/src/images/pipeline_map/boult.png" alt=""></dt>
+                        <dd>
+                            <p>该管线还没有绘制，请点击绘制或者取消</p>
+                        </dd>
+                        <dd><span @click="closedGuide">取消</span></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </script>
     <!-- 组件内的模板这样写 -->
     <script type="text/x-template" id="pipe_net_example">
         <!-- 书写scss使用class做为选择器 -->

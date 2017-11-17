@@ -45,6 +45,11 @@ var pipeline_baidumap = {
             if (this.activeLineShow) {
                 if (this.activeLineShow.line.length > 1) {
                     return true;
+                } else {
+                    if (!this.linedetailsedited) {
+                        console.log("ddd");
+                        this.$emit("openguide")
+                    }
                 }
             }
             return false;
@@ -79,8 +84,7 @@ var pipeline_baidumap = {
             } else {
                 _this.activeLineShow = '';
             }
-            console.log(_this.activeLineShow);
-            console.log("管线选择改变")
+            // console.log("管线选择改变")
         },
         sCurrentTap: function(newVal) {
             this._draw_lines();
@@ -377,9 +381,7 @@ var pipeline_baidumap = {
                 }, true);
             });
             oMap.addEventListener("rightclick", function(e) {
-                console.log("dd")
                 if (that.isEditable || that.isDrawable) {
-                    console.log("dccc")
                     that.sCurrentTap = '';
                     that.stopCenter = true;
                     if (that.dashLineDrawed) {
@@ -436,3 +438,24 @@ var pipeline_baidumap = {
         }
     },
 };
+
+var pipe_guide = {
+    template: '#pipe_guide',
+    data: function() {
+        return {
+            guidestates: false,
+        }
+    },
+    methods: {
+        startDraw: function() {
+            this.$emit('guidedraw');
+            this.guidestates = false;
+        },
+        openGuide: function() {
+            this.guidestates = true;
+        },
+        closedGuide: function() {
+            this.guidestates = false;
+        },
+    }
+}
