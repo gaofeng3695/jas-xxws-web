@@ -116,7 +116,8 @@ var vm = new Vue({
     components: {
         'pipe-left': pipe_left,
         'pipeline-baidumap': pipeline_baidumap,
-        'pipeline-edit': pipeline_edit
+        'pipeline-edit': pipeline_edit,
+        'pipe-guide': pipe_guide,
     },
     mounted: function() {
         //console.log('#app mounted');
@@ -199,7 +200,6 @@ var vm = new Vue({
             this.sNetId_choosed = sNetId || '';
         },
         chooseLine: function(sLineId) { //选择管线，清空则传空
-            console.log(sLineId);
             this.sLineId_choosed = sLineId || '';
         },
         enterLineList: function(bol) {
@@ -345,7 +345,13 @@ var vm = new Vue({
                     }
                 }
             });
-        }
+        },
+        guidedraw: function() { //从引导直接绘制
+            this.$refs.cmap.changeTab('draw');
+        },
+        openGuide: function() { //打开绘制引导
+            this.$refs.cguide.openGuide();
+        },
 
     }
 

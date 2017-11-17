@@ -56,7 +56,7 @@ var pipe_line_list = {
                                 that.$emit("updatelinedetailbyid", item.objectId, 2);
                             });
                         } else {
-                            xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                            xxwsWindowObj.xxwsAlert("删除失败，请稍候重试");
                         }
                     }
                 });
@@ -157,7 +157,7 @@ var pipe_net_list = {
                                 that.$emit("updatenetdetailbyid", item.objectId, 2);
                             });
                         } else {
-                            xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                            xxwsWindowObj.xxwsAlert("删除失败，请稍候重试");
                         }
                     }
                 });
@@ -243,7 +243,7 @@ var pipe_net_list = {
                         }
 
                     } else {
-                        xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                        xxwsWindowObj.xxwsAlert("修改失败，请稍候重试");
                     }
                 }
             });
@@ -447,16 +447,16 @@ var pipe_left = {
                     dataType: "json",
                     success: function(data) {
                         if (data.success == 1) {
-                            xxwsWindowObj.xxwsAlert("修改管网属性成功", function() {
+                            xxwsWindowObj.xxwsAlert("修改管网成功", function() {
                                 that.netshow = !that.netshow;
                                 that.$emit("updatenetdetailbyid", _data.objectId, 3);
                             });
                         } else {
-                            xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                            xxwsWindowObj.xxwsAlert("修改失败，请稍候重试");
                         }
                     },
                     error: function() {
-                        xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                        xxwsWindowObj.xxwsAlert("修改失败，请稍候重试");
                     }
                 });
             }
@@ -485,7 +485,7 @@ var pipe_left = {
                                 that.$emit("updatenetdetailbyid", _data.objectId, 1);
                             });
                         } else {
-                            xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                            xxwsWindowObj.xxwsAlert("新增失败，请稍候重试");
                         }
                     }
                 });
@@ -530,7 +530,7 @@ var pipe_left = {
                                 that.$emit("updatelinedetailbyid", _data.objectId, 1);
                             });
                         } else {
-                            xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                            xxwsWindowObj.xxwsAlert("新增失败，请稍候重试");
                         }
                     }
                 });
