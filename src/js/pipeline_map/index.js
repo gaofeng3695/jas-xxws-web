@@ -352,7 +352,9 @@ var vm = new Vue({
         openGuide: function() { //打开绘制引导
             this.$refs.cguide.openGuide();
         },
-
+        mapEdit: function(bloom) {
+            this.$refs.cmap.changeLineEditOpen(bloom);
+        },
     }
 
 });

@@ -17,6 +17,7 @@ var pipeline_baidumap = {
             twinkleTimes: null, //闪烁定时器
             activeLineShow: '', //当前选中的管线
             stopCenter: false,
+            attrEdit: true, //右侧属性是否在编辑状态  true为不是编辑状态
         };
     },
     computed: {
@@ -25,7 +26,7 @@ var pipeline_baidumap = {
             if (!this.linedetailsedited) {
                 this.sCurrentTap = '';
             }
-            var showLineAll = JSON.parse(JSON.stringify(_this.linedetails))
+            var showLineAll = JSON.parse(JSON.stringify(_this.linedetails));
             showLineAll.forEach(function(item, index) {
                 if (item.objectId == _this.linedetailsedited.objectId) {
                     showLineAll.splice(index, 1);
@@ -47,7 +48,6 @@ var pipeline_baidumap = {
                     return true;
                 } else {
                     if (!this.linedetailsedited) {
-                        console.log("ddd");
                         this.$emit("openguide")
                     }
                 }
@@ -113,11 +113,26 @@ var pipeline_baidumap = {
         //console.log(this.markerPoint)
     },
     methods: {
+        changeLineEditOpen: function(bloom) {
+            this.attrEdit = bloom;
+        },
         changeTab: function(sTab) { //tab切换
-            if (this.sCurrentTap === sTab) {
-                this.sCurrentTap = ''
+            var _this = this;
+            if (this.attrEdit) {
+                if (this.sCurrentTap === sTab) {
+                    this.sCurrentTap = ''
+                } else {
+                    this.sCurrentTap = sTab;
+                }
             } else {
-                this.sCurrentTap = sTab;
+                xxwsWindowObj.xxwsAlert("当前管线属性处于编辑状态未保存,您是否放弃对当前的编辑?", function() {
+                    _this._draw_lines();
+                    if (_this.sCurrentTap === sTab) {
+                        _this.sCurrentTap = ''
+                    } else {
+                        _this.sCurrentTap = sTab;
+                    }
+                }, true);
             }
         },
         getActiveLineShow: function() { //获取选中管线数据
@@ -314,7 +329,7 @@ var pipeline_baidumap = {
                 var point = new BMap.Point(e.point.lng, e.point.lat);
                 // var aLine = that.aLineDetailsToShow[0].line;
                 var aLine = that.activeLineShow.line;
-
+                console.log(that.topline);
                 if (that.topline) { //已经画过线
                     that.topline.setPath(that.topline.getPath().concat([point]));
                 } else {

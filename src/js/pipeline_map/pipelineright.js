@@ -9,7 +9,7 @@ var pipe_right_title = { //右侧title组件
 };
 
 var pipe_right_content_attribute = { //右侧属性组件
-    props: ["detail", "domainvalue"],
+    props: ["detail", "domainvalue", "editdetails"],
     template: '#pipe-right-content-attribute',
     data: function() {
         return {
@@ -35,14 +35,31 @@ var pipe_right_content_attribute = { //右侧属性组件
         },
         domainvalue: function() {
             this.fieldValue();
-        }
+        },
+        isDisable: function() {
+            this.$emit('attredit', this.isDisable);
+        },
     },
     methods: {
         save_attribute: function(e) {
-            if (this.isDisable) {
-                this.isDisable = false;
+            var _this = this;
+            if (_this.editdetails) {
+                xxwsWindowObj.xxwsAlert("当前管线已修改未保存,您是否放弃对当前管线的编辑?", function() {
+                    _this.$emit('checkedcloselines');
+                    // if (_this.isDisable) {
+                    //     _this.isDisable = false;
+                    // } else {
+                    //     _this.verifyPipe();
+                    // }
+                }, true);
             } else {
-                this.verifyPipe();
+                if (_this.isDisable) {
+                    setTimeout(function() {
+                        _this.isDisable = false;
+                    }, 0);
+                } else {
+                    _this.verifyPipe();
+                }
             }
         },
         //管线修改提交
@@ -396,9 +413,22 @@ var pipeline_edit = {
         });
     },
     methods: {
+        mapEdit: function(bloom) { //改变绘制地图的状态
+            this.$emit('mapedit', bloom);
+        },
         tabchange: function(sTap) {
             this.sCurrentTap = sTap;
             $(".rightcontent").show();
+        },
+        checkedcloselines: function(e) {
+            var _this = this;
+            var id = _this.linedetail.objectId;
+            _this.$emit('checkedcloseline');
+            setTimeout(function() {
+                _this.$emit('checkedcloseline', id);
+                _this.$refs.cattr.save_attribute();
+            }, 100);
+
         },
         //点击关闭右侧管线编辑属性
         pipeNeLineClose: function() {

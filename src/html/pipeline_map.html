@@ -29,7 +29,7 @@
 
 
             <pipeline-edit :domainvalue="domainValue" :markerpoint="markerPoint" @setmarkerpoint="setMarkerPoint" :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine"
-                @saveline="updateLineDetailById" @savework="updateNetDetailById" @changelinefn="editLineDetail"></pipeline-edit>
+                @saveline="updateLineDetailById" @savework="updateNetDetailById" @changelinefn="editLineDetail" @mapedit="mapEdit"></pipeline-edit>
             <!--//引导组件-->
             <pipe-guide @guidedraw="guidedraw" ref="cguide"></pipe-guide>
         </div>
@@ -115,7 +115,7 @@
                 <pipe-right-title @tabchange="tabchange"></pipe-right-title>
                 <!--<transition>-->
                 <div class="rightcontent">
-                    <pipe-right-content-attribute v-show="sCurrentTap === 'attributeShow'" :domainvalue="domainvalue" :detail="linedata" @savelineattribute="savelineattribute"></pipe-right-content-attribute>
+                    <pipe-right-content-attribute ref="cattr" v-show="sCurrentTap === 'attributeShow'" :domainvalue="domainvalue" :detail="linedata" @savelineattribute="savelineattribute" :editdetails="editdetail" @checkedcloselines="checkedcloselines" @attredit="mapEdit"></pipe-right-content-attribute>
                     <pipe-right-content-style v-show="sCurrentTap === 'styleShow'" :detailstyle="linedata" @styleedit="changelinefn"></pipe-right-content-style>
                     <pipe-right-content-point v-show="sCurrentTap === 'pointShow'" :detailPointer="linedata" @pointedit="changelinefn" @pointerImport="pointerImport" :markerpoint="markerpoint" @setmarkerpoint="setmarkerpoint"></pipe-right-content-point>
                 </div>
