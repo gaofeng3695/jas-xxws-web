@@ -177,7 +177,6 @@ var vm = new Vue({
                 }),
                 dataType: "json",
                 success: function(data) {
-                    console.log(data)
                     if (data.success == 1) {
                         that.aLineDetails = data.rows;
                     } else {
@@ -351,6 +350,9 @@ var vm = new Vue({
         },
         openGuide: function() { //打开绘制引导
             this.$refs.cguide.openGuide();
+        },
+        closedGuide: function() {
+            this.$refs.cguide.closedGuide();
         },
         mapEdit: function(bloom) {
             this.$refs.cmap.changeLineEditOpen(bloom);

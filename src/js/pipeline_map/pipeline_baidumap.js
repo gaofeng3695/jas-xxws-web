@@ -48,7 +48,7 @@ var pipeline_baidumap = {
                     return true;
                 } else {
                     if (!this.linedetailsedited) {
-                        this.$emit("openguide")
+                        this.$emit("openguide");
                     }
                 }
             }
@@ -115,6 +115,9 @@ var pipeline_baidumap = {
     methods: {
         changeLineEditOpen: function(bloom) {
             this.attrEdit = bloom;
+            if (bloom == false) {
+                this.$emit("closedguide");
+            }
         },
         changeTab: function(sTab) { //tab切换
             var _this = this;
@@ -329,7 +332,7 @@ var pipeline_baidumap = {
                 var point = new BMap.Point(e.point.lng, e.point.lat);
                 // var aLine = that.aLineDetailsToShow[0].line;
                 var aLine = that.activeLineShow.line;
-                console.log(that.topline);
+                // console.log(that.topline);
                 if (that.topline) { //已经画过线
                     that.topline.setPath(that.topline.getPath().concat([point]));
                 } else {
@@ -401,6 +404,11 @@ var pipeline_baidumap = {
                     that.stopCenter = true;
                     if (that.dashLineDrawed) {
                         that.mapObj.map.removeOverlay(that.dashLineDrawed);
+                    }
+                    if (that.activeLineShow.line.length < 2) {
+                        var oDetail = JSON.parse(JSON.stringify(that.activeLineShow));
+                        oDetail.line = [];
+                        that.$emit('changeline', oDetail);
                     }
                 }
             });

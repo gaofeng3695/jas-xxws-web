@@ -25,7 +25,7 @@
                 @setnetidtoshow="setNetIdToShow" @checkedline="chooseLine" @enterlinelist="enterLineList" @updatenetdetailbyid="updateNetDetailById" @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
 
             <pipeline-baidumap ref="cmap" :markerpoint="markerPoint" :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :snetidchoosed="sNetId_choosed" :slineidchoosed="sLineId_choosed" :istabshow="sLineId_choosed" @setmarkerpoint="setMarkerPoint"
-                @changeline="editLineDetail" @clickline="setsLine_toThow" @savedetail="saveLineStyleAndPoint" @openguide="openGuide"></pipeline-baidumap>
+                @changeline="editLineDetail" @clickline="setsLine_toThow" @savedetail="saveLineStyleAndPoint" @openguide="openGuide" @closedguide="closedGuide"></pipeline-baidumap>
 
 
             <pipeline-edit :domainvalue="domainValue" :markerpoint="markerPoint" @setmarkerpoint="setMarkerPoint" :netdetail="oNetDetail_choosed" :linedetail="oLineDetail_choosed" :editdetail="olineDetail_edited" @chooseclosenet="chooseNet" @checkedcloseline="chooseLine"
