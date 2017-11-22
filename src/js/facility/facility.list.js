@@ -4,6 +4,7 @@
 var facility = {
     $addFacility: $("#addFacility"),
     $locationBtn: $("#map_choice"),
+    $importFacility: $("#importFacility"),
     init: function() {
         var _this = this;
         //打开添加计划模态框
@@ -19,6 +20,12 @@ var facility = {
             } else {
                 facilityMapObj.mapSetCenter(selectionsData);
             }
+        });
+
+        //批量导入设施台账
+        _this.$importFacility.click(function() {
+            importObj.$batchImportFrame.modal();
+            $('.batchImportInput').val("");
         });
     }
 };
@@ -1987,6 +1994,7 @@ var searchObj = {
 var exportFileObj = {
     $exportAll: $("#export_all"),
     $exportChoice: $("#export_choice"),
+    $downFacility: $("#downFacility"),
     expoerObj: {
         "facilityStatusCode": "",
         "pipelineTypeCode": "",
@@ -2000,6 +2008,10 @@ var exportFileObj = {
     },
     init: function() {
         var _this = this;
+        //下载设施台账模板
+        _this.$downFacility.click(function() {
+            _this.exportTemlates();
+        });
         this.$exportAll.click(function() {
             _this.expoerObj.idList = [];
             _this.expoerCondition();
@@ -2026,6 +2038,13 @@ var exportFileObj = {
         var options = {
             "url": '/cloudlink-inspection-event/facility/exportExcel?token=' + lsObj.getLocalStorage('token'),
             "data": date,
+            "method": 'post'
+        }
+        this.downLoadFile(options);
+    },
+    exportTemlates: function() {
+        var options = {
+            "url": '/cloudlink-inspection-event/facility/downLoadTemplate?token=' + lsObj.getLocalStorage('token'),
             "method": 'post'
         }
         this.downLoadFile(options);
@@ -2078,7 +2097,7 @@ var fileObj = {
         });
         window.URL = window.URL || window.webkitURL;
     },
-    handleFiles: function(obj) {
+    handleFilesImg: function(obj) {
         var _this = this;
         var filextension = obj.value.substring(obj.value.lastIndexOf("."), obj.value.length);
         filextension = filextension.toLowerCase();
@@ -2122,7 +2141,7 @@ var fileObj = {
                 "id": 'fileid' + _this._mun,
                 "name": "file"
             }
-            var fileId = '<input type="file" onchange="handleFiles(this);"  class="upload_file"/>';
+            var fileId = '<input type="file" onchange="handleFilesImg(this);"  class="upload_file"/>';
 
             if (_this._isModify == true) {
                 $(".facilityFileModity .feedback_img_list").append(imagesL);
@@ -2139,8 +2158,8 @@ var fileObj = {
     },
 };
 
-function handleFiles(obj) {
-    fileObj.handleFiles(obj);
+function handleFilesImg(obj) {
+    fileObj.handleFilesImg(obj);
 };
 /*删除图片*/
 function closeImg(e) {
@@ -2169,6 +2188,269 @@ function dateChangeForSearch() {
     }
 }
 
+//导入
+var importObj = {
+    $submitBtn: $(".submitFileBtn"),
+    $batchImportFrame: $("#batchImportModal"), //上传文件的模态框
+    $hintsFrame: $("#validationHintsFrame"), //提示内容展示模态框
+    $confirmationFrame: $("#confirmationFrame"), //确定导入模态框
+    $transitionFrame: $("#transitionFrame"), //请求中模态框
+    $refrsetFrame: $("#refrsetFrame"), //成功的模态框
+    $confirmationBtn: $(".confirmationBtn"),
+    _addressObj: null,
+    _flag: true,
+    init: function() {
+        var _this = this;
+        //点击浏览 选择上传文件
+        $(".batchImport").click(function() {
+            $(".upload_picture").trigger("click");
+        });
+
+
+        //文件上传模态框打开完成
+        _this.$batchImportFrame.on('shown.bs.modal', function(e) {
+            $(".feedback_excel_file").find("input[type=file]").val("");
+        });
+
+        //上传文件按钮
+        _this.$submitBtn.click(function() {
+            _this.importVerification();
+        });
+        //批量上传
+        _this.$confirmationBtn.click(function() {
+            _this.cockedFile();
+        });
+        //成功之后刷新页面
+        _this.$refrsetFrame.on('hide.bs.modal', function(e) {
+            window.location.reload();
+        });
+    },
+    importVerification: function() { //提交的时候表单验证
+        var _this = this;
+        var val = $('.batchImportInput').val().trim();
+        if (val == "" || val == null) {
+            xxwsWindowObj.xxwsAlert("请选择上传的文件");
+            return false;
+        } else {
+            var uploadId = $('.feedback_excel_file').find('input').attr('id');
+            _this.uploadFlie(uploadId);
+        }
+    },
+    uploadFlie: function(uploadId) { //上传文件到阿里
+        var _this = this;
+        var objectId = baseOperation.createuuid();
+        if (_this._flag == true) {
+            _this._flag = false;
+            _this.$transitionFrame.modal();
+            _this.$transitionFrame.find(".transitionMain dd span").text("数据格式规范验证");
+            $.ajaxFileUpload({
+                url: "/cloudlink-core-file/attachment/web/v1/save?businessId=" + objectId + "&bizType=excel&token=" + lsObj.getLocalStorage("token"),
+                secureuri: false,
+                fileElementId: uploadId, //上传input的id
+                dataType: "json",
+                type: "POST",
+                async: false,
+                success: function(data, status) {
+                    var statu = data.success;
+                    if (statu == 1) {
+                        var fileId = data.rows[0].fileId;
+                        _this.fileCheck(fileId);
+                    } else {
+                        _this.$transitionFrame.modal('hide');
+                        _this.again();
+                        xxwsWindowObj.xxwsAlert("校验失败，请稍后重试");
+                    }
+                },
+                error: function(data) {
+                    _this.$transitionFrame.modal('hide');
+                    _this.again();
+                }
+            });
+        }
+    },
+    fileCheck: function(fileId) { //文件的校验
+        var _this = this;
+        var param = {
+            fileId: fileId,
+        };
+        $.ajax({
+            type: 'POST',
+            url: "/cloudlink-inspection-event/facility/importValidation?token=" + lsObj.getLocalStorage('token'),
+            contentType: "application/json",
+            data: JSON.stringify(param),
+            dataType: "json",
+            success: function(data, status) {
+                if (data.success == 1) {
+                    var state = data.rows[0].status;
+                    var total = data.rows[0].total;
+                    $(".hintsTotal").text(total);
+                    $(".confirmationText span").text(total);
+                    $(".confirmationAdopt span").text(total);
+                    if (state == 1) {
+                        _this.$confirmationFrame.modal();
+                        _this.$transitionFrame.modal('hide');
+                        _this.again();
+                    } else {
+                        var wrongData = data.rows[0].errors;
+                        $(".hintsNum").text(wrongData.length);
+
+                        _this.$transitionFrame.modal('hide');
+                        _this.$hintsFrame.modal();
+                        $(".hintsMainList ul").html("");
+                        _this.$hintsFrame.find(".modal-header h3 span").text("数据格式规范验证");
+                        _this.$hintsFrame.find(".hintsMainTitle i").text("必填项未填写、填写项不符合规范、设备名称相同");
+                        _this.again();
+                        for (var i = 0; i < wrongData.length; i++) {
+                            var colTxt = '';
+                            if (wrongData[i].msgType == "facilityNameDuplicate") {
+                                if (wrongData[i].msg) {
+                                    colTxt = wrongData[i].msg + '行设备名称重复、';
+                                }
+                                if (wrongData[i].colErrors) {
+                                    for (var j = 0; j < wrongData[i].colErrors.length; j++) {
+                                        var wrongTxt;
+                                        if (wrongData[i].colErrors[j].msgType == 'notBlank') {
+                                            wrongTxt = '列未填写';
+                                        } else if (wrongData[i].colErrors[j].msgType == 'typemismatch' || wrongData[i].colErrors[j].msgType == 'integrality') {
+                                            wrongTxt = '列填写不规范';
+                                        }
+                                        colTxt += '第' + wrongData[i].colErrors[j].colNum + wrongTxt + '、';
+                                    }
+                                }
+                            } else if (wrongData[i].msgType == "facilityNameExists") {
+                                if (wrongData[i].msg) {
+                                    colTxt = wrongData[i].msg + '行设备名称已存在、';
+                                }
+                            } else {
+                                if (wrongData[i].colErrors) {
+                                    for (var j = 0; j < wrongData[i].colErrors.length; j++) {
+                                        var wrongTxt;
+                                        if (wrongData[i].colErrors[j].msgType == 'notBlank') {
+                                            wrongTxt = '列未填写';
+                                        } else if (wrongData[i].colErrors[j].msgType == 'typemismatch' || wrongData[i].colErrors[j].msgType == 'integrality') {
+                                            wrongTxt = '列填写不规范';
+                                        }
+                                        colTxt += '第' + wrongData[i].colErrors[j].colNum + wrongTxt + '、';
+                                    }
+                                }
+                            }
+                            // if (wrongData[i].msg) {
+                            //     colTxt = wrongData[i].msg + '行设备名称重复、';
+                            // }
+                            // if (wrongData[i].colErrors) {
+                            //     for (var j = 0; j < wrongData[i].colErrors.length; j++) {
+                            //         var wrongTxt;
+                            //         if (wrongData[i].colErrors[j].msgType == 'notBlank') {
+                            //             wrongTxt = '列未填写';
+                            //         } else if (wrongData[i].colErrors[j].msgType == 'typemismatch' || wrongData[i].colErrors[j].msgType == 'integrality') {
+                            //             wrongTxt = '列填写不规范';
+                            //         } else if (wrongData[i].colErrors[j].msgType == 'facilityNameExists') {
+                            //             wrongTxt = '列设备名称已存在';
+                            //         }
+                            //         colTxt += '第' + wrongData[i].colErrors[j].colNum + wrongTxt + '、';
+                            //     }
+                            // }
+                            var txt = '<li><span class="listLeft">' + wrongData[i].rowNum + '</span><span class="listRight">' + colTxt + '</span></li>';
+                            $(".hintsMainList ul").append(txt);
+                        }
+                    }
+                } else {
+                    xxwsWindowObj.xxwsAlert("校验失败，请稍后重试");
+                    _this.$transitionFrame.modal('hide');
+                    _this.again();
+                }
+            },
+            error: function(data) {
+                _this.$transitionFrame.modal('hide');
+                _this.again();
+                xxwsWindowObj.xxwsAlert("校验失败，请稍后重试");
+            }
+        });
+    },
+    fileCheckTwo: function() { //与数据库校验
+        var _this = this;
+        $.ajax({
+            type: 'POST',
+            url: "/cloudlink-inspection-event/userArchive/importValidateAddress?token=" + lsObj.getLocalStorage('token'),
+            contentType: "application/json",
+            // data: JSON.stringify(param),
+            dataType: "json",
+            success: function(data, status) {
+                if (data.success == 1) {
+                    var state = data.rows[0].status;
+                    if (state == 1) {
+                        _this.$confirmationFrame.modal();
+                        _this.$transitionFrame.modal('hide');
+                        _this.again();
+                    } else {
+                        var wrongData = data.rows[0].errors;
+                        $(".hintsNum").text(wrongData.length);
+                        _this.$transitionFrame.modal('hide');
+                        _this.$hintsFrame.modal();
+                        $(".hintsMainList ul").html("");
+                        _this.$hintsFrame.find(".modal-header h3 span").text("地址验证");
+                        _this.$hintsFrame.find(".hintsMainTitle i").text("地址已存在");
+                        _this.again();
+                        for (var i = 0; i < wrongData.length; i++) {
+                            var colTxt = '';
+                            if (wrongData[i].msg) {
+                                colTxt = wrongData[i].rowNum + '行的地址系统中已存在';
+                            }
+                            var txt = '<li><span class="listLeft">' + wrongData[i].rowNum + '</span><span class="listRight">' + colTxt + '</span></li>';
+                            $(".hintsMainList ul").append(txt);
+                        }
+                    }
+                } else {
+                    xxwsWindowObj.xxwsAlert("校验失败，请稍后重试");
+                    _this.$transitionFrame.modal('hide');
+                    _this.again();
+                }
+            },
+            error: function(data) {
+                _this.$transitionFrame.modal('hide');
+                _this.again();
+                xxwsWindowObj.xxwsAlert("校验失败，请稍后重试");
+            }
+        });
+    },
+    cockedFile: function() { //批量上传数据库
+        var _this = this;
+        if (_this._flag == true) {
+            _this._flag = false;
+            _this.$transitionFrame.modal();
+            _this.$transitionFrame.find(".transitionMain dd span").text("批量导入");
+            $.ajax({
+                type: 'POST',
+                url: "/cloudlink-inspection-event/facility/importBatch?token=" + lsObj.getLocalStorage('token'),
+                contentType: "application/json",
+                // data: JSON.stringify(param),
+                dataType: "json",
+                success: function(data, status) {
+                    if (data.success == 1) {
+                        _this.$transitionFrame.modal('hide');
+                        _this.again();
+                        _this.$refrsetFrame.modal();
+                    } else {
+                        xxwsWindowObj.xxwsAlert("导入失败，请稍后重试");
+                        _this.$transitionFrame.modal('hide');
+                        _this.again();
+                    }
+                },
+                error: function(data) {
+                    _this.$transitionFrame.modal('hide');
+                    _this.again();
+                    xxwsWindowObj.xxwsAlert("导入失败，请稍后重试");
+                }
+            });
+        }
+    },
+    again: function() {
+        this._flag = true;
+    }
+};
+
+
+
 $(function() {
     $("input[type=text]").val("");
     searchObj.init();
@@ -2179,6 +2461,7 @@ $(function() {
     fileObj.init();
     facilityChart.init();
     facilityMapObj.init();
+    importObj.init();
     drafting('facilityMap', 'drafting_down'); //启动拖拽
 
     pipeLineObj.init(facilityMapObj.$bdMap);

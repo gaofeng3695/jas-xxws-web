@@ -138,6 +138,12 @@
                         <button id="export_choice" type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>导出已选台账
                         </button>
+                        <button id="downFacility" type="button" class="btn btn-default">
+                            <span class="fa fa-w fa-download" aria-hidden="true"></span>下载模板
+                        </button>
+                        <button id="importFacility" type="button" class="btn btn-default">
+                            <span class="fa fa-w fa-upload" aria-hidden="true"></span>导入模板
+                        </button>
                         <button id="map_choice" type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>多点定位
                         </button>
@@ -315,7 +321,7 @@
                                         <div class="feedback_img_list">
                                         </div>
                                         <div class="feedback_img_file">
-                                            <input type="file" onchange="handleFiles(this);" class="upload_file">
+                                            <input type="file" onchange="handleFilesImg(this);" class="upload_file">
                                         </div>
                                         <div class="feedback_img_add">
                                             <span class="addImg"><img src="/src/images/event/upload.png" alt=""></span>
@@ -510,7 +516,7 @@
                                         <div class="feedback_img_list">
                                         </div>
                                         <div class="feedback_img_file">
-                                            <input type="file" onchange="handleFiles(this);" class="upload_file">
+                                            <input type="file" onchange="handleFilesImg(this);" class="upload_file">
                                         </div>
                                         <div class="feedback_img_add">
                                             <span class="addImg"><img src="/src/images/event/upload.png" alt=""></span>
@@ -1064,6 +1070,121 @@
         </div>
     </div>
 
+    <!--批量导入模态框-->
+    <div id="batchImportModal" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>批量导入<a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="formMain">
+                        <div class="formImportList importInputLine">
+                            <p>
+                                <i>*</i>请选择导入的excel文件
+                            </p>
+                        </div>
+                        <div class="formImportList">
+                            <div class="feedback_excel_file">
+                                <input type="file" onchange="handleFiles(this);" id='importFile' class="upload_picture" name="file" multiple="multiple" />
+                            </div>
+                            <div class="batchImport">
+                                <input class="batchImportInput form-control" readonly type="text">
+                                <span class="submitFile">浏览...</span>
+                            </div>
+                            <p class="importTxt">支持excel2003、2007以上版本</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit submitFileBtn">上传</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--格式错误提示模态框-->
+    <div id="validationHintsFrame" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><span>数据格式规范验证</span><a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="hintsMain">
+                        <div class="hintsMainTitle">
+                            <p>您好！您导入的<span class="hintsTotal">100</span>条记录其中<span class="hintsNum">10</span>条存在<i>必填项未填写、填写项不符合规范</i>等相关问题，具体如下，请您修改后再次导入。</p>
+                        </div>
+                        <div class="hintsMainList">
+                            <p><span class="listLeft">行号</span><span class="listRight">内容</span></p>
+                            <ul></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--确定模态框-->
+    <div id="confirmationFrame" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><span>批量导入</span><a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="confirmationMain">
+                        <div class="confirmationText">是否确定导入列表中<span>100</span>条用户记录？</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn submit confirmationBtn" data-dismiss="modal">确定导入</button>
+                    <button class="btn" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--成功的提示-->
+    <div id="refrsetFrame" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><span>批量导入</span><a class="close" data-dismiss="modal">×</a></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="confirmationMain">
+                        <div class="confirmationAdopt">
+                            <p>导入成功，共计导入<span>100</span>条用户记录</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--过渡的模态框-->
+    <div id="transitionFrame" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="transitionMain">
+                        <dl>
+                            <dt><img src="/src/images/user/load.gif" alt="" width="55" ></dt>
+                            <dd>正在进行<span>数据格式规范验证</span></dd>
+                            <dd>请稍后......</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript" src="/lib/js/amrnb.js"></script>
     <script type="text/javascript" src="/lib/js/amrnb-play.js"></script>
     <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
@@ -1081,6 +1202,9 @@
     <script type="text/javascript" src="/src/js/common/coordTransform.js"></script>
     <script type="text/javascript" src="/src/js/common/drafting.js"></script>
     <script type="text/javascript" src="/src/js/event/ajaxFileUpload.js"></script>
+
+    <script type="text/javascript" src="/src/js/common/uploadExcel.js"></script>
+    <script type="text/javascript" src="/src/js/common/ajaxFileupload.js"></script>
     <script type="text/javascript" src="/src/js/common/view.pic.js"></script>
     <script type="text/javascript" src="/src/js/common/map.address.js"></script>
     <script type="text/javascript" src="/src/js/common/people.tree.js"></script>
