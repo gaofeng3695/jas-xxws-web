@@ -179,6 +179,15 @@ $.extend({
         // Get the JavaScript object, if JSON is used.
         if (type == "json") {
             data = r.responseText;
+            /*
+                修改人：雷凯
+                谷歌浏览器安装有道翻译插件是会在body添加<audio controls="controls" style="display: none;"></audio>
+                这会导致无法正常的将字符解析成json 
+            */
+            if (data.indexOf("<audio") != -1) {
+                var start = data.indexOf("<audio");
+                data = data.substring(0, start);
+            }
             var start = data.indexOf(">");
             if (start != -1) {
                 var end = data.indexOf("<", start + 1);
