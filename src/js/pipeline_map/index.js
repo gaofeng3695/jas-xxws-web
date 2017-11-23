@@ -357,6 +357,9 @@ var vm = new Vue({
         mapEdit: function(bloom) {
             this.$refs.cmap.changeLineEditOpen(bloom);
         },
+        editClosed: function() {
+            this.$refs.cedit.editChangeClose();
+        },
     }
 
 });

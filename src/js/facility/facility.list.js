@@ -2304,7 +2304,7 @@ var importObj = {
                             var colTxt = '';
                             if (wrongData[i].msgType == "facilityNameDuplicate") {
                                 if (wrongData[i].msg) {
-                                    colTxt = wrongData[i].msg + '行设备名称重复、';
+                                    colTxt = wrongData[i].msg + '行设施名称重复、';
                                 }
                                 if (wrongData[i].colErrors) {
                                     for (var j = 0; j < wrongData[i].colErrors.length; j++) {
@@ -2319,7 +2319,7 @@ var importObj = {
                                 }
                             } else if (wrongData[i].msgType == "facilityNameExists") {
                                 if (wrongData[i].msg) {
-                                    colTxt = wrongData[i].msg + '行设备名称已存在、';
+                                    colTxt = wrongData[i].msg + '行设施名称已存在、';
                                 }
                             } else {
                                 if (wrongData[i].colErrors) {
