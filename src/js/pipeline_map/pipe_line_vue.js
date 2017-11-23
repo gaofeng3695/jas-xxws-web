@@ -581,7 +581,7 @@ var pipe_left = {
                 //针对管线长度写正则
                 var regNum1 = /^[0-9]{1,1}\d{0,5}(\.\d{1,2})?$/;
                 if (!regNum1.test(this.inputobj.pipePressureValue.trim())) {
-                    xxwsWindowObj.xxwsAlert("管线压力格式错误");
+                    xxwsWindowObj.xxwsAlert("管线压力格式不正确（最大999999.99）");
                     return false;
                 }
             }
@@ -589,7 +589,7 @@ var pipe_left = {
                 //针对管线长度写正则
                 var regNum = /^[0-9]{1,1}\d{0,8}(\.\d{1,3})?$/;
                 if (!regNum.test(this.inputobj.pipeFactLength.trim())) {
-                    xxwsWindowObj.xxwsAlert("管线实际长度格式错误");
+                    xxwsWindowObj.xxwsAlert("管线实际长度格式不正确（最大999999999.999）");
                     return false;
                 }
             }

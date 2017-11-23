@@ -41,6 +41,14 @@ var pipe_right_content_attribute = { //右侧属性组件
         },
     },
     methods: {
+        changeIsDisable: function() {
+            var that = this;
+            this.isDisable = true;
+            this.$nextTick(function() {
+                that.changeObj = {};
+                $.extend(that.changeObj, that.detail);
+            });
+        },
         save_attribute: function(e) {
             var _this = this;
             if (_this.editdetails) {
@@ -593,6 +601,9 @@ var pipeline_edit = {
         },
         setmarkerpoint: function(markpoint) {
             this.$emit('setmarkerpoint', markpoint);
-        }
+        },
+        editChangeClose: function() {
+            this.$refs.cattr.changeIsDisable();
+        },
     },
 };

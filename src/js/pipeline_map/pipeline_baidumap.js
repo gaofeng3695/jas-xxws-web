@@ -84,6 +84,8 @@ var pipeline_baidumap = {
             } else {
                 _this.activeLineShow = '';
             }
+            //管线选择改变，绘制编辑状态清空
+            this.sCurrentTap = '';
             // console.log("管线选择改变")
         },
         sCurrentTap: function(newVal) {
@@ -121,6 +123,10 @@ var pipeline_baidumap = {
         },
         changeTab: function(sTab) { //tab切换
             var _this = this;
+            if (sTab == "save" && _this.activeLineShow.line.length < 2) {
+                xxwsWindowObj.xxwsAlert("管线无终点，无法保存");
+                return;
+            }
             if (this.attrEdit) {
                 if (this.sCurrentTap === sTab) {
                     this.sCurrentTap = ''
@@ -129,6 +135,7 @@ var pipeline_baidumap = {
                 }
             } else {
                 xxwsWindowObj.xxwsAlert("当前管线属性处于编辑状态未保存,您是否放弃对当前的编辑?", function() {
+                    _this.$emit("editclosed");
                     _this._draw_lines();
                     if (_this.sCurrentTap === sTab) {
                         _this.sCurrentTap = ''
@@ -334,7 +341,13 @@ var pipeline_baidumap = {
                 var aLine = that.activeLineShow.line;
                 // console.log(that.topline);
                 if (that.topline) { //已经画过线
-                    that.topline.setPath(that.topline.getPath().concat([point]));
+                    var lastPo = that.topline.getPath()[that.topline.getPath().length - 1];
+                    if (lon == lastPo.lng && lat == lastPo.lat) {
+                        that.topline.getPath().pop();
+                        that.topline.setPath(that.topline.getPath().concat([point]));
+                    } else {
+                        that.topline.setPath(that.topline.getPath().concat([point]));
+                    }
                 } else {
                     if (aLine.length === 0) {
                         var line = [{
@@ -345,13 +358,23 @@ var pipeline_baidumap = {
                             "rowIndex": 1
                         }];
                     } else if (aLine.length === 1) {
-                        var line = aLine.concat([{
-                            "lon": "",
-                            "lat": "",
-                            "bdLon": lon,
-                            "bdLat": lat,
-                            "rowIndex": 2
-                        }]);
+                        if (lon == aLine[0].bdLon && lat == aLine[0].bdLat) {
+                            var line = [{
+                                "lon": "",
+                                "lat": "",
+                                "bdLon": lon,
+                                "bdLat": lat,
+                                "rowIndex": 1
+                            }];
+                        } else {
+                            var line = aLine.concat([{
+                                "lon": "",
+                                "lat": "",
+                                "bdLon": lon,
+                                "bdLat": lat,
+                                "rowIndex": 2
+                            }]);
+                        }
                     }
                     // var oDetail = JSON.parse(JSON.stringify(that.aLineDetailsToShow[0]));
                     var oDetail = JSON.parse(JSON.stringify(that.activeLineShow));

@@ -53,7 +53,17 @@
                 }
             });
         },
-
+        openInfo: function(content, e) {
+            var opts = {
+                width: 400, // 信息窗口宽度
+                height: 96, // 信息窗口高度
+                enableMessage: true //设置允许信息窗发送短息
+            };
+            var p = e.point;
+            var point = new BMap.Point(p.lng, p.lat);
+            var infoWindow = new BMap.InfoWindow(content, opts); // 创建信息窗口对象
+            this.bdMap.openInfoWindow(infoWindow, point); //开启信息窗口
+        },
         drawLines: function() {
             var that = this;
             var map = this.bdMap;
@@ -75,10 +85,17 @@
                         enableEditing: that.isEditable || false,
                         enableMassClear: false,
                     });
-                    topline.addEventListener('click', function() {
-                        if (window.pipelineDetailModal) { //管线详情模态框vue实例
-                            pipelineDetailModal.setlinetoshow(item);
-                        }
+                    topline.addEventListener('click', function(e) {
+                        var showTxt = '<div class="lineDetails"><ul>\
+                            <li><p class="text">管线名称：' + item.pipeLineName + '</p><p>管线编号：' + (item.pipeLineCode || "") + '</p></li>\
+                            <li><p>管线类型：' + (item.pipeLineTypeName || "") + '</p><p>管线材质：' + (item.pipeMaterialName || "") + '</p></li>\
+                            <li><p>管线管径：' + (item.pipeDiameter || "") + '</p><p>管线壁厚：' + (item.pipeThickness || "") + '</p></li>\
+                            <li><p>使用状态：' + (item.pipeUsingStateName || "") + '</p><p>实际长度：' + (item.pipeFactLength || "") + '</p></li>\
+                            </ul></div>';
+                        that.openInfo(showTxt, e);
+                        // if (window.pipelineDetailModal) { //管线详情模态框vue实例
+                        //     pipelineDetailModal.setlinetoshow(item);
+                        // }
                     });
                     that._aPolyline.push(topline);
                 }
