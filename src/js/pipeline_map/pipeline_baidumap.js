@@ -123,7 +123,7 @@ var pipeline_baidumap = {
         },
         changeTab: function(sTab) { //tab切换
             var _this = this;
-            if (sTab == "save" && _this.activeLineShow.line.length < 2) {
+            if (sTab == "save" && _this.activeLineShow.line.length === 1) {
                 xxwsWindowObj.xxwsAlert("管线无终点，无法保存");
                 return;
             }
