@@ -195,6 +195,7 @@ var pipe_right_content_style = { //右侧样式组件
             } else if ((this.detailstyle.pipeStyle == "dashed")) {
                 $('select').val("2");
             }
+            $("#DisColor").css("background", this.detailstyle.pipeColor);
             $(".bgColorStyle").css("background-color", this.detailstyle.pipeColor);
             $(".borderColorStyle").css("border-color", this.detailstyle.pipeColor);
             $(".borderColorStyle").css("border-style", this.detailstyle.pipeStyle);

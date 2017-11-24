@@ -452,12 +452,11 @@ var pipeline_baidumap = {
                     var isNoChoosed = !_this.snetidchoosed && !_this.slineidchoosed;
                     var isFocusNet = Boolean(_this.snetidchoosed && !_this.slineidchoosed && _this.snetidchoosed === item.pipeNetworkId);
                     var isFocusLine = Boolean(_this.slineidchoosed && _this.slineidchoosed === item.objectId);
-
                     if (item.line.length > 1) {
                         if (isFocusNet || isFocusLine) {
                             _this[item.objectId + '_'] = map.draw_line(item.line, {
                                 strokeColor: "#00fff6",
-                                strokeWeight: item.pipeWeight + 3,
+                                strokeWeight: parseInt(item.pipeWeight) + 3,
                                 strokeStyle: item.pipeStyle, //dashed
                                 strokeOpacity: 1,
                             });
