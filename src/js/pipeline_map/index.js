@@ -42,6 +42,7 @@ var vm = new Vue({
         aNetDetails: [], //所有管网的详情数组
         aLineDetails: [], //所有管线的详情数组s
         domainValue: [], //所有的域值
+        linesCount: 3000, //管线数量
     },
     computed: {
         aNetId_active: function() {

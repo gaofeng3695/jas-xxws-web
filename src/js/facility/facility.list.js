@@ -158,7 +158,7 @@ var facilityMapObj = {
         var _arr = [];
         try {
             for (var i = 0; i < _length; i++) {
-                if (data[i].bdLon != "" && data[i].bdLat != "") {
+                if (data[i].bdLon && data[i].bdLat) {
                     _arr.push(new BMap.Point(data[i].bdLon, data[i].bdLat));
                 }
             }
@@ -184,21 +184,23 @@ var facilityMapObj = {
         var point = null;
         if (data.length > 0) {
             for (var i = 0; i < data.length; i++) {
-                txts = '<div><p>设施名称：' + data[i].facilityName + '</p>' +
-                    '<p>设施编号：' + data[i].facilityCode + '</p>' +
-                    '<p>设施类型：' + data[i].facilityTypeName + '</p></div>';
-                point = new BMap.Point(data[i].bdLon, data[i].bdLat);
-                myIcons = _this.bdIconFn(data[i].facilityTypeCode);
-                markers = new BMap.Marker(point, {
-                    icon: myIcons
-                });
-                _this.$bdMap.addOverlay(markers);
-                //将当前地图上的坐标点 赋值全局变量
-                _this.aCurrentPoints.push({
-                    'key': data[i].objectId,
-                    'value': markers
-                });
-                _this.addClickHandler(txts, markers);
+                if (data[i].bdLon && data[i].bdLat) {
+                    txts = '<div><p>设施名称：' + data[i].facilityName + '</p>' +
+                        '<p>设施编号：' + data[i].facilityCode + '</p>' +
+                        '<p>设施类型：' + data[i].facilityTypeName + '</p></div>';
+                    point = new BMap.Point(data[i].bdLon, data[i].bdLat);
+                    myIcons = _this.bdIconFn(data[i].facilityTypeCode);
+                    markers = new BMap.Marker(point, {
+                        icon: myIcons
+                    });
+                    _this.$bdMap.addOverlay(markers);
+                    //将当前地图上的坐标点 赋值全局变量
+                    _this.aCurrentPoints.push({
+                        'key': data[i].objectId,
+                        'value': markers
+                    });
+                    _this.addClickHandler(txts, markers);
+                }
             }
         }
     },
@@ -517,10 +519,12 @@ var facilityFrame = {
                     $(".facilityImg").html("<span>无</span>");
                     $(".createUserNameT").text(data.rows[0].createUserName);
 
-                    var point = new BMap.Point(data.rows[0].bdLon, data.rows[0].bdLat);
-                    var marker = new BMap.Marker(point); // 创建标注
-                    facilityMapObj.$detailsAddressMap.addOverlay(marker); // 将标注添加到地图中
-                    facilityMapObj.$detailsAddressMap.setCenter(point);
+                    if (data.rows[0].bdLon && data.rows[0].bdLat) {
+                        var point = new BMap.Point(data.rows[0].bdLon, data.rows[0].bdLat);
+                        var marker = new BMap.Marker(point); // 创建标注
+                        facilityMapObj.$detailsAddressMap.addOverlay(marker); // 将标注添加到地图中
+                        facilityMapObj.$detailsAddressMap.setCenter(point);
+                    }
 
                     //判断底部的按钮
                     var userId = JSON.parse(lsObj.getLocalStorage('userBo')).objectId;
@@ -1434,14 +1438,18 @@ var facilityTable = {
         return {
             //定位功能
             'click .location': function(e, value, row, index) {
-                if ($(this).find('i').attr("class") == 'active') {} else {
-                    $(".location").find('i').attr("class", "");
-                    $(this).find('i').attr("class", "active");
-                    facilityMapObj.locationClick(row);
+                if (row.bdLat && row.bdLon) {
+                    if ($(this).find('i').attr("class") == 'active') {} else {
+                        $(".location").find('i').attr("class", "");
+                        $(this).find('i').attr("class", "active");
+                        facilityMapObj.locationClick(row);
+                    }
+                    $('body,html').animate({
+                        scrollTop: 0
+                    }, 500);
+                } else {
+                    xxwsWindowObj.xxwsAlert("当前设备未标注位置，请编辑维护！");
                 }
-                $('body,html').animate({
-                    scrollTop: 0
-                }, 500);
                 return false;
             },
             //查看功能
