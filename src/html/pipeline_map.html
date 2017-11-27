@@ -21,8 +21,8 @@
     <div id="app" class="app">
         <div class="index_wrapper">
 
-            <pipe-left :anetidtoshow="aNetId_toShow" :pipenetdatas="aNetDetails" :domainvalue="domainValue" :pointerdatas="aLineDetails" :snetid="sNetId_choosed" :slineid="sLineId_choosed" :olinedetailedited="olineDetail_edited" @olinechange="setsLine_toThow" @choosenet="chooseNet"
-                @setnetidtoshow="setNetIdToShow" @checkedline="chooseLine" @enterlinelist="enterLineList" @updatenetdetailbyid="updateNetDetailById" @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
+            <pipe-left :linescount="linesCount" :anetidtoshow="aNetId_toShow" :pipenetdatas="aNetDetails" :domainvalue="domainValue" :pointerdatas="aLineDetails" :snetid="sNetId_choosed" :slineid="sLineId_choosed" :olinedetailedited="olineDetail_edited" @olinechange="setsLine_toThow"
+                @choosenet="chooseNet" @setnetidtoshow="setNetIdToShow" @checkedline="chooseLine" @enterlinelist="enterLineList" @updatenetdetailbyid="updateNetDetailById" @updatelinedetailbyid="updateLineDetailById" ref="pipeleft"></pipe-left>
 
             <pipeline-baidumap ref="cmap" @editclosed="editClosed" :markerpoint="markerPoint" :linedetails="aLineDetailsToShow" :linedetailsedited="olineDetail_edited" :snetidchoosed="sNetId_choosed" :slineidchoosed="sLineId_choosed" :istabshow="sLineId_choosed"
                 @setmarkerpoint="setMarkerPoint" @changeline="editLineDetail" @clickline="setsLine_toThow" @savedetail="saveLineStyleAndPoint" @openguide="openGuide" @closedguide="closedGuide"></pipeline-baidumap>
@@ -355,10 +355,10 @@
             <div class="pipe-left" style=" transition: all .5s" :style="warpperslidestyle">
                 <div class="slide-content">
                     <div class="listwrapper slide" :style="slidestyle">
-                        <pipe-net-list :anetidtoshow="anetidtoshow" :pipenetdatas="pipenetdatas" :snetid="snetid" :linetotal="lineTotal" @changelist="changelist" @chooseNet="chooseNet" @createinfo="createInfo" @updatenetdetailbyid="updateNetDetailById" @enterlinelist="enterlinelist"
-                            @setnetidtoshow="setnetidtoshow" style="flex-grow:1;"></pipe-net-list>
-                        <pipe-line-list :pointerdatas="chooseLine" :olinedetailedited="olinedetailedited" :linetotal="lineTotal" :slineid="slineid" :currentnetname="currentNetName" @changelist="changelist" @checkedline="checkedline" @createinfo="createInfo" @enterlinelist="enterlinelist"
-                            @updatelinedetailbyid="updateLineDetailById" style="flex-grow:1;"></pipe-line-list>
+                        <pipe-net-list :linescount="linescount" :anetidtoshow="anetidtoshow" :pipenetdatas="pipenetdatas" :snetid="snetid" :linetotal="lineTotal" @changelist="changelist" @chooseNet="chooseNet" @createinfo="createInfo" @updatenetdetailbyid="updateNetDetailById"
+                            @enterlinelist="enterlinelist" @setnetidtoshow="setnetidtoshow" style="flex-grow:1;"></pipe-net-list>
+                        <pipe-line-list :linescount="linescount" :pointerdatas="chooseLine" :olinedetailedited="olinedetailedited" :linetotal="lineTotal" :slineid="slineid" :currentnetname="currentNetName" @changelist="changelist" @checkedline="checkedline" @createinfo="createInfo"
+                            @enterlinelist="enterlinelist" @updatelinedetailbyid="updateLineDetailById" style="flex-grow:1;"></pipe-line-list>
                     </div>
                 </div>
                 <span class="up_btn" @click="changeListShow"></span>
@@ -441,7 +441,7 @@
                         管网数量：{{pipenetdatas.length}}
                     </div>
                     <div class="total">
-                        <span>管线总数：</span><span v-text="linetotal"></span><span>/200</span>
+                        <span>管线总数：</span><span v-text="linetotal"></span><span>/{{linescount}}</span>
                     </div>
                 </div>
                 <div class="net_content">

@@ -29,6 +29,9 @@ var pipe_line_list = {
         },
         olinedetailedited: {
             type: [String, Object],
+        },
+        linescount: {
+            type: Number,
         }
     },
     template: '#pipe_line_list',
@@ -73,8 +76,8 @@ var pipe_line_list = {
             }
         },
         createInfo: function() {
-            if (this.linetotal > 199) {
-                xxwsWindowObj.xxwsAlert("您已达到系统规定管线数量(200条)，无法继续新建，如需新建请联系客服。");
+            if (this.linetotal > (this.linescount - 1)) {
+                xxwsWindowObj.xxwsAlert("您已达到系统规定管线数量(" + this.linescount + "条)，无法继续新建，如需新建请联系客服。");
                 return;
             }
             var styleobj = {
@@ -129,6 +132,9 @@ var pipe_net_list = {
         },
         anetidtoshow: {
             type: [Array, String, Object],
+        },
+        linescount: {
+            type: Number,
         }
     },
     template: '#pipe_net_list',
@@ -289,6 +295,9 @@ var pipe_left = {
         },
         anetidtoshow: {
             type: [Array, String, Object],
+        },
+        linescount: {
+            type: Number,
         }
     },
     data: function() {
