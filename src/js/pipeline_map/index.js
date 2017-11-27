@@ -25,9 +25,6 @@ var util = {
     }
 };
 
-
-
-
 var vm = new Vue({
     el: '#app',
     data: {
@@ -42,7 +39,7 @@ var vm = new Vue({
         aNetDetails: [], //所有管网的详情数组
         aLineDetails: [], //所有管线的详情数组s
         domainValue: [], //所有的域值
-        linesCount: 3000, //管线数量
+        linesCount: 500, //管线最大数量（管线数量上限）
     },
     computed: {
         aNetId_active: function() {
@@ -174,7 +171,7 @@ var vm = new Vue({
                 contentType: "application/json",
                 data: JSON.stringify({
                     "pageNum": 1,
-                    "pageSize": 1000
+                    "pageSize": that.linesCount
                 }),
                 dataType: "json",
                 success: function(data) {

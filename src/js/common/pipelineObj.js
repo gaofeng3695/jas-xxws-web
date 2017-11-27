@@ -40,7 +40,7 @@
                 data: JSON.stringify({
                     "pipeNetworkUsed": '1',
                     "pageNum": 1,
-                    "pageSize": 200
+                    "pageSize": 500
                 }),
                 dataType: "json",
                 success: function(data) {
