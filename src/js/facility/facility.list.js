@@ -1425,7 +1425,7 @@ var facilityTable = {
             '<a class="history" href="javascript:void(0)" title="历史检查">',
             '<i></i>',
             '</a>',
-            '<a class="' + modifyClass + '" href="javascript:void(0)" title="修改">',
+            '<a class="' + modifyClass + '" href="javascript:void(0)" title="编辑">',
             '<i></i>',
             '</a>',
             '<a class="' + deleteClass + '" href="javascript:void(0)" title="删除">',
@@ -1448,7 +1448,7 @@ var facilityTable = {
                         scrollTop: 0
                     }, 500);
                 } else {
-                    xxwsWindowObj.xxwsAlert("当前设备未标注位置，请编辑维护！");
+                    xxwsWindowObj.xxwsAlert("当前设施未标注位置，点击【编辑】操作，维护【详细位置】信息！");
                 }
                 return false;
             },
