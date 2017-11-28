@@ -2317,12 +2317,10 @@ var importObj = {
                                 if (wrongData[i].colErrors) {
                                     for (var j = 0; j < wrongData[i].colErrors.length; j++) {
                                         var wrongTxt;
-                                        if (wrongData[i].colErrors[j].msgType == 'notBlank') {
-                                            wrongTxt = '列未填写';
-                                        } else if (wrongData[i].colErrors[j].msgType == 'typemismatch' || wrongData[i].colErrors[j].msgType == 'integrality') {
-                                            wrongTxt = '列填写不规范';
+                                        if (wrongData[i].colErrors[j].msgType == 'notBlank' || wrongData[i].colErrors[j].msgType == 'typemismatch' || wrongData[i].colErrors[j].msgType == 'integrality') {
+                                            wrongTxt = wrongData[i].colErrors[j].msg;
                                         }
-                                        colTxt += '第' + wrongData[i].colErrors[j].colNum + wrongTxt + '、';
+                                        colTxt += '第' + wrongData[i].colErrors[j].colNum + '列 ' + wrongTxt + '、';
                                     }
                                 }
                             } else if (wrongData[i].msgType == "facilityNameExists") {
@@ -2333,12 +2331,10 @@ var importObj = {
                                 if (wrongData[i].colErrors) {
                                     for (var j = 0; j < wrongData[i].colErrors.length; j++) {
                                         var wrongTxt;
-                                        if (wrongData[i].colErrors[j].msgType == 'notBlank') {
-                                            wrongTxt = '列未填写';
-                                        } else if (wrongData[i].colErrors[j].msgType == 'typemismatch' || wrongData[i].colErrors[j].msgType == 'integrality') {
-                                            wrongTxt = '列填写不规范';
+                                        if (wrongData[i].colErrors[j].msgType == 'notBlank' || wrongData[i].colErrors[j].msgType == 'typemismatch' || wrongData[i].colErrors[j].msgType == 'integrality') {
+                                            wrongTxt = wrongData[i].colErrors[j].msg;
                                         }
-                                        colTxt += '第' + wrongData[i].colErrors[j].colNum + wrongTxt + '、';
+                                        colTxt += '第' + wrongData[i].colErrors[j].colNum + '列 ' + wrongTxt + '、';
                                     }
                                 }
                             }
