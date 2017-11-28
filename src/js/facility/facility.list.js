@@ -506,7 +506,7 @@ var facilityFrame = {
                     $(".facilityCodeT").text(data.rows[0].facilityCode);
                     $(".createTimeT").text(data.rows[0].createTime);
                     $(".facilityTypeNameT").text(data.rows[0].facilityTypeName);
-                    $(".pipelineTypeNameT").text(data.rows[0].pipelineTypeName);
+                    $(".pipelineTypeNameT").text(data.rows[0].pipelineTypeName == null ? '' : data.rows[0].pipelineTypeName);
                     $(".facilityStatusNameT").text(data.rows[0].facilityStatusName);
                     $(".addressT").text(data.rows[0].address);
                     $(".manufacturerT").text(data.rows[0].manufacturer);
