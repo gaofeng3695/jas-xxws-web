@@ -479,7 +479,7 @@ var pipeline_baidumap = {
                 } else if (m > 6) {
                     clearInterval(_this.twinkleTimes);
                 }
-            }, 300);
+            }, 750);
         }
     },
 };
