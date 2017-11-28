@@ -63,8 +63,12 @@ var addressMapObj = {
             _this.addressObj.lat = obj.lat;
             _this.addressObj.gpsLon = obj.gpsLon;
             _this.addressObj.gpsLat = obj.gpsLat;
-            _this.addPoint(obj.lng, obj.lat);
             _this.$addressText.val(obj.name);
+            if(obj.lng==null || obj.lat == null){
+                return
+            }
+            _this.addPoint(obj.lng, obj.lat);
+            
         }
     },
     getPoint: function() {
