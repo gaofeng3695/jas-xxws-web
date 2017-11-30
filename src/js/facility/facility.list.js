@@ -2434,6 +2434,10 @@ var importObj = {
                         _this.$transitionFrame.modal('hide');
                         _this.again();
                         _this.$refrsetFrame.modal();
+                    } else if (data.success == -1 && data.msg == 'NONE') {
+                        xxwsWindowObj.xxwsAlert("导入失败，Excel中没有数据!");
+                        _this.$transitionFrame.modal('hide');
+                        _this.again();
                     } else {
                         xxwsWindowObj.xxwsAlert("导入失败，请稍后重试");
                         _this.$transitionFrame.modal('hide');
