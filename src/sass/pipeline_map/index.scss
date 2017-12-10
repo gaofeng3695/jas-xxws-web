@@ -76,6 +76,19 @@ body,
                     line-height: 24px;
                     margin: 0;
                 }
+                &.entryBtn {
+                    text-align: right;
+                    span {
+                        height: 24px;
+                        line-height: 24px;
+                        display: inline-block;
+                        background: #59b6fc;
+                        color: #fff;
+                        padding: 0 5px;
+                        border-radius: 2px;
+                        cursor: pointer;
+                    }
+                }
             }
         }
     }

@@ -358,6 +358,11 @@ var vm = new Vue({
         editClosed: function() {
             this.$refs.cedit.editChangeClose();
         },
+        openNet: function(nid, lid) {
+            this.$refs.clist.enterlinelist(true);
+            this.$refs.clist.changelistNet(nid);
+            this.$refs.clist.chooseLIneId(lid);
+        },
     }
 
 });

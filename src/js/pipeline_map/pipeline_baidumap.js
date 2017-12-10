@@ -160,7 +160,7 @@ var pipeline_baidumap = {
         openInfo: function(content, e) {
             var opts = {
                 width: 400, // 信息窗口宽度
-                height: 96, // 信息窗口高度
+                height: 120, // 信息窗口高度
                 enableMessage: true //设置允许信息窗发送短息
             };
             var p = e.point;
@@ -290,15 +290,12 @@ var pipeline_baidumap = {
                             <li><p>管线类型：' + (item.pipeLineTypeName || "") + '</p><p>管线材质：' + (item.pipeMaterialName || "") + '</p></li>\
                             <li><p>管线管径：' + (item.pipeDiameter || "") + '</p><p>管线壁厚：' + (item.pipeThickness || "") + '</p></li>\
                             <li><p>使用状态：' + (item.pipeUsingStateName || "") + '</p><p>实际长度：' + (item.pipeFactLength || "") + '</p></li>\
+                            <li class="entryBtn"><span onclick="entryModify(\'' + item.pipeNetworkId + '\',\'' + item.objectId + '\')">进入</span></li>\
                             </ul></div>';
                         // alert(item.objectId);
                         that.openInfo(showTxt, e);
                         // that.$emit('clickline', item);
                     });
-
-
-
-
                 }
                 if (!that.isEditable && !that.isDrawable) { //不是编辑和划线状态才会设置视野范围
 
@@ -480,10 +477,16 @@ var pipeline_baidumap = {
                     clearInterval(_this.twinkleTimes);
                 }
             }, 750);
+        },
+        entryModify: function(nid, lid) { //气泡点击事件
+            this.$emit('opennet', nid, lid);
         }
     },
 };
-
+//气泡点击事件
+function entryModify(nid, lid) {
+    vm.$refs.cmap.entryModify(nid, lid)
+}
 var pipe_guide = {
     template: '#pipe_guide',
     data: function() {
