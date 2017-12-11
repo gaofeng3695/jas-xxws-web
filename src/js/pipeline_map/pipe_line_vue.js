@@ -75,6 +75,16 @@ var pipe_line_list = {
                 that.$emit('checkedline', item.objectId);
             }
         },
+        clickList: function(id) {
+            var that = this;
+            if (that.olinedetailedited && id != that.slineid) {
+                xxwsWindowObj.xxwsAlert("当前管线已修改未保存,您是否放弃对当前管线的编辑?", function() {
+                    that.$emit('checkedline', id);
+                }, true);
+            } else {
+                that.$emit('checkedline', id);
+            }
+        },
         createInfo: function() {
             if (this.linetotal > (this.linescount - 1)) {
                 xxwsWindowObj.xxwsAlert("您已达到系统规定管线数量(" + this.linescount + "条)，无法继续新建，如需新建请联系客服。");
@@ -210,6 +220,9 @@ var pipe_net_list = {
             // } else {
             this.$emit('chooseNet', item.objectId);
             // }
+        },
+        clickList: function(id) { //选中管网
+            this.$emit('chooseNet', id);
         },
         checkNetToS: function(item) {
             var that = this;
@@ -418,6 +431,19 @@ var pipe_left = {
             } else {
                 this.currentList = 'net';
             }
+        },
+        changelistNet: function(id) { //点击管线进入管网选中
+            var _this = this;
+            this.currentList = 'line';
+            this.chooseLine = this.pointerdatas.filter(function(items) {
+                return items.pipeNetworkId == id;
+            });
+            this.pipenetdatas.forEach(function(item, index) {
+                if (item.objectId == id) {
+                    _this.currentNetName = item.pipeNetworkName;
+                }
+            });
+            this.$refs.netlist.clickList(id);
         },
         createInfo: function(styleobj, inputobj, aFooters) {
             this.styleobj = styleobj;
@@ -638,6 +664,9 @@ var pipe_left = {
             this.pipeUsingState = this.pipeUsingState.concat((this.domainvalue.filter(function(item, index) {
                 return item.domainName == "pipe_using_state";
             })));
-        }
+        },
+        chooseLIneId: function(id) { //选中管线
+            this.$refs.linelist.clickList(id);
+        },
     }
 }
