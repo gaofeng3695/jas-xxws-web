@@ -204,19 +204,19 @@ var pipeline_baidumap = {
                 var isFocusNet = Boolean(that.snetidchoosed && !that.slineidchoosed && that.snetidchoosed === item.pipeNetworkId);
                 var isFocusLine = Boolean(that.slineidchoosed && that.slineidchoosed === item.objectId);
 
-                if (that.linedetailsedited) {
-                    var length = (map.getDistance(item.line) / 1000).toFixed(3);
-                    // console.log('计算距离：',length)
-                    // console.log('之前',item.pipeLength)
-                    if (length !== item.pipeLength) {
-                        // var oDetail = JSON.parse(JSON.stringify(that.aLineDetailsToShow[0]));
-                        var oDetail = JSON.parse(JSON.stringify(that.activeLineShow));
-                        oDetail.pipeLength = length;
-                        // console.log('距离不一样，重新计算距离')
-                        that.$emit('changeline', oDetail);
-                        return;
-                    }
-                }
+                // if (that.linedetailsedited) {
+                //     var length = (map.getDistance(item.line) / 1000).toFixed(3);
+                //     // console.log('计算距离：',length)
+                //     // console.log('之前',item.pipeLength)
+                //     if (length !== item.pipeLength) {
+                //         // var oDetail = JSON.parse(JSON.stringify(that.aLineDetailsToShow[0]));
+                //         var oDetail = JSON.parse(JSON.stringify(that.activeLineShow));
+                //         oDetail.pipeLength = length;
+                //         // console.log('距离不一样，重新计算距离')
+                //         that.$emit('changeline', oDetail);
+                //         return;
+                //     }
+                // }
                 // if (aline.length === 1) { //只有一条线的时候才会标注起止图表
                 //     if (item.line.length > 0) {
                 //         var startPoint = map.draw_pointMarker(item.line[0].bdLon, item.line[0].bdLat, map.startMarker);
