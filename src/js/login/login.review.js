@@ -45,7 +45,7 @@
             //console.log(_userBo)
             if (zhugeSwitch == 1) {
                 zhuge.identify(_userBo.objectId, {
-                    name: _userBo.userName,
+                    objectName: _userBo.userName,
                     gender: _userBo.sex,
                     age: _userBo.age,
                     email: _userBo.email,
