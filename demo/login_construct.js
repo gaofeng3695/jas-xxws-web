@@ -1,6 +1,6 @@
-﻿(function (global, $, doc, lsObj, zhugeSwitch, zhuge) {
+﻿(function(global, $, doc, lsObj, tjSwitch, zhuge) {
     'use strict';
-    var loginClass = function () {
+    var loginClass = function() {
         this.passwordVal = null;
         this.nameVal = null;
         this.eventsMap = {
@@ -22,8 +22,8 @@
         pTip: '.hidkuai2 span'
     };
     var utils = {
-        zhugeIdentify: function (_userBo) {
-            zhuge.identify(_userBo.objectId, {
+        zhugeIdentify: function(_userBo) {
+            tjSdk.identify(_userBo.objectId, {
                 name: _userBo.userName,
                 gender: _userBo.sex,
                 age: _userBo.age,
@@ -35,18 +35,18 @@
                 '部门名称': _userBo.orgName == null ? "" : _userBo.orgName
             });
         },
-        zhugeTrackForFailed: function (tel, sRsn) {
-            if (zhugeSwitch == 1) {
-                zhuge.track('登陆失败', {
+        zhugeTrackForFailed: function(tel, sRsn) {
+            if (tjSwitch == 1) {
+                tjSdk.track('登陆失败', {
                     '手机号': tel,
                     '原因': 'sRsn'
                 });
             }
         },
-        zhugeTrackForSuccess: function (_userBo) {
-            if (zhugeSwitch == 1) {
+        zhugeTrackForSuccess: function(_userBo) {
+            if (tjSwitch == 1) {
                 utils.zhugeIdentify(_userBo);
-                zhuge.track('登陆成功');
+                tjSdk.track('登陆成功');
             }
         }
     };
@@ -55,7 +55,7 @@
         nameImg1: "url(src/images/loginImg/nameImg1.png)",
         passwordImg: "url(src/images/loginImg/password1.png)",
         passwordImg1: "url(src/images/loginImg/password.png)",
-        setActiveStyle: function (obj, imgSrc) {
+        setActiveStyle: function(obj, imgSrc) {
             obj.css({
                 background: "#ECF7FF",
                 border: "1px solid #5EB6F9"
@@ -64,7 +64,7 @@
             obj.find('.common').css("border-left", "1px solid #5EB6F9");
             obj.find('.bg').css("background-image", imgSrc);
         },
-        setInitStyle: function (obj, imgSrc) {
+        setInitStyle: function(obj, imgSrc) {
             obj.css({
                 background: "#fff",
                 border: "1px solid #bbb"
@@ -76,10 +76,10 @@
     };
     loginClass.prototype = {
         constructor: loginClass,
-        initialization: function () {
+        initialization: function() {
             this.bindEvent();
         },
-        initializeElements: function () {
+        initializeElements: function() {
             var eles = loginClass.Eles;
             for (var name in eles) {
                 if (eles.hasOwnProperty(name)) {
@@ -87,19 +87,19 @@
                 }
             }
         },
-        bindEvent: function () {
+        bindEvent: function() {
             this.initializeOrdinaryEvent(this.eventsMap);
         },
-        unbindEvent: function () {
+        unbindEvent: function() {
             this.uninitializeOrdinaryEvent(this.eventsMap);
         },
-        initializeOrdinaryEvent: function (maps) {
+        initializeOrdinaryEvent: function(maps) {
             this._scanEventsMap(maps, true);
         },
-        uninitializeOrdinaryEvent: function (maps) {
+        uninitializeOrdinaryEvent: function(maps) {
             this._scanEventsMap(maps);
         },
-        _scanEventsMap: function (maps, isOn) {
+        _scanEventsMap: function(maps, isOn) {
             var delegateEventSplitter = /^(\S+)\s*(.*)$/;
             var type = isOn ? 'on' : 'off';
             for (var keys in maps) {
@@ -112,24 +112,24 @@
                 }
             }
         },
-        destroy : function(){
+        destroy: function() {
             this.unbindEvent();
         },
 
 
-        nameFocus: function (e) {
+        nameFocus: function(e) {
             styleObj.setActiveStyle(this.name, styleObj.nameImg);
         },
-        nameBlur: function (e) {
+        nameBlur: function(e) {
             styleObj.setInitStyle(this.name, styleObj.nameImg1);
         },
-        pswdFocus: function (e) {
+        pswdFocus: function(e) {
             styleObj.setActiveStyle(this.password, styleObj.passwordImg);
         },
-        pswdBlur: function (e) {
+        pswdBlur: function(e) {
             styleObj.setInitStyle(this.password, styleObj.passwordImg1);
         },
-        login: function () {
+        login: function() {
             var p = this.passwordInput;
             var n = this.nameInput;
             var pt = this.pTip;
@@ -153,7 +153,7 @@
                 this._requestIfTelregisted();
             }
         },
-        _requestIfTelregisted: function () { // 验证手机号是否注册接口
+        _requestIfTelregisted: function() { // 验证手机号是否注册接口
             var _data = {
                 "registNum": this.nameVal
             };
@@ -165,11 +165,11 @@
                 contentType: "application/json",
                 data: _data,
                 dataType: "json",
-                success: function (data, status) {
+                success: function(data, status) {
                     var res = data.rows.isExist;
                     if (res == 0) {
                         nt.text('账号未注册');
-                        utils.zhugeTrackForFailed(that.nameVal,'账号未注册');
+                        utils.zhugeTrackForFailed(that.nameVal, '账号未注册');
                         return false;
                     } else {
                         that._requestData();
@@ -178,7 +178,7 @@
                 }
             });
         },
-        _requestData: function () { //验证手机号和密码
+        _requestData: function() { //验证手机号和密码
             var that = this;
             var pt = this.pTip;
             var _data = {
@@ -191,7 +191,7 @@
                 contentType: "application/json",
                 data: JSON.stringify(_data),
                 dataType: "json",
-                success: function (data) {
+                success: function(data) {
                     var success = data.success;
                     if (success == 1) {
                         var row = data.rows;
@@ -203,12 +203,12 @@
                     } else {
                         if (data.code == "U01") {
                             pt.text('用户名和密码不一致');
-                            utils.zhugeTrackForFailed(that.nameVal,'用户名和密码不一致');
+                            utils.zhugeTrackForFailed(that.nameVal, '用户名和密码不一致');
                             return;
                         }
                         if (data.code == "U02") {
                             pt.text('该用户未注册');
-                            utils.zhugeTrackForFailed(that.nameVal,'该用户未注册');
+                            utils.zhugeTrackForFailed(that.nameVal, '该用户未注册');
                             return;
                         }
                         if (data.code == "U03") {
@@ -229,7 +229,7 @@
                         }
                     }
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
                     console.log(XMLHttpRequest);
                     console.log(textStatus);
                     console.log(errorThrown);
@@ -237,7 +237,7 @@
             });
         },
         //获取当前用户的默认企业Id
-        _getDefaultEnterpriseId: function (_userId) {
+        _getDefaultEnterpriseId: function(_userId) {
             var that = this;
             var pt = this.pTip;
             $.ajax({
@@ -248,7 +248,7 @@
                     userId: _userId
                 }),
                 dataType: "json",
-                success: function (data) {
+                success: function(data) {
                     var success = data.success;
                     if (success == 1) {
                         // alert(JSON.stringify(data));
@@ -263,7 +263,7 @@
                         }
                     }
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
                     console.log(XMLHttpRequest);
                     console.log(textStatus);
                     console.log(errorThrown);
@@ -271,7 +271,7 @@
             });
         },
         //加入企业
-        _joinDefaultEnterprise: function (_enterpriseId) {
+        _joinDefaultEnterprise: function(_enterpriseId) {
             var pt = this.pTip;
             var _userBo = JSON.parse(lsObj.getLocalStorage('userBo'));
             $.ajax({
@@ -283,7 +283,7 @@
                     enterpriseId: _enterpriseId
                 }),
                 dataType: "json",
-                success: function (data) {
+                success: function(data) {
                     // alert(JSON.stringify(data));
                     var success = data.success;
                     if (success == 1) {
@@ -298,30 +298,30 @@
                         switch (data.code) {
                             case "400":
                                 pt.text('服务异常');
-                                utils.zhugeTrackForFailed( _userBo.mobileNum,'服务异常');
+                                utils.zhugeTrackForFailed(_userBo.mobileNum, '服务异常');
                                 break;
                             case "401":
                                 pt.text('参数异常');
-                                utils.zhugeTrackForFailed( _userBo.mobileNum,'参数异常');
+                                utils.zhugeTrackForFailed(_userBo.mobileNum, '参数异常');
                                 break;
                             case "E01":
                                 pt.text('您的账户已被该企业冻结');
-                                utils.zhugeTrackForFailed( _userBo.mobileNum,'您的账户已被该企业冻结');
+                                utils.zhugeTrackForFailed(_userBo.mobileNum, '您的账户已被该企业冻结');
                                 break;
                             case "E02":
                                 pt.text('您的账户已被该企业移除');
-                                utils.zhugeTrackForFailed( _userBo.mobileNum,'您的账户已被该企业移除');
+                                utils.zhugeTrackForFailed(_userBo.mobileNum, '您的账户已被该企业移除');
                                 break;
                             case "E03":
                                 pt.text('该企业不存在');
-                                utils.zhugeTrackForFailed( _userBo.mobileNum,'该企业不存在');
+                                utils.zhugeTrackForFailed(_userBo.mobileNum, '该企业不存在');
                                 break;
                             default:
                                 break;
                         }
                     }
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
                     console.log(XMLHttpRequest);
                     console.log(textStatus);
                     console.log(errorThrown);
@@ -329,7 +329,7 @@
             });
         },
     };
-    $(function () {
+    $(function() {
         global.loginObj = new loginClass();
     });
-})(this, this.jQuery, document, lsObj, zhugeSwitch, zhuge);
+})(this, this.jQuery, document, lsObj, tjSwitch, zhuge);

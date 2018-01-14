@@ -1138,8 +1138,8 @@ var tableOperationObj = {
         this.$exportAll.click(function() {
             _this.expoerObj.ids = '';
             _this.expoerCondition();
-            if (zhugeSwitch == 1) {
-                zhuge.track('导出任务列表', {
+            if (tjSwitch == 1) {
+                tjSdk.track('导出任务列表', {
                     'action': '导出全部'
                 });
             }
@@ -1157,8 +1157,8 @@ var tableOperationObj = {
                 }
                 _this.expoerObj.ids = taskIds.join(',');
                 _this.expoerCondition();
-                if (zhugeSwitch == 1) {
-                    zhuge.track('导出任务列表', {
+                if (tjSwitch == 1) {
+                    tjSdk.track('导出任务列表', {
                         'action': '导出已选'
                     });
                 }

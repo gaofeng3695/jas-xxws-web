@@ -59,158 +59,158 @@ var routerObj = {
         that.router = Router({
             '/index': function() {
                 loadRelativePage("/src/html/index.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击首页');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击首页');
                 }
             },
             '/event': function() {
                 loadRelativePage("/src/html/event.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击事件管理');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击事件管理');
                 }
             },
             '/task': function() {
                 loadRelativePage("/src/html/task.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击任务管理');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击任务管理');
                 }
             },
             '/maintenance': function() {
                 loadRelativePage("/src/html/maintenance.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击维修维护');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击维修维护');
                 }
             },
             '/track': function() {
                 loadRelativePage("/src/html/track.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击巡线记录');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击巡线记录');
                 }
             },
             '/securityPlan': function() {
                 loadRelativePage("/src/html/securityPlan.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('计划管理');
+                if (tjSwitch == 1) {
+                    tjSdk.track('计划管理');
                 }
             },
             '/securityRecord': function() {
                 loadRelativePage("/src/html/securityRecord.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('入户安检记录');
+                if (tjSwitch == 1) {
+                    tjSdk.track('入户安检记录');
                 }
             },
             '/userList': function() {
                 loadRelativePage("/src/html/userList.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('用户台账');
+                if (tjSwitch == 1) {
+                    tjSdk.track('用户台账');
                 }
             },
             '/userArea': function() {
                 loadRelativePage("/src/html/userArea.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('片区管理');
+                if (tjSwitch == 1) {
+                    tjSdk.track('片区管理');
                 }
             },
             '/facilityList': function() {
                 loadRelativePage("/src/html/facilityList.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('设施台账');
+                if (tjSwitch == 1) {
+                    tjSdk.track('设施台账');
                 }
             },
             '/facilityInspect': function() {
                 loadRelativePage("/src/html/facilityInspect.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('设施检查');
+                if (tjSwitch == 1) {
+                    tjSdk.track('设施检查');
                 }
             },
             '/map': function() {
                 loadRelativePage("/src/html/map.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击一张图');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击一张图');
                 }
             },
             '/equipment': function() {
                 loadRelativePage("/src/html/none.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击设备管理');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击设备管理');
                 }
             },
             '/statistics': function() {
                 loadRelativePage("/src/html/none.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击统计分析');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击统计分析');
                 }
             },
             '/organization': function() {
                 loadRelativePage("/src/html/management.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击组织结构管理');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击组织结构管理');
                 }
             },
             '/removemanager': function() {
                 loadRelativePage("/src/html/removemanager.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击系统管理员移交');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击系统管理员移交');
                 }
             },
             '/certification': function() {
                 loadRelativePage("/src/html/certificationEnterprised.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击企业认证');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击企业认证');
                 }
             },
             '/managementuser': function() {
                 loadRelativePage("/src/html/peoplemanager.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击人员管理');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击人员管理');
                 }
             },
             '/news': function() {
                 loadRelativePage("/src/html/none.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击消息中心');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击消息中心');
                 }
             },
             '/personal': function() {
                 loadRelativePage("/src/html/personal.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击个人资料');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击个人资料');
                 }
             },
             '/updatepass': function() {
                 loadRelativePage("/src/html/forgetPassword.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击修改密码');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击修改密码');
                 }
             },
             '/setLogin': function() {
                 loadRelativePage("/src/html/setLogin.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击登陆设置');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击登陆设置');
                 }
             },
             '/help': function() {
                 loadRelativePage("/src/html/help.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击帮助中心');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击帮助中心');
                 }
             },
             '/securityPlan': function() {
                 loadRelativePage("/src/html/securityPlan.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击计划管理');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击计划管理');
                 }
             },
             '/securityRecord': function() {
                 loadRelativePage("/src/html/securityRecord.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击入户安检记录');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击入户安检记录');
                 }
             },
             '/customModule': function() {
                 loadRelativePage("/src/html/customTemplates.html");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击事件类型自定义');
+                if (tjSwitch == 1) {
+                    tjSdk.track('点击事件类型自定义');
                 }
             },
             '/pipeline': function() {
@@ -240,7 +240,7 @@ function load() {
             '<ul id="mangement" class="collapse"><li><a href="#/organization"><i class="fa fa-fw "></i>组织机构管理</a></li>' +
             '<li><a href="#/managementuser"><i class="fa fa-fw "></i>人员管理</a></li>' +
             '<li><a href="#/customModule"><i class="fa fa-fw "></i>事件类型自定义</a></li>' +
-            '<li><a href="#/certification"><i class="fa fa-fw "></i>企业认证</a></li>'+
+            '<li><a href="#/certification"><i class="fa fa-fw "></i>企业认证</a></li>' +
             '</li><li><a href="#/removemanager"><i class="fa fa-fw "></i>系统管理员移交</a> </li></ul></li>';
         $(".side-nav").append(html2);
     }

@@ -1257,8 +1257,8 @@ var exportFileObj = {
         this.$exportAll.click(function() {
             _this.expoerObj.ids = '';
             _this.expoerCondition();
-            if (zhugeSwitch == 1) {
-                zhuge.track('导出事件列表', {
+            if (tjSwitch == 1) {
+                tjSdk.track('导出事件列表', {
                     'action': '导出全部'
                 });
             }
@@ -1277,8 +1277,8 @@ var exportFileObj = {
 
                 _this.expoerCondition();
 
-                if (zhugeSwitch == 1) {
-                    zhuge.track('导出事件列表', {
+                if (tjSwitch == 1) {
+                    tjSdk.track('导出事件列表', {
                         'action': '导出已选'
                     });
                 }
