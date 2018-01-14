@@ -1,4 +1,4 @@
-﻿(function(global, $, doc, lsObj, tjSwitch, zhuge) {
+﻿(function(global, $, doc, lsObj, tjSwitch, tjSdk) {
     'use strict';
     var loginClass = function() {
         this.passwordVal = null;
@@ -332,4 +332,4 @@
     $(function() {
         global.loginObj = new loginClass();
     });
-})(this, this.jQuery, document, lsObj, tjSwitch, zhuge);
+})(this, this.jQuery, document, lsObj, tjSwitch, tjSdk);
