@@ -7,7 +7,7 @@
 - 生命周期
 */
 
-(function(global, $, doc, lsObj, tjSwitch, zhuge) {
+(function(global, $, doc, lsObj, tjSwitch, tjSdk) {
     'use strict';
     var loginClass = function() {
         this.passwordVal = null;
@@ -375,7 +375,7 @@
         global.loginObj = new loginClass();
         //new loginClass();
     });
-})(this, this.jQuery, document, lsObj, tjSwitch, zhuge);
+})(this, this.jQuery, document, lsObj, tjSwitch, tjSdk);
 //点击打开版本信息模态框
 $('#versionInformation span').click(function() {
     $("#versionmodal").modal()
