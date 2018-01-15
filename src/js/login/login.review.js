@@ -7,7 +7,7 @@
 - 生命周期
 */
 
-(function(global, $, doc, lsObj, zhugeSwitch, zhuge) {
+(function(global, $, doc, lsObj, tjSwitch, zhuge) {
     'use strict';
     var loginClass = function() {
         this.passwordVal = null;
@@ -34,8 +34,8 @@
     var utils = {
         zhugeTrackForFailed: function(tel, sRsn) {
             //console.log(sRsn)
-            if (zhugeSwitch == 1) {
-                zhuge.track('登陆失败', {
+            if (tjSwitch == 1) {
+                tjSdk.track('登陆失败', {
                     '手机号': tel,
                     '原因': sRsn
                 });
@@ -43,8 +43,8 @@
         },
         zhugeTrackForSuccess: function(_userBo) {
             //console.log(_userBo)
-            if (zhugeSwitch == 1) {
-                zhuge.identify(_userBo.objectId, {
+            if (tjSwitch == 1) {
+                tjSdk.identify(_userBo.objectId, {
                     objectName: _userBo.userName,
                     gender: _userBo.sex,
                     age: _userBo.age,
@@ -55,7 +55,7 @@
                     '企业名称': _userBo.enterpriseName == null ? "" : _userBo.enterpriseName,
                     '部门名称': _userBo.orgName == null ? "" : _userBo.orgName
                 });
-                zhuge.track('登陆成功');
+                tjSdk.track('登陆成功');
             }
         }
     };
@@ -375,7 +375,7 @@
         global.loginObj = new loginClass();
         //new loginClass();
     });
-})(this, this.jQuery, document, lsObj, zhugeSwitch, zhuge);
+})(this, this.jQuery, document, lsObj, tjSwitch, zhuge);
 //点击打开版本信息模态框
 $('#versionInformation span').click(function() {
     $("#versionmodal").modal()

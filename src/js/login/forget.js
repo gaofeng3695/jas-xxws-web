@@ -158,8 +158,8 @@ $(".btn2").click(function() {
             $('.bottom3').css({
                 display: "block"
             });
-            if (zhugeSwitch == 1) {
-                zhuge.track('重置密码成功', {
+            if (tjSwitch == 1) {
+                tjSdk.track('重置密码成功', {
                     '手机号': mobileNum
                 });
             }

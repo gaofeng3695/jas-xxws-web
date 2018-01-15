@@ -82,8 +82,8 @@
                   d = false;
                   g = false;
                   f = false;
-                  if (zhugeSwitch == 1) {
-                      zhuge.track('注册填写手机信息完成');
+                  if (tjSwitch == 1) {
+                      tjSdk.track('注册填写手机信息完成');
                   }
               } else {
                   $('.SMScodeMsg').css({
@@ -149,8 +149,8 @@
       f = false;
       g = false;
       h = false;
-      if (zhugeSwitch == 1) {
-          zhuge.track('注册信息完善完成');
+      if (tjSwitch == 1) {
+          tjSdk.track('注册信息完善完成');
       }
   });
   $('.btn3').click(function() {
@@ -221,14 +221,14 @@
                   lsObj.setLocalStorage('token', token);
                   lsObj.setLocalStorage('userBo', JSON.stringify(row[0]));
                   lsObj.setLocalStorage('timeOut', new Date().getTime() + (23 * 60 * 60 * 1000));
-                  if (zhugeSwitch == 1) {
+                  if (tjSwitch == 1) {
                       zhugeIdentify(row[0]);
-                      zhuge.track('注册完成并登陆成功');
+                      tjSdk.track('注册完成并登陆成功');
                   }
               } else {
                   xxwsWindowObj.xxwsAlert("注册失败");
-                  if (zhugeSwitch == 1) {
-                      zhuge.track('注册失败');
+                  if (tjSwitch == 1) {
+                      tjSdk.track('注册失败');
                   }
                   // xxwsWindowObj.xxwsAlert("注册失败");
               }
@@ -591,7 +591,7 @@
 
 
   function zhugeIdentify(_userBo) {
-      zhuge.identify(_userBo.objectId, {
+      tjSdk.identify(_userBo.objectId, {
           name: _userBo.userName,
           gender: _userBo.sex,
           age: _userBo.age,

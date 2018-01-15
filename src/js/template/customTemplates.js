@@ -301,8 +301,8 @@ var systemConfiguration = {
                     that.defaultTemplate("0");
                     $(".systemButton").find("span").removeClass("defaultBtnSystem");
                     $(".customButton").find("span").addClass("defaultBtnCustom");
-                    if (zhugeSwitch == 1) {
-                        zhuge.track('设置系统模板为默认');
+                    if (tjSwitch == 1) {
+                        tjSdk.track('设置系统模板为默认');
                     }
                 }
             };
@@ -319,8 +319,8 @@ var systemConfiguration = {
                     that.defaultTemplate("1");
                     $(".customButton").find("span").removeClass("defaultBtnCustom");
                     $(".systemButton").find("span").addClass("defaultBtnSystem");
-                    if (zhugeSwitch == 1) {
-                        zhuge.track('设置自定义模板为默认');
+                    if (tjSwitch == 1) {
+                        tjSdk.track('设置自定义模板为默认');
                     }
                 }
             };

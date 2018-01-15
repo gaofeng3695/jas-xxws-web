@@ -117,16 +117,16 @@ var trackObj = {
         /* 导出数据 */
         $('#export_all').click(function() {
             that.requestOutput(0);
-            if (zhugeSwitch == 1) {
-                zhuge.track('导出巡检记录', {
+            if (tjSwitch == 1) {
+                tjSdk.track('导出巡检记录', {
                     'action': '导出全部'
                 });
             }
         });
         $('#export_choice').click(function() {
             that.requestOutput(2);
-            if (zhugeSwitch == 1) {
-                zhuge.track('导出巡检记录', {
+            if (tjSwitch == 1) {
+                tjSdk.track('导出巡检记录', {
                     'action': '导出已选'
                 });
             }
@@ -134,8 +134,8 @@ var trackObj = {
         /* 模态框导出数据 */
         $('#modal_output').click(function() {
             that.requestOutput(1, that.sCurrentTrackId);
-            if (zhugeSwitch == 1) {
-                zhuge.track('导出巡检记录', {
+            if (tjSwitch == 1) {
+                tjSdk.track('导出巡检记录', {
                     'action': '模态框导出'
                 });
             }

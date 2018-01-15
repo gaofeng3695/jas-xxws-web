@@ -71,8 +71,8 @@ function accountNumber() {
             var res = data.rows.isExist;
             if (res == 0) {
                 $('.hidkuai1 span').text('账号未注册');
-                if (zhugeSwitch == 1) {
-                    zhuge.track('登陆失败', {
+                if (tjSwitch == 1) {
+                    tjSdk.track('登陆失败', {
                         '手机号': nameVal,
                         '原因': '账号未注册'
                     });
@@ -110,8 +110,8 @@ function requestData() {
             } else {
                 if (data.code == "U01") {
                     $('.hidkuai2 span').text('用户名和密码不一致');
-                    if (zhugeSwitch == 1) {
-                        zhuge.track('登陆失败', {
+                    if (tjSwitch == 1) {
+                        tjSdk.track('登陆失败', {
                             '手机号': nameVal,
                             '原因': '用户名和密码不一致'
                         });
@@ -120,8 +120,8 @@ function requestData() {
                 }
                 if (data.code == "U02") {
                     $('.hidkuai2 span').text('该用户未注册');
-                    if (zhugeSwitch == 1) {
-                        zhuge.track('登陆失败', {
+                    if (tjSwitch == 1) {
+                        tjSdk.track('登陆失败', {
                             '手机号': nameVal,
                             '原因': '该用户未注册'
                         });
@@ -209,17 +209,17 @@ function joinDefaultEnterprise(_enterpriseId) {
                 lsObj.setLocalStorage('token', token);
                 lsObj.setLocalStorage('userBo', JSON.stringify(row[0]));
                 lsObj.setLocalStorage('timeOut', new Date().getTime() + (23 * 60 * 60 * 1000));
-                if (zhugeSwitch == 1) {
+                if (tjSwitch == 1) {
                     zhugeIdentify(row[0]);
-                    zhuge.track('登陆成功');
+                    tjSdk.track('登陆成功');
                 }
                 location.href = 'main.html';
             } else {
                 switch (data.code) {
                     case "400":
                         $('.hidkuai2 span').text('服务异常');
-                        if (zhugeSwitch == 1) {
-                            zhuge.track('登陆失败', {
+                        if (tjSwitch == 1) {
+                            tjSdk.track('登陆失败', {
                                 '手机号': _userBo.mobileNum,
                                 '原因': '服务异常'
                             });
@@ -227,8 +227,8 @@ function joinDefaultEnterprise(_enterpriseId) {
                         break;
                     case "401":
                         $('.hidkuai2 span').text('参数异常');
-                        if (zhugeSwitch == 1) {
-                            zhuge.track('登陆失败', {
+                        if (tjSwitch == 1) {
+                            tjSdk.track('登陆失败', {
                                 '手机号': _userBo.mobileNum,
                                 '原因': '参数异常'
                             });
@@ -236,8 +236,8 @@ function joinDefaultEnterprise(_enterpriseId) {
                         break;
                     case "E01":
                         $('.hidkuai2 span').text('您的账户已被该企业冻结');
-                        if (zhugeSwitch == 1) {
-                            zhuge.track('登陆失败', {
+                        if (tjSwitch == 1) {
+                            tjSdk.track('登陆失败', {
                                 '手机号': _userBo.mobileNum,
                                 '原因': '您的账户已被该企业冻结'
                             });
@@ -245,8 +245,8 @@ function joinDefaultEnterprise(_enterpriseId) {
                         break;
                     case "E02":
                         $('.hidkuai2 span').text('您的账户已被该企业移除');
-                        if (zhugeSwitch == 1) {
-                            zhuge.track('登陆失败', {
+                        if (tjSwitch == 1) {
+                            tjSdk.track('登陆失败', {
                                 '手机号': _userBo.mobileNum,
                                 '原因': '您的账户已被该企业移除'
                             });
@@ -254,8 +254,8 @@ function joinDefaultEnterprise(_enterpriseId) {
                         break;
                     case "E03":
                         $('.hidkuai2 span').text('该企业不存在');
-                        if (zhugeSwitch == 1) {
-                            zhuge.track('登陆失败', {
+                        if (tjSwitch == 1) {
+                            tjSdk.track('登陆失败', {
                                 '手机号': _userBo.mobileNum,
                                 '原因': '该企业不存在'
                             });
@@ -276,7 +276,7 @@ function joinDefaultEnterprise(_enterpriseId) {
 
 
 function zhugeIdentify(_userBo) {
-    zhuge.identify(_userBo.objectId, {
+    tjSdk.identify(_userBo.objectId, {
         name: _userBo.userName,
         gender: _userBo.sex,
         age: _userBo.age,

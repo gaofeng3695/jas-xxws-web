@@ -1271,26 +1271,26 @@ var userTable = { //维修维护以及用户地址 设施选择 事件选择 维
         if (num == 'MO_01') {
             createmaintenance.originTypeName = "入户整改";
             createmaintenance.is_show = "newHouseHold";
-            if (zhugeSwitch == 1) {
-                zhuge.track('点击新建入户整改维修工单');
+            if (tjSwitch == 1) {
+                tjSdk.track('点击新建入户整改维修工单');
             }
         } else if (num == 'MO_02') {
             createmaintenance.originTypeName = "管网设施";
             createmaintenance.is_show = "newFacility";
-            if (zhugeSwitch == 1) {
-                zhuge.track('点击新建管网设施维修工单');
+            if (tjSwitch == 1) {
+                tjSdk.track('点击新建管网设施维修工单');
             }
         } else if (num == 'MO_03') {
             createmaintenance.originTypeName = "巡检事件";
             createmaintenance.is_show = "newEvent";
-            if (zhugeSwitch == 1) {
-                zhuge.track('点击新建巡检事件维修工单');
+            if (tjSwitch == 1) {
+                tjSdk.track('点击新建巡检事件维修工单');
             }
         } else {
             createmaintenance.originTypeName = "其他维修";
             createmaintenance.is_show = "newOther";
-            if (zhugeSwitch == 1) {
-                zhuge.track('点击新建其他维修工单');
+            if (tjSwitch == 1) {
+                tjSdk.track('点击新建其他维修工单');
             }
         }
     }
@@ -1572,14 +1572,14 @@ var createmaintenance = new Vue({ //vue 实例化操作
                             }
                         };
                         xxwsWindowObj.xxwsAlert(defaultOptions);
-                        if (zhugeSwitch == 1) {
-                            zhuge.track('新建维修工单成功');
+                        if (tjSwitch == 1) {
+                            tjSdk.track('新建维修工单成功');
                         }
 
                     } else {
                         xxwsWindowObj.xxwsAlert('新建维修失败');
-                        if (zhugeSwitch == 1) {
-                            zhuge.track('新建维修工单失败');
+                        if (tjSwitch == 1) {
+                            tjSdk.track('新建维修工单失败');
                         }
                     }
                     $(".creatSubmit").removeAttr("disabled");
@@ -1587,8 +1587,8 @@ var createmaintenance = new Vue({ //vue 实例化操作
                 error: function() {
                     $(".creatSubmit").removeAttr("disabled");
                     xxwsWindowObj.xxwsAlert('新建维修失败');
-                    if (zhugeSwitch == 1) {
-                        zhuge.track('新建维修工单失败');
+                    if (tjSwitch == 1) {
+                        tjSdk.track('新建维修工单失败');
                     }
                 }
             });
