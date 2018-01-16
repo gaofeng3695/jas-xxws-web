@@ -53,6 +53,9 @@ $('.btn').click(function() {
             success: function(data) {
                 if (data.success == 1) {
                     xxwsWindowObj.xxwsAlert("密码修改成功，并即将返回登录页面，请重新登录", function() {
+                        if (tjSwitch == 1) {
+                            tjSdk.exit();
+                        }
                         lsObj.clearAll();
                         top.location.href = '../../login.html';
                     });
