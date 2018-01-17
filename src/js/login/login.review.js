@@ -7,9 +7,9 @@
 - 生命周期
 */
 
-(function(global, $, doc, lsObj, tjSwitch, tjSdk) {
+(function (global, $, doc, lsObj, tjSwitch, tjSdk) {
     'use strict';
-    var loginClass = function() {
+    var loginClass = function () {
         this.passwordVal = null;
         this.nameVal = null;
         this.eventsMap = {
@@ -32,7 +32,7 @@
         pTip: '.hidkuai2 span'
     };
     var utils = {
-        zhugeTrackForFailed: function(tel, sRsn) {
+        zhugeTrackForFailed: function (tel, sRsn) {
             //console.log(sRsn)
             if (tjSwitch == 1) {
                 tjSdk.track('登陆失败', {
@@ -41,7 +41,7 @@
                 });
             }
         },
-        zhugeTrackForSuccess: function(_userBo) {
+        zhugeTrackForSuccess: function (_userBo) {
             //console.log(_userBo)
             if (tjSwitch == 1) {
                 tjSdk.identify(_userBo.objectId, {
@@ -54,6 +54,11 @@
                     'mobile': _userBo.mobileNum,
                     '企业名称': _userBo.enterpriseName == null ? "" : _userBo.enterpriseName,
                     '部门名称': _userBo.orgName == null ? "" : _userBo.orgName
+                }, function (e) {
+                    tjSdk.track('登陆成功', "", function (e) {
+                        location.href = 'main.html';
+                    });
+
                 });
                 tjSdk.track('登陆成功');
             }
@@ -64,7 +69,7 @@
         nameImg1: "url(src/images/loginImg/nameImg1.png)",
         passwordImg: "url(src/images/loginImg/password1.png)",
         passwordImg1: "url(src/images/loginImg/password.png)",
-        setActiveStyle: function(obj, imgSrc) {
+        setActiveStyle: function (obj, imgSrc) {
             obj.css({
                 background: "#ECF7FF",
                 border: "1px solid #5EB6F9"
@@ -73,7 +78,7 @@
             obj.find('.common').css("border-left", "1px solid #5EB6F9");
             obj.find('.bg').css("background-image", imgSrc);
         },
-        setInitStyle: function(obj, imgSrc) {
+        setInitStyle: function (obj, imgSrc) {
             obj.css({
                 background: "#fff",
                 border: "1px solid #bbb"
@@ -86,10 +91,10 @@
     loginClass.prototype = {
         constructor: loginClass,
         _flag: true,
-        initialization: function() {
+        initialization: function () {
             this.bindEvent();
         },
-        initializeElements: function() {
+        initializeElements: function () {
             var eles = loginClass.Eles;
             for (var name in eles) {
                 if (eles.hasOwnProperty(name)) {
@@ -97,19 +102,19 @@
                 }
             }
         },
-        bindEvent: function() {
+        bindEvent: function () {
             this.initializeOrdinaryEvent(this.eventsMap);
         },
-        unbindEvent: function() {
+        unbindEvent: function () {
             this.uninitializeOrdinaryEvent(this.eventsMap);
         },
-        initializeOrdinaryEvent: function(maps) {
+        initializeOrdinaryEvent: function (maps) {
             this._scanEventsMap(maps, true);
         },
-        uninitializeOrdinaryEvent: function(maps) {
+        uninitializeOrdinaryEvent: function (maps) {
             this._scanEventsMap(maps);
         },
-        _scanEventsMap: function(maps, isOn) {
+        _scanEventsMap: function (maps, isOn) {
             var delegateEventSplitter = /^(\S+)\s*(.*)$/;
             var type = isOn ? 'on' : 'off';
             for (var keys in maps) {
@@ -122,27 +127,27 @@
                 }
             }
         },
-        destroy: function() {
+        destroy: function () {
             this.unbindEvent();
         },
-        nameFocus: function(e) {
+        nameFocus: function (e) {
             styleObj.setActiveStyle(this.name, styleObj.nameImg);
         },
-        nameBlur: function(e) {
+        nameBlur: function (e) {
             styleObj.setInitStyle(this.name, styleObj.nameImg1);
         },
-        pswdFocus: function(e) {
+        pswdFocus: function (e) {
             styleObj.setActiveStyle(this.password, styleObj.passwordImg);
         },
-        pswdBlur: function(e) {
+        pswdBlur: function (e) {
             styleObj.setInitStyle(this.password, styleObj.passwordImg1);
         },
-        keydownLogin: function(e) {
+        keydownLogin: function (e) {
             if (e.which === 13) {
                 this.login();
             }
         },
-        login: function(e) {
+        login: function (e) {
             var p = this.passwordInput;
             var n = this.nameInput;
             var pt = this.pTip;
@@ -166,7 +171,7 @@
                 this._requestIfTelregisted();
             }
         },
-        _requestIfTelregisted: function() { // 验证手机号是否注册接口
+        _requestIfTelregisted: function () { // 验证手机号是否注册接口
             var _data = {
                 "registNum": this.nameVal
             };
@@ -181,7 +186,7 @@
                     contentType: "application/json",
                     data: _data,
                     dataType: "json",
-                    success: function(data, status) {
+                    success: function (data, status) {
                         var res = data.rows.isExist;
                         if (res == 0) {
                             nt.text('账号未注册');
@@ -193,14 +198,14 @@
                             return true;
                         }
                     },
-                    error: function() {
+                    error: function () {
                         that.again();
                         return false;
                     }
                 });
             }
         },
-        _requestData: function() { //验证手机号和密码
+        _requestData: function () { //验证手机号和密码
             var that = this;
             var pt = this.pTip;
             var _data = {
@@ -213,7 +218,7 @@
                 contentType: "application/json",
                 data: JSON.stringify(_data),
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     var success = data.success;
                     if (success == 1) {
                         var row = data.rows;
@@ -258,7 +263,7 @@
                         }
                     }
                 },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log(XMLHttpRequest);
                     console.log(textStatus);
                     console.log(errorThrown);
@@ -267,7 +272,7 @@
             });
         },
         //获取当前用户的默认企业Id
-        _getDefaultEnterpriseId: function(_userId) {
+        _getDefaultEnterpriseId: function (_userId) {
             var that = this;
             var pt = this.pTip;
             $.ajax({
@@ -278,7 +283,7 @@
                     userId: _userId
                 }),
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     var success = data.success;
                     if (success == 1) {
                         // alert(JSON.stringify(data));
@@ -296,7 +301,7 @@
                         that.again();
                     }
                 },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log(XMLHttpRequest);
                     console.log(textStatus);
                     console.log(errorThrown);
@@ -305,7 +310,7 @@
             });
         },
         //加入企业
-        _joinDefaultEnterprise: function(_enterpriseId) {
+        _joinDefaultEnterprise: function (_enterpriseId) {
             var that = this;
             var pt = this.pTip;
             var _userBo = JSON.parse(lsObj.getLocalStorage('userBo'));
@@ -318,7 +323,7 @@
                     enterpriseId: _enterpriseId
                 }),
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     // alert(JSON.stringify(data));
                     var success = data.success;
                     if (success == 1) {
@@ -329,7 +334,7 @@
                         lsObj.setLocalStorage('userBo', JSON.stringify(row[0]));
                         lsObj.setLocalStorage('timeOut', new Date().getTime() + (23 * 60 * 60 * 1000));
                         utils.zhugeTrackForSuccess(row[0]);
-                        location.href = 'main.html';
+                        //location.href = 'main.html';
                     } else {
                         that.again();
                         switch (data.code) {
@@ -358,7 +363,7 @@
                         }
                     }
                 },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log(XMLHttpRequest);
                     console.log(textStatus);
                     console.log(errorThrown);
@@ -366,17 +371,17 @@
                 }
             });
         },
-        again: function() {
+        again: function () {
             this._flag = true;
             $('.btn').html('登&nbsp;&nbsp;录').css('background', '#5EB6F9');
         }
     };
-    $(function() {
+    $(function () {
         global.loginObj = new loginClass();
         //new loginClass();
     });
 })(this, this.jQuery, document, lsObj, tjSwitch, tjSdk);
 //点击打开版本信息模态框
-$('#versionInformation span').click(function() {
+$('#versionInformation span').click(function () {
     $("#versionmodal").modal()
 })

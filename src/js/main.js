@@ -15,6 +15,7 @@ var menuListListener = function() {
                 break;*/
             case 'signOut':
                 lsObj.clearAll();
+                tjSdk.exit();
                 location.href = 'login.html';
                 break;
         }
