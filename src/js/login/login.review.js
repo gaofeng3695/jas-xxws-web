@@ -58,9 +58,7 @@
                     tjSdk.track('登陆成功', "", function (e) {
                         location.href = 'main.html';
                     });
-
                 });
-                tjSdk.track('登陆成功');
             }
         }
     };
