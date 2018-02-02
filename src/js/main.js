@@ -60,9 +60,8 @@ var authenticationstatus = function() { //获取当前企业的认证状态 0未
         data: JSON.stringify(_data),
         success: function(data) {
             if (data.success == 1) {
-                if ("")
                 //判断是否认证
-                    if (data.rows[0].authenticateStatus == 0) { //未认证
+                if (data.rows[0].authenticateStatus == 0) { //未认证
                     $(".authentication").attr('src', "/src/images/common/noalready.png");
                 } else if (data.rows[0].authenticateStatus == 1) { //通过认证
                     $(".authentication").attr('src', "/src/images/common/already.png");
