@@ -261,9 +261,7 @@ var usermanager = {
     bindEvent: function() { //绑定监听事件
         var that = this;
         that.$addbut.click(function() {
-            //打开新增用户的模态框
-            $("#departments").val(that.currentName);
-            that.$adduser.modal();
+            that.peopleLimit();
         });
         $(".departments").click(function() {
             that.differenceInvite = "1";
@@ -769,6 +767,33 @@ var usermanager = {
     },
     again: function() {
         this.$flag = true;
+    },
+    peopleLimit: function() {
+        var that = this;
+        var userBo = JSON.parse(lsObj.getLocalStorage("userBo"));
+        var _data = {
+            "enterpriseId": userBo.enterpriseId
+        };
+        $.ajax({
+            type: "GET",
+            url: "/cloudlink-core-framework/invite/breachUserCountLimit?token=" + lsObj.getLocalStorage('token'),
+            contentType: "application/json",
+            data: _data,
+            dataType: "json",
+            success: function(data) {
+                if (data.success == 1) {
+                    console.log(data.rows[0].breachLimit);
+                    if (data.rows[0].breachLimit == false) {
+                        $("#departments").val(that.currentName);
+                        that.$adduser.modal();
+                    } else {
+                        xxwsWindowObj.xxwsAlert("企业人数已突破上限");
+                    }
+                } else {
+                    xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                }
+            }
+        });
     }
 }
 
