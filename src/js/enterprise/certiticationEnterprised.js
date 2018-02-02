@@ -132,8 +132,14 @@ var enterprisedObj = {
                     } else {
                         $(".enterpriseBasicInfo .enterpriseScale").text("500人以上");
                     }
+                    if (data.rows[0].payStatus == 1) {
+                        $(".enterpriseBasicInfo .payStatus").text("免费");
+                    } else if (data.rows[0].payStatus == 2) {
+                        $(".enterpriseBasicInfo .payStatus").text("试用");
+                    } else {
+                        $(".enterpriseBasicInfo .payStatus").text("收费");
+                    }
                     $(".enterpriseBasicInfo .enterpriseCreateTime").text(data.rows[0].enterpriseCreateTime);
-                    $(".enterpriseBasicInfo .versionName").text(data.rows[0].versionName);
                     $(".enterpriseBasicInfo .expireTime").text(data.rows[0].expireTime);
                     if (data.rows[0].authenticateStatus == 0) { //未认证
                         $(".resultImg").css({ "background": "url(/src/images/common/noalready.png) no-repeat" });
