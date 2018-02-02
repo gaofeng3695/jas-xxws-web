@@ -2,6 +2,7 @@ $(document).ready(function() {
     menuListListener();
     initPersonal(); //首次登录进来，进行初始化个人的基本信息
     load();
+    authenticationstatus();
     routerObj.init()
 });
 
@@ -37,22 +38,51 @@ var loadRelativePage = function(_url) {
     }
     /*进行个人信息初始化 */
 var initPersonal = function() {
-        var userBo = JSON.parse(lsObj.getLocalStorage("userBo"));
-        $(".userName").text(userBo.userName);
-        $(".userEnterprise").text(userBo.enterpriseName);
+    var userBo = JSON.parse(lsObj.getLocalStorage("userBo"));
+    $(".userName").text(userBo.userName);
+    $(".userEnterprise").text(userBo.enterpriseName);
 
-        if (userBo.profilePhoto != null && userBo.profilePhoto != "") {
-            $(".person-img").attr('src', "/cloudlink-core-file/file/getImageBySize?fileId=" + userBo.profilePhoto + "&viewModel=fill&width=500&hight=500");
-        };
-        //判断是否认证
-        if (userBo.authenticateStatus == 1) {
-            $(".authentication").attr('src', "/src/images/main/authentication.png");
-        } else {
-            $(".authentication").attr('src', "/src/images/main/authenticationNo.png");
-        };
-
+    if (userBo.profilePhoto != null && userBo.profilePhoto != "") {
+        $(".person-img").attr('src', "/cloudlink-core-file/file/getImageBySize?fileId=" + userBo.profilePhoto + "&viewModel=fill&width=500&hight=500");
+    };
+};
+var authenticationstatus = function() { //获取当前企业的认证状态 0未认证；-1驳回状态；1通过认证；2等待认证
+    var that = this;
+    var userBo = JSON.parse(lsObj.getLocalStorage("userBo"));
+    console.log(userBo);
+    var _data = {
+        "enterpriseId": userBo.enterpriseId
     }
-    /* 前端路由模块 */
+    $.ajax({
+        type: 'post',
+        url: '/cloudlink-core-framework/commonData/enterpriseApp/getPageList?token=' + lsObj.getLocalStorage("token"),
+        contentType: "application/json",
+        data: JSON.stringify(_data),
+        success: function(data) {
+            if (data.success == 1) {
+                //判断是否认证
+                if (data.rows[0].authenticateStatus == 0) { //未认证
+                    $(".authentication").attr('src', "/src/images/common/noalready.png");
+                } else if (data.rows[0].authenticateStatus == 1) { //通过认证
+                    $(".authentication").attr('src', "/src/images/common/already.png");
+                } else if (data.rows[0].authenticateStatus == -1) { //驳回状态
+                    $(".authentication").attr('src', "/src/images/common/noalready.png");
+                } else if (data.rows[0].authenticateStatus == 2) { //等待认证
+                    $(".authentication").attr('src', "/src/images/common/noalready.png");
+                }
+                //判断是否收费
+                if (data.rows[0].payStatus == 1) {
+                    $(".status").append("<span class='payStatus' style='color:#08db8e;padding-left:10px;'>免费</span>");
+                } else if (data.rows[0].payStatus == 2) {
+                    $(".status").append("<span class='payStatus' style='color:#59b5fc;padding-left:10px;'>试用</span>");
+                } else {
+                    $(".status").append("<span class='payStatus' style='color:#fcad3e;padding-left:10px;'>收费</span>");
+                }
+            }
+        }
+    });
+};
+/* 前端路由模块 */
 var routerObj = {
     router: null,
     init: function() {
@@ -241,7 +271,7 @@ function load() {
             '<ul id="mangement" class="collapse"><li><a href="#/organization"><i class="fa fa-fw "></i>组织机构管理</a></li>' +
             '<li><a href="#/managementuser"><i class="fa fa-fw "></i>人员管理</a></li>' +
             '<li><a href="#/customModule"><i class="fa fa-fw "></i>事件类型自定义</a></li>' +
-            '<li><a href="#/certification"><i class="fa fa-fw "></i>企业认证</a></li>' +
+            '<li><a href="#/certification"><i class="fa fa-fw "></i>企业信息</a></li>' +
             '</li><li><a href="#/removemanager"><i class="fa fa-fw "></i>系统管理员移交</a> </li></ul></li>';
         $(".side-nav").append(html2);
     }

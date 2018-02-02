@@ -25,6 +25,7 @@ var usermanager = {
     operationhtml: null, //操作内容
     searchObj: {},
     $flag: true,
+    $invitation: true,
     defaultOptions: {
         tip: '冻结后，该用户将不能进行任何操作？',
         name_title: '提示',
@@ -261,9 +262,10 @@ var usermanager = {
     bindEvent: function() { //绑定监听事件
         var that = this;
         that.$addbut.click(function() {
-            //打开新增用户的模态框
-            $("#departments").val(that.currentName);
-            that.$adduser.modal();
+            that.peopleLimit(function() {
+                $("#departments").val(that.currentName);
+                that.$adduser.modal();
+            });
         });
         $(".departments").click(function() {
             that.differenceInvite = "1";
@@ -274,11 +276,14 @@ var usermanager = {
             }
         });
         $(".invite").click(function() {
+            // if (that.$invitation == true) {
             that.inviteUser("invite"); //用于表示点击邀请
-            // console.log("dd")
+            // }
         });
         $(".againinvite").click(function() {
-            that.inviteUser("againinvite"); //用于表示再次邀请
+            that.peopleLimit(function() {
+                that.inviteUser("againinvite"); //用于表示再次邀请
+            });
         });
         that.$exportAll.click(function() {
             that.exportAll();
@@ -769,6 +774,32 @@ var usermanager = {
     },
     again: function() {
         this.$flag = true;
+    },
+    peopleLimit: function(callback) {
+        var that = this;
+        var userBo = JSON.parse(lsObj.getLocalStorage("userBo"));
+        var _data = {
+            "enterpriseId": userBo.enterpriseId
+        };
+        $.ajax({
+            type: "GET",
+            url: "/cloudlink-core-framework/invite/breachUserCountLimit?token=" + lsObj.getLocalStorage('token'),
+            contentType: "application/json",
+            data: _data,
+            dataType: "json",
+            success: function(data) {
+                if (data.success == 1) {
+                    if (data.rows[0].breachLimit == false) {
+                        callback();
+                    } else {
+                        xxwsWindowObj.xxwsAlert("企业人数已突破上限");
+                        that.$invitation = false;
+                    }
+                } else {
+                    xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+                }
+            }
+        });
     }
 }
 
