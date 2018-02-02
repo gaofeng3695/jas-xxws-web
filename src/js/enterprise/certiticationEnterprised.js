@@ -66,12 +66,12 @@ var enterprisedObj = {
             if (that.$flag) {
                 if (that.verify()) {
                     that.$flag = false;
+                    that.subBusinessmitImg();
                     $(".enterpriseInformation").hide();
                     $(".authentication").hide();
                     $(".enterpriseBasicInfo").show();
                     $(".informResult").show();
                     $(".informResult span").text("认证审核已提交成功，正在审核中...");
-                    that.subBusinessmitImg();
                 }
             }
         });
@@ -117,7 +117,6 @@ var enterprisedObj = {
             url: '/cloudlink-core-framework/commonData/enterpriseApp/getPageList?token=' + lsObj.getLocalStorage("token"),
             contentType: "application/json",
             data: JSON.stringify(_data),
-            // dataType: "json",
             success: function(data) {
                 if (data.success == 1) {
                     $(".enterpriseBasicInfo .enterpriseName").text(data.rows[0].enterpriseName);
