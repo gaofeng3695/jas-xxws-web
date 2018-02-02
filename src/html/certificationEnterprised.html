@@ -15,15 +15,8 @@
 
 <body style="background:#edf1f2">
     <div class="certification">
-        <div class="container-fluid certification_main">
-            <div class="row top">
-                <div class="col-xs-2 col-md-2"></div>
-                <div class="col-xs-8 col-md-8 top-border">
-                    <span class="enterprise_Name"></span>
-                    <span class="status">未认证</span>
-                </div>
-                <div class="col-xs-2 col-md-2"></div>
-            </div>
+        <!--关于认证信息的告知-->
+        <div class="container-fluid certification_main" style="display:none">
             <div class="row content">
                 <div class="col-xs-2 col-md-2"></div>
                 <div class="col-xs-8 col-md-8 row ">
@@ -46,11 +39,6 @@
                             用户提供的企业认证资料切实有效，巡线卫士将以消息的形式向用户发送“通过认证”的结果；否则，
                             将企业认证页面显示“驳回认证”的结果。</span>
                         </div>
-
-                        <div class="dismissed-reason" style="display:none">
-                            <p>企业认证驳回原因：</p>
-                            <span class="reason">企业名称输入不一致，请确认后保持企业名称一致。</span>
-                        </div>
                     </div>
                     <div class="col-xs-1 col-md-1"></div>
                 </div>
@@ -59,11 +47,13 @@
             <div class="row btn-sumbit">
                 <div class="col-xs-2 col-md-2"></div>
                 <div class="col-xs-8 col-md-8" style="vertical-align: center;text-align: center">
-                    <button type="button" class="submitApplay" id="submitApplay">提交申请</button>
+                    <button type="button" class="submitApplay" id="submitApplay">申请认证</button>
+                    <button type="button" class="returnPage">返回</button>
                 </div>
                 <div class="col-xs-2 col-md-2"></div>
             </div>
         </div>
+        <!--填写认证信息页面-->
         <div class="container-fluid enterpriseInformation" style="display:none">
             <div class="top">
                 <div class="title">企业信息填写</div>
@@ -100,7 +90,6 @@
             </div>
             <div class="businessnote"></div>
             <div class="prompt">支持jpg/gif/png格式，图片小于10M，最多上传3张图片，支持批量上传。</div>
-
             <div class="businessLicense">法人身份证</div>
             <div class="content">
                 <div class="identify_img_list ">
@@ -128,13 +117,47 @@
             <div class="row">
                 <div class="col-xs-2 col-md-2"></div>
                 <div class="col-xs-8 col-md-8" style="vertical-align: center;text-align: center">
-                    <button type="button" name="提交申请" id="submitInformation">提交申请</button>
+                    <button type="button" name="提交申请" id="submitInformation">提交审核</button>
+                    <button type="button" class="returnInformPage">返回</button>
                 </div>
                 <div class="col-xs-2 col-md-2"></div>
             </div>
         </div>
-
-        <!--认证信息的预览-->
+        <!--企业信息展示页面-->
+        <div class="container-fluid enterpriseBasicInfo">
+            <div class="informResult"><span></span></div>
+            <div style="padding:2px 40px 40px 40px">
+                <div class="row title">
+                    <span>企业基本信息</span>
+                </div>
+                <div class="row">
+                    <div class="basicInfo">
+                        <div class="detailInfo">
+                            <span class="leftInfo">企业名称</span>
+                            <span class="rightInfo companyNames"><span class="enterpriseName">----</span><span class="resultImg"></span></span>
+                            <span class="authentication">立即认证</span>
+                        </div>
+                        <div class="detailInfo">
+                            <span class="leftInfo">企业人数</span>
+                            <span class="rightInfo enterpriseScale">----</span>
+                        </div>
+                        <div class="detailInfo">
+                            <span class="leftInfo">企业注册时间</span>
+                            <span class="rightInfo enterpriseCreateTime">----</span>
+                        </div>
+                        <div class="detailInfo">
+                            <span class="leftInfo">企业付费</span>
+                            <span class="rightInfo payStatus">----</span>
+                        </div>
+                        <div class="detailInfo">
+                            <span class="leftInfo">企业到期时间</span>
+                            <span class="rightInfo expireTime">----</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--认证信息的预览  暂留功能-->
         <div class="viewenterpriseInformation" style="display:none">
             <div class="row enterprisetop">
                 <div class="col-xs-2 col-md-2"></div>

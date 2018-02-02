@@ -1,4 +1,4 @@
-var  proxy  = require ('http-proxy-middleware');
+var proxy = require('http-proxy-middleware');
 
 var argv = process.argv[2];
 
@@ -12,7 +12,6 @@ var  apiProxy = proxy('/c', {
 });
 
 module.exports = {
-
     "server": {
         middleware: [
             apiProxy,
