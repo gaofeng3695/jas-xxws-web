@@ -33,11 +33,13 @@ function closeRoseImg(e) {
 }
 var enterprisedObj = {
     $submitApplay: $(".submitApplay"), //提交申请，打开信息填写界面
+    $authentication: $(".authentication"), //进入认证信息页面
+    $returnPage: $(".returnPage"), //返回企业信息展示页面
+    $returnInformPage: $(".returnInformPage"), //返回认证告知页面
     $submitInformation: $("#submitInformation"),
     $addBusinessImg: $(".addBusinessImg"), //点击选择营业执照
     $addidentifyImg: $(".addidentifyImg"), //上传法人身份证
     $addroseImg: $(".addroseImg"), //上传企业人员花名册
-    currentstatus: null, //当前状态
     $flag: true, //用于将按钮进行锁死操作。
     imgIndex: 0,
     userBo: JSON.parse(lsObj.getLocalStorage("userBo")),
@@ -47,14 +49,35 @@ var enterprisedObj = {
     },
     bindEvent: function() {
         var that = this;
-        that.$submitApplay.click(function() {
-            if (that.currentstatus == -1) {
-                that.deleteImgByEnterpriseId();
-            } else {
-                $(".certification_main").css('display', 'none');
-                $(".enterpriseInformation").css('display', 'block');
-                $("#enterpriseName").val(that.userBo.enterpriseName);
+        that.$authentication.click(function() { //认证第一步
+            $(".enterpriseBasicInfo").hide();
+            $(".certification_main").show();
+        });
+        that.$submitApplay.click(function() { //认证第二步
+            $(".certification_main").hide();
+            $(".enterpriseInformation").show();
+            $("#enterpriseName").val(that.userBo.enterpriseName);
+        });
+        that.$returnPage.click(function() { //认证第二步 里面的 返回
+            $(".certification_main").hide();
+            $(".enterpriseBasicInfo").show();
+        });
+        that.$submitInformation.click(function() { //认证第三步
+            if (that.$flag) {
+                if (that.verify()) {
+                    that.$flag = false;
+                    $(".enterpriseInformation").hide();
+                    $(".authentication").hide();
+                    $(".enterpriseBasicInfo").show();
+                    $(".informResult").show();
+                    $(".informResult span").text("认证审核已提交成功，正在审核中...");
+                    that.subBusinessmitImg();
+                }
             }
+        });
+        that.$returnInformPage.click(function() { //认证第三步 里面的 返回
+            $(".enterpriseInformation").hide();
+            $(".certification_main").show();
         });
         /*上传营业执照进行验证*/
         that.$addBusinessImg.click(function() {
@@ -83,49 +106,59 @@ var enterprisedObj = {
                 xxwsWindowObj.xxwsAlert("最多上传6张图片");
             }
         });
-        that.$submitInformation.click(function() {
-            if (that.$flag) {
-                if (that.verify()) {
-                    that.$flag = false;
-                    // that.submitImg(); //先进行图片的上传
-                    that.subBusinessmitImg();
-                }
-            }
-
-        });
     },
     authenticationstatus: function() { //获取当前企业的认证状态 0未认证；-1驳回状态；1通过认证；2等待认证
         var that = this;
-        $(".enterprise_Name").text(that.userBo.enterpriseName);
+        var _data = {
+            "enterpriseId": that.userBo.enterpriseId
+        }
         $.ajax({
-            type: 'GET',
-            url: '/cloudlink-core-framework/enterprise/getById?token=' + lsObj.getLocalStorage("token"),
+            type: 'post',
+            url: '/cloudlink-core-framework/commonData/enterpriseApp/getPageList?token=' + lsObj.getLocalStorage("token"),
             contentType: "application/json",
-            data: { "objectId": that.userBo.enterpriseId },
-            dataType: "json",
+            data: JSON.stringify(_data),
+            // dataType: "json",
             success: function(data) {
                 if (data.success == 1) {
-                    if (data.rows[0].authenticateStatus == 0) {
-                        that.currentstatus = 0;
-                        $(".status").text("未认证");
-                    } else if (data.rows[0].authenticateStatus == 1) {
-                        that.currentstatus = 1;
-                        $(".status").text("已认证");
-                        $(".status").css('background', '#06dd8f');
-                        $(".submitApplay").css('display', 'none');
-                    } else if (data.rows[0].authenticateStatus == -1) {
-                        that.currentstatus = -1;
-                        $(".status").text("未认证");
-                        that.searchIdea(); //如果是驳回状态需要二次提交，
-                    } else if (data.rows[0].authenticateStatus == 2) {
-                        that.currentstatus = 2;
-                        $(".status").css('display', 'none');
-                        document.getElementById("submitApplay").disabled = true;
-                        $(".submitApplay").text("审核中...");
-                        $(".submitApplay").css('background', '#ccc');
+                    $(".enterpriseBasicInfo .enterpriseName").text(data.rows[0].enterpriseName);
+                    if (data.rows[0].enterpriseScale == 1) {
+                        $(".enterpriseBasicInfo  .enterpriseScale").text("50人以下");
+                    } else if (data.rows[0].enterpriseScale == 2) {
+                        $(".enterpriseBasicInfo  .enterpriseScale").text("50-100人");
+                    } else if (data.rows[0].enterpriseScale == 3) {
+                        $(".enterpriseBasicInfo  .enterpriseScale").text("100-200人");
+                    } else if (data.rows[0].enterpriseScale == 4) {
+                        $(".enterpriseBasicInfo .enterpriseScale").text("200-500人");
+                    } else {
+                        $(".enterpriseBasicInfo .enterpriseScale").text("500人以上");
                     }
+                    $(".enterpriseBasicInfo .enterpriseCreateTime").text(data.rows[0].enterpriseCreateTime);
+                    $(".enterpriseBasicInfo .versionName").text(data.rows[0].versionName);
+                    $(".enterpriseBasicInfo .expireTime").text(data.rows[0].expireTime);
+                    if (data.rows[0].authenticateStatus == 0) { //未认证
+                        $(".resultImg").css({ "background": "url(/src/images/common/noalready.png) no-repeat" });
+                        $(".informResult").hide();
+                        $(".authentication").show();
+                    } else if (data.rows[0].authenticateStatus == 1) { //通过认证
+                        $(".resultImg").css({ "background": "url(/src/images/common/already.png) no-repeat" });
+                        $(".informResult").hide();
+                        $(".authentication").hide();
+                    } else if (data.rows[0].authenticateStatus == -1) { //驳回状态
+                        $(".resultImg").css({ "background": "url(/src/images/common/noalready.png) no-repeat" });
+                        $(".informResult").show();
+                        $(".authentication").show();
+                        $(".authentication span").text("重新认证");
+                        that.searchIdea(); //如果是驳回状态需要二次提交，
+                    } else if (data.rows[0].authenticateStatus == 2) { //等待认证
+                        $(".resultImg").css({ "background": "url(/src/images/common/noalready.png) no-repeat" });
+                        $(".authentication").hide();
+                        $(".informResult").show();
+                        $(".informResult span").text("认证审核已提交成功，正在审核中...");
+                    }
+                } else {
+                    $(".enterpriseBasicInfo").hide();
+                    xxwsWindowObj.xxwsAlert("企业不存在");
                 }
-
             }
         });
     },
@@ -262,9 +295,8 @@ var enterprisedObj = {
                         name_title: '提示',
                         name_confirm: '确定',
                         callBack: function() {
-                            $(".enterpriseInformation").css('display', 'none');
-                            $(".certification_main").css('display', 'block');
-                            that.authenticationstatus();
+                            $(".enterpriseInformation").hide();
+                            $(".enterpriseBasicInfo").show();
                         }
                     };
                     xxwsWindowObj.xxwsAlert(defaultOptions);
@@ -298,9 +330,8 @@ var enterprisedObj = {
             success: function(data) {
                 if (data.success == 1) {
                     that.again();
-                    $(".dismissed-reason").css('display', 'none');
-                    $(".certification_main").css('display', 'none');
-                    $(".enterpriseInformation").css('display', 'block');
+                    $(".enterpriseBasicInfo").hide();
+                    $(".enterpriseInformation").show();
                     $("#enterpriseName").val(that.userBo.enterpriseName);
                 } else {
                     xxwsWindowObj.xxwsAlert("当前网络不稳定", function() {
@@ -310,7 +341,7 @@ var enterprisedObj = {
             }
         });
     },
-    viewEnterpriseInformation: function() { //查看企业信息
+    viewEnterpriseInformation: function() { //查看企业信息  暂留功能
         var that = this;
         $.ajax({
             type: "GET",
@@ -413,9 +444,7 @@ var enterprisedObj = {
         }
 
     },
-    searchIdea: function() {
-        //首先获取驳回意见；
-        $(".dismissed-reason").css('display', 'block');
+    searchIdea: function() { //获取驳回意见
         $.ajax({
             type: 'get',
             dataType: "json",
@@ -424,12 +453,14 @@ var enterprisedObj = {
             success: function(data) {
                 if (data.success == 1) {
                     if (data.rows[0].approveContent != "" && data.rows[0].approveContent != null) {
-                        $(".reason").text(data.rows[0].approveContent);
+                        $(".informResult span").text("审核未通过，未通过原因：【" + data.rows[0].approveContent + "】");
                     } else {
-                        $(".reason").text("无驳回意见");
+                        $(".informResult span").text("无驳回意见");
+                        $(".authentication").text("重新认证");
                     }
                 } else {
-                    $(".reason").text("无驳回意见");
+                    $(".authentication").text("重新认证");
+                    $(".informResult span").text("无驳回意见");
                 }
             }
         });

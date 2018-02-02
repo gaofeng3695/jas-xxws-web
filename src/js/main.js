@@ -241,7 +241,7 @@ function load() {
             '<ul id="mangement" class="collapse"><li><a href="#/organization"><i class="fa fa-fw "></i>组织机构管理</a></li>' +
             '<li><a href="#/managementuser"><i class="fa fa-fw "></i>人员管理</a></li>' +
             '<li><a href="#/customModule"><i class="fa fa-fw "></i>事件类型自定义</a></li>' +
-            '<li><a href="#/certification"><i class="fa fa-fw "></i>企业认证</a></li>' +
+            '<li><a href="#/certification"><i class="fa fa-fw "></i>企业信息</a></li>' +
             '</li><li><a href="#/removemanager"><i class="fa fa-fw "></i>系统管理员移交</a> </li></ul></li>';
         $(".side-nav").append(html2);
     }
