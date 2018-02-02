@@ -98,20 +98,30 @@
                                 <i class="fa fa-fw fa-caret-down"></i>
                             </a>
                             <ul v-bind:id="'security'+ index" class="collapse">
-                                <li v-for=" child in item.children">
+                                <template v-for=" child in item.children">
+                                    <li v-if="userBo.isSysadmin === 1">
+                                        <a v-bind:href='child.attributes.routeUrl'>
+                                            <i class="fa fa-fw"></i>{{child.text}}</a>
+                                    </li>
+                                    <li v-else>
+                                        <a v-bind:href='child.attributes.routeUrl'>
+                                            <i class="fa fa-fw"></i>{{child.text}}</a>
+                                    </li>
+                                </template>
+                                <!-- <li v-for=" child in item.children">
                                     <a v-bind:href='child.attributes.routeUrl'>
                                         <i class="fa fa-fw"></i>{{child.text}}</a>
-                                </li>
+                                </li> -->
                             </ul>
                         </li>
-                        <li v-else class="security">
+                        <!-- <li v-else class="security">
                             <a href="javascript:void(0)" data-toggle="collapse" data-target="#security">
                                 <i class="fa fa-fw" :class="item.attributes.icon"></i>{{item.text}}
                                 <i class="fa fa-fw fa-caret-down"></i>
                             </a>
                             <ul id="security" class="collapse">
                                 <template v-for=" (child, childIndex) in item.children">
-                                    <li v-if="userBo.isSysadmin===1">
+                                    <li v-if="userBo.isSysadmin === 1">
                                         <a v-bind:href='child.attributes.routeUrl'>
                                             <i class="fa fa-fw"></i>{{child.text}}</a>
                                     </li>
@@ -122,7 +132,7 @@
                                 </template>
 
                             </ul>
-                        </li>
+                        </li> -->
                     </template>
                 </ul>
             </div>

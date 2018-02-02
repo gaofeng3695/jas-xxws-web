@@ -23,21 +23,27 @@ var menuListListener = function () {
 }
 
 var loadRelativePage = function (route) {
-    let menuData = JSON.parse(lsObj.getLocalStorage("menuInfo"));
-    var pageUrl = routeRedirect(route, menuData);
-    if (pageUrl === '/src/html/menuRedirect.html') {
-        xxwsWindowObj.xxwsAlert("暂未开通此服务");
-    }
-    document.getElementById("page-wrapper").src = pageUrl;
-    var $domArr = $('.side-nav li a');
-    $domArr.removeClass('active');
-    for (var i = 0; i < $domArr.length; i++) {
-        var _this = $domArr[i];
-        if (_this.hash === location.hash) {
-            $(_this).addClass('active');
-            return;
+    let menuData;
+    setTimeout(() => {
+        menuData = JSON.parse(lsObj.getLocalStorage("menuInfo"));
+        var pageUrl = routeRedirect(route, menuData);
+        if (pageUrl === '/src/html/menuRedirect.html') {
+            xxwsWindowObj.xxwsAlert("暂未开通此服务");
         }
-    }
+        document.getElementById("page-wrapper").src = pageUrl;
+        var $domArr = $('.side-nav li a');
+        $domArr.removeClass('active');
+        for (var i = 0; i < $domArr.length; i++) {
+            var _this = $domArr[i];
+            if (_this.hash === location.hash) {
+                $(_this).addClass('active');
+                return;
+            }
+        }
+    }, 100)
+
+
+
 }
 
 var routeRedirect = function (route, arr) {

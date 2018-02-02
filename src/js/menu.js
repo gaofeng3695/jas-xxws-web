@@ -12,7 +12,6 @@ var vm = new Vue({
   },
   methods: {
     getMenuTree () {
-      console.log(JSON.parse(lsObj.getLocalStorage("userBo")))
       if (lsObj.getLocalStorage("menuInfo")&& JSON.parse(lsObj.getLocalStorage("menuInfo"))[0].text) {
         this.menuData = JSON.parse(lsObj.getLocalStorage("menuInfo"));
         return;
