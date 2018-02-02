@@ -350,7 +350,6 @@ var playerObj = {
         var that = this;
         //var s = s ? s : 'c2f52b27-a888-40b7-824d-3abc7c056281';
         that.close_player();
-
         $.ajax({
             type: "POST",
             url: "/cloudlink-inspection-trajectory/trajectory/getByRecordId",
@@ -360,7 +359,7 @@ var playerObj = {
             }),
             dataType: "json",
             success: function(data) {
-                //console.log(data);
+                console.log(data);
                 if (data.success != 1) {
                     xxwsWindowObj.xxwsAlert('网络连接出错！code:-1')
                     return;
@@ -453,6 +452,7 @@ var playerObj = {
         if (+flag === 1) {
             mapObj.$bdMap.addOverlay(endMarker);
         }
+
         mapObj.$bdMap.addOverlay(polyline);
     },
     drawEventOnLine: function(data) {
@@ -535,9 +535,9 @@ var playerObj = {
         var that = this;
         that.setTimer();
         mapObj.$bdMap.clearOverlays();
-        inspectObj.$inspectBtn.removeClass("active");
+        // inspectObj.$inspectBtn.removeClass("active");
         // eventObj.$eventBtn.removeClass("active");
-        eventObj.closeEvent();
+        // eventObj.closeEvent();
         $('.player_wrapper').css('display', 'none');
         if (Object.prototype.toString.call(fn) === '[object Function]') {
             fn();
@@ -556,7 +556,7 @@ var playerObj = {
     }
 };
 
-var searchObj = {
+var searchMapObj = {
     $ul: $('.location ul'),
     $input: $('#location_search'),
     init: function() {
@@ -621,6 +621,6 @@ var searchObj = {
 
     }
 };
-$(function() {
-    searchObj.init();
-});
+// $(function() {
+//     searchObj.init();
+// });

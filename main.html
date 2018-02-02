@@ -43,7 +43,10 @@
                             </dt>
                             <dd>
                                 <p class="userName">----</p>
-                                <p><span class="userEnterprise">----</span><img class="authentication" src="/src/images/main/authenticationNo.png" alt=""></p>
+                                <p>
+                                    <span class="userEnterprise">----</span>
+                                    <img class="authentication" src="/src/images/main/authenticationNo.png" alt="">
+                                </p>
                             </dd>
                         </dl>
                         <!--<img class="person-img" src="/src/images/main/photo.png" alt="">
@@ -54,10 +57,12 @@
                             <a href="#/personal">个人资料</a>
                         </li>
                         <li menuid="updatepass">
-                            <a href="#/updatepass">修改密码</span></a>
+                            <a href="#/updatepass">修改密码</span>
+                            </a>
                         </li>
                         <li menuid="setLogin">
-                            <a href="#/setLogin">登录设置</span></a>
+                            <a href="#/setLogin">登录设置</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
@@ -80,48 +85,55 @@
                 </li>
             </ul>
             <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav side-nav">
-                    <li class="" menuid="index">
-                        <a href="#/index"><i class="fa fa-fw fa-home"></i> 首页</a>
-                    </li>
-                    <li>
-                        <a href="#/map"><i class="fa fa-fw fa-map-marker"></i> 一张图</a>
-                    </li>
-                    <li menuid="insrecord">
-                        <a href="#/track"><i class="fa fa-fw icon-c-inspection"></i> 巡线记录</a>
-                    </li>
+                <ul class="nav navbar-nav side-nav" id="menuCustom">
+                    <template v-for='(item, index) in menuData'>
+                        <li v-if="!item.children || (item.children && item.children.length===0)">
+                            <a v-bind:href='item.attributes.routeUrl'>
+                                <i class="fa fa-fw" :class="item.attributes.icon"></i> {{item.text}}</a>
+                            </a>
+                        </li>
+                        <li v-else-if="userBo.isSysadmin === 1" class="security">
+                            <a href="javascript:void(0)" data-toggle="collapse" v-bind:data-target="'#security'+ index">
+                                <i class="fa fa-fw" :class="item.attributes.icon"></i>{{item.text}}
+                                <i class="fa fa-fw fa-caret-down"></i>
+                            </a>
+                            <ul v-bind:id="'security'+ index" class="collapse">
+                                <template v-for=" child in item.children">
+                                    <li v-if="userBo.isSysadmin === 1">
+                                        <a v-bind:href='child.attributes.routeUrl'>
+                                            <i class="fa fa-fw"></i>{{child.text}}</a>
+                                    </li>
+                                    <li v-else>
+                                        <a v-bind:href='child.attributes.routeUrl'>
+                                            <i class="fa fa-fw"></i>{{child.text}}</a>
+                                    </li>
+                                </template>
+                                <!-- <li v-for=" child in item.children">
+                                    <a v-bind:href='child.attributes.routeUrl'>
+                                        <i class="fa fa-fw"></i>{{child.text}}</a>
+                                </li> -->
+                            </ul>
+                        </li>
+                        <!-- <li v-else class="security">
+                            <a href="javascript:void(0)" data-toggle="collapse" data-target="#security">
+                                <i class="fa fa-fw" :class="item.attributes.icon"></i>{{item.text}}
+                                <i class="fa fa-fw fa-caret-down"></i>
+                            </a>
+                            <ul id="security" class="collapse">
+                                <template v-for=" (child, childIndex) in item.children">
+                                    <li v-if="userBo.isSysadmin === 1">
+                                        <a v-bind:href='child.attributes.routeUrl'>
+                                            <i class="fa fa-fw"></i>{{child.text}}</a>
+                                    </li>
+                                    <li v-else>
+                                        <a v-bind:href='child.attributes.routeUrl'>
+                                            <i class="fa fa-fw"></i>{{child.text}}</a>
+                                    </li>
+                                </template>
 
-                    <li menuid="event">
-                        <a href="#/event"><i class="fa fa-fw fa-list-ul"></i> 事件管理</a>
-                    </li>
-                    <li menuid="task">
-                        <a href="#/task"><i class="fa fa-fw fa-file-text-o"></i> 任务管理</a>
-                    </li>
-                    <li menuid="maintenance">
-                        <a href="#/maintenance"><i class="fa fa-fw fa-wrench"></i> 维修维护</a>
-                    </li>
-                    <li class="security"> <a href="javascript:void(0)" data-toggle="collapse" data-target="#facilities"><i class="fa fa-fw icon-c-pipe-facility"></i> 管网设施<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="facilities" class="collapse">
-                            <li><a href="#/pipeline"><i class="fa fa-fw"></i>管网地图</a></li>
-                            <li><a href="#/facilityList"><i class="fa fa-fw "></i>设施台账</a> </li>
-                            <li><a href="#/facilityInspect"><i class="fa fa-fw "></i>设施检查</a></li>
-                        </ul>
-                    </li>
-                    <li class="security"> <a href="javascript:void(0)" data-toggle="collapse" data-target="#security"><i class="fa fa-fw icon-c-enterhome"></i> 入户安检<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="security" class="collapse">
-                            <li><a href="#/securityPlan"><i class="fa fa-fw "></i>计划管理</a></li>
-                            <li><a href="#/securityRecord"><i class="fa fa-fw "></i>入户安检记录</a></li>
-                            <li><a href="#/userArea"><i class="fa fa-fw "></i>片区管理</a></li>
-                        </ul>
-                    </li>
-
-                    <!--<li class="userArchives"> <a href="javascript:void(0)" data-toggle="collapse" data-target="#archives"><i class="fa fa-fw fa-address-card-o"></i> 用户档案<i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="archives" class="collapse">
-                            <li><a href="#/userArea"><i class="fa fa-fw "></i>片区管理</a></li>
-                        </ul>
-                    </li>-->
-
-
+                            </ul>
+                        </li> -->
+                    </template>
                 </ul>
             </div>
         </nav>
@@ -130,11 +142,14 @@
         <!--暂时采用iframe进行数据加载-->
         <iframe id="page-wrapper" frameborder=0 src=""></iframe>
     </div>
+    <script type="text/javascript" src="/lib/js/vue.js"></script>
     <script src="/lib/js/jquery-1.12.4.min.js"></script>
     <script src="/lib/js/director.min.js"></script>
     <script src="/lib/js/bootstrap.min.js"></script>
+    <script src="/src/js/common/bootstrap.modal.alert.js"></script>
     <script src="src/js/common/html5-storage.js"></script>
-    <script src="src/js/common/tjSdk.min.js"></script>
+    <script src="src/js/common/zhuge.js"></script>
+    <script src="src/js/menu.js"></script>
     <script src="src/js/main.js"></script>
 </body>
 
