@@ -4,6 +4,7 @@ $(document).ready(function () {
     initPersonal(); //首次登录进来，进行初始化个人的基本信息
     // load();
     routerObj.init()
+    getMenuData();
 });
 
 var menuListListener = function () {
@@ -22,14 +23,30 @@ var menuListListener = function () {
     });
 }
 
+var getMenuData = function () {
+    $.ajax({
+        type: "get",
+        url: "/cloudlink-core-framework/menu/getTree?token=" + lsObj.getLocalStorage("token"),
+        contentType: "application/json",
+        data: {
+            "clientType": 'web',
+        },
+        dataType: "json",
+        success: function (res) {
+            if (res && res.success === 1) {
+                var menuData = res.rows[0];
+                lsObj.setLocalStorage("menuInfo", JSON.stringify(menuData));
+            } else {
+                xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
+            }
+        }
+    });
+}
 var loadRelativePage = function (route) {
     let menuData;
     setTimeout(() => {
         menuData = JSON.parse(lsObj.getLocalStorage("menuInfo"));
-        var pageUrl = routeRedirect(route, menuData);
-        if (pageUrl === '/src/html/menuRedirect.html') {
-            xxwsWindowObj.xxwsAlert("暂未开通此服务");
-        }
+        var pageUrl = routeRedirect(route, menuData) || '';
         document.getElementById("page-wrapper").src = pageUrl;
         var $domArr = $('.side-nav li a');
         $domArr.removeClass('active');
@@ -41,8 +58,6 @@ var loadRelativePage = function (route) {
             }
         }
     }, 200)
-
-
 
 }
 
@@ -273,6 +288,12 @@ var routerObj = {
             '/pipeline': function () {
                 // loadRelativePage("/src/html/pipeline_map.html");
                 loadRelativePage("#/pipeline");
+
+            },
+            '/': function () {
+                return;
+                // loadRelativePage("/src/html/pipeline_map.html");
+                // loadRelativePage();
 
             },
             // 匹配任意字符
