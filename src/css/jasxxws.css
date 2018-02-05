@@ -188,6 +188,10 @@ ul.alert-dropdown {
         top: 0;
         left: 0;
     }*/
+    .side-nav li a.is-lock{
+        color: #5f7698;
+        background-color: transparent !important;
+    }
 }
 
 .side-nav>li>ul {

@@ -14,6 +14,7 @@ var vm = new Vue({
     getMenuTree () {
       if (lsObj.getLocalStorage("menuInfo")&& JSON.parse(lsObj.getLocalStorage("menuInfo"))[0].text) {
         this.menuData = JSON.parse(lsObj.getLocalStorage("menuInfo"));
+        console.log(this.menuData);
         return;
       }
       let _that = this;
