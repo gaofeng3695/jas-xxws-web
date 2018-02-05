@@ -276,9 +276,9 @@ var usermanager = {
             }
         });
         $(".invite").click(function() {
-            // if (that.$invitation == true) {
-            that.inviteUser("invite"); //用于表示点击邀请
-            // }
+            that.peopleLimit(function() {
+                that.inviteUser("invite"); //用于表示点击邀请
+            });
         });
         $(".againinvite").click(function() {
             that.peopleLimit(function() {
