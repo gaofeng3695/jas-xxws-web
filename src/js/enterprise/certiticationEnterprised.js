@@ -138,7 +138,7 @@ var enterprisedObj = {
                     } else {
                         $(".enterpriseBasicInfo .payStatus").text("收费");
                     }
-                    $(".enterpriseBasicInfo .enterpriseCreateTime").text(data.rows[0].enterpriseCreateTime);
+                    $(".enterpriseBasicInfo .enterpriseCreateTime").text(data.rows[0].enterpriseRegisterTime);
                     $(".enterpriseBasicInfo .expireTime").text(data.rows[0].expireTime);
                     if (data.rows[0].authenticateStatus == 0) { //未认证
                         $(".resultImg").css({ "background": "url(/src/images/common/noalready.png) no-repeat" });
