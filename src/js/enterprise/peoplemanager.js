@@ -792,7 +792,7 @@ var usermanager = {
                     if (data.rows[0].breachLimit == false) {
                         callback();
                     } else {
-                        xxwsWindowObj.xxwsAlert("企业人数已突破上限");
+                        xxwsWindowObj.xxwsAlert("企业人数已达到上限");
                         that.$invitation = false;
                     }
                 } else {
