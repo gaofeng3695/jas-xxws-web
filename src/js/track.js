@@ -117,16 +117,16 @@ var trackObj = {
         /* 导出数据 */
         $('#export_all').click(function() {
             that.requestOutput(0);
-            if (tjSwitch == 1) {
-                tjSdk.track('导出巡检记录', {
+            if (zhugeSwitch == 1) {
+                zhuge.track('导出巡检记录', {
                     'action': '导出全部'
                 });
             }
         });
         $('#export_choice').click(function() {
             that.requestOutput(2);
-            if (tjSwitch == 1) {
-                tjSdk.track('导出巡检记录', {
+            if (zhugeSwitch == 1) {
+                zhuge.track('导出巡检记录', {
                     'action': '导出已选'
                 });
             }
@@ -134,8 +134,8 @@ var trackObj = {
         /* 模态框导出数据 */
         $('#modal_output').click(function() {
             that.requestOutput(1, that.sCurrentTrackId);
-            if (tjSwitch == 1) {
-                tjSdk.track('导出巡检记录', {
+            if (zhugeSwitch == 1) {
+                zhuge.track('导出巡检记录', {
                     'action': '模态框导出'
                 });
             }
@@ -544,6 +544,10 @@ var trackObj = {
                 ////console.log(row.objectId)
                 that.requestOutput(1, row.objectId);
                 return false;
+            },
+            'click .seeTrack': function(e, value, row, index) {
+                that.requestTrack(row);
+                return false;
             }
         }
     },
@@ -554,6 +558,9 @@ var trackObj = {
             '</a>',
             '<a class="out" href="javascript:void(0)" title="导出">',
             '<i style="margin: 0 5px;"></i>',
+            '</a>',
+            '<a class="seeTrack" href="javascript:void(0)" title="查看轨迹">',
+            '<i style="margin: 0 5px;" ></i>',
             '</a>',
         ].join('');
     },
@@ -629,6 +636,10 @@ var trackObj = {
         if (that.zTree) {
             that.zTree.checkAllNodes(false);
         }
+    },
+    requestTrack: function(row) {
+        $('#track').modal({});
+        playerObj.play(row.objectId, row.flag);
     }
 };
 trackObj.init();

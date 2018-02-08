@@ -10,6 +10,7 @@
     <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
     <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
+    <link href="/src/css/map.css" rel="stylesheet">
     <link href="/src/css/common/search_table.css" rel="stylesheet">
     <link href="/src/css/track.css" rel="stylesheet">
 </head>
@@ -193,16 +194,85 @@
             </div>
         </div>
     </div>
+    <!--查看历史轨迹-->
+    <div id="track" class="modal big_modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" id="gridSystemModalLabel">轨迹查看</h3>
+                </div>
+                <div class="modal-body">
+                    <!-- 播放器 开始 -->
+                    <div class="player_wrapper" style="display: none">
+                        <div class="btn_close">x</div>
+                        <div class="title">
+                            <div class="date">
+                                -
+                            </div>
+                            <span class="time">
+                    <span class="now">-</span>
+                            <span> / </span>
+                            <span class="end">-</span>
+                            </span>
+                            <div class="speed">
+                                <span>播放速度：</span>
+                                <span class="item ">x&nbsp;1</span>
+                                <span class="item active">x&nbsp;30</span>
+                                <span class="item ">x&nbsp;60</span>
+                                <span class="item ">x&nbsp;120</span>
+                                <span class="item ">x&nbsp;240</span>
+                            </div>
+                        </div>
+                        <div class="time_line">
+                            <div class="btn_play active"></div>
+                            <div class="border"></div>
+                            <div class="line_wrapper">
+                                <div class="line_bar">
+                                    <div class="line_bar_active"></div>
+                                    <div class="stick_bar">
+                                        <!--<div class="stick"></div>-->
+                                    </div>
+                                    <div class="time_mark">
+                                        <div class="time">-</div>
+                                    </div>
+                                    <div class="event_line">
+
+                                    </div>
+                                    <div class="time_now">-</div>
+                                    <div class="mask_bar"></div>
+                                    <div class="move_bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 播放器 结束 -->
+                    <div class="sub_wrapper " id="container">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="/lib/js/jquery-1.12.4.min.js"></script>
     <script src="/lib/js/jquery.ztree.all.min.js"></script>
     <script src="/lib/js/bootstrap.min.js"></script>
     <script src="/lib/js/bootstrap-table.min.js"></script>
     <script src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
     <script src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+    <script src="/src/js/common/mapObj.js"></script>
     <script src="/src/js/common/common.js"></script>
     <script src="/src/js/common/bootstrap.modal.alert.js"></script>
     <script src="/src/js/common/html5-storage.js"></script>
-    <script src="/src/js/common/tjSdk.min.js"></script>
+    <script src="/src/js/common/zhuge.js"></script>
+    <script src="/src/js/map.js"></script>
     <script src="/src/js/track.js"></script>
 </body>
 
