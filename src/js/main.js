@@ -1,10 +1,8 @@
 $(document).ready(function () {
-
     menuListListener();
     initPersonal(); //首次登录进来，进行初始化个人的基本信息
     // load();
     routerObj.init()
-    getMenuData();
 });
 
 var menuListListener = function () {
@@ -22,32 +20,41 @@ var menuListListener = function () {
         }
     });
 }
-
-var getMenuData = function () {
+var loadRelativePage = function (route) {
     $.ajax({
-        type: "get",
-        url: "/cloudlink-core-framework/menu/getTree?token=" + lsObj.getLocalStorage("token"),
+        type: "post",
+        // url: "/cloudlink-core-framework/menu/getTree?token=" + lsObj.getLocalStorage("token"),
+        url: "/cloudlink-core-framework/commonData/payMenu/getTreeData?token=" + lsObj.getLocalStorage("token"),
         contentType: "application/json",
-        data: {
-            "clientType": 'web',
-        },
+        data: JSON.stringify({ "clientType": 'web' }),
         dataType: "json",
         success: function (res) {
             if (res && res.success === 1) {
-                var menuData = res.rows[0];
-                lsObj.setLocalStorage("menuInfo", JSON.stringify(menuData));
+                var menuData = res.rows;
+                loadRelativeIframe(route, menuData);
             } else {
                 xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
             }
         }
     });
 }
-var loadRelativePage = function (route) {
-    let menuData;
-    setTimeout(() => {
-        menuData = JSON.parse(lsObj.getLocalStorage("menuInfo"));
-        var pageUrl = routeRedirect(route, menuData) || '';
-        document.getElementById("page-wrapper").src = pageUrl;
+var loadRelativeIframe = function (route, menuData) {
+    var pageUrl;
+    if (route.indexOf("#") === -1) {
+        // 用户的个人中心
+        pageUrl = route;
+    } else {
+        pageUrl = routeRedirect(route, menuData) || '';
+    }
+    document.getElementById("page-wrapper").src = pageUrl;
+    if (pageUrl == '/src/html/menuRedirect.html' || '') {
+        $("#confirmModal").modal('show');
+        $('#confirmModal').on('hide.bs.modal', function () {
+            var preventUrl = sessionStorage.getItem('routeUrl');
+            var href = location.href;
+            window.location.href = href.replace(/#[\s\S]+/, "#/" + preventUrl);
+        })
+    } else {
         var $domArr = $('.side-nav li a');
         $domArr.removeClass('active');
         for (var i = 0; i < $domArr.length; i++) {
@@ -57,18 +64,20 @@ var loadRelativePage = function (route) {
                 return;
             }
         }
-    }, 200)
+    }
+
 
 }
 
 var routeRedirect = function (route, arr) {
-    let pageUrl;
-    for (let item of arr) {
+    var pageUrl;
+    for (var i = 0; i < arr.length; i++) {
+        var item = arr[i];
         if (pageUrl) return pageUrl;
         if (item.children.length === 0) {
-            if (route === item.attributes.routeUrl) {
-                if (item.attributes.pageUrl && item.attributes.pageUrl.length > 0) {
-                    return item.attributes.pageUrl;
+            if (route === item.routeUrl) {
+                if (item.pageUrl && item.pageUrl.length > 0) {
+                    return item.pageUrl;
                 } else {
                     return '/src/html/menuRedirect.html';
                 }
@@ -103,197 +112,331 @@ var routerObj = {
     init: function () {
         var that = this;
         that.router = Router({
-            '/index': function () {
-                // loadRelativePage("/src/html/index.html");
-                loadRelativePage('#/index');
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击首页');
+            '/index': {
+                on: function () {
+                    // loadRelativePage("/src/html/index.html");
+                    loadRelativePage('#/index');
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击首页');
+                    }
+                },
+                after: function () {
+                    sessionRoute('index');
                 }
             },
-            '/event': function () {
-                // loadRelativePage("/src/html/event.html");
-                loadRelativePage("#/event");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击事件管理');
+            '/event': {
+                on: function () {
+                    // loadRelativePage("/src/html/event.html");
+                    loadRelativePage("#/event");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击事件管理');
+                    }
+                },
+                after: function () {
+                    sessionRoute('event');
                 }
             },
-            '/task': function () {
-                // loadRelativePage("/src/html/task.html");
-                loadRelativePage("#/task");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击任务管理');
+            '/task': {
+                on: function () {
+                    // loadRelativePage("/src/html/task.html");
+                    loadRelativePage("#/task");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击任务管理');
+                    }
+                },
+                after: function () {
+                    sessionRoute('task');
                 }
             },
-            '/maintenance': function () {
-                // loadRelativePage("/src/html/maintenance.html");
-                loadRelativePage("#/maintenance");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击维修维护');
+            '/maintenance': {
+                on: function () {
+                    // loadRelativePage("/src/html/maintenance.html");
+                    loadRelativePage("#/maintenance");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击维修维护');
+                    }
+                },
+                after: function () {
+                    sessionRoute('maintenance');
                 }
             },
-            '/track': function () {
-                // loadRelativePage("/src/html/track.html");
-                loadRelativePage("#/track");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击巡线记录');
+            '/track': {
+                on: function () {
+                    // loadRelativePage("/src/html/track.html");
+                    loadRelativePage('#/track');
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击巡线记录');
+                    }
+                },
+                after: function () {
+                    sessionRoute('track');
                 }
             },
-            '/securityPlan': function () {
-                // loadRelativePage("/src/html/securityPlan.html");
-                loadRelativePage("#/securityPlan");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('计划管理');
+            '/securityPlan': {
+                on: function () {
+                    // loadRelativePage("/src/html/securityPlan.html");
+                    loadRelativePage("#/securityPlan");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('计划管理');
+                    }
+                },
+                after: function () {
+                    sessionRoute('securityPlan');
                 }
             },
-            '/securityRecord': function () {
-                // loadRelativePage("/src/html/securityRecord.html");
-                loadRelativePage("#/securityRecord");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('入户安检记录');
+            '/securityRecord': {
+                on: function () {
+                    // loadRelativePage("/src/html/securityRecord.html");
+                    loadRelativePage("#/securityRecord");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('入户安检记录');
+                    }
+                },
+                after: function () {
+                    sessionRoute('securityRecord');
                 }
             },
-            '/userList': function () {
-                // loadRelativePage("/src/html/userList.html");
-                loadRelativePage("#/userList");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('用户台账');
+            '/userList': {
+                on: function () {
+                    // loadRelativePage("/src/html/userList.html");
+                    loadRelativePage("#/userList");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('用户台账');
+                    }
+                },
+                after: function () {
+                    sessionRoute('userList');
                 }
             },
-            '/userArea': function () {
-                // loadRelativePage("/src/html/userArea.html");
-                loadRelativePage("#/userArea");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('片区管理');
+            '/userArea': {
+                on: function () {
+                    // loadRelativePage("/src/html/userArea.html");
+                    loadRelativePage("#/userArea");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('片区管理');
+                    }
+                },
+                after: function () {
+                    sessionRoute('userArea');
                 }
             },
-            '/facilityList': function () {
-                // loadRelativePage("/src/html/facilityList.html");
-                loadRelativePage("#/facilityList");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('设施台账');
+            '/facilityList': {
+                on: function () {
+                    // loadRelativePage("/src/html/facilityList.html");
+                    loadRelativePage("#/facilityList");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('设施台账');
+                    }
+                },
+                after: function () {
+                    sessionRoute('facilityList');
                 }
             },
-            '/facilityInspect': function () {
-                // loadRelativePage("/src/html/facilityInspect.html");
-                loadRelativePage("#/facilityInspect");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('设施检查');
+            '/facilityInspect': {
+                on: function () {
+                    // loadRelativePage("/src/html/facilityInspect.html");
+                    loadRelativePage("#/facilityInspect");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('设施检查');
+                    }
+                },
+                after: function () {
+                    sessionRoute('facilityInspect');
                 }
             },
-            '/map': function () {
-                // loadRelativePage("/src/html/map.html");
-                loadRelativePage("#/map");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击一张图');
+            '/map': {
+                on: function () {
+                    // loadRelativePage("/src/html/map.html");
+                    loadRelativePage("#/map");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击一张图');
+                    }
+                },
+                after: function () {
+                    sessionRoute('map');
                 }
             },
-            '/equipment': function () {
-                // loadRelativePage("/src/html/none.html");
-                loadRelativePage("#/equipment");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击设备管理');
+            '/equipment': {
+                on: function () {
+                    // loadRelativePage("/src/html/none.html");
+                    loadRelativePage("#/equipment");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击设备管理');
+                    }
+                },
+                after: function () {
+                    sessionRoute('equipment');
                 }
             },
-            '/statistics': function () {
-                // loadRelativePage("/src/html/none.html");
-                loadRelativePage("#/statistics");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击统计分析');
+            '/statistics': {
+                on: function () {
+                    // loadRelativePage("/src/html/none.html");
+                    loadRelativePage("#/statistics");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击统计分析');
+                    }
+                },
+                after: function () {
+                    sessionRoute('statistics');
                 }
             },
-            '/organization': function () {
-                // loadRelativePage("/src/html/management.html");
-                loadRelativePage("#/organization");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击组织结构管理');
+            '/organization': {
+                on: function () {
+                    // loadRelativePage("/src/html/management.html");
+                    loadRelativePage("#/organization");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击组织结构管理');
+                    }
+                },
+                after: function () {
+                    sessionRoute('organization');
                 }
             },
-            '/removemanager': function () {
-                // loadRelativePage("/src/html/removemanager.html");
-                loadRelativePage("#/removemanager");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击系统管理员移交');
+            '/removemanager': {
+                on: function () {
+                    // loadRelativePage("/src/html/removemanager.html");
+                    loadRelativePage("#/removemanager");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击系统管理员移交');
+                    }
+                },
+                after: function () {
+                    sessionRoute('removemanager');
                 }
             },
-            '/certification': function () {
-                // loadRelativePage("/src/html/certificationEnterprised.html");
-                loadRelativePage("#/certification");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击企业认证');
+            '/certification': {
+                on: function () {
+                    // loadRelativePage("/src/html/certificationEnterprised.html");
+                    loadRelativePage("#/certification");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击企业认证');
+                    }
+                },
+                after: function () {
+                    sessionRoute('certification');
                 }
             },
-            '/managementuser': function () {
-                // loadRelativePage("/src/html/peoplemanager.html");
-                loadRelativePage("#/managementuser");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击人员管理');
+            '/managementuser': {
+                on: function () {
+                    // loadRelativePage("/src/html/peoplemanager.html");
+                    loadRelativePage("#/managementuser");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击人员管理');
+                    }
+                },
+                after: function () {
+                    sessionRoute('managementuser');
                 }
             },
-            '/news': function () {
-                // loadRelativePage("/src/html/none.html");
-                loadRelativePage("#/news");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击消息中心');
+            '/news': {
+                on: function () {
+                    loadRelativePage("/src/html/none.html");
+                    // loadRelativePage("#/news");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击消息中心');
+                    }
+                },
+                after: function () {
+                    sessionRoute('news');
                 }
             },
-            '/personal': function () {
-                // loadRelativePage("/src/html/personal.html");
-                loadRelativePage("#/personal");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击个人资料');
+            '/personal': {
+                on: function () {
+                    loadRelativePage("/src/html/personal.html");
+                    // loadRelativePage("#/personal");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击个人资料');
+                    }
+                },
+                after: function () {
+                    sessionRoute('personal');
                 }
             },
-            '/updatepass': function () {
-                // loadRelativePage("/src/html/forgetPassword.html");
-                loadRelativePage("#/updatepass");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击修改密码');
+            '/updatepass':{
+                on: function () {
+                    loadRelativePage("/src/html/forgetPassword.html");
+                    // loadRelativePage("#/updatepass");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击修改密码');
+                    }
+                },
+                after: function () {
+                    sessionRoute('updatepass');
+                }
+            }, 
+            '/setLogin': {
+                on:  function () {
+                    loadRelativePage("/src/html/setLogin.html");
+                    // loadRelativePage("#/setLogin");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击登陆设置');
+                    }
+                },
+                after: function () {
+                    sessionRoute('setLogin');
                 }
             },
-            '/setLogin': function () {
-                // loadRelativePage("/src/html/setLogin.html");
-                loadRelativePage("#/setLogin");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击登陆设置');
+            '/help': {
+                on:  function () {
+                    loadRelativePage("/src/html/help.html");
+                    // loadRelativePage("#/help");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击帮助中心');
+                    }
+                },
+                after: function () {
+                    sessionRoute('help');
                 }
             },
-            '/help': function () {
-                // loadRelativePage("/src/html/help.html");
-                loadRelativePage("#/help");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击帮助中心');
+            '/securityPlan': {
+                on: function () {
+                    // loadRelativePage("/src/html/securityPlan.html");
+                    loadRelativePage("#/securityPlan");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击计划管理');
+                    }
+                },
+                after: function () {
+                    sessionRoute('securityPlan');
                 }
             },
-            '/securityPlan': function () {
-                // loadRelativePage("/src/html/securityPlan.html");
-                loadRelativePage("#/securityPlan");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击计划管理');
+            '/securityRecord': {
+                on: function () {
+                    // loadRelativePage("/src/html/securityRecord.html");
+                    loadRelativePage("#/securityRecord");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击入户安检记录');
+                    }
+                },
+                after: function () {
+                    sessionRoute('securityRecord');
                 }
             },
-            '/securityRecord': function () {
-                // loadRelativePage("/src/html/securityRecord.html");
-                loadRelativePage("#/securityRecord");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击入户安检记录');
+            '/customModule': {
+                on: function () {
+                    // loadRelativePage("/src/html/customTemplates.html");
+                    loadRelativePage("#/customModule");
+                    if (zhugeSwitch == 1) {
+                        zhuge.track('点击事件类型自定义');
+                    }
+                },
+                after: function () {
+                    sessionRoute('customModule');
                 }
             },
-            '/customModule': function () {
-                // loadRelativePage("/src/html/customTemplates.html");
-                loadRelativePage("#/customModule");
-                if (zhugeSwitch == 1) {
-                    zhuge.track('点击事件类型自定义');
+            '/pipeline':{
+                on: function () {
+                    // loadRelativePage("/src/html/pipeline_map.html");
+                    loadRelativePage("#/pipeline");
+    
+                },
+                after: function () {
+                    sessionRoute('pipeline');
                 }
-            },
-            '/pipeline': function () {
-                // loadRelativePage("/src/html/pipeline_map.html");
-                loadRelativePage("#/pipeline");
-
-            },
+            }, 
             '/': function () {
                 return;
                 // loadRelativePage("/src/html/pipeline_map.html");
-                // loadRelativePage();
 
             },
             // 匹配任意字符
@@ -305,6 +448,10 @@ var routerObj = {
         that.router.init('/index');
     },
 };
+
+var sessionRoute = function (routeUrl) {
+    sessionStorage.setItem('routeUrl', routeUrl);
+}
 
 function load () {
     var userBo = JSON.parse(lsObj.getLocalStorage("userBo"));

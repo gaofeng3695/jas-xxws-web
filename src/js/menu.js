@@ -5,36 +5,41 @@ var vm = new Vue({
     userBo: JSON.parse(lsObj.getLocalStorage("userBo")),
   },
   created () {
-    // this.getMenuTree();
   },
   mounted () {
     this.getMenuTree();
   },
   methods: {
     getMenuTree () {
-      if (lsObj.getLocalStorage("menuInfo")&& JSON.parse(lsObj.getLocalStorage("menuInfo"))[0].text) {
-        this.menuData = JSON.parse(lsObj.getLocalStorage("menuInfo"));
-        console.log(this.menuData);
-        return;
-      }
-      let _that = this;
+      var _that = this;
       $.ajax({
-        type: "get",
-        url: "/cloudlink-core-framework/menu/getTree?token=" + lsObj.getLocalStorage('token'),
+        type: "post",
+        // url: "/cloudlink-core-framework/menu/getTree?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-core-framework/commonData/payMenu/getTreeData?token=" + lsObj.getLocalStorage("token"),
         contentType: "application/json",
-        data: {
-          "clientType": 'web',
-        },
+        data: JSON.stringify({ "clientType": 'web' }),
         dataType: "json",
         success: function (res) {
           if (res && res.success === 1) {
-            _that.menuData = res.rows[0];
-            lsObj.setLocalStorage("menuInfo", JSON.stringify(res.rows[0]));
+            _that.menuData = res.rows;
+            _that.addSysadmin(_that.menuData);
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
           }
         }
       });
+    },
+    addSysadmin (arr) {
+      for (var i = 0; i < arr.length; i++) {
+        var item = arr[i];
+        item.isSysadmin = 1;
+        if ( item.routeUrl == '#/userList' || item.menuName== '企业管理') {
+          item.isSysadmin = this.userBo.isSysadmin;
+        } 
+        if(item.children.length>0) {
+          this.addSysadmin(item.children)
+        }
+      }
     }
   }
 })
