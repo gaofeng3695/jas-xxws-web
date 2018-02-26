@@ -67,11 +67,6 @@ var enterprisedObj = {
                 if (that.verify()) {
                     that.$flag = false;
                     that.subBusinessmitImg();
-                    $(".enterpriseInformation").hide();
-                    $(".authentication").hide();
-                    $(".enterpriseBasicInfo").show();
-                    $(".informResult").show();
-                    $(".informResult span").text("认证审核已提交成功，正在审核中...");
                 }
             }
         });
@@ -138,8 +133,10 @@ var enterprisedObj = {
                     } else {
                         $(".enterpriseBasicInfo .payStatus").text("收费");
                     }
-                    $(".enterpriseBasicInfo .enterpriseCreateTime").text(data.rows[0].enterpriseCreateTime);
-                    $(".enterpriseBasicInfo .expireTime").text(data.rows[0].expireTime);
+                    $(".enterpriseBasicInfo .enterpriseCreateTime").text(data.rows[0].enterpriseRegisterTime);
+                    if (data.rows[0].expireTime != null) {
+                        $(".enterpriseBasicInfo .expireTime").text(data.rows[0].expireTime);
+                    }
                     if (data.rows[0].authenticateStatus == 0) { //未认证
                         $(".resultImg").css({ "background": "url(/src/images/common/noalready.png) no-repeat" });
                         $(".informResult").hide();
@@ -301,7 +298,10 @@ var enterprisedObj = {
                         name_confirm: '确定',
                         callBack: function() {
                             $(".enterpriseInformation").hide();
+                            $(".authentication").hide();
                             $(".enterpriseBasicInfo").show();
+                            $(".informResult").show();
+                            $(".informResult span").text("认证审核已提交成功，正在审核中...");
                         }
                     };
                     xxwsWindowObj.xxwsAlert(defaultOptions);
