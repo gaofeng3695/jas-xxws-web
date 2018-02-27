@@ -141,7 +141,13 @@
                                 <template v-for="child in item.children">
                                     <li v-if="child.isSysadmin === 1 ">
                                         <a v-bind:href='child.routeUrl || "#"' v-bind:class="{'is-lock': child.pageUrl ===''}">
-                                            <i class="fa fa-fw" :class="child.icon"></i>{{child.menuName}}</a>
+                                            <template v-if="child.icon && child.icon.length>0">
+                                                <i class="fa fa-fw" :class="child.pageUrl && child.pageUrl.length>0 ? child.icon : 'fa-lock'" ></i>{{child.menuName}}</a>
+                                            </template>
+                                            <template v-else>
+                                                <i class="fa fa-fw"></i>{{child.menuName}}</a>
+                                            </template>
+                                        </a>
                                     </li>
                                 </template>
                             </ul>
