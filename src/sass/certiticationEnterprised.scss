@@ -250,7 +250,7 @@
             .detailInfo {
                 .leftInfo {
                     display: inline-block;
-                    width: 100px;
+                    width: 120px;
                     line-height: 40px;
                     text-align: right;
                 }
@@ -274,6 +274,9 @@
                         top: -15px;
                         // background: red
                     }
+                }
+                .red{
+                    color: red;
                 }
             }
         }
