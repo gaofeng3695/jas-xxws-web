@@ -32,7 +32,7 @@ var vm = new Vue({
         }
       });
     },
-    addSysadmin (arr, parent) {
+    addSysadmin :function(arr, parent) {
       for (var i = 0; i < arr.length; i++) {
         var item = arr[i];
         if (parent) {
