@@ -639,12 +639,80 @@ var trackObj = {
     },
     requestTrack: function(row) {
         $('#track').modal({});
-        playerObj.play(row.objectId, row.flag);
+        setTimeout(function() {
+            playObj.play(row.objectId, row.flag);
+        }, 500);
     }
 };
 trackObj.init();
+var playObj = {
+        play: function(s, flag) {
+            var that = this;
+            mapObj.$bdMap.clearOverlays();
+            that.requestRoutePoint(s, flag);
+        },
+        requestRoutePoint: function(s, flag) {
+            var that = this;
+            $.ajax({
+                type: "POST",
+                url: "/cloudlink-inspection-trajectory/trajectory/getByRecordId",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    inspRecordId: s
+                }),
+                dataType: "json",
+                success: function(data) {
+                    console.log(data);
+                    if (data.success != 1) {
+                        xxwsWindowObj.xxwsAlert('网络连接出错！code:-1')
+                        return;
+                    }
+                    if (data.rows.length === 0) {
+                        xxwsWindowObj.xxwsAlert('当前巡检记录无轨迹点！')
+                        return;
+                    }
+                    that.aData = data.rows;
+                    that.drawRoute(that.aData, flag);
+                },
+                statusCode: {
+                    404: function() {
+                        xxwsWindowObj.xxwsAlert('网络连接出错！code:404');
+                    }
+                }
+            });
+        },
+        drawRoute: function(data, flag) {
+            var arr = data.map(function(item, index, arr) {
+                return new BMap.Point(item.bdLon, item.bdLat);
+            });
+            var level = mapObj.$bdMap.setViewport(arr, {
+                zoomFactor: -1
+            });
 
-//判断时间选择是否有值
+            var polyline = new BMap.Polyline(arr, {
+                strokeColor: "#59b6fc",
+                strokeWeight: 4,
+                strokeOpacity: 1,
+            });
+            var startMarker = new BMap.Marker(new BMap.Point(data[0].bdLon, data[0].bdLat), {
+                icon: new BMap.Icon("/src/images/map/icon_start.png", new BMap.Size(30, 42), { //小车图片
+                    anchor: new BMap.Size(15, 42), //图标的定位锚点
+                })
+            });
+            var endMarker = new BMap.Marker(new BMap.Point(data[data.length - 1].bdLon, data[data.length - 1].bdLat), {
+                icon: new BMap.Icon("/src/images/map/icon_end.png", new BMap.Size(30, 42), { //小车图片
+                    anchor: new BMap.Size(15, 42), //图标的定位锚点
+                })
+            });
+            mapObj.$bdMap.addOverlay(startMarker);
+            if (+flag === 1) {
+                mapObj.$bdMap.addOverlay(endMarker);
+            }
+
+            mapObj.$bdMap.addOverlay(polyline);
+        },
+    }
+    //判断时间选择是否有值
 function dateChangeForSearch() {
     var startDate = $("#datetimeStart").val();
     var endDate = $("#datetimeEnd").val();
