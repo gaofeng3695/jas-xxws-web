@@ -86,7 +86,10 @@
                             </dt>
                             <dd>
                                 <p class="userName">----</p>
-                                <p class="status"><span class="userEnterprise">----</span><img class="authentication" src="/src/images/common/noalready.png" alt=""></p>
+                                <p class="status">
+                                    <span class="userEnterprise">----</span>
+                                    <img class="authentication" src="/src/images/common/noalready.png" alt="">
+                                </p>
                             </dd>
                         </dl>
                         <!--<img class="person-img" src="/src/images/main/photo.png" alt="">
@@ -141,12 +144,14 @@
                                 <template v-for="child in item.children">
                                     <li v-if="child.isSysadmin === 1 ">
                                         <a v-bind:href='child.routeUrl || "#"' v-bind:class="{'is-lock': child.pageUrl ===''}">
-                                            <template v-if="child.icon && child.icon.length>0">
-                                                <i class="fa fa-fw" :class="child.pageUrl && child.pageUrl.length>0 ? child.icon : 'fa-lock'" ></i>{{child.menuName}}</a>
-                                            </template>
-                                            <template v-else>
+                                            <!-- <template v-if="child.icon && child.icon.length>0"> -->
+                                            <i class="fa fa-fw" :class="child.icon && child.icon.length>0 ? child.pageUrl && child.pageUrl.length>0 ? child.icon : 'fa-lock' :''"></i>{{child.menuName}}</a>
+                                            <!-- </template> -->
+                                            <!-- <template v-else>
                                                 <i class="fa fa-fw"></i>{{child.menuName}}</a>
                                             </template>
+                                        </div> -->
+
                                         </a>
                                     </li>
                                 </template>
