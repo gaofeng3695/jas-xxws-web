@@ -134,7 +134,7 @@
                         </li>
                         <li v-else-if="item.isSysadmin === 1 && (item.children && item.children.length>0)" lass="security">
                             <a href="javascript:void(0)" data-toggle="collapse" v-bind:data-target="'#security'+ index">
-                                <i class="fa fa-fw" :class="item.icon"></i>{{item.menuName}}
+                                <i class="fa fa-fw" :class="item.lockIcon ? 'fa-lock': item.icon"></i>{{item.menuName}}
                                 <i class="fa fa-fw fa-caret-down"></i>
                             </a>
                             <ul v-bind:id="'security'+ index" class="collapse">
