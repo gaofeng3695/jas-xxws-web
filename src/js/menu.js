@@ -4,13 +4,13 @@ var vm = new Vue({
     menuData: [],
     userBo: JSON.parse(lsObj.getLocalStorage("userBo")),
   },
-  created () {
+  created : function() {
   },
-  mounted () {
+  mounted : function() {
     this.getMenuTree();
   },
   methods: {
-    getMenuTree () {
+    getMenuTree: function () {
       var _that = this;
       $.ajax({
         type: "post",
@@ -29,7 +29,7 @@ var vm = new Vue({
         }
       });
     },
-    addSysadmin (arr) {
+    addSysadmin: function (arr){
       for (var i = 0; i < arr.length; i++) {
         var item = arr[i];
         item.isSysadmin = 1;
@@ -40,6 +40,6 @@ var vm = new Vue({
           this.addSysadmin(item.children)
         }
       }
-    }
+    },
   }
 })
