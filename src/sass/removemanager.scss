@@ -58,6 +58,9 @@
                         border: 1px solid transparent;
                         border-radius: 4px;
                         padding: 0px 5px;
+                        // 禁用的按钮 颜色设置透明
+                        color: transparent;
+                        background-color: transparent;
                     }
                     
                     .fixed-table-body {
