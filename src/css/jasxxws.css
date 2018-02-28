@@ -192,6 +192,9 @@ ul.alert-dropdown {
         color: #5f7698;
         background-color: transparent !important;
     }
+    .side-nav li a.is-lock:hover{
+        color: #5f7698;
+    }
 }
 
 .side-nav>li>ul {
@@ -204,12 +207,24 @@ ul.alert-dropdown {
     text-decoration: none;
     color: #999;
 }
-
 .side-nav>li>ul>li>a:hover {
     color: #fff;
 }
-
-
+/* 菜单禁用时的背景色设置 */
+.side-nav>li>ul>li>a.is-lock{
+    color: #5f7698;
+    background-color: transparent !important;
+}
+.side-nav>li>ul>li>a.is-lock:hover{
+    color: #5f7698;
+}
+/* 平板宽度时的 nav-bar的禁用颜色设置 */
+.navbar-inverse .navbar-nav > li > a.is-lock{
+    color: #5f7698;
+}
+.navbar-inverse .navbar-nav > li > a.is-lock:hover{
+    color: #5f7698;
+}
 /* Flot Chart Containers */
 
 .flot-chart {

@@ -5,10 +5,10 @@ var vm = new Vue({
     userBo: JSON.parse(lsObj.getLocalStorage("userBo")),
     initRouteName: ''
   },
-  created: function () {},
+  created: function () { },
   mounted: function () {
     // this.$nextTick(function () {
-      this.getMenuTree();
+    this.getMenuTree();
     // })
   },
   methods: {
@@ -25,18 +25,24 @@ var vm = new Vue({
           if (res && res.success === 1) {
             _that.menuData = res.rows;
             _that.addSysadmin(_that.menuData, false);
-            setTimeout(function(){routerObj.init()},100);
+            setTimeout(function () { routerObj.init() }, 100);
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
           }
         }
       });
     },
-    addSysadmin :function(arr, parent) {
+    addSysadmin: function (arr, parent) {
       for (var i = 0; i < arr.length; i++) {
         var item = arr[i];
         if (parent) {
-          parent.lockIcon = item.pageUrl && item.pageUrl.length > 0 ? false : true;
+          var lockIcon = item.pageUrl && item.pageUrl.length > 0 ? '0' : '1';
+          str = str + lockIcon;
+          if (str.indexOf('0') == -1) {
+            parent.lockIcon = true;
+          } else {
+            parent.lockIcon = false;
+          }
         } else {
           item.lockIcon = false;
         }
@@ -45,6 +51,7 @@ var vm = new Vue({
           item.isSysadmin = this.userBo.isSysadmin;
         }
         if (item.children.length > 0) {
+          var str = '';
           this.addSysadmin(item.children, item)
         }
       }
@@ -103,9 +110,9 @@ var vm = new Vue({
       }
       return pageUrl;
     },
-    sessionRoute: function (routeUrl) {
-      sessionStorage.setItem('routeUrl', routeUrl);
-    }
+    // sessionRoute: function (routeUrl) {
+    //   sessionStorage.setItem('routeUrl', routeUrl);
+    // }
   },
 
 })
@@ -126,7 +133,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'index';
-          // vm.sessionRoute('index');
+          // // vm.sessionRoute('index');
         }
       },
       '/event': {
@@ -139,7 +146,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'event';
-          vm.sessionRoute('event');
+          // vm.sessionRoute('event');
         }
       },
       '/task': {
@@ -152,7 +159,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'task';
-          // vm.sessionRoute('task');
+          // // vm.sessionRoute('task');
         }
       },
       '/maintenance': {
@@ -165,7 +172,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'maintenance';
-          // vm.sessionRoute('maintenance');
+          // // vm.sessionRoute('maintenance');
         }
       },
       '/track': {
@@ -178,7 +185,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'track';
-          // vm.sessionRoute('track');
+          // // vm.sessionRoute('track');
         }
       },
       '/securityPlan': {
@@ -191,7 +198,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'securityPlan';
-          // vm.sessionRoute('securityPlan');
+          // // vm.sessionRoute('securityPlan');
         }
       },
       '/securityRecord': {
@@ -204,7 +211,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'securityRecord';
-          // vm.sessionRoute('securityRecord');
+          // // vm.sessionRoute('securityRecord');
         }
       },
       '/userList': {
@@ -217,7 +224,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'userList';
-          // vm.sessionRoute('userList');
+          // // vm.sessionRoute('userList');
         }
       },
       '/userArea': {
@@ -230,7 +237,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'userArea';
-          // vm.sessionRoute('userArea');
+          // // vm.sessionRoute('userArea');
         }
       },
       '/facilityList': {
@@ -243,7 +250,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'facilityList';
-          // vm.sessionRoute('facilityList');
+          // // vm.sessionRoute('facilityList');
         }
       },
       '/facilityInspect': {
@@ -256,7 +263,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'facilityInspect';
-          // vm.sessionRoute('facilityInspect');
+          // // vm.sessionRoute('facilityInspect');
         }
       },
       '/map': {
@@ -269,7 +276,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'map';
-          // vm.sessionRoute('map');
+          // // vm.sessionRoute('map');
         }
       },
       '/equipment': {
@@ -282,7 +289,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'equipment';
-          // vm.sessionRoute('equipment');
+          // // vm.sessionRoute('equipment');
         }
       },
       '/statistics': {
@@ -295,7 +302,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'statistics';
-          // vm.sessionRoute('statistics');
+          // // vm.sessionRoute('statistics');
         }
       },
       '/organization': {
@@ -308,7 +315,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'organization';
-          // vm.sessionRoute('organization');
+          // // vm.sessionRoute('organization');
         }
       },
       '/removemanager': {
@@ -321,7 +328,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'removemanager';
-          // vm.sessionRoute('removemanager');
+          // // vm.sessionRoute('removemanager');
         }
       },
       '/certification': {
@@ -334,7 +341,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'certification';
-          // vm.sessionRoute('certification');
+          // // vm.sessionRoute('certification');
         }
       },
       '/managementuser': {
@@ -347,7 +354,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'managementuser';
-          // vm.sessionRoute('managementuser');
+          // // vm.sessionRoute('managementuser');
         }
       },
       '/news': {
@@ -360,7 +367,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'news';
-          // vm.sessionRoute('news');
+          // // vm.sessionRoute('news');
         }
       },
       '/personal': {
@@ -373,7 +380,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'personal';
-          // vm.sessionRoute('personal');
+          // // vm.sessionRoute('personal');
         }
       },
       '/updatepass': {
@@ -386,7 +393,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'updatepass';
-          // vm.sessionRoute('updatepass');
+          // // vm.sessionRoute('updatepass');
         }
       },
       '/setLogin': {
@@ -399,7 +406,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'setLogin';
-          // vm.sessionRoute('setLogin');
+          // // vm.sessionRoute('setLogin');
         }
       },
       '/help': {
@@ -412,7 +419,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'help';
-          // vm.sessionRoute('help');
+          // // vm.sessionRoute('help');
         }
       },
       '/securityPlan': {
@@ -425,7 +432,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'securityPlan';
-          // vm.sessionRoute('securityPlan');
+          // // vm.sessionRoute('securityPlan');
         }
       },
       '/securityRecord': {
@@ -438,7 +445,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'securityRecord';
-          // vm.sessionRoute('securityRecord');
+          // // vm.sessionRoute('securityRecord');
         }
       },
       '/customModule': {
@@ -451,7 +458,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'customModule';
-          // vm.sessionRoute('customModule');
+          // // vm.sessionRoute('customModule');
         }
       },
       '/pipeline': {
@@ -462,7 +469,7 @@ var routerObj = {
         },
         after: function () {
           vm.$data.initRouteName = 'pipeline';
-          // vm.sessionRoute('pipeline');
+          // // vm.sessionRoute('pipeline');
         }
       },
       '/': function () {
