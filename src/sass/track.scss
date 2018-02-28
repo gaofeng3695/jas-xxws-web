@@ -176,11 +176,13 @@ a.seeTrack {
     i {
         display: inline-block;
         width: 22px;
-        height: 16px;
-        background: url(/src/images/event/look.png) no-repeat;
+        height: 19px;
+        background: url(/src/images/event/track.png) no-repeat;
+        background-size: 19px 17px;
         vertical-align: middle;
         &:hover {
-            background: url(/src/images/event/look_h.png) no-repeat;
+            background: url(/src/images/event/track_h.png) no-repeat;
+            background-size: 19px 17px;
         }
     }
 }

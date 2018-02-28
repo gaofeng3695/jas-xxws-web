@@ -199,8 +199,8 @@
     <!--人员与事件图层控制-->
     <div class="change">
         <div class="renyuan fl">人员 <span class="inspectBtn active"></span></div>
-        <div class="shijian fl">事件 <span class="eventBtn active"></span></div>
-        <div class="network fl">管网 <span class="networkBtn active"></span></div>
+        <div class="shijian fr">事件 <span class="eventBtn active"></span></div>
+        <div class="network fl hidden">管网 <span class="networkBtn active"></span></div>
     </div>
     <!--人员信息列表-->
     <div class="panel-group" id="accordion">
@@ -499,7 +499,6 @@
             }
         });
         $(function() {
-            pipeLineObj.init(mapObj.$bdMap);
             searchMapObj.init();
         });
     </script>

@@ -3,14 +3,10 @@ $(function() {
     searchObj.init(); //搜索条件
     // taskObj.init(); //填写处置信息
     initTable();
-
-
     taskDetailsObj.init(); //任务详情
-
     tableOperationObj.init(); //表格上面的操作按钮
     drafting('task_map', 'drafting_down'); //启动拖拽
-    pipeLineObj.init(mapObj.$bdMap);
-    pipelinebtnObj.init($("#task_map"));
+    pipelinebtnObj.isPrivaliage($("#task_map"), mapObj.$bdMap);
 });
 /*searchObj*/
 (function(window, $, createSearhTemplate) {
