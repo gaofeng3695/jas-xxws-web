@@ -9,8 +9,8 @@ $(function() {
 
     drafting('event_map', 'drafting_down'); //启动拖拽
 
-    pipeLineObj.init(mapObj.$bdMap);
-    pipelinebtnObj.init($("#event_map"));
+    // pipeLineObj.init(mapObj.$bdMap);
+    pipelinebtnObj.isPrivaliage($("#event_map"), mapObj.$bdMap);
 });
 /*searchObj*/
 (function(window, $, createSearhTemplate) {

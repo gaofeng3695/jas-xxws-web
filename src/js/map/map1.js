@@ -2,6 +2,7 @@ $(function() {
     eventObj.init(); //事件信息初始化
     inspectObj.init(); //巡检信息初始化
     tabObj.init(); //左上角tab操作对象
+    isExistNet.init(); //用于判断管网是否存在
 })
 
 
@@ -333,613 +334,648 @@ var eventObj = {
 
 //巡检人员相关
 var inspectObj = {
-    $inspectBtn: $(".inspectBtn"),
-    $networkBtn: $(".networkBtn"),
-    $search: $("#search_people"),
-    $searchText: $(".search_people"),
-    $inspectInformation: $("#accordion"),
-    $inspectClosed: $(".close_inspect"),
-    $tabInspectClosed: $("#people_closed"),
-    $eventDate: $(".eventDate"),
-    $lineDate: $(".inspectDate"),
-    _inspectData: null, //初始化数据
-    inspectStartPoints: [], //初始化巡检点的数组
-    inspectPoints: [], //页面展示巡检点的数组
-    eventParameterObj: { //打开人员列表事件请求的参数
-        "status": "20,21,30", //处理状态，20 处理中事件
-        "type": "", //事件类型
-        "startDate": new Date().Format('yyyy-MM-dd'), //开始日期 固定为2016-10-01
-        "endDate": new Date().Format('yyyy-MM-dd'), //结束日期 当前系统时间
-        "keyword": "", //固定为空，
-        "inspectorId": "", // 逗号分隔的userId 输入查询用户ID
-        "pageNum": 1, //第几页
-        "pageSize": 100 //每页记录数
-    },
-    eventSearchObj: {}, //搜索事件请求的参数
-    inspectParameterObj: { //打开人员列表巡检请求的参数
-        "status": "1,0", //固定为1,0查询全部
-        // "startDate": "2017-3-10",
-        "startDate": new Date().Format('yyyy-MM-dd'), //开始日期 固定开始时间为项目启动时间
-        "endDate": new Date().Format('yyyy-MM-dd'), //结束日期 为当前系统时间
-        "keyword": "", //巡线人，巡线编号 固定为空
-        "userIds": '', //逗号分隔的userId 输入查询用户ID
-        "pageNum": 1, //第几页
-        "pageSize": 100 //每页记录数
-    },
-    inspectSearchObj: {}, //搜索巡检请求的参数
-    init: function() {
-        var _this = this;
-        this.getInspectData();
-        this.getNewestData();
-        this.eventInspectLinkage();
-        this.bindDateDiyEvent();
-        this.getCurrentTime();
-        //点击搜索
-        this.$search.click(function() {
-            var querry = _this.$searchText.val().trim();
-            _this.searchData(querry);
-        });
-        //巡检点的开关
-        this.$inspectBtn.click(function() {
-            if ($(this).hasClass("active")) {
-                _this.closeInspect();
-            } else {
-                _this.openInspect();
-            }
-        });
-        //管网的开关
-        this.$networkBtn.click(function() {
-            if ($(this).hasClass("active")) {
-                $(this).removeClass("active");
-                pipeLineObj.removeLines(); //清除地图的管线图层
-            } else {
-                $(this).addClass("active");
-                pipeLineObj.drawLines() //重新添加地图的管线图层
-            }
-        });
-        //事件列表点击查看详情
-        $("#people .people").on("click", "li", function() {
-            var inspectId = $(this).find("input[name=inspect_id]").val();
-            var isOnline = $(this).find("input[name=is_online]").val();
-            var isBd = $(this).find("input[name=is_bdLon]").val();
-            _this.inspectTabListClick(inspectId, isOnline, isBd);
-            // console.log($(this).find("input[type=hidden]").val());
-        });
+        $inspectBtn: $(".inspectBtn"),
+        $networkBtn: $(".networkBtn"),
+        $search: $("#search_people"),
+        $searchText: $(".search_people"),
+        $inspectInformation: $("#accordion"),
+        $inspectClosed: $(".close_inspect"),
+        $tabInspectClosed: $("#people_closed"),
+        $eventDate: $(".eventDate"),
+        $lineDate: $(".inspectDate"),
+        _inspectData: null, //初始化数据
+        inspectStartPoints: [], //初始化巡检点的数组
+        inspectPoints: [], //页面展示巡检点的数组
+        eventParameterObj: { //打开人员列表事件请求的参数
+            "status": "20,21,30", //处理状态，20 处理中事件
+            "type": "", //事件类型
+            "startDate": new Date().Format('yyyy-MM-dd'), //开始日期 固定为2016-10-01
+            "endDate": new Date().Format('yyyy-MM-dd'), //结束日期 当前系统时间
+            "keyword": "", //固定为空，
+            "inspectorId": "", // 逗号分隔的userId 输入查询用户ID
+            "pageNum": 1, //第几页
+            "pageSize": 100 //每页记录数
+        },
+        eventSearchObj: {}, //搜索事件请求的参数
+        inspectParameterObj: { //打开人员列表巡检请求的参数
+            "status": "1,0", //固定为1,0查询全部
+            // "startDate": "2017-3-10",
+            "startDate": new Date().Format('yyyy-MM-dd'), //开始日期 固定开始时间为项目启动时间
+            "endDate": new Date().Format('yyyy-MM-dd'), //结束日期 为当前系统时间
+            "keyword": "", //巡线人，巡线编号 固定为空
+            "userIds": '', //逗号分隔的userId 输入查询用户ID
+            "pageNum": 1, //第几页
+            "pageSize": 100 //每页记录数
+        },
+        inspectSearchObj: {}, //搜索巡检请求的参数
+        init: function() {
+            var _this = this;
+            this.getInspectData();
+            this.getNewestData();
+            this.eventInspectLinkage();
+            this.bindDateDiyEvent();
+            this.getCurrentTime();
+            //点击搜索
+            this.$search.click(function() {
+                var querry = _this.$searchText.val().trim();
+                _this.searchData(querry);
+            });
+            //巡检点的开关
+            this.$inspectBtn.click(function() {
+                if ($(this).hasClass("active")) {
+                    _this.closeInspect();
+                } else {
+                    _this.openInspect();
+                }
+            });
+            //管网的开关
+            this.$networkBtn.click(function() {
+                if ($(this).hasClass("active")) {
+                    $(this).removeClass("active");
+                    pipeLineObj.removeLines(); //清除地图的管线图层
+                } else {
+                    $(this).addClass("active");
+                    pipeLineObj.drawLines() //重新添加地图的管线图层
+                }
+            });
+            //事件列表点击查看详情
+            $("#people .people").on("click", "li", function() {
+                var inspectId = $(this).find("input[name=inspect_id]").val();
+                var isOnline = $(this).find("input[name=is_online]").val();
+                var isBd = $(this).find("input[name=is_bdLon]").val();
+                _this.inspectTabListClick(inspectId, isOnline, isBd);
+                // console.log($(this).find("input[type=hidden]").val());
+            });
 
-        //关闭人员详情窗口
-        this.$inspectClosed.click(function() {
-            _this.$inspectInformation.hide();
-            for (var i = 0; i < _this.inspectPoints.length; i++) {
-                _this.inspectPoints[i].value.setAnimation();
-            }
-        });
+            //关闭人员详情窗口
+            this.$inspectClosed.click(function() {
+                _this.$inspectInformation.hide();
+                for (var i = 0; i < _this.inspectPoints.length; i++) {
+                    _this.inspectPoints[i].value.setAnimation();
+                }
+            });
 
-        //左上角人员tab关闭
-        this.$tabInspectClosed.click(function() {
+            //左上角人员tab关闭
+            this.$tabInspectClosed.click(function() {
+                playerObj.close_player(function() {
+                    eventObj.getInitialPoints();
+                });
+                _this.resetInspect();
+                eventObj.resetevent();
+            });
+        },
+        closeInspect: function() {
+            this.$inspectBtn.removeClass("active");
+            this.removePoints();
+            this.$inspectInformation.hide();
+        },
+        openInspect: function() {
+            this.$inspectBtn.addClass("active");
+            this.addPoints();
+        },
+        assignmentPoints: function() { //初始化在线巡检员信息
+            for (var i = 0; i < this.inspectPoints.length; i++) {
+                this.inspectStartPoints[i] = this.inspectPoints[i];
+            }
+        },
+        setInspectPointsMarker: function(data) { //巡检人员添加设置标注点
+            this.removePoints();
+            var _this = this;
+            var myIcons = null;
+            var markers = null;
+            var point = null;
+            this.inspectPoints = [];
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].isOnline == 1) {
+                    myIcons = mapObj.bdIconObj.inspectOn;
+                } else {
+                    myIcons = mapObj.bdIconObj.inspecLeave;
+                }
+
+                point = new BMap.Point(data[i].bdLon, data[i].bdLat);
+                markers = new BMap.Marker(point, {
+                    icon: myIcons
+                });
+                // mapObj.$bdMap.addOverlay(markers);
+                //将当前地图上的坐标点 赋值全局变量
+                this.inspectPoints.push({
+                    'key': data[i].objectId,
+                    'name': data[i].userName,
+                    'value': markers,
+                    "isOnline": data[i].isOnline,
+                    "isBd": data[i].bdLon
+                });
+                //添加点击事件
+                markers.addEventListener("click", function(e) {
+                    _this.inspectPointClick(e);
+                });
+            }
+            this.addPoints();
+        },
+        inspectPointClick: function(e) { //巡检人员标注点的点击事件
+            var _this = this;
+            for (var i = 0; i < eventObj.eventPoints.length; i++) {
+                eventObj.eventPoints[i].value.setAnimation();
+            }
+            for (var i = 0; i < this.inspectPoints.length; i++) {
+                this.inspectPoints[i].value.setAnimation();
+            }
+            var p = e.target;
+            p.setAnimation(BMAP_ANIMATION_BOUNCE); //添加跳动
+            for (var i = 0; i < this.inspectPoints.length; i++) {
+
+                if (this.inspectPoints[i].value == p) {
+                    _this.getAllDetails(this.inspectPoints[i].key, this.inspectPoints[i].isOnline, this.inspectPoints[i].isBd);
+                    // console.log(this.inspectPoints[i].key);
+                }
+            }
+        },
+        inspectTabListClick: function(inspectId, isOnline, isBd) { //人员列表点击事件
+            var _this = this;
+            // mapObj.$bdMap.clearO
             playerObj.close_player(function() {
                 eventObj.getInitialPoints();
             });
-            _this.resetInspect();
-            eventObj.resetevent();
-        });
-    },
-    closeInspect: function() {
-        this.$inspectBtn.removeClass("active");
-        this.removePoints();
-        this.$inspectInformation.hide();
-    },
-    openInspect: function() {
-        this.$inspectBtn.addClass("active");
-        this.addPoints();
-    },
-    assignmentPoints: function() { //初始化在线巡检员信息
-        for (var i = 0; i < this.inspectPoints.length; i++) {
-            this.inspectStartPoints[i] = this.inspectPoints[i];
-        }
-    },
-    setInspectPointsMarker: function(data) { //巡检人员添加设置标注点
-        this.removePoints();
-        var _this = this;
-        var myIcons = null;
-        var markers = null;
-        var point = null;
-        this.inspectPoints = [];
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].isOnline == 1) {
-                myIcons = mapObj.bdIconObj.inspectOn;
-            } else {
-                myIcons = mapObj.bdIconObj.inspecLeave;
+            if (this.$inspectBtn.hasClass("active")) {} else {
+                this.addPoints();
+            }
+            this.$inspectBtn.addClass("active");
+            //巡检员信息
+            var peopleLeave = Enumerable.From(this._inspectData.rows).Where(function(x) {
+                return x.objectId == inspectId
+            }).Select(function(x) {
+                return x
+            }).ToArray();
+            var isExist = 0;
+            for (var i = 0; i < eventObj.eventPoints.length; i++) {
+                eventObj.eventPoints[i].value.setAnimation();
+            }
+            var _this = this;
+            for (var i = 0; i < _this.inspectPoints.length; i++) {
+                if (_this.inspectPoints[i].key == inspectId) {
+                    isExist++;
+                    _this.inspectPoints[i].value.setAnimation(BMAP_ANIMATION_BOUNCE);
+                    //设置中心点
+                    var cenLng = _this.inspectPoints[i].value.getPosition().lng;
+                    var cenLat = _this.inspectPoints[i].value.getPosition().lat;
+                    mapObj.$bdMap.setCenter(new BMap.Point(cenLng, cenLat));
+                } else {
+                    _this.inspectPoints[i].value.setAnimation();
+                }
+            }
+            this.getAllDetails(inspectId, isOnline, isBd);
+            if (isExist > 0) return;
+            //添加离线人员图标
+            if (peopleLeave[0].isOnline == 0) {
+                var _point = new BMap.Point(peopleLeave[0].bdLon, peopleLeave[0].bdLat);
+                var _marker = new BMap.Marker(_point); // 创建标注
+                var _myIcons = mapObj.bdIconObj.inspecLeave;
+                _marker = new BMap.Marker(_point, {
+                    icon: _myIcons
+                });
+
+                mapObj.$bdMap.addOverlay(_marker); // 将标注添加到地图中
+                mapObj.$bdMap.setCenter(_point);
+                _marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+                this.inspectPoints.push({
+                    key: inspectId,
+                    name: peopleLeave[0].userName,
+                    value: _marker,
+                    "isOnline": peopleLeave[0].isOnline,
+                    "isBd": peopleLeave[0].bdLon
+                });
+                //添加点击事件
+                _marker.addEventListener("click", function(e) {
+                    _this.inspectPointClick(e);
+                });
+            }
+        },
+        inspectOnline: function(data) { //巡检在线人员标地图点
+            //所有的人员
+            var peopelAllArr = Enumerable.From(data).Where(function(x) {
+                return x.isOnline !== -1
+            }).Select(function(x) {
+                return x
+            }).ToArray();
+            //在线人员
+            var onlineArr = Enumerable.From(data).Where(function(x) {
+                return (x.isOnline > -1 && x.bdLon > 0)
+            }).Select(function(x) {
+                return x
+            }).ToArray();
+            $(".inspectOnline").text(onlineArr.length);
+
+            //mapObj.setPointsMarkerWithCenterPointAndZoomLevel(onlineArr);
+            this.setInspectPointsMarker(peopelAllArr);
+        },
+        inspectInit: function() { //巡检初始化获取需要数据
+            //巡线人员数组
+            // var patrolArr = Enumerable.From(this._inspectData.rows).Where(function(x) {
+            //     return x.roleNames == '巡检工作人员'
+            // }).Select(function(x) {
+            //     return x
+            // }).ToArray();
+            $(".patrolNum").text(this._inspectData.rows.length);
+            this.inspectOnline(this._inspectData.rows);
+            this.setInspectTab(this._inspectData.rows);
+            // console.log(patrolArr.length);
+        },
+        searchData: function(querry) { //模糊查询的结果
+            var querryArr = jsonFuzzyQuery(this._inspectData.rows, querry, "userName,orgName,roleNames");
+            // console.log(querryArr);
+            this.inspectOnline(querryArr);
+            this.setInspectTab(querryArr);
+            this.$inspectInformation.hide();
+            mapObj.setPointsMarkerWithCenterPointAndZoomLevel(querryArr);
+            this.$inspectBtn.addClass("active");
+        },
+        resetInspect: function() { //重置人员信息
+            this.$inspectInformation.hide();
+            this.$searchText.val("");
+            this.inspectOnline(this._inspectData.rows);
+            this.setInspectTab(this._inspectData.rows);
+            // mapObj.setPointsMarkerWithCenterPointAndZoomLevel(this._inspectData.rows);
+            this.$inspectBtn.addClass("active");
+        },
+        setInspectTab: function(data) { //人员信息列表
+            $("#people .people ul").html("");
+            var txt = null;
+            try {
+                if (data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var roleName = data[i].roleNames;
+                        var orgname = data[i].orgName;
+                        if (roleName == null || roleName == '') {
+                            roleName = "----";
+                        }
+                        if (orgname == null || orgname == '') {
+                            orgname = "----";
+                        }
+                        // console.log(data[i])
+                        var state = data[i].isOnline > -1 && +data[i].bdLon > 0 ? '今日已巡' : '今日未巡';
+                        var activeState = data[i].isOnline > -1 && +data[i].bdLon > 0 ? 'active' : '';
+                        txt = '<li>' +
+                            '<input type="hidden" name="inspect_id" value="' + data[i].objectId + '">' +
+                            '<input type="hidden" name="is_online" value="' + data[i].isOnline + '">' +
+                            '<input type="hidden" name="is_bdLon" value="' + data[i].bdLon + '">' +
+                            '<span class="peoicon ' + activeState + '">' + state + '</span>' +
+                            '<span class="name">' + data[i].userName + '</span>' +
+                            '<span class="dept">' + orgname + '</span>' +
+                            '<span class="task">' + roleName + '</span>' +
+                            '</li>';
+
+                        $("#people .people ul").append(txt);
+                    }
+                } else {
+                    txt = '<p style="text-align:center;">没有查询到您要数据！</p>';
+                    $("#people .people ul").append(txt);
+                }
+            } catch (e) {
+                txt = '<p style="text-align:center;">没有查询到您要数据！</p>';
+                $("#people .people ul").append(txt);
             }
 
-            point = new BMap.Point(data[i].bdLon, data[i].bdLat);
-            markers = new BMap.Marker(point, {
-                icon: myIcons
-            });
-            // mapObj.$bdMap.addOverlay(markers);
-            //将当前地图上的坐标点 赋值全局变量
-            this.inspectPoints.push({
-                'key': data[i].objectId,
-                'name': data[i].userName,
-                'value': markers,
-                "isOnline": data[i].isOnline,
-                "isBd": data[i].bdLon
-            });
-            //添加点击事件
-            markers.addEventListener("click", function(e) {
-                _this.inspectPointClick(e);
-            });
-        }
-        this.addPoints();
-    },
-    inspectPointClick: function(e) { //巡检人员标注点的点击事件
-        var _this = this;
-        for (var i = 0; i < eventObj.eventPoints.length; i++) {
-            eventObj.eventPoints[i].value.setAnimation();
-        }
-        for (var i = 0; i < this.inspectPoints.length; i++) {
-            this.inspectPoints[i].value.setAnimation();
-        }
-        var p = e.target;
-        p.setAnimation(BMAP_ANIMATION_BOUNCE); //添加跳动
-        for (var i = 0; i < this.inspectPoints.length; i++) {
+        },
+        getInspectData: function() { //获取巡检数据
+            var _this = this;
+            $.ajax({
+                type: 'GET',
+                url: "/cloudlink-inspection-event/inspectionMonitor/getListAuthority?token=" + lsObj.getLocalStorage('token'),
+                contentType: "application/json",
+                dataType: 'json',
+                success: function(data, status) {
+                    _this._inspectData = data;
+                    // console.log(_this._inspectData);
+                    _this.inspectInit();
+                    eventsAndInspectersLoadFinish(data.rows); //create by alex 判断事件与人员都已经初始化加载完成
+                }
+            })
+        },
+        getNewestData: function() { //获取当前最新数据
+            var _this = this;
+            $.ajax({
+                type: 'GET',
+                url: "/cloudlink-inspection-analysis/patrolStatistical/getPatrolStatisticsData?token=" + lsObj.getLocalStorage('token'),
+                contentType: "application/json",
+                dataType: 'json',
+                success: function(data, status) {
+                    $(".eventNew").text(data.rows[0].eventCountToday);
+                    // console.log(data);
+                }
+            })
+        },
+        getInspectDetails: function(inspectId, isOnline, isBd) { //根据巡检id获取巡检员详情
+            var _this = this;
+            eventObj.$eventInformation.hide();
+            _this.$inspectInformation.show();
+            $.ajax({
+                type: 'GET',
+                url: "/cloudlink-inspection-analysis/mapStatistical/getUserStatistics?token=" + lsObj.getLocalStorage('token') + "&inspectorId=" + inspectId,
+                contentType: "application/json",
+                dataType: "json",
+                success: function(data, status) {
+                    // 头像
+                    if (data.rows[0].profilePhoto != null && data.rows[0].profilePhoto != "") {
+                        $(".inspectImg").attr('src', "/cloudlink-core-file/file/getImageBySize?fileId=" + data.rows[0].profilePhoto + "&viewModel=fill&width=500&hight=500");
+                    } else {
+                        $(".inspectImg").attr('src', "/src/images/main/photo.png");
+                    }
+                    // 是否在线
+                    if (isOnline == 1 && +isBd > 0) {
+                        $('.isOnline').attr({
+                            'src': '/src/images/map/line.png',
+                            "title": "在线"
+                        });
+                        $(".status").css("background", "#51b7ff");
+                        $(".isPolling").text("今日已巡");
+                    } else if (isOnline == 0 && +isBd > 0) {
+                        $('.isOnline').attr({
+                            'src': '/src/images/map/Leave_line.png',
+                            "title": "离线"
+                        });
+                        $(".status").css("background", "#51b7ff");
+                        $(".isPolling").text("今日已巡");
+                    } else {
+                        $(".status").css("background", "#b9b9b9");
+                        $(".isPolling").text("今日未巡");
+                        $('.isOnline').attr({
+                            'src': '/src/images/map/Leave_line.png',
+                            "title": "离线"
+                        });
+                    }
 
-            if (this.inspectPoints[i].value == p) {
-                _this.getAllDetails(this.inspectPoints[i].key, this.inspectPoints[i].isOnline, this.inspectPoints[i].isBd);
-                // console.log(this.inspectPoints[i].key);
-            }
-        }
-    },
-    inspectTabListClick: function(inspectId, isOnline, isBd) { //人员列表点击事件
-        var _this = this;
-        // mapObj.$bdMap.clearO
-        playerObj.close_player(function() {
-            eventObj.getInitialPoints();
-        });
-        if (this.$inspectBtn.hasClass("active")) {} else {
-            this.addPoints();
-        }
-        this.$inspectBtn.addClass("active");
-        //巡检员信息
-        var peopleLeave = Enumerable.From(this._inspectData.rows).Where(function(x) {
-            return x.objectId == inspectId
-        }).Select(function(x) {
-            return x
-        }).ToArray();
-        var isExist = 0;
-        for (var i = 0; i < eventObj.eventPoints.length; i++) {
-            eventObj.eventPoints[i].value.setAnimation();
-        }
-        var _this = this;
-        for (var i = 0; i < _this.inspectPoints.length; i++) {
-            if (_this.inspectPoints[i].key == inspectId) {
-                isExist++;
-                _this.inspectPoints[i].value.setAnimation(BMAP_ANIMATION_BOUNCE);
-                //设置中心点
-                var cenLng = _this.inspectPoints[i].value.getPosition().lng;
-                var cenLat = _this.inspectPoints[i].value.getPosition().lat;
-                mapObj.$bdMap.setCenter(new BMap.Point(cenLng, cenLat));
-            } else {
-                _this.inspectPoints[i].value.setAnimation();
-            }
-        }
-        this.getAllDetails(inspectId, isOnline, isBd);
-        if (isExist > 0) return;
-        //添加离线人员图标
-        if (peopleLeave[0].isOnline == 0) {
-            var _point = new BMap.Point(peopleLeave[0].bdLon, peopleLeave[0].bdLat);
-            var _marker = new BMap.Marker(_point); // 创建标注
-            var _myIcons = mapObj.bdIconObj.inspecLeave;
-            _marker = new BMap.Marker(_point, {
-                icon: _myIcons
-            });
 
-            mapObj.$bdMap.addOverlay(_marker); // 将标注添加到地图中
-            mapObj.$bdMap.setCenter(_point);
-            _marker.setAnimation(BMAP_ANIMATION_BOUNCE);
-            this.inspectPoints.push({
-                key: inspectId,
-                name: peopleLeave[0].userName,
-                value: _marker,
-                "isOnline": peopleLeave[0].isOnline,
-                "isBd": peopleLeave[0].bdLon
-            });
-            //添加点击事件
-            _marker.addEventListener("click", function(e) {
-                _this.inspectPointClick(e);
-            });
-        }
-    },
-    inspectOnline: function(data) { //巡检在线人员标地图点
-        //所有的人员
-        var peopelAllArr = Enumerable.From(data).Where(function(x) {
-            return x.isOnline !== -1
-        }).Select(function(x) {
-            return x
-        }).ToArray();
-        //在线人员
-        var onlineArr = Enumerable.From(data).Where(function(x) {
-            return (x.isOnline > -1 && x.bdLon > 0)
-        }).Select(function(x) {
-            return x
-        }).ToArray();
-        $(".inspectOnline").text(onlineArr.length);
+                    //手机号码的显示
+                    $(".dynamicTitle").attr('title', data.rows[0].mobileNum);
+                    // 姓名
+                    $('.inspectUseName').text(data.rows[0].userName);
 
-        //mapObj.setPointsMarkerWithCenterPointAndZoomLevel(onlineArr);
-        this.setInspectPointsMarker(peopelAllArr);
-    },
-    inspectInit: function() { //巡检初始化获取需要数据
-        //巡线人员数组
-        // var patrolArr = Enumerable.From(this._inspectData.rows).Where(function(x) {
-        //     return x.roleNames == '巡检工作人员'
-        // }).Select(function(x) {
-        //     return x
-        // }).ToArray();
-        $(".patrolNum").text(this._inspectData.rows.length);
-        this.inspectOnline(this._inspectData.rows);
-        this.setInspectTab(this._inspectData.rows);
-        // console.log(patrolArr.length);
-    },
-    searchData: function(querry) { //模糊查询的结果
-        var querryArr = jsonFuzzyQuery(this._inspectData.rows, querry, "userName,orgName,roleNames");
-        // console.log(querryArr);
-        this.inspectOnline(querryArr);
-        this.setInspectTab(querryArr);
-        this.$inspectInformation.hide();
-        mapObj.setPointsMarkerWithCenterPointAndZoomLevel(querryArr);
-        this.$inspectBtn.addClass("active");
-    },
-    resetInspect: function() { //重置人员信息
-        this.$inspectInformation.hide();
-        this.$searchText.val("");
-        this.inspectOnline(this._inspectData.rows);
-        this.setInspectTab(this._inspectData.rows);
-        // mapObj.setPointsMarkerWithCenterPointAndZoomLevel(this._inspectData.rows);
-        this.$inspectBtn.addClass("active");
-    },
-    setInspectTab: function(data) { //人员信息列表
-        $("#people .people ul").html("");
-        var txt = null;
-        try {
-            if (data.length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                    var roleName = data[i].roleNames;
-                    var orgname = data[i].orgName;
+                    var roleName = data.rows[0].roleNames;
+                    var orgname = data.rows[0].orgName;
                     if (roleName == null || roleName == '') {
                         roleName = "----";
                     }
                     if (orgname == null || orgname == '') {
                         orgname = "----";
                     }
-                    // console.log(data[i])
-                    var state = data[i].isOnline > -1 && +data[i].bdLon > 0 ? '今日已巡' : '今日未巡';
-                    var activeState = data[i].isOnline > -1 && +data[i].bdLon > 0 ? 'active' : '';
-                    txt = '<li>' +
-                        '<input type="hidden" name="inspect_id" value="' + data[i].objectId + '">' +
-                        '<input type="hidden" name="is_online" value="' + data[i].isOnline + '">' +
-                        '<input type="hidden" name="is_bdLon" value="' + data[i].bdLon + '">' +
-                        '<span class="peoicon ' + activeState + '">' + state + '</span>' +
-                        '<span class="name">' + data[i].userName + '</span>' +
-                        '<span class="dept">' + orgname + '</span>' +
-                        '<span class="task">' + roleName + '</span>' +
-                        '</li>';
-
-                    $("#people .people ul").append(txt);
+                    // 部门
+                    $('.inspectDepartment').text(orgname);
+                    // 角色
+                    $('.inspectRoleName').text(roleName);
+                    // 手机号
+                    // 本日巡检次数
+                    $('.inspectCount').text(data.rows[0].inspectTodayCount + ' 次');
+                    // 本日巡检里程
+                    $('.inspectKm').text((data.rows[0].inspectTodayDistance / 1000).toFixed(2) + ' km');
+                    // 本日事件上报
+                    $('.inspectQi').text(data.rows[0].eventTodayCount + ' 起');
+                    // console.log(data);
                 }
-            } else {
-                txt = '<p style="text-align:center;">没有查询到您要数据！</p>';
-                $("#people .people ul").append(txt);
-            }
-        } catch (e) {
-            txt = '<p style="text-align:center;">没有查询到您要数据！</p>';
-            $("#people .people ul").append(txt);
-        }
-
-    },
-    getInspectData: function() { //获取巡检数据
-        var _this = this;
-        $.ajax({
-            type: 'GET',
-            url: "/cloudlink-inspection-event/inspectionMonitor/getListAuthority?token=" + lsObj.getLocalStorage('token'),
-            contentType: "application/json",
-            dataType: 'json',
-            success: function(data, status) {
-                _this._inspectData = data;
-                // console.log(_this._inspectData);
-                _this.inspectInit();
-                eventsAndInspectersLoadFinish(data.rows); //create by alex 判断事件与人员都已经初始化加载完成
-            }
-        })
-    },
-    getNewestData: function() { //获取当前最新数据
-        var _this = this;
-        $.ajax({
-            type: 'GET',
-            url: "/cloudlink-inspection-analysis/patrolStatistical/getPatrolStatisticsData?token=" + lsObj.getLocalStorage('token'),
-            contentType: "application/json",
-            dataType: 'json',
-            success: function(data, status) {
-                $(".eventNew").text(data.rows[0].eventCountToday);
-                // console.log(data);
-            }
-        })
-    },
-    getInspectDetails: function(inspectId, isOnline, isBd) { //根据巡检id获取巡检员详情
-        var _this = this;
-        eventObj.$eventInformation.hide();
-        _this.$inspectInformation.show();
-        $.ajax({
-            type: 'GET',
-            url: "/cloudlink-inspection-analysis/mapStatistical/getUserStatistics?token=" + lsObj.getLocalStorage('token') + "&inspectorId=" + inspectId,
-            contentType: "application/json",
-            dataType: "json",
-            success: function(data, status) {
-                // 头像
-                if (data.rows[0].profilePhoto != null && data.rows[0].profilePhoto != "") {
-                    $(".inspectImg").attr('src', "/cloudlink-core-file/file/getImageBySize?fileId=" + data.rows[0].profilePhoto + "&viewModel=fill&width=500&hight=500");
+            });
+        },
+        addPoints: function() { //添加巡检点
+            for (var i = 0; i < this.inspectPoints.length; i++) {
+                var label = new BMap.Label(this.inspectPoints[i].name, { offset: new BMap.Size(30, 3) });
+                if (this.inspectPoints[i].isOnline == 1) {
+                    label.setStyle({ color: "#75c3fe", fontSize: "12px", border: '1px solid #75c3fe', padding: '3px' });
                 } else {
-                    $(".inspectImg").attr('src', "/src/images/main/photo.png");
+                    label.setStyle({ color: "#999", fontSize: "12px", border: '1px solid #999', padding: '3px' });
                 }
-                // 是否在线
-                if (isOnline == 1 && +isBd > 0) {
-                    $('.isOnline').attr({
-                        'src': '/src/images/map/line.png',
-                        "title": "在线"
-                    });
-                    $(".status").css("background", "#51b7ff");
-                    $(".isPolling").text("今日已巡");
-                } else if (isOnline == 0 && +isBd > 0) {
-                    $('.isOnline').attr({
-                        'src': '/src/images/map/Leave_line.png',
-                        "title": "离线"
-                    });
-                    $(".status").css("background", "#51b7ff");
-                    $(".isPolling").text("今日已巡");
-                } else {
-                    $(".status").css("background", "#b9b9b9");
-                    $(".isPolling").text("今日未巡");
-                    $('.isOnline').attr({
-                        'src': '/src/images/map/Leave_line.png',
-                        "title": "离线"
-                    });
-                }
-
-
-                //手机号码的显示
-                $(".dynamicTitle").attr('title', data.rows[0].mobileNum);
-                // 姓名
-                $('.inspectUseName').text(data.rows[0].userName);
-
-                var roleName = data.rows[0].roleNames;
-                var orgname = data.rows[0].orgName;
-                if (roleName == null || roleName == '') {
-                    roleName = "----";
-                }
-                if (orgname == null || orgname == '') {
-                    orgname = "----";
-                }
-                // 部门
-                $('.inspectDepartment').text(orgname);
-                // 角色
-                $('.inspectRoleName').text(roleName);
-                // 手机号
-                // 本日巡检次数
-                $('.inspectCount').text(data.rows[0].inspectTodayCount + ' 次');
-                // 本日巡检里程
-                $('.inspectKm').text((data.rows[0].inspectTodayDistance / 1000).toFixed(2) + ' km');
-                // 本日事件上报
-                $('.inspectQi').text(data.rows[0].eventTodayCount + ' 起');
-                // console.log(data);
+                this.inspectPoints[i].value.setLabel(label);
+                mapObj.$bdMap.addOverlay(this.inspectPoints[i].value);
             }
-        });
-    },
-    addPoints: function() { //添加巡检点
-        for (var i = 0; i < this.inspectPoints.length; i++) {
-            var label = new BMap.Label(this.inspectPoints[i].name, { offset: new BMap.Size(30, 3) });
-            if (this.inspectPoints[i].isOnline == 1) {
-                label.setStyle({ color: "#75c3fe", fontSize: "12px", border: '1px solid #75c3fe', padding: '3px' });
-            } else {
-                label.setStyle({ color: "#999", fontSize: "12px", border: '1px solid #999', padding: '3px' });
+        },
+        removePoints: function() { //删除巡检点
+            for (var i = 0; i < this.inspectPoints.length; i++) {
+                mapObj.$bdMap.removeOverlay(this.inspectPoints[i].value);
             }
-            this.inspectPoints[i].value.setLabel(label);
-            mapObj.$bdMap.addOverlay(this.inspectPoints[i].value);
-        }
-    },
-    removePoints: function() { //删除巡检点
-        for (var i = 0; i < this.inspectPoints.length; i++) {
-            mapObj.$bdMap.removeOverlay(this.inspectPoints[i].value);
-        }
-    },
-    getEventPageList: function() { //加载人员下的事件记录分页信息
-        var _this = this;
-        $.ajax({
-            type: 'POST',
-            url: "/cloudlink-inspection-event/eventInfo/web/v1/getPageList?token=" + lsObj.getLocalStorage('token'),
-            contentType: "application/json",
-            data: JSON.stringify(_this.eventSearchObj),
-            dataType: 'json',
-            success: function(data, status) {
-                // console.log(data);
-                if (data.success == 1) {
-                    $(".eventListPage").html("");
-                    var eventHtml = "";
-                    if (data.rows.length > 0) {
-                        for (var i = 0; i < data.rows.length; i++) {
-                            eventHtml = '<div class="record_details "><p class="pb10 pt10"><span class="fr5 width fl5">事件时间</span>' +
-                                '<span class="borderLeft fl block ">' + data.rows[i].createTime + '</span>' +
-                                '</p><p class = "pb10 pt10" ><span class = "fr5 width" > 事件类型 </span>' +
-                                '<span class="borderLeft fl block">' + data.rows[i].fullTypeName + '</span ></p>' +
-                                '<p class = "pb10 pt10"> <span class = "fr5 width">上报人</span>' +
-                                '<span class="borderLeft fl block">' + data.rows[i].inspectorName + '</span></p>' +
-                                '<p class = "pb10 pt10" > <span class = "fr5 width"> 事件状态</span>' +
-                                '<span class="borderLeft fl block">' + data.rows[i].statusValue + '</span> </p>' +
-                                '<button class = "viewDetails" name="' + data.rows[i].objectId + '" onclick="view_detail(this)"> 查看详情 </button></div>';
+        },
+        getEventPageList: function() { //加载人员下的事件记录分页信息
+            var _this = this;
+            $.ajax({
+                type: 'POST',
+                url: "/cloudlink-inspection-event/eventInfo/web/v1/getPageList?token=" + lsObj.getLocalStorage('token'),
+                contentType: "application/json",
+                data: JSON.stringify(_this.eventSearchObj),
+                dataType: 'json',
+                success: function(data, status) {
+                    // console.log(data);
+                    if (data.success == 1) {
+                        $(".eventListPage").html("");
+                        var eventHtml = "";
+                        if (data.rows.length > 0) {
+                            for (var i = 0; i < data.rows.length; i++) {
+                                eventHtml = '<div class="record_details "><p class="pb10 pt10"><span class="fr5 width fl5">事件时间</span>' +
+                                    '<span class="borderLeft fl block ">' + data.rows[i].createTime + '</span>' +
+                                    '</p><p class = "pb10 pt10" ><span class = "fr5 width" > 事件类型 </span>' +
+                                    '<span class="borderLeft fl block">' + data.rows[i].fullTypeName + '</span ></p>' +
+                                    '<p class = "pb10 pt10"> <span class = "fr5 width">上报人</span>' +
+                                    '<span class="borderLeft fl block">' + data.rows[i].inspectorName + '</span></p>' +
+                                    '<p class = "pb10 pt10" > <span class = "fr5 width"> 事件状态</span>' +
+                                    '<span class="borderLeft fl block">' + data.rows[i].statusValue + '</span> </p>' +
+                                    '<button class = "viewDetails" name="' + data.rows[i].objectId + '" onclick="view_detail(this)"> 查看详情 </button></div>';
+                                $(".eventListPage").append(eventHtml);
+                            }
+                        } else {
+                            eventHtml = '<p style="text-align:center;min-height:152px;line-height:152px;">暂无相关数据</p>';
                             $(".eventListPage").append(eventHtml);
                         }
-                    } else {
-                        eventHtml = '<p style="text-align:center;min-height:152px;line-height:152px;">暂无相关数据</p>';
-                        $(".eventListPage").append(eventHtml);
                     }
+                    $(".eventListPage").find("div").last().css("margin-bottom", "0px"); //直接添加样式
                 }
-                $(".eventListPage").find("div").last().css("margin-bottom", "0px"); //直接添加样式
-            }
-        })
+            })
 
-    },
-    getInspectionPageList: function() { //加载人员下的巡检记录事件分页信息
-        var _this = this;
-        $.ajax({
-            type: 'POST',
-            url: "/cloudlink-inspection-event/inspectionRecord/web/v1/getPageList?token=" + lsObj.getLocalStorage('token'),
-            contentType: "application/json",
-            data: JSON.stringify(_this.inspectSearchObj),
-            dataType: 'json',
-            success: function(data, status) {
-                if (data.success == 1) {
-                    var peopleHtml = "";
-                    var inspectStatus = null;
-                    var inspectTxt = null;
-                    var timeS = new Date().getTime();
-                    var timeE = null;
-                    $(".peopleList").html("");
-                    if (data.rows.length > 0) {
-                        for (var i = 0; i < data.rows.length; i++) {
-                            inspectStatus = data.rows[i].flag;
-                            timeE = new Date(data.rows[i].endTime).getTime();
-                            if (inspectStatus == 1) {
-                                inspectTxt = '已完成';
-                            } else {
-                                if (timeS - timeE > 300000) {
-                                    inspectTxt = '其他';
+        },
+        getInspectionPageList: function() { //加载人员下的巡检记录事件分页信息
+            var _this = this;
+            $.ajax({
+                type: 'POST',
+                url: "/cloudlink-inspection-event/inspectionRecord/web/v1/getPageList?token=" + lsObj.getLocalStorage('token'),
+                contentType: "application/json",
+                data: JSON.stringify(_this.inspectSearchObj),
+                dataType: 'json',
+                success: function(data, status) {
+                    if (data.success == 1) {
+                        var peopleHtml = "";
+                        var inspectStatus = null;
+                        var inspectTxt = null;
+                        var timeS = new Date().getTime();
+                        var timeE = null;
+                        $(".peopleList").html("");
+                        if (data.rows.length > 0) {
+                            for (var i = 0; i < data.rows.length; i++) {
+                                inspectStatus = data.rows[i].flag;
+                                timeE = new Date(data.rows[i].endTime).getTime();
+                                if (inspectStatus == 1) {
+                                    inspectTxt = '已完成';
                                 } else {
-                                    inspectTxt = '巡检中';
+                                    if (timeS - timeE > 300000) {
+                                        inspectTxt = '其他';
+                                    } else {
+                                        inspectTxt = '巡检中';
+                                    }
                                 }
-                            }
-                            peopleHtml = '<div class="record_details">' +
-                                '<input type="hidden" name="inspect_id_m" value="' + data.rows[i].objectId + '">' +
-                                '<input type="hidden" name="flag_m" value="' + data.rows[i].flag + '">' +
-                                '<p class="pb10 pt10"><span class="fr5 width fl5">开始时间</span>' +
-                                '<span class="borderLeft fl block ">' + data.rows[i].beginTime + '</span>' +
-                                '</p><p class = "pb10 pt10" ><span class = "fr5 width" > 结束时间 </span>' +
-                                '<span class="borderLeft fl block">' + data.rows[i].endTime + '</span ></p>' +
-                                '<p class = "pb10 pt10"> <span class = "fr5 width">时长</span>' +
-                                '<span class="borderLeft fl block">' + data.rows[i].wholeTime + '</span></p>' +
-                                '<p class = "pb10 pt10" > <span class = "fr5 width"> 巡线状态</span>' +
-                                '<span class="borderLeft fl block">' + inspectTxt + '</span> </p>' +
-                                '<p class="pb10 pt10"><span class="fr5 width">总里程</span>' +
-                                '<span class="borderLeft fl block peopleDistance">' + (data.rows[i].distance / 1000).toFixed(2) + ' KM' + '</span> </p>' +
-                                '<p class="pb10 pt10" style="height:23px;line-height:23px"><span class="fr5 width">轨迹回放</span>' +
-                                '<span class="borderLeft fl block"><img onclick="palyInspect(this)" src="/src/images/map/bofang.png" alt=""></span></p>';
+                                peopleHtml = '<div class="record_details">' +
+                                    '<input type="hidden" name="inspect_id_m" value="' + data.rows[i].objectId + '">' +
+                                    '<input type="hidden" name="flag_m" value="' + data.rows[i].flag + '">' +
+                                    '<p class="pb10 pt10"><span class="fr5 width fl5">开始时间</span>' +
+                                    '<span class="borderLeft fl block ">' + data.rows[i].beginTime + '</span>' +
+                                    '</p><p class = "pb10 pt10" ><span class = "fr5 width" > 结束时间 </span>' +
+                                    '<span class="borderLeft fl block">' + data.rows[i].endTime + '</span ></p>' +
+                                    '<p class = "pb10 pt10"> <span class = "fr5 width">时长</span>' +
+                                    '<span class="borderLeft fl block">' + data.rows[i].wholeTime + '</span></p>' +
+                                    '<p class = "pb10 pt10" > <span class = "fr5 width"> 巡线状态</span>' +
+                                    '<span class="borderLeft fl block">' + inspectTxt + '</span> </p>' +
+                                    '<p class="pb10 pt10"><span class="fr5 width">总里程</span>' +
+                                    '<span class="borderLeft fl block peopleDistance">' + (data.rows[i].distance / 1000).toFixed(2) + ' KM' + '</span> </p>' +
+                                    '<p class="pb10 pt10" style="height:23px;line-height:23px"><span class="fr5 width">轨迹回放</span>' +
+                                    '<span class="borderLeft fl block"><img onclick="palyInspect(this)" src="/src/images/map/bofang.png" alt=""></span></p>';
 
+                                $(".peopleList").append(peopleHtml);
+                            }
+                        } else {
+                            peopleHtml = '<p style="text-align:center;line-height:152px;min-height:152px;">暂无相关数据</p>';
                             $(".peopleList").append(peopleHtml);
                         }
-                    } else {
-                        peopleHtml = '<p style="text-align:center;line-height:152px;min-height:152px;">暂无相关数据</p>';
-                        $(".peopleList").append(peopleHtml);
+                        $(".peopleList").find("div").last().css("margin-bottom", "0px"); //直接添加样式
                     }
-                    $(".peopleList").find("div").last().css("margin-bottom", "0px"); //直接添加样式
                 }
-            }
-        });
-    },
-    getAllDetails: function(inspectId, isOnline, isBd) { //获取人员图标的所有信息
-        $.extend(this.inspectSearchObj, this.inspectParameterObj);
-        this.inspectSearchObj.userIds = inspectId;
-        $.extend(this.eventSearchObj, this.eventParameterObj);
-        this.eventSearchObj.inspectorId = inspectId;
-        this.getInspectDetails(inspectId, isOnline, isBd);
-        this.getEventPageList();
-        this.searchEventByDate(); //确定根据时间进行事件的搜索
-        this.searchlineByDate(); //确定根据时间进行巡线记录的搜索
-        this.getInspectionPageList();
-    },
-    eventSearchList: function() { //搜索查询事件列表
-        this.getEventPageList();
-    },
-    InspectSearchList: function() { //搜索查询巡检列表
-        this.getInspectionPageList();
-    },
-    eventInspectLinkage: function() { //事件与巡检相关的联动
-        $(".panel-heading").click(function() {
-            var thisDiv = $(this).closest(".panel-default");
-            var otherDiv = $(this).closest(".panel-default").siblings(".panel-default");
-            if (thisDiv.find("div.collapse").is(":hidden")) {
-                thisDiv.find("div.collapse").slideDown();
-                thisDiv.find(".panel-heading span").removeClass('glyphicon-menu-down').addClass("glyphicon-menu-up");
-            } else {
-                thisDiv.find("div.collapse").slideUp();
-                thisDiv.find(".panel-heading span").removeClass('glyphicon-menu-up').addClass("glyphicon-menu-down");
-            }
-            otherDiv.find("div.collapse").slideUp();
-            otherDiv.find(".panel-heading span").removeClass('glyphicon-menu-up').addClass("glyphicon-menu-down");
-        })
-    },
-    bindDateDiyEvent: function() { //时间控件
-        $("#datetimeStartEvent").datetimepicker({
-            format: 'yyyy-mm-dd',
-            minView: 'month',
-            language: 'zh-CN',
-            autoclose: true,
-        }).on("click", function() {
-            $("#datetimeStartEvent").datetimepicker("setEndDate", $("#datetimeEndEvent").val());
-        });
-        $("#datetimeEndEvent").datetimepicker({
-            format: 'yyyy-mm-dd',
-            minView: 'month',
-            language: 'zh-CN',
-            autoclose: true,
-        }).on("click", function() {
-            $("#datetimeEndEvent").datetimepicker("setStartDate", $("#datetimeStartEvent").val());
-            $("#datetimeEndEvent").datetimepicker("setEndDate", new Date());
-        });
+            });
+        },
+        getAllDetails: function(inspectId, isOnline, isBd) { //获取人员图标的所有信息
+            $.extend(this.inspectSearchObj, this.inspectParameterObj);
+            this.inspectSearchObj.userIds = inspectId;
+            $.extend(this.eventSearchObj, this.eventParameterObj);
+            this.eventSearchObj.inspectorId = inspectId;
+            this.getInspectDetails(inspectId, isOnline, isBd);
+            this.getEventPageList();
+            this.searchEventByDate(); //确定根据时间进行事件的搜索
+            this.searchlineByDate(); //确定根据时间进行巡线记录的搜索
+            this.getInspectionPageList();
+        },
+        eventSearchList: function() { //搜索查询事件列表
+            this.getEventPageList();
+        },
+        InspectSearchList: function() { //搜索查询巡检列表
+            this.getInspectionPageList();
+        },
+        eventInspectLinkage: function() { //事件与巡检相关的联动
+            $(".panel-heading").click(function() {
+                var thisDiv = $(this).closest(".panel-default");
+                var otherDiv = $(this).closest(".panel-default").siblings(".panel-default");
+                if (thisDiv.find("div.collapse").is(":hidden")) {
+                    thisDiv.find("div.collapse").slideDown();
+                    thisDiv.find(".panel-heading span").removeClass('glyphicon-menu-down').addClass("glyphicon-menu-up");
+                } else {
+                    thisDiv.find("div.collapse").slideUp();
+                    thisDiv.find(".panel-heading span").removeClass('glyphicon-menu-up').addClass("glyphicon-menu-down");
+                }
+                otherDiv.find("div.collapse").slideUp();
+                otherDiv.find(".panel-heading span").removeClass('glyphicon-menu-up').addClass("glyphicon-menu-down");
+            })
+        },
+        bindDateDiyEvent: function() { //时间控件
+            $("#datetimeStartEvent").datetimepicker({
+                format: 'yyyy-mm-dd',
+                minView: 'month',
+                language: 'zh-CN',
+                autoclose: true,
+            }).on("click", function() {
+                $("#datetimeStartEvent").datetimepicker("setEndDate", $("#datetimeEndEvent").val());
+            });
+            $("#datetimeEndEvent").datetimepicker({
+                format: 'yyyy-mm-dd',
+                minView: 'month',
+                language: 'zh-CN',
+                autoclose: true,
+            }).on("click", function() {
+                $("#datetimeEndEvent").datetimepicker("setStartDate", $("#datetimeStartEvent").val());
+                $("#datetimeEndEvent").datetimepicker("setEndDate", new Date());
+            });
 
-        $("#datetimeStartInspect").datetimepicker({
-            format: 'yyyy-mm-dd',
-            minView: 'month',
-            language: 'zh-CN',
-            autoclose: true,
-        }).on("click", function() {
-            $("#datetimeStartInspect").datetimepicker("setEndDate", $("#datetimeEndInspect").val());
-        });
-        $("#datetimeEndInspect").datetimepicker({
-            format: 'yyyy-mm-dd',
-            minView: 'month',
-            language: 'zh-CN',
-            autoclose: true,
-        }).on("click", function() {
-            $("#datetimeEndInspect").datetimepicker("setStartDate", $("#datetimeStartInspect").val());
-            $("#datetimeEndInspect").datetimepicker("setEndDate", new Date());
-        });
-    },
-    getCurrentTime: function() {
-        var date = new Date().Format("yyyy-MM-dd");
-        $("#datetimeStartInspect").val(date);
-        $("#datetimeEndInspect").val(date);
-        $("#datetimeStartEvent").val(date);
-        $("#datetimeEndEvent").val(date);
-    },
-    searchEventByDate: function() { //事件的时间控件搜索
-        var _this = this;
-        this.$eventDate.click(function() {
-            var datetimeStartEvent = $("#datetimeStartEvent").val();
-            var datetimeEndEvent = $("#datetimeEndEvent").val();
-            _this.eventSearchObj.startDate = datetimeStartEvent;
-            _this.eventSearchObj.endDate = datetimeEndEvent;
-            _this.getEventPageList();
-        });
-    },
-    searchlineByDate: function() { //巡线的时间控件搜索
-        var _this = this;
-        this.$lineDate.click(function() {
-            var datetimeStartInspect = $("#datetimeStartInspect").val();
-            var datetimeEndInspect = $("#datetimeEndInspect").val();
-            _this.inspectSearchObj.startDate = datetimeStartInspect;
-            _this.inspectSearchObj.endDate = datetimeEndInspect;
-            _this.getInspectionPageList();
-        });
-    },
-}
+            $("#datetimeStartInspect").datetimepicker({
+                format: 'yyyy-mm-dd',
+                minView: 'month',
+                language: 'zh-CN',
+                autoclose: true,
+            }).on("click", function() {
+                $("#datetimeStartInspect").datetimepicker("setEndDate", $("#datetimeEndInspect").val());
+            });
+            $("#datetimeEndInspect").datetimepicker({
+                format: 'yyyy-mm-dd',
+                minView: 'month',
+                language: 'zh-CN',
+                autoclose: true,
+            }).on("click", function() {
+                $("#datetimeEndInspect").datetimepicker("setStartDate", $("#datetimeStartInspect").val());
+                $("#datetimeEndInspect").datetimepicker("setEndDate", new Date());
+            });
+        },
+        getCurrentTime: function() {
+            var date = new Date().Format("yyyy-MM-dd");
+            $("#datetimeStartInspect").val(date);
+            $("#datetimeEndInspect").val(date);
+            $("#datetimeStartEvent").val(date);
+            $("#datetimeEndEvent").val(date);
+        },
+        searchEventByDate: function() { //事件的时间控件搜索
+            var _this = this;
+            this.$eventDate.click(function() {
+                var datetimeStartEvent = $("#datetimeStartEvent").val();
+                var datetimeEndEvent = $("#datetimeEndEvent").val();
+                _this.eventSearchObj.startDate = datetimeStartEvent;
+                _this.eventSearchObj.endDate = datetimeEndEvent;
+                _this.getEventPageList();
+            });
+        },
+        searchlineByDate: function() { //巡线的时间控件搜索
+            var _this = this;
+            this.$lineDate.click(function() {
+                var datetimeStartInspect = $("#datetimeStartInspect").val();
+                var datetimeEndInspect = $("#datetimeEndInspect").val();
+                _this.inspectSearchObj.startDate = datetimeStartInspect;
+                _this.inspectSearchObj.endDate = datetimeEndInspect;
+                _this.getInspectionPageList();
+            });
+        },
+    }
+    //判断是否存在管网权限
+var isExistNet = {
+        $shijian: $(".shijian"),
+        $network: $(".network"),
+        init: function() {
+            this.requestServer();
+            // var isExist = true;
+            // if (!isExist) {
+            //     return; //不存在
+            // }
+            // this.renderNet();
+        },
+        requestServer: function() {
+            var that = this;
+            $.ajax({
+                type: 'GET',
+                url: "/cloudlink-core-framework/menu/checkAccess?token=" + lsObj.getLocalStorage('token'),
+                contentType: "application/json",
+                data: { "appId": "0c753fdd-5f54-4b24-bf50-491ea5eb1a84", "menuCode": "pipeline" },
+                dataType: "json",
+                success: function(data, state) {
+                    if (data.success == 1) {
+                        if (data.rows[0].access) {
+                            that.renderNet();
+                        }
 
-//巡检记录播放
+                    }
+                }
+            });
+        },
+        renderNet: function() {
+            this.$shijian.removeClass("fr").addClass("fl");
+            this.$network.removeClass("hidden");
+            pipeLineObj.init(mapObj.$bdMap);
+        }
+    }
+    //巡检记录播放
 function palyInspect(e) {
     var inspectId = $(e).closest("div.record_details").find("input[name=inspect_id_m]").val();
     var flag = $(e).closest("div.record_details").find("input[name=flag_m]").val();
