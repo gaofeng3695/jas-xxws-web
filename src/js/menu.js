@@ -5,10 +5,10 @@ var vm = new Vue({
     userBo: JSON.parse(lsObj.getLocalStorage("userBo")),
     initRouteName: ''
   },
-  created: function () {},
+  created: function () { },
   mounted: function () {
     // this.$nextTick(function () {
-      this.getMenuTree();
+    this.getMenuTree();
     // })
   },
   methods: {
@@ -25,18 +25,24 @@ var vm = new Vue({
           if (res && res.success === 1) {
             _that.menuData = res.rows;
             _that.addSysadmin(_that.menuData, false);
-            setTimeout(function(){routerObj.init()},100);
+            setTimeout(function () { routerObj.init() }, 100);
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
           }
         }
       });
     },
-    addSysadmin :function(arr, parent) {
+    addSysadmin: function (arr, parent) {
       for (var i = 0; i < arr.length; i++) {
         var item = arr[i];
         if (parent) {
-          parent.lockIcon = item.pageUrl && item.pageUrl.length > 0 ? false : true;
+          var lockIcon = item.pageUrl && item.pageUrl.length > 0 ? '0' : '1';
+          str = str + lockIcon;
+          if (str.indexOf('0') == -1) {
+            parent.lockIcon = true;
+          } else {
+            parent.lockIcon = false;
+          }
         } else {
           item.lockIcon = false;
         }
@@ -45,6 +51,7 @@ var vm = new Vue({
           item.isSysadmin = this.userBo.isSysadmin;
         }
         if (item.children.length > 0) {
+          var str = '';
           this.addSysadmin(item.children, item)
         }
       }
