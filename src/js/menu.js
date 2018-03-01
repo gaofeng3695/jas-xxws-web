@@ -127,8 +127,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/index.html");
           vm.loadRelativePage('#/index');
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击首页');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击首页');
           }
         },
         after: function () {
@@ -140,8 +140,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/event.html");
           vm.loadRelativePage("#/event");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击事件管理');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击事件管理');
           }
         },
         after: function () {
@@ -153,8 +153,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/task.html");
           vm.loadRelativePage("#/task");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击任务管理');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击任务管理');
           }
         },
         after: function () {
@@ -166,8 +166,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/maintenance.html");
           vm.loadRelativePage("#/maintenance");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击维修维护');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击维修维护');
           }
         },
         after: function () {
@@ -179,8 +179,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/track.html");
           vm.loadRelativePage('#/track');
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击巡线记录');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击巡线记录');
           }
         },
         after: function () {
@@ -192,8 +192,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/securityPlan.html");
           vm.loadRelativePage("#/securityPlan");
-          if (zhugeSwitch == 1) {
-            zhuge.track('计划管理');
+          if (tjSwitch == 1) {
+            tjSdk.track('计划管理');
           }
         },
         after: function () {
@@ -205,8 +205,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/securityRecord.html");
           vm.loadRelativePage("#/securityRecord");
-          if (zhugeSwitch == 1) {
-            zhuge.track('入户安检记录');
+          if (tjSwitch == 1) {
+            tjSdk.track('入户安检记录');
           }
         },
         after: function () {
@@ -218,8 +218,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/userList.html");
           vm.loadRelativePage("#/userList");
-          if (zhugeSwitch == 1) {
-            zhuge.track('用户台账');
+          if (tjSwitch == 1) {
+            tjSdk.track('用户台账');
           }
         },
         after: function () {
@@ -231,8 +231,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/userArea.html");
           vm.loadRelativePage("#/userArea");
-          if (zhugeSwitch == 1) {
-            zhuge.track('片区管理');
+          if (tjSwitch == 1) {
+            tjSdk.track('片区管理');
           }
         },
         after: function () {
@@ -244,8 +244,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/facilityList.html");
           vm.loadRelativePage("#/facilityList");
-          if (zhugeSwitch == 1) {
-            zhuge.track('设施台账');
+          if (tjSwitch == 1) {
+            tjSdk.track('设施台账');
           }
         },
         after: function () {
@@ -257,8 +257,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/facilityInspect.html");
           vm.loadRelativePage("#/facilityInspect");
-          if (zhugeSwitch == 1) {
-            zhuge.track('设施检查');
+          if (tjSwitch == 1) {
+            tjSdk.track('设施检查');
           }
         },
         after: function () {
@@ -270,8 +270,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/map.html");
           vm.loadRelativePage("#/map");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击一张图');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击一张图');
           }
         },
         after: function () {
@@ -283,8 +283,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/none.html");
           vm.loadRelativePage("#/equipment");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击设备管理');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击设备管理');
           }
         },
         after: function () {
@@ -296,8 +296,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/none.html");
           vm.loadRelativePage("#/statistics");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击统计分析');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击统计分析');
           }
         },
         after: function () {
@@ -309,8 +309,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/management.html");
           vm.loadRelativePage("#/organization");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击组织结构管理');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击组织结构管理');
           }
         },
         after: function () {
@@ -322,8 +322,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/removemanager.html");
           vm.loadRelativePage("#/removemanager");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击系统管理员移交');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击系统管理员移交');
           }
         },
         after: function () {
@@ -335,8 +335,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/certificationEnterprised.html");
           vm.loadRelativePage("#/certification");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击企业认证');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击企业认证');
           }
         },
         after: function () {
@@ -348,8 +348,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/peoplemanager.html");
           vm.loadRelativePage("#/managementuser");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击人员管理');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击人员管理');
           }
         },
         after: function () {
@@ -361,8 +361,8 @@ var routerObj = {
         on: function () {
           vm.loadRelativePage("/src/html/none.html");
           // vm.loadRelativePage("#/news");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击消息中心');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击消息中心');
           }
         },
         after: function () {
@@ -374,8 +374,8 @@ var routerObj = {
         on: function () {
           vm.loadRelativePage("/src/html/personal.html");
           // vm.loadRelativePage("#/personal");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击个人资料');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击个人资料');
           }
         },
         after: function () {
@@ -387,8 +387,8 @@ var routerObj = {
         on: function () {
           vm.loadRelativePage("/src/html/forgetPassword.html");
           // vm.loadRelativePage("#/updatepass");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击修改密码');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击修改密码');
           }
         },
         after: function () {
@@ -400,8 +400,8 @@ var routerObj = {
         on: function () {
           vm.loadRelativePage("/src/html/setLogin.html");
           // vm.loadRelativePage("#/setLogin");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击登陆设置');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击登陆设置');
           }
         },
         after: function () {
@@ -413,8 +413,8 @@ var routerObj = {
         on: function () {
           vm.loadRelativePage("/src/html/help.html");
           // vm.loadRelativePage("#/help");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击帮助中心');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击帮助中心');
           }
         },
         after: function () {
@@ -426,8 +426,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/securityPlan.html");
           vm.loadRelativePage("#/securityPlan");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击计划管理');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击计划管理');
           }
         },
         after: function () {
@@ -439,8 +439,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/securityRecord.html");
           vm.loadRelativePage("#/securityRecord");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击入户安检记录');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击入户安检记录');
           }
         },
         after: function () {
@@ -452,8 +452,8 @@ var routerObj = {
         on: function () {
           // vm.loadRelativePage("/src/html/customTemplates.html");
           vm.loadRelativePage("#/customModule");
-          if (zhugeSwitch == 1) {
-            zhuge.track('点击事件类型自定义');
+          if (tjSwitch == 1) {
+            tjSdk.track('点击事件类型自定义');
           }
         },
         after: function () {
