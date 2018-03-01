@@ -1,8 +1,8 @@
-$(function () {
+$(function() {
     enterprisedObj.init();
 });
 /*删除图片*/
-function closebusinessImg (e) {
+function closebusinessImg(e) {
     $(e).closest(".business_enterprise_images").remove();
     for (var i = 0; i < $(".business_img_file").find("input[name='file']").length; i++) {
         if ($(".business_img_file").find("input").eq(i).attr("data-value") == $(e).attr("data-key")) {
@@ -12,7 +12,7 @@ function closebusinessImg (e) {
 
 }
 /*删除图片*/
-function closeIndefityImg (e) {
+function closeIndefityImg(e) {
     $(e).closest(".identify_enterprise_images").remove();
     for (var i = 0; i < $(".identify_img_file").find("input[name='file']").length; i++) {
         if ($(".identify_img_file").find("input").eq(i).attr("data-value") == $(e).attr("data-key")) {
@@ -22,7 +22,7 @@ function closeIndefityImg (e) {
 
 }
 /*删除图片*/
-function closeRoseImg (e) {
+function closeRoseImg(e) {
     $(e).closest(".rose_enterprise_images").remove();
     for (var i = 0; i < $(".rose_img_file").find("input[name='file']").length; i++) {
         if ($(".rose_img_file").find("input").eq(i).attr("data-value") == $(e).attr("data-key")) {
@@ -43,26 +43,26 @@ var enterprisedObj = {
     $flag: true, //用于将按钮进行锁死操作。
     imgIndex: 0,
     userBo: JSON.parse(lsObj.getLocalStorage("userBo")),
-    init: function () {
+    init: function() {
         this.authenticationstatus();
         this.bindEvent();
     },
-    bindEvent: function () {
+    bindEvent: function() {
         var that = this;
-        that.$authentication.click(function () { //认证第一步
+        that.$authentication.click(function() { //认证第一步
             $(".enterpriseBasicInfo").hide();
             $(".certification_main").show();
         });
-        that.$submitApplay.click(function () { //认证第二步
+        that.$submitApplay.click(function() { //认证第二步
             $(".certification_main").hide();
             $(".enterpriseInformation").show();
             $("#enterpriseName").val(that.userBo.enterpriseName);
         });
-        that.$returnPage.click(function () { //认证第二步 里面的 返回
+        that.$returnPage.click(function() { //认证第二步 里面的 返回
             $(".certification_main").hide();
             $(".enterpriseBasicInfo").show();
         });
-        that.$submitInformation.click(function () { //认证第三步
+        that.$submitInformation.click(function() { //认证第三步
             if (that.$flag) {
                 if (that.verify()) {
                     that.$flag = false;
@@ -70,12 +70,12 @@ var enterprisedObj = {
                 }
             }
         });
-        that.$returnInformPage.click(function () { //认证第三步 里面的 返回
+        that.$returnInformPage.click(function() { //认证第三步 里面的 返回
             $(".enterpriseInformation").hide();
             $(".certification_main").show();
         });
         /*上传营业执照进行验证*/
-        that.$addBusinessImg.click(function () {
+        that.$addBusinessImg.click(function() {
             var imgNum = $(".business_img_list").find(".business_enterprise_images").length;
             if (imgNum <= 2) {
                 $(".upload_business_picture").trigger("click");
@@ -84,7 +84,7 @@ var enterprisedObj = {
             }
         });
         /**上传法人身份证进行验证 */
-        that.$addidentifyImg.click(function () {
+        that.$addidentifyImg.click(function() {
             var imgNum = $(".identify_img_list").find(".identify_enterprise_images").length;
             if (imgNum <= 1) {
                 $(".upload_identify_picture").trigger("click");
@@ -93,7 +93,7 @@ var enterprisedObj = {
             }
         });
         /*上传企业人员花名册 */
-        that.$addroseImg.click(function () {
+        that.$addroseImg.click(function() {
             var imgNum = $(".rose_img_list").find('.rose_enterprise_images').length;
             if (imgNum <= 5) {
                 $(".upload_rose_picture").trigger("click");
@@ -102,7 +102,7 @@ var enterprisedObj = {
             }
         });
     },
-    authenticationstatus: function () { //获取当前企业的认证状态 0未认证；-1驳回状态；1通过认证；2等待认证
+    authenticationstatus: function() { //获取当前企业的认证状态 0未认证；-1驳回状态；1通过认证；2等待认证
         var that = this;
         var _data = {
             "enterpriseId": that.userBo.enterpriseId
@@ -112,7 +112,7 @@ var enterprisedObj = {
             url: '/cloudlink-core-framework/commonData/enterpriseApp/getPageList?token=' + lsObj.getLocalStorage("token"),
             contentType: "application/json",
             data: JSON.stringify(_data),
-            success: function (data) {
+            success: function(data) {
                 if (data.success == 1) {
                     $(".enterpriseBasicInfo .enterpriseName").text(data.rows[0].enterpriseName);
                     // if (data.rows[0].enterpriseScale == 1) {
@@ -128,15 +128,16 @@ var enterprisedObj = {
                     // }
                     var limitUseCount = data.rows[0].upperLimitUserCount;
                     var version = false; // 版本
+                    var versionName = data.rows[0].versionName;
                     if (data.rows[0].payStatus == 1) {
-                        $(".enterpriseBasicInfo .payStatus").text("免费");
+                        $(".enterpriseBasicInfo .payStatus").text("（免费）");
                     } else if (data.rows[0].payStatus == 2) {
-                        $(".enterpriseBasicInfo .payStatus").text("试用");
+                        $(".enterpriseBasicInfo .payStatus").text("（试用）");
                     } else {
-                        $(".enterpriseBasicInfo .payStatus").text("收费");
                         limitUseCount = '无限';
                         version = true;
                     }
+                    $(".enterpriseBasicInfo .useVersion").text(versionName);
                     var html1 = '<span class="curentCount">' +
                         data.rows[0].currentUserCount +
                         '</span> / <span>' + limitUseCount + '</span>';
@@ -146,7 +147,8 @@ var enterprisedObj = {
                     } else {
                         $('.enterpriseScale').children().eq(0).removeClass('red');
                     }
-                    $(".enterpriseBasicInfo .useVersion").text(data.rows[0].versionName);
+
+
                     $(".enterpriseBasicInfo .enterpriseCreateTime").text(data.rows[0].enterpriseRegisterTime);
                     if (data.rows[0].expireTime != null) {
                         $(".enterpriseBasicInfo .expireTime").text(data.rows[0].expireTime);
@@ -178,7 +180,7 @@ var enterprisedObj = {
             }
         });
     },
-    verify: function () {
+    verify: function() {
         var that = this;
         if (!that.checkEnterprised()) {
             return false;
@@ -190,7 +192,7 @@ var enterprisedObj = {
             return true;
         }
     }, //企业认证所需要的信息进行必填判断
-    subBusinessmitImg: function () { //进行图片的上传
+    subBusinessmitImg: function() { //进行图片的上传
         var that = this;
         var imgLength = $(".business_img_list").find(".business_enterprise_images").length;
         if (imgLength == that.imgIndex) {
@@ -201,7 +203,7 @@ var enterprisedObj = {
             this.subBusinessmitImgSycn(picid);
         }
     },
-    subBusinessmitImgSycn: function (_picid) {
+    subBusinessmitImgSycn: function(_picid) {
         var that = this;
         $.ajaxFileUpload({
             url: "/cloudlink-core-file/attachment/web/v1/save?businessId=" + that.userBo.enterpriseId + "&bizType=pic_business&token=" + lsObj.getLocalStorage("token"),
@@ -211,13 +213,13 @@ var enterprisedObj = {
             dataType: "json",
             type: "POST",
             async: false,
-            success: function (data, status) {
+            success: function(data, status) {
                 var statu = data.success;
                 if (statu == 1) {
                     that.imgIndex = that.imgIndex + 1;
                     that.subBusinessmitImg();
                 } else {
-                    xxwsWindowObj.xxwsAlert("当前网络不稳定", function () {
+                    xxwsWindowObj.xxwsAlert("当前网络不稳定", function() {
                         that.imgIndex = 0;
                         that.again();
                     });
@@ -225,7 +227,7 @@ var enterprisedObj = {
             }
         });
     },
-    submitIdentify: function () {
+    submitIdentify: function() {
         var that = this;
         var num = $(".identify_img_list").find(".identify_enterprise_images").length;
         if (num == 0 || num == that.imgIndex) {
@@ -236,7 +238,7 @@ var enterprisedObj = {
             that.submitIdentifySycn(picid);
         }
     },
-    submitIdentifySycn: function (_picid) {
+    submitIdentifySycn: function(_picid) {
         var that = this;
         $.ajaxFileUpload({
             url: "/cloudlink-core-file/attachment/web/v1/save?businessId=" + that.userBo.enterpriseId + "&bizType=pic_identity&token=" + lsObj.getLocalStorage("token"),
@@ -246,13 +248,13 @@ var enterprisedObj = {
             dataType: "json",
             type: "POST",
             async: false,
-            success: function (data, status) {
+            success: function(data, status) {
                 var statu = data.success;
                 if (statu == 1) {
                     that.imgIndex = that.imgIndex + 1;
                     that.submitIdentify();
                 } else {
-                    xxwsWindowObj.xxwsAlert("当前网络不稳定", function () {
+                    xxwsWindowObj.xxwsAlert("当前网络不稳定", function() {
                         that.imgIndex = 0;
                         that.again();
                     });
@@ -260,7 +262,7 @@ var enterprisedObj = {
             }
         });
     },
-    submitRose: function () {
+    submitRose: function() {
         var that = this;
         var num = $(".rose_img_list").find(".rose_enterprise_images").length;
         if (num == 0 || num == that.imgIndex) {
@@ -270,7 +272,7 @@ var enterprisedObj = {
             that.submitRoseSycn(picid);
         }
     },
-    submitRoseSycn: function (_picid) {
+    submitRoseSycn: function(_picid) {
         var that = this;
         $.ajaxFileUpload({
             url: "/cloudlink-core-file/attachment/web/v1/save?businessId=" + that.userBo.enterpriseId + "&bizType=pic_roster&token=" + lsObj.getLocalStorage("token"),
@@ -280,13 +282,13 @@ var enterprisedObj = {
             dataType: "json",
             type: "POST",
             async: false,
-            success: function (data, status) {
+            success: function(data, status) {
                 var statu = data.success;
                 if (statu == 1) {
                     that.imgIndex = that.imgIndex + 1;
                     that.submitRose();
                 } else {
-                    xxwsWindowObj.xxwsAlert("当前网络不稳定", function () {
+                    xxwsWindowObj.xxwsAlert("当前网络不稳定", function() {
                         that.imgIndex = 0;
                         that.again();
                     });
@@ -294,7 +296,7 @@ var enterprisedObj = {
             }
         });
     },
-    fillInformation: function () { //进行企业信息的填写
+    fillInformation: function() { //进行企业信息的填写
         var that = this;
         var enterpriseName = $("#enterpriseName").val().trim();
         var enterpriseCode = $("#enterpriseCode").val().trim();
@@ -304,13 +306,13 @@ var enterprisedObj = {
             contentType: "application/json",
             data: JSON.stringify({ "objectId": that.userBo.enterpriseId, "enterpriseName": enterpriseName, "registerNum": enterpriseCode }),
             dataType: "json",
-            success: function (data) {
+            success: function(data) {
                 if (data.success == 1) {
                     var defaultOptions = {
                         tip: '申请成功',
                         name_title: '提示',
                         name_confirm: '确定',
-                        callBack: function () {
+                        callBack: function() {
                             $(".enterpriseInformation").hide();
                             $(".authentication").hide();
                             $(".enterpriseBasicInfo").show();
@@ -320,13 +322,13 @@ var enterprisedObj = {
                     };
                     xxwsWindowObj.xxwsAlert(defaultOptions);
                 } else if (data.code == "402") {
-                    xxwsWindowObj.xxwsAlert("您好，该公司名称已被占用，请联系客服。", function () {
+                    xxwsWindowObj.xxwsAlert("您好，该公司名称已被占用，请联系客服。", function() {
                         that.imgIndex = 0;
                         that.deleteImgByEnterpriseId(); //处于当前页面，可以再次进行提交数据
                     });
 
                 } else {
-                    xxwsWindowObj.xxwsAlert("当前网络不稳定", function () {
+                    xxwsWindowObj.xxwsAlert("当前网络不稳定", function() {
                         that.imgIndex = 0;
                         that.deleteImgByEnterpriseId(); //处于当前页面，可以再次进行提交数据
 
@@ -336,7 +338,7 @@ var enterprisedObj = {
             }
         });
     },
-    deleteImgByEnterpriseId: function () { //二次上传的时候，进行以前上传的文件先进行删除
+    deleteImgByEnterpriseId: function() { //二次上传的时候，进行以前上传的文件先进行删除
         var that = this;
         var bizArray = ["pic_business", "pic_identity", "pic_roster"];
         var enterArray = [that.userBo.enterpriseId];
@@ -346,28 +348,28 @@ var enterprisedObj = {
             url: '/cloudlink-core-file/attachment/delBizAndFileByBizIdsAndBizAttrs?token=' + lsObj.getLocalStorage("token"),
             data: JSON.stringify({ "bizTypes": bizArray, "bizIds": enterArray }),
             dataType: "json",
-            success: function (data) {
+            success: function(data) {
                 if (data.success == 1) {
                     that.again();
                     $(".enterpriseBasicInfo").hide();
                     $(".enterpriseInformation").show();
                     $("#enterpriseName").val(that.userBo.enterpriseName);
                 } else {
-                    xxwsWindowObj.xxwsAlert("当前网络不稳定", function () {
+                    xxwsWindowObj.xxwsAlert("当前网络不稳定", function() {
                         that.again();
                     });
                 }
             }
         });
     },
-    viewEnterpriseInformation: function () { //查看企业信息  暂留功能
+    viewEnterpriseInformation: function() { //查看企业信息  暂留功能
         var that = this;
         $.ajax({
             type: "GET",
             dataType: "json",
             url: '/cloudlink-core-framework/enterprise/getById?token=' + lsObj.getLocalStorage("token"),
             data: { "objectId": that.userBo.enterpriseId },
-            success: function (data) {
+            success: function(data) {
                 if (data.success == 1) {
                     $("#enterpriseNames").val(data.rows[0].enterpriseName);
                     $("#enterpriseCodes").val(data.rows[0].registerNum);
@@ -376,14 +378,14 @@ var enterprisedObj = {
             }
         });
     },
-    viewBusinessImg: function () {
+    viewBusinessImg: function() {
         var that = this;
         $.ajax({
             type: "GET",
             dataType: "json",
             url: '/cloudlink-core-file/attachment/getFileIdListByBizIdAndBizAttr?token=' + lsObj.getLocalStorage("token"),
             data: { "businessId": that.userBo.enterpriseId, "bizType": 'pic_business' },
-            success: function (data) {
+            success: function(data) {
                 // alert(JSON.stringify(data));
                 if (data.success == 1) {
                     var imagesL = "";
@@ -398,14 +400,14 @@ var enterprisedObj = {
             }
         });
     },
-    viewIdentifyImg: function () {
+    viewIdentifyImg: function() {
         var that = this;
         $.ajax({
             type: "GET",
             dataType: "json",
             url: '/cloudlink-core-file/attachment/getFileIdListByBizIdAndBizAttr?token=' + lsObj.getLocalStorage("token"),
             data: { "businessId": that.userBo.enterpriseId, "bizType": 'pic_identity' },
-            success: function (data) {
+            success: function(data) {
                 if (data.success == 1) {
                     var imagesL = "";
                     //  图片的预览功能
@@ -424,7 +426,7 @@ var enterprisedObj = {
             }
         });
     },
-    checkEnterprised: function () {
+    checkEnterprised: function() {
         var enterpriseName = $("#enterpriseName").val().trim();
         if (enterpriseName.length === 0) {
             $(".enterprisenote").text("请输入企业名称");
@@ -443,7 +445,7 @@ var enterprisedObj = {
             return true;
         }
     },
-    checkEnterpriseCode: function () {
+    checkEnterpriseCode: function() {
         var enterpriseCode = $("#enterpriseCode").val().trim();
         if (enterpriseCode == "" || enterpriseCode == "请填写社会统一信用代码（必填）") {
             $(".noteCode").text("请输入社会统一信用代码");
@@ -453,7 +455,7 @@ var enterprisedObj = {
             return true;
         }
     },
-    checkBusinessImg: function () {
+    checkBusinessImg: function() {
         if ($(".business_img_list").find(".business_enterprise_images").length == 0) {
             $(".businessnote").text("请至少上传一张营业执照");
             return false;
@@ -463,13 +465,13 @@ var enterprisedObj = {
         }
 
     },
-    searchIdea: function () { //获取驳回意见
+    searchIdea: function() { //获取驳回意见
         $.ajax({
             type: 'get',
             dataType: "json",
             url: '/cloudlink-core-framework/enterprise/getAuthApproveContent?token=' + lsObj.getLocalStorage("token"),
             data: { "enterpriseId": this.userBo.enterpriseId },
-            success: function (data) {
+            success: function(data) {
                 if (data.success == 1) {
                     if (data.rows[0].approveContent != "" && data.rows[0].approveContent != null) {
                         $(".informResult span").text("审核未通过，未通过原因：【" + data.rows[0].approveContent + "】");
@@ -484,17 +486,17 @@ var enterprisedObj = {
             }
         });
     },
-    again: function () {
+    again: function() {
         this.$flag = true;
     }
 }
-$("#enterpriseName").blur(function () {
+$("#enterpriseName").blur(function() {
     enterprisedObj.checkEnterprised();
 });
-$("#enterpriseCode").blur(function () {
+$("#enterpriseCode").blur(function() {
     enterprisedObj.checkEnterpriseCode();
 });
 //查看大图
-function previewPicture (e) {
+function previewPicture(e) {
     viewPicObj.viewPic(e);
 };
