@@ -496,9 +496,12 @@ var inspectObj = {
             playerObj.close_player(function() {
                 eventObj.getInitialPoints();
             });
-            if (this.$inspectBtn.hasClass("active")) {} else {
-                this.addPoints();
-            }
+            // 修复 点击人员列表后，标注点消失 原因
+            this.addPoints();
+            // if (this.$inspectBtn.hasClass("active")) {} else {
+            //     console.log('else---');
+            //     this.addPoints();
+            // }
             this.$inspectBtn.addClass("active");
             //巡检员信息
             var peopleLeave = Enumerable.From(this._inspectData.rows).Where(function(x) {
