@@ -185,7 +185,6 @@ var eventObj = {
     },
     eventTabListClick: function(eventId) { //事件列表点击事件
         var _this = this;
-        console.log('111111111');
         if (this.$eventBtn.hasClass("active")) {} else {
             this.addPoints();
         }
@@ -738,7 +737,6 @@ var inspectObj = {
             });
         },
         addPoints: function() { //添加巡检点
-            console.log('添加巡检点--');
             for (var i = 0; i < this.inspectPoints.length; i++) {
                 var label = new BMap.Label(this.inspectPoints[i].name, { offset: new BMap.Size(30, 3) });
                 if (this.inspectPoints[i].isOnline == 1) {
@@ -751,7 +749,6 @@ var inspectObj = {
             }
         },
         removePoints: function() { //删除巡检点
-            console.log('删除巡检点---');
             for (var i = 0; i < this.inspectPoints.length; i++) {
                 mapObj.$bdMap.removeOverlay(this.inspectPoints[i].value);
             }
