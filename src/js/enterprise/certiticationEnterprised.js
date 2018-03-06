@@ -152,6 +152,8 @@ var enterprisedObj = {
                     $(".enterpriseBasicInfo .enterpriseCreateTime").text(data.rows[0].enterpriseRegisterTime);
                     if (data.rows[0].expireTime != null) {
                         $(".enterpriseBasicInfo .expireTime").text(data.rows[0].expireTime);
+                    } else {
+                        $(".enterpriseBasicInfo .expireTime").text("无");
                     }
                     if (data.rows[0].authenticateStatus == 0) { //未认证
                         $(".resultImg").css({ "background": "url(/src/images/common/noalready.png) no-repeat" });
