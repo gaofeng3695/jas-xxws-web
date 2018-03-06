@@ -8,7 +8,7 @@ var searchObj = { //维修维护工单列表高级搜索
         "startDate": "", //开始日期
         "endDate": "", //结束日期
         "keywordWeb": "", //高级搜索关键词
-        "originTypeCode": "",
+        "originTypeCode": '',
         "ids": [],
         "pageNum": 1, //第几页
         "pageSize": 10 //每页记录数
@@ -18,7 +18,7 @@ var searchObj = { //维修维护工单列表高级搜索
         "startDate": "", //开始日期
         "endDate": "", //结束日期
         "keywordWeb": "", //高级搜索关键词
-        "originTypeCode": "",
+        "originTypeCode": '',
         "ids": [],
         "pageNum": 1, //第几页
         "pageSize": 10 //每页记录数
@@ -67,7 +67,19 @@ var searchObj = { //维修维护工单列表高级搜索
             that.renderActive(obj);
             that.refreshTable();
         });
-
+        $('.maintenanceType').on('click', '.item', function() {
+            var key = $(this).parent().attr("data-class");
+            var value = $(this).attr("data-value");
+            if (key === 'date') {
+                that.setDate(value);
+            } else {
+                that.querryObj[key] = value;
+            }
+            var obj = {};
+            obj[key] = value;
+            that.renderActive(obj);
+            that.refreshTable();
+        });
         /* 搜索关键词 */
         $('#gf_Btn').click(function() {
             var s = $(this).parent().find('input').val().trim();
@@ -1721,6 +1733,7 @@ var exportObj = { //导出台账 导出工单 导出详情
 };
 
 $(function() { //数据初始化
+    optionRender.init();
     searchObj.init();
     userTable.init();
     addressSearchObj.init();
@@ -1745,3 +1758,64 @@ $(function() { //数据初始化
         }
     });
 });
+
+var optionRender = {
+    clickStr: "",
+    searchStr: "",
+    allType: "",
+    init: function() {
+        this.isExitHomePrivilege();
+    },
+    isExitHomePrivilege: function() {
+        var that = this;
+        $.ajax({
+            type: 'GET',
+            url: "/cloudlink-core-framework/menu/checkAccess?token=" + lsObj.getLocalStorage('token'),
+            contentType: "application/json",
+            data: { "appId": "0c753fdd-5f54-4b24-bf50-491ea5eb1a84", "menuCode": "securityRecord" },
+            dataType: "json",
+            success: function(data, state) {
+                if (data.success == 1) {
+                    that.isExitPipeline();
+                    if (data.rows[0].access) {
+                        var type = "'MO_01'";
+                        that.clickStr += '<li onclick="userTable.creatmtc(' + type + ')">入户整改</li>';
+                        that.searchStr += '<span class="item" data-value="MO_01">入户整改</span>'
+                    }
+                }
+            }
+        });
+    },
+    isExitPipeline: function() {
+        var that = this;
+        $.ajax({
+            type: 'GET',
+            url: "/cloudlink-core-framework/menu/checkAccess?token=" + lsObj.getLocalStorage('token'),
+            contentType: "application/json",
+            data: { "appId": "0c753fdd-5f54-4b24-bf50-491ea5eb1a84", "menuCode": "pipeline" },
+            dataType: "json",
+            success: function(data, state) {
+                if (data.success == 1) {
+                    if (data.rows[0].access) {
+                        var type = "'MO_02'";
+                        that.clickStr += '<li onclick="userTable.creatmtc(' + type + ')">管网设施</li>';
+                        that.searchStr += '<span class="item" data-value="MO_02">管网设施</span>';
+                    }
+                    that.render();
+                }
+            }
+        });
+    },
+    render: function() {
+        var type1 = "'MO_03'";
+        var type2 = "'MO_99'";
+        this.clickStr += '<li onclick="userTable.creatmtc(' + type1 + ')">巡检事件</li>';
+        this.clickStr += '<li onclick="userTable.creatmtc(' + type2 + ')">其他维修</li>';
+        this.searchStr += '<span class="item" data-value="MO_03">巡检事件</span>';
+        this.searchStr += '<span class="item" data-value="MO_99">其他维修</span>';
+        $(".addMaintenanceType").html("");
+        $(".addMaintenanceType").append(this.clickStr);
+        $(".maintenanceType").append(this.searchStr);
+    },
+
+}
