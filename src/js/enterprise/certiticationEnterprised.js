@@ -127,22 +127,18 @@ var enterprisedObj = {
                     //     $(".enterpriseBasicInfo .enterpriseScale").text("500人以上");
                     // }
                     var limitUseCount = data.rows[0].upperLimitUserCount;
-                    var version = false; // 版本
                     var versionName = data.rows[0].versionName;
                     if (data.rows[0].payStatus == 1) {
                         $(".enterpriseBasicInfo .payStatus").text("（免费）");
                     } else if (data.rows[0].payStatus == 2) {
                         $(".enterpriseBasicInfo .payStatus").text("（试用）");
-                    } else {
-                        limitUseCount = '无限';
-                        version = true;
                     }
                     $(".enterpriseBasicInfo .useVersion").text(versionName);
                     var html1 = '<span class="curentCount">' +
                         data.rows[0].currentUserCount +
                         '</span> / <span>' + limitUseCount + '</span>';
                     $(".enterpriseBasicInfo  .enterpriseScale").html(html1);
-                    if (data.rows[0].currentUserCount > data.rows[0].upperLimitUserCount && !version) {
+                    if (data.rows[0].currentUserCount > data.rows[0].upperLimitUserCount) {
                         $('.enterpriseScale').children().eq(0).addClass('red');
                     } else {
                         $('.enterpriseScale').children().eq(0).removeClass('red');
