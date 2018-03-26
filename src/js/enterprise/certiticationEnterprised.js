@@ -146,10 +146,13 @@ var enterprisedObj = {
 
 
                     $(".enterpriseBasicInfo .enterpriseCreateTime").text(data.rows[0].enterpriseRegisterTime);
-                    if (data.rows[0].expireTime != null) {
-                        $(".enterpriseBasicInfo .expireTime").text(data.rows[0].expireTime);
-                    } else {
+                    console.log(data.rows[0].payStatus);
+                    console.log(data.rows[0].versionName);
+                    if (data.rows[0].expireTime == null || (data.rows[0].payStatus == 1 && data.rows[0].versionName == "免费版")) {
                         $(".enterpriseBasicInfo .expireTime").text("无");
+                    } else {
+                        $(".enterpriseBasicInfo .expireTime").text(data.rows[0].expireTime);
+
                     }
                     if (data.rows[0].authenticateStatus == 0) { //未认证
                         $(".resultImg").css({ "background": "url(/src/images/common/noalready.png) no-repeat" });

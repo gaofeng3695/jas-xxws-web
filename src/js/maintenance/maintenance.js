@@ -203,9 +203,9 @@ var searchObj = { //维修维护工单列表高级搜索
     },
     GetDateStr: function(AddDayCount) {
         var dd = new Date();
-        dd.setDate(dd.getDate() + AddDayCount); //获取AddDayCount天后的日期 
+        dd.setDate(dd.getDate() + AddDayCount); //获取AddDayCount天后的日期
         var y = dd.getFullYear();
-        var m = dd.getMonth() + 1; //获取当前月份的日期 
+        var m = dd.getMonth() + 1; //获取当前月份的日期
         var d = dd.getDate();
         if (m < 10) {
             m = "0" + m;
@@ -1048,7 +1048,7 @@ var userTable = { //维修维护以及用户地址 设施选择 事件选择 维
             }]
         });
     },
-    getAreaList: function() { //获取片区下拉列表   
+    getAreaList: function() { //获取片区下拉列表
         var that = this;
         if (that._againArea) {
             return;
@@ -1792,7 +1792,7 @@ var optionRender = {
             type: 'GET',
             url: "/cloudlink-core-framework/menu/checkAccess?token=" + lsObj.getLocalStorage('token'),
             contentType: "application/json",
-            data: { "appId": "0c753fdd-5f54-4b24-bf50-491ea5eb1a84", "menuCode": "pipeline" },
+            data: { "appId": "0c753fdd-5f54-4b24-bf50-491ea5eb1a84", "menuCode": "facilityList" },
             dataType: "json",
             success: function(data, state) {
                 if (data.success == 1) {
