@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <link href="/lib/css/bootstrap.css" rel="stylesheet">
+   <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
+  <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+  <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+  <link href="/src/css/common/search_table.css" rel="stylesheet">
+  <link href="/src/css/common/view.pic.css" rel="stylesheet">
+  <link href="/src/css/node/allotNode.css" rel="stylesheet">
+   <link href="/src/css/event.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="page-wrapper">
+    <!-- container-fluid -->
+    <div class="container-fluid">
+      <!--地图-->
+      <div class="row">
+        <div class="allot_map">
+          <div id="allot_map"></div>
+          <div class="bottom_btn text-center">
+            <div id="drafting_down"></div>
+            <span class="map_up"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/地图-->
+    <div class="wrapper-main">
+      <!--高级搜索-->
+
+      <div class="container-fluid search_item_wrapper">
+        <div class="top">
+          <div class="row search_title">
+            <div class="col-lg-6 col-md-6 col-xs-12 btn_wrapper">
+              <div class="col=lg-10 col-xs-10">
+                <div class="item col-xs-4" data-value="20,21,30">全部</div>
+                <div class="item col-xs-4" data-value="20">已分配</div>
+                <div class="item col-xs-4" data-value="21,30">未分配</div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-xs-12 right_wrapper">
+              <div class="search_btn_right">
+                <div class="search_reset" id="gf_reset_Btn">重置</div>
+              </div>
+              <div class="search_wrapper">
+                <div class="input_wrapper">
+                  <input class="" id="searchInput" type="text" placeholder="输入关键字搜索">
+                </div>
+                <span class="mybtn" id="gf_Btn">确定</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/高级搜索-->
+      <!--数据列表-->
+      <div class="data_tab">
+        <div class="row">
+          <div class="container-fluid">
+            <div id="toolbar" class="btn-group">
+              <button @click="allotPeople" type="button" data-toggle="modal" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>分配
+                                </button>
+            </div>
+            <table id="table"></table>
+          </div>
+        </div>
+      </div>
+      <!--/数据列表-->
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+
+  <!--人员信息-->
+  <div id="stakeholder" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>人员添加<a class="close" data-dismiss="modal">×</a></h3>
+        </div>
+        <div class="modal-body">
+          <div class="sub_wrapper">
+            <ul id="people_list" class="ztree"></ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn_selectPeople" type="button" class="btn modal_active btn-primary">确定</button>
+          <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /#page-wrapper -->
+  <script type="text/javascript" src="/src/js/common/drafting.js"></script>
+  <script type="text/javascript" src="/lib/js/vue.min.js"></script>
+  <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript" src="/lib/js/common_base.js"></script>
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
+  <script type="text/javascript" src="https://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
+  <script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+  <script type="text/javascript" src="https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+  <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+  <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+  <script type="text/javascript" src="/src/js/common/common.js"></script>
+   <script type="text/javascript" src="/src/js/common/people.tree.js"></script>
+  <script type="text/javascript" src="/src/js/node/allotNode.js"></script>
+
+
+</body>
+
+</html>

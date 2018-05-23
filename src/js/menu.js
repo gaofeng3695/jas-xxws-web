@@ -244,6 +244,19 @@ var routerObj = {
           // // vm.sessionRoute('userArea');
         }
       },
+      '/allot': {
+        on: function () {
+          // vm.loadRelativePage("/src/html/userArea.html");
+          vm.loadRelativePage("#/allot");
+          if (tjSwitch == 1) {
+            tjSdk.track('必经点分配');
+          }
+        },
+        after: function () {
+          vm.$data.initRouteName = 'allot';
+          // // vm.sessionRoute('userArea');
+        }
+      },
       '/userArea': {
         on: function () {
           // vm.loadRelativePage("/src/html/userArea.html");

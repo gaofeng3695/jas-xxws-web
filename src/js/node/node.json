@@ -1,8 +1,9 @@
 {
   "status": 1,
+  "total":5,
   "rows": [{
     "oid": "1",
-    "name": "设备一",
+    "name": "必经点一",
     "code": "0001",
     "inspectionDays": "1",
     "inspectionTimes": 2,
@@ -17,7 +18,7 @@
     "remark": ""
   }, {
     "oid": "2",
-    "name": "设备一",
+    "name": "必经点一",
     "code": "0003",
     "inspectionDays": "4",
     "inspectionTimes": 1,
@@ -32,7 +33,7 @@
     "remark": ""
   }, {
     "oid": "3",
-    "name": "设备3",
+    "name": "必经点3",
     "code": "0005",
     "inspectionDays": "4",
     "inspectionTimes": 1,
@@ -47,7 +48,7 @@
     "remark": ""
   }, {
     "oid": "4",
-    "name": "设备4",
+    "name": "必经点4",
     "code": "0045",
     "inspectionDays": "2",
     "inspectionTimes": 3,
@@ -62,7 +63,7 @@
     "remark": ""
   }, {
     "oid": "5",
-    "name": "设备5",
+    "name": "必经点5",
     "code": "0046",
     "inspectionDays": "2",
     "inspectionTimes": 3,
