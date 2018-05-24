@@ -1,24 +1,3 @@
-// 表格操作的事件
-window.operateNode = {
-  //定位功能
-  'click .location': function (e, value, row, index) {
-    if ($(this).find('i').attr("class") == 'active') {} else {
-      $(".location").find('i').attr("class", "");
-      $(this).find('i').attr("class", "active");
-      mapObj.singlePointLocation(row);
-    }
-    $('body,html').animate({
-      scrollTop: 0
-    }, 500);
-    return false;
-  },
-  //查看详情
-  'click .check': function (e, value, row, index) {
-    alert(row.oid);
-    // $("#details").modal(); //打开详情模态框
-    return false;
-  }
-};
 var index = new Vue({
   el: "#page-wrapper",
   data: function () {
@@ -39,8 +18,15 @@ var index = new Vue({
     that.mapObj.enableScrollWheelZoom();
     drafting('allot_map', 'drafting_down'); //启动拖拽
     that.initTable();
+    that.bindEvent();
   },
   methods: {
+    bindEvent: function () {
+      var that = this;
+      $("#btn_selectPeople").click(function () {
+        that.selectPeople();
+      });
+    },
     initTable: function () {
       var that = this;
       $('#table').bootstrapTable({
@@ -139,7 +125,7 @@ var index = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '10%',
+            width: '5%',
             editable: true,
           }, {
             field: 'inspectionInterval', //域值
@@ -147,7 +133,7 @@ var index = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '10%',
+            width: '5%',
             // editable: true,
           }, {
             field: 'effectiveRadius', //域值
@@ -155,7 +141,7 @@ var index = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '10%',
+            width: '5%',
             editable: true,
           },
           {
@@ -164,12 +150,21 @@ var index = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '27%',
+            width: '25%',
+            editable: true,
+          }, {
+            field: 'peopleList', //域值
+            title: '巡检人员', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: '20%',
             editable: true,
           }, {
             field: 'operate',
             title: '操作',
             align: 'center',
+            class: "W60",
             events: {
               //定位功能
               'click .location': function (e, value, row, index) {
@@ -188,11 +183,18 @@ var index = new Vue({
                 alert(row.oid);
                 // $("#details").modal(); //打开详情模态框
                 return false;
+              },
+              //查看详情
+              'click .allotstyle': function (e, value, row, index) {
+                that.allotPeople(row);
+                return false;
               }
             },
-            width: '30%',
+            width: '40%',
             formatter: function (value, row, index) {
               return [
+                '<a class="allotstyle"  href="javascript:void(0)" title="分配">',
+                '<i></i>',
                 '<a class="location" href="javascript:void(0)" title="定位">',
                 '<i></i>',
                 '</a>',
@@ -247,7 +249,7 @@ var index = new Vue({
       that.drawNodeArray = [];
       var data = that.nodeInfoArrys;
       for (var i = 0; i < data.length; i++) {
-        point = new BMap.Point(data[i].lon, data[i].lat);
+        point = new BMap.Point(data[i].bdLon, data[i].bdLat);
         if (data[i].distributionStatus == 0) {
           myIcons = new BMap.Icon("/src/images/node/noallot.png", new BMap.Size(29, 42), {
             anchor: new BMap.Size(15, 42)
@@ -279,13 +281,44 @@ var index = new Vue({
         markers: markersArr
       });
     },
-    allotPeople: function () {
+    allotPeople: function (value) {
       var that = this;
+      var selectPeople = [];
+      var selectItem = [];
+      //是否选中条数
+      if (value.oid) {
+        selectItem.push(value);
+      } else {
+        selectItem = $('#table').bootstrapTable('getAllSelections');
+      }
+      if (selectItem.length == 0) {
+        xxwsWindowObj.xxwsAlert("请选中一行数据");
+        return;
+      }
       $("#stakeholder").modal();
       $("#stakeholder").on('shown.bs.modal', function (e) {
-        peopleTreeObj.requestPeopleTree($("#stakeholder"), that.selectPersonArr);
+        if (selectItem.length == 1) {
+          selectItem[0].peopleLiseId.forEach(function (item) {
+            selectPeople.push({
+              relationshipPersonId: item
+            })
+          });
+          peopleTreeObj.requestPeopleTree($("#stakeholder"), selectPeople);
+        } else {
+          peopleTreeObj.requestPeopleTree($("#stakeholder"), selectPeople);
+        }
+
       });
 
+    },
+    selectPeople: function () {
+      var ids = []; //获取点的id
+      var selectItem = $('#table').bootstrapTable('getAllSelections');
+      for (var i = 0; i < selectItem.length; i++) {
+        ids.push(selectItem[i].oid);
+      }
+      var dataObj = peopleTreeObj.getSelectPeople();
+      alert("人员分配" + dataObj.selectedName);
     }
   }
 });

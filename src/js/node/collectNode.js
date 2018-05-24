@@ -70,7 +70,7 @@ var index = new Vue({
       that.drawNodeArray = [];
       var data = that.nodeInfoArrys;
       for (var i = 0; i < data.length; i++) {
-        point = new BMap.Point(data[i].lon, data[i].lat);
+        point = new BMap.Point(data[i].bdLon, data[i].bdLat);
         if (data[i].distributionStatus == 0) {
           myIcons = new BMap.Icon("/src/images/node/noallot.png", new BMap.Size(29, 42), {
             anchor: new BMap.Size(15, 42)

@@ -89,6 +89,19 @@ html,
         }
       }
     }
+    .allotstyle {
+      i {
+        display: inline-block;
+        width: 22px;
+        height: 16px;
+        background: url(/src/images/node/allots.png) no-repeat;
+        vertical-align: middle;
+        margin: 0 5px;
+        &:hover {
+          background: url(/src/images/node/noallots.png) no-repeat;
+        }
+      }
+    }
   }
 }
 
