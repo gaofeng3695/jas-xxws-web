@@ -7,7 +7,8 @@ var index = new Vue({
       drawNodeArray: [], //当前绘制的点信息
       markerClusterer: null,
       searchObj: {},
-      selectPersonArr: []
+      selectPersonArr: [],
+      detailForm:{}
     }
   },
   mounted: function () {
@@ -180,8 +181,8 @@ var index = new Vue({
               },
               //查看详情
               'click .check': function (e, value, row, index) {
-                alert(row.oid);
-                // $("#details").modal(); //打开详情模态框
+              that.detailForm=row;
+                $("#details").modal(); //打开详情模态框
                 return false;
               },
               //查看详情
@@ -251,7 +252,7 @@ var index = new Vue({
       for (var i = 0; i < data.length; i++) {
         point = new BMap.Point(data[i].bdLon, data[i].bdLat);
         if (data[i].distributionStatus == 0) {
-          myIcons = new BMap.Icon("/src/images/node/noallot.png", new BMap.Size(29, 42), {
+          myIcons = new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
             anchor: new BMap.Size(15, 42)
           });
         } else {

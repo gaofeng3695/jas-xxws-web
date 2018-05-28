@@ -105,7 +105,7 @@ var index = new Vue({
       for (var i = 0; i < data.length; i++) {
         point = new BMap.Point(data[i].bdLon, data[i].bdLat);
         if (data[i].distributionStatus == 0) {
-          myIcons = new BMap.Icon("/src/images/node/noallot.png", new BMap.Size(29, 42), {
+          myIcons = new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
             anchor: new BMap.Size(15, 42)
           });
         } else {
@@ -352,7 +352,6 @@ var index = new Vue({
       /*如果是手动输入，则需要将坐标转换为百度坐标 */
 
       var that = this;
-
       var coordinate = coordtransform.wgs84togcj02(that.nodeForm.Lon, that.nodeForm.Lat);
       var coordinateBd = coordtransform.gcj02tobd09(coordinate[0], coordinate[1]);
       that.nodeForm.bdLon = coordinateBd[0];
@@ -361,6 +360,7 @@ var index = new Vue({
       new BMap.Geocoder().getLocation(point, function (result) {
         that.nodeForm.location = result.address;
       });
+      // console.log()
       // if (that.verrify()) {
         that.isFirst = true;
         that.isSecond = false;
