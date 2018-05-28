@@ -5,7 +5,7 @@ var vm = new Vue({
     userBo: JSON.parse(lsObj.getLocalStorage("userBo")),
     initRouteName: ''
   },
-  created: function () { },
+  created: function () {},
   mounted: function () {
     // this.$nextTick(function () {
     this.getMenuTree();
@@ -19,13 +19,17 @@ var vm = new Vue({
         // url: "/cloudlink-core-framework/menu/getTree?token=" + lsObj.getLocalStorage('token'),
         url: "/cloudlink-core-framework/commonData/payMenu/getTreeData?token=" + lsObj.getLocalStorage("token"),
         contentType: "application/json",
-        data: JSON.stringify({ "clientType": 'web' }),
+        data: JSON.stringify({
+          "clientType": 'web'
+        }),
         dataType: "json",
         success: function (res) {
           if (res && res.success === 1) {
             _that.menuData = res.rows;
             _that.addSysadmin(_that.menuData, false);
-            setTimeout(function () { routerObj.init() }, 100);
+            setTimeout(function () {
+              routerObj.init()
+            }, 100);
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候重试");
           }
@@ -225,6 +229,45 @@ var routerObj = {
         after: function () {
           vm.$data.initRouteName = 'userList';
           // // vm.sessionRoute('userList');
+        }
+      },
+      '/nodecollect': {
+        on: function () {
+          // vm.loadRelativePage("/src/html/userArea.html");
+          vm.loadRelativePage("#/nodecollect");
+          if (tjSwitch == 1) {
+            tjSdk.track('必经点采集');
+          }
+        },
+        after: function () {
+          vm.$data.initRouteName = 'nodecollect';
+          // // vm.sessionRoute('userArea');
+        }
+      },
+      '/taskNode': {
+        on: function () {
+          // vm.loadRelativePage("/src/html/userArea.html");
+          vm.loadRelativePage("#/taskNode");
+          if (tjSwitch == 1) {
+            tjSdk.track('必经点任务');
+          }
+        },
+        after: function () {
+          vm.$data.initRouteName = 'taskNode';
+          // // vm.sessionRoute('userArea');
+        }
+      },
+      '/allot': {
+        on: function () {
+          // vm.loadRelativePage("/src/html/userArea.html");
+          vm.loadRelativePage("#/allot");
+          if (tjSwitch == 1) {
+            tjSdk.track('必经点分配');
+          }
+        },
+        after: function () {
+          vm.$data.initRouteName = 'allot';
+          // // vm.sessionRoute('userArea');
         }
       },
       '/userArea': {
@@ -486,4 +529,3 @@ var routerObj = {
     that.router.init('/index');
   },
 };
-

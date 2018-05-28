@@ -6,7 +6,7 @@ var target = argv == '212'?'http://192.168.100.212:8050/':'http://192.168.100.21
 
 
 var  apiProxy = proxy('/c', {
-    target: target,
+    target: 'http://192.168.100.212:8050',
     changeOrigin: true,
     ws: true
 });
