@@ -21,7 +21,36 @@ var index = new Vue({
         name: "11",
         inspectionDays: 1
       },
+      //新增基本使用数据
+      isGetOrInput: false, //用于表示
+      isSecond: false,
+      isFirst: true,
+      nodeForm: {
+        location: "",
+        name: "",
+        code: "",
+        inspectionDays: "",
+        inspectionInterval: "",
+        Lon: "",
+        Lat: "",
+        remark: "",
+        effectiveRadius: ""
+      },
+      textCount: 160
     }
+  },
+  watch: {
+    nodeForm: {
+      handler: function (val) {
+        var that = this;
+        if (that.nodeForm.remark.length > 160) {
+          that.nodeForm.remark = that.nodeForm.remark.substring(0, 160);
+        }
+        this.textCount = 160 - that.nodeForm.remark.length;
+      },
+      deep: true
+    },
+
   },
   mounted: function () {
     var that = this;
@@ -31,7 +60,7 @@ var index = new Vue({
     that.mapObj.enableScrollWheelZoom();
     that.defaultCursor = that.mapObj.getDefaultCursor();
     that.draggingCursor = that.mapObj.getDraggingCursor();
-    that.requestNode();
+    that._requestNode();
     // $("#addEvent").modal()
   },
   methods: {
@@ -39,17 +68,21 @@ var index = new Vue({
       var that = this;
       that.isShowTool = false;
       // alert(this.searchInput);//进行ajax请求，获取点的信息
-      that.requestNode(that.searchInput, function () {
+      that._requestNode(that.searchInput, function () {
         that.isSearchNode = true;
       })
+
     },
-    requestNode: function (value, callback) {
+    _requestNode: function (value, callback) {
       var that = this;
       $.ajax({
         type: "get",
         contentType: "application/json",
         dataType: "json",
         url: "../js/node/node.json",
+        data: {
+          "keyword": that.searchInput
+        },
         success: function (data) {
           if (data.status == 1) {
             that.nodeInfoArrys = data.rows;
@@ -57,12 +90,12 @@ var index = new Vue({
               callback();
               return;
             }
-            that.drawPoint(); //根据请求的数据，进行点的绘制
+            that._drawPoint(); //根据请求的数据，进行点的绘制
           }
         }
       });
     },
-    drawPoint: function () {
+    _drawPoint: function () {
       var that = this;
       var myIcons = null;
       var markers = null;
@@ -95,17 +128,17 @@ var index = new Vue({
         });
         markers.addEventListener("click", function (e) {
           if (!that.isShowTool) {
-            that.pointClick(e);
+            that._pointClick(e);
           }
         });
         markers.addEventListener("dragging", function (e) {
-          that.editNodeLocation(e);
+          that._editNodeLocation(e);
         });
       }
-      that.addPoints();
+      that._addPoints();
     },
 
-    pointClick: function (e) {
+    _pointClick: function (e) {
       var that = this;
       for (var i = 0; i < this.drawNodeArray.length; i++) {
         this.drawNodeArray[i].value.setAnimation();
@@ -119,18 +152,20 @@ var index = new Vue({
         }
       }
     },
-
+    _editNodeLocation: function (e) {
+      var that = this;
+      that.nodeDetail.bdLon = e.point.lng;
+      that.nodeDetail.bdLat = e.point.lat;
+      var point = new BMap.Point(that.nodeDetail.bdLon, that.nodeDetail.bdLat);
+      new BMap.Geocoder().getLocation(point, function (result) {
+        that.nodeDetail.location = result.address;
+      });
+    },
     getNodeDetailById: function (oid) {
       this.isDetailNode = true;
       for (var i = 0; i < this.nodeInfoArrys.length; i++) {
         if (this.nodeInfoArrys[i].oid == oid) {
           this.nodeDetail = this.nodeInfoArrys[i];
-          // var history={};
-          // for(var key in this.nodeInfoArrys[i]){
-          //   this.nodeDetail[key]=this.nodeInfoArrys[i][key];
-          //   history[key]=this.nodeInfoArrys[i][key];
-          // }
-          // this.nodeDetail.history=history;
           return;
         }
       }
@@ -140,12 +175,12 @@ var index = new Vue({
       if (item.distributionStatus == 0) {
         if (!that.noallot) {
           that.noallot = true;
-          that.addPoints('0');
+          that._addPoints('0');
         }
       } else {
         if (!that.allot) {
           that.allot = true;
-          that.addPoints('1');
+          that._addPoints('1');
         }
       }
       //将该店设置为中心点并进行跳动
@@ -167,7 +202,7 @@ var index = new Vue({
       if (that.allot) {
         that.removePoint('1'); //移除已经分配的点
       } else {
-        that.addPoints('1'); //移除已经分配的点
+        that._addPoints('1'); //移除已经分配的点
       }
       that.allot = !that.allot;
     },
@@ -176,11 +211,11 @@ var index = new Vue({
       if (that.noallot) {
         that.removePoint('0'); //移除已经分配的点
       } else {
-        that.addPoints('0'); //移除已经分配的点
+        that._addPoints('0'); //移除已经分配的点
       }
       that.noallot = !that.noallot;
     },
-    addPoints: function (value) {
+    _addPoints: function (value) {
       var that = this;
       var markersArr = [];
       that.markerClusterer = null;
@@ -234,6 +269,7 @@ var index = new Vue({
       var that = this;
       that.mapObj.setDefaultCursor('crosshair');
       that.mapObj.setDraggingCursor('crosshair');
+      that.initAddForm(); //每次新增之前先初始化页面
       that.mapObj.addEventListener("click", function (e) {
         if (that.isShowTool) {
           that.isShowTool = !that.isShowTool;
@@ -242,7 +278,12 @@ var index = new Vue({
           that.mapObj.addOverlay(marker);
           new BMap.Geocoder().getLocation(point, function (result) {
             $("#addEvent").modal();
-            addNode.nodeForm.address = result.address;
+            $("#addEvent").on('shown.bs.modal', function (e) {
+              var selectPeople = [];
+              peopleTreeObj.requestPeopleTree("", selectPeople);
+            });
+
+            that.nodeForm.location = result.address;
           });
         }
       })
@@ -250,9 +291,10 @@ var index = new Vue({
     inputNode: function () {
       $("#addEvent").modal();
       this.isShowTool = !this.isShowTool;
-      addNode.isGetOrInput = true;
+      this.isGetOrInput = true;
     },
     addNode: function () {
+      this.initAddForm();
       this.isShowTool = !this.isShowTool;
       this.isSearchNode = false;
     },
@@ -274,18 +316,8 @@ var index = new Vue({
       }));
       that.currentEditNode.value.enableDragging();
     },
-    editNodeLocation: function (e) {
-      var that = this;
-      that.nodeDetail.bdLon = e.point.lng;
-      that.nodeDetail.bdLat = e.point.lat;
-      var point = new BMap.Point(that.nodeDetail.bdLon, that.nodeDetail.bdLat);
-      new BMap.Geocoder().getLocation(point, function (result) {
-        that.nodeDetail.location = result.address;
-      });
-
-    },
     saveNode: function () { //保存修改后的
-      var that=this;
+      var that = this;
       this.isEditOrView = !this.isEditOrView;
       if (that.nodeDetail.distributionStatus == 0) {
         that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
@@ -315,33 +347,124 @@ var index = new Vue({
       // var point = new BMap.Point(that.nodeDetail.bdLon, that.nodeDetail.bdLat);
       that.currentEditNode.value.setPosition(new BMap.Point(that.nodeDetail.bdLon, that.nodeDetail.bdLat));
       that.isEditOrView = !that.isEditOrView;
-    }
-  },
-});
-
-
-
-
-var addNode = new Vue({
-  el: "#addEvent",
-  data: function () {
-    return {
-      isGetOrInput: false, //用于表示
-      nodeForm: {
-        location: "",
-        inspectionDays: 1
-      }
-    }
-  },
-  methods: {
+    },
     submit: function () {
       /*如果是手动输入，则需要将坐标转换为百度坐标 */
-      index.mapObj.setDefaultCursor(index.defaultCursor);
-      index.mapObj.setDraggingCursor(index.draggingCursor);
+
+      var that = this;
+
+      var coordinate = coordtransform.wgs84togcj02(that.nodeForm.Lon, that.nodeForm.Lat);
+      var coordinateBd = coordtransform.gcj02tobd09(coordinate[0], coordinate[1]);
+      that.nodeForm.bdLon = coordinateBd[0];
+      that.nodeForm.bdLat = coordinateBd[1];
+      var point = new BMap.Point(that.nodeForm.bdLon, that.nodeForm.bdLat);
+      new BMap.Geocoder().getLocation(point, function (result) {
+        that.nodeForm.location = result.address;
+      });
+      // if (that.verrify()) {
+        that.isFirst = true;
+        that.isSecond = false;
+        index.mapObj.setDefaultCursor(index.defaultCursor);
+        index.mapObj.setDraggingCursor(index.draggingCursor);
+        $("#addEvent").modal("hide");
+      // }
+    },
+    next: function () {
+      //首先进行验证
+      var that = this;
+      // if (that.verrify()) {
+        index.mapObj.setDefaultCursor(index.defaultCursor);
+        index.mapObj.setDraggingCursor(index.draggingCursor);
+        that.isFirst = false;
+        that.isSecond = true;
+      // }
+    },
+    back: function () {
+      /*如果是手动输入，则需要将坐标转换为百度坐标 */
+      this.isFirst = true;
+      this.isSecond = false;
     },
     cancel: function () {
       index.mapObj.setDefaultCursor(index.defaultCursor);
       index.mapObj.setDraggingCursor(index.draggingCursor);
+      this.isFirst = true;
+      this.isSecond = false;
+      $("#addEvent").modal("hide");
+    },
+    verrify: function () {
+      //验证
+      var that = this;
+      if (!that.nodeForm.name.trim()) {
+        xxwsWindowObj.xxwsAlert("必经点名称不能为空");
+        return false;
+      }
+      if (that.nodeForm.name.length > 45) {
+        xxwsWindowObj.xxwsAlert("必经点名称长度不能超过45个");
+        return false;
+      }
+      if (!that.nodeForm.code.trim()) {
+        xxwsWindowObj.xxwsAlert("必经点编号不能为空");
+        return false;
+      }
+      if (that.nodeForm.code.length > 45) {
+        xxwsWindowObj.xxwsAlert("必经点编号长度不能超过45个");
+        return false;
+      }
+      if (!that.nodeForm.inspectionDays.trim()) {
+        xxwsWindowObj.xxwsAlert("巡检频次不能为空");
+        return false;
+      }
+      var regNum = /^[0-9]*$/;
+      if (!regNum.test(this.nodeForm.inspectionDays.trim())) {
+        xxwsWindowObj.xxwsAlert("巡检频次只能是整数");
+        return false;
+      }
+      if (!that.nodeForm.inspectionInterval.trim()) {
+        xxwsWindowObj.xxwsAlert("巡检间隔不能为空");
+        return false;
+      }
+      var regNum1 = /^[0-9]+(()||(.[0-9]{1}))?$/;
+      if (!regNum1.test(this.nodeForm.inspectionInterval.trim())) {
+        xxwsWindowObj.xxwsAlert("巡检间隔为整数或者小数点后一位");
+        return false;
+      }
+      if (!that.nodeForm.effectiveRadius.trim()) {
+        xxwsWindowObj.xxwsAlert("有效半径不能为空");
+        return false;
+      }
+      var regNum1 = /^[0-9]+(()||(.[0-9]{3}))?$/;
+      if (!regNum1.test(this.nodeForm.effectiveRadius.trim())) {
+        xxwsWindowObj.xxwsAlert("有效半径只能是数字");
+        return false;
+      }
+      // if (!that.nodeForm.Lon.trim()) {
+      //   xxwsWindowObj.xxwsAlert("纬度不能为空");
+      //   return false;
+      // }
+      // if (!that.nodeForm.Lat.trim()) {
+      //   xxwsWindowObj.xxwsAlert("经度不能为空");
+      //   return false;
+      // }
+      // if (!that.nodeForm.location.trim()) {
+      //   xxwsWindowObj.xxwsAlert("位置不能为空");
+      //   return false;
+      // }
+      return true;
+    },
+    initAddForm: function () {
+      for (var key in this.nodeForm) {
+        this.nodeForm[key] = "";
+      }
     }
-  }
+  },
 });
+
+
+
+//  var coordinate = coordtransform.bd09togcj02(_this.addressObj.lng, _this.addressObj.lat);
+// var coordinateGps = coordtransform.gcj02towgs84(coordinate[0], coordinate[1]);
+// _this.addressObj.gpsLon = coordinateGps[0];
+// _this.addressObj.gpsLat = coordinateGps[1];
+// _this.addressObj.name = _this.$addressText.val().trim();
+
+//新增的时候，需要传入百度坐标 wps坐标

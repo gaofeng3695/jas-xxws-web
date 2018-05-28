@@ -15,8 +15,8 @@
     "lon": 116.37900635315795,
     "lat": 39.90413861626206,
     "location": "北京市海淀区学院路30号科大天工大厦A座13层",
-    "peopleList": "bv,DAIX",
-    "peopleLiseId": ["66972a16-cd1d-4654-a8a1-727eed55d80f", "66136836-f661-4b3c-918a-6e73d0211a29"],
+    "peopleList": "",
+    "peopleLiseId": [],
     "remark": ""
   }, {
     "oid": "2",
@@ -32,8 +32,8 @@
     "lon": 116.40209150795575,
     "lat": 39.933486959498005,
     "location": "北京市海淀区学院路30号科大天工大厦A座13层",
-    "peopleList": "刘工,丁瑞岗",
-    "peopleLiseId": ["ff75b2e9-2805-4c29-a1d6-d9990cde5570", "ff26619d-6c27-4e7e-8363-f2ecaa41fabc"],
+    "peopleList": "",
+    "peopleLiseId": [],
     "remark": ""
   }, {
     "oid": "3",
@@ -49,8 +49,8 @@
     "lon": 116.37431490673679,
     "lat": 39.918571444775125,
     "location": "北京市海淀区学院路30号科大天工大厦A座13层",
-    "peopleList": "李铮,半山烟雨",
-    "peopleLiseId": ["ff5af8a3-c81b-4e12-920c-9dea951357bc", "ff5a7e32-02c1-4f7f-b18f-d9643c58259e"],
+    "peopleList": "",
+    "peopleLiseId": [],
     "remark": ""
   }, {
     "oid": "4",
@@ -66,8 +66,8 @@
     "lon": 116.4012228172053,
     "lat": 39.92685955031679,
     "location": "北京市海淀区学院路30号科大天工大厦A座13层",
-    "peopleList": "测试1,半山烟雨",
-    "peopleLiseId": ["ff53ca65-aa64-43ee-9bd9-11c74fadbe50", "ff5a7e32-02c1-4f7f-b18f-d9643c58259e"],
+    "peopleList": "",
+    "peopleLiseId": [],
     "remark": ""
   }, {
     "oid": "5",
@@ -83,8 +83,8 @@
     "lon": 116.37623184865204,
     "lat": 39.92079403865986,
     "location": "北京市海淀区学院路30号科大天工大厦A座13层",
-    "peopleList": "刘工,丁瑞岗",
-    "peopleLiseId": ["ff75b2e9-2805-4c29-a1d6-d9990cde5570", "ff26619d-6c27-4e7e-8363-f2ecaa41fabc"],
+    "peopleList": "",
+    "peopleLiseId": [],
     "remark": ""
   }, {
     "oid": "6",
@@ -100,8 +100,8 @@
     "lon": 116.37900635315795,
     "lat": 39.90413861626206,
     "location": "北京市海淀区学院路30号科大天工大厦A座13层",
-    "peopleList": "刘工,丁瑞岗",
-    "peopleLiseId": ["ff75b2e9-2805-4c29-a1d6-d9990cde5570", "ff26619d-6c27-4e7e-8363-f2ecaa41fabc"],
+    "peopleList": "",
+    "peopleLiseId": [],
     "remark": ""
   }, {
     "oid": "7",

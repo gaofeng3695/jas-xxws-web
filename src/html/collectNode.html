@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="/lib/css/bootstrap.css" rel="stylesheet">
+  <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
   <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
   <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
   <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
@@ -147,114 +148,131 @@
       </div>
     </div>
     <!--必经点详情结束-->
-  </div>
 
-  <!--必经点新增模态框-->
-  <div id="addEvent" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>添加必经点<a class="close" data-dismiss="modal">×</a></h3>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="node_form">
-              <div class="form_list">
-                <div class="form_part">
-                  <div class="list_left text-right">
-                    <i>*</i>名称
-                  </div>
-                  <div class="list_right">
-                    <input type="text" class="form-control" placeholder="请输入必经点名称" v-model="nodeForm.name">
-                  </div>
-                </div>
-                <div class="form_part">
-                  <div class="list_left text-right">
-                    <i>*</i>编号
-                  </div>
-                  <div class="list_right">
-                    <input type="text" class="form-control" placeholder="请输入必经点编号" v-model="nodeForm.code">
-                  </div>
-                </div>
+
+
+    <!--必经点新增模态框-->
+    <div id="addEvent" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>添加必经点<a class="close" data-dismiss="modal">×</a></h3>
+          </div>
+          <div class="modal-body">
+            <div class="first" v-show="isFirst">
+              <div class="bg">
               </div>
-              <div class="form_list">
-                <div class="form_part">
-                  <div class="list_left text-right">
-                    巡检频次
+              <form>
+                <div class="node_form">
+                  <div class="form_list">
+                    <div class="form_part">
+                      <div class="list_left text-right">
+                        <i>*</i>名称
+                      </div>
+                      <div class="list_right">
+                        <input type="text" class="form-control" placeholder="请输入必经点名称" v-model="nodeForm.name">
+                      </div>
+                    </div>
+                    <div class="form_part">
+                      <div class="list_left text-right">
+                        <i>*</i>编号
+                      </div>
+                      <div class="list_right">
+                        <input type="text" class="form-control" placeholder="请输入必经点编号" v-model="nodeForm.code">
+                      </div>
+                    </div>
                   </div>
-                  <div class="list_right">
-                    <input type="text" class="form-control" placeholder="单位：每天" v-model="nodeForm.inspectionDays">
-                    <!--<span>次/每天</span>-->
-                    <!--<input type="text" class="form-control inline wid110" v-model="nodeForm.inspectionDays" disabled>
+                  <div class="form_list">
+                    <div class="form_part">
+                      <div class="list_left text-right">
+                        巡检频次
+                      </div>
+                      <div class="list_right">
+                        <input type="text" class="form-control" placeholder="单位：每天" v-model="nodeForm.inspectionDays">
+                        <!--<span>次/每天</span>-->
+                        <!--<input type="text" class="form-control inline wid110" v-model="nodeForm.inspectionDays" disabled>
                     <span> 天</span>-->
+                      </div>
+                    </div>
+                    <div class="form_part">
+                      <div class="list_left text-right">
+                        巡检间隔
+                      </div>
+                      <div class="list_right">
+                        <input type="text" class="form-control" placeholder="单位：小时" v-model="nodeForm.inspectionInterval">
+                        <!--<span> 小时</span>-->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form_list" v-show="isGetOrInput">
+                    <div class="form_part">
+                      <div class="list_left text-right">
+                        <i>*</i>经度
+                      </div>
+                      <div class="list_right">
+                        <input type="text" class="form-control" v-model="nodeForm.Lon" placeholder="请输入坐标点（84）">
+                      </div>
+                    </div>
+                    <div class="form_part">
+                      <div class="list_left text-right">
+                        <i>*</i>纬度
+                      </div>
+                      <div class="list_right">
+                        <input type="text" class="form-control" v-model="nodeForm.Lat" placeholder="请输入坐标点（84）">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form_list">
+                    <div class="form_part">
+                      <div class="list_left text-right">
+                        <i>*</i>有效半径
+                      </div>
+                      <div class="list_right">
+                        <input type="text" class="form-control " placeholder="单位：米" v-model="nodeForm.effectiveRadius">
+                        <!--<span> 米</span>-->
+                      </div>
+                    </div>
+                    <div class="form_part">
+                      <div class="list_left text-right">
+                        <i>*</i>位置
+                      </div>
+                      <div class="list_right">
+                        <input type="text" class="form-control" placeholder="请输入位置" v-model="nodeForm.location">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form_list">
+                    <div class="list_left text-right">
+                      备注
+                    </div>
+                    <div class="list_right textarea_text">
+                      <textarea id="event_description"v-model="nodeForm.remark"  class="form-control"></textarea>
+                      <span class="text_num" >({{textCount}}字)</span>
+                    </div>
                   </div>
                 </div>
-                <div class="form_part">
-                  <div class="list_left text-right">
-                    巡检间隔
-                  </div>
-                  <div class="list_right">
-                    <input type="text" class="form-control" placeholder="单位：小时" v-model="nodeForm.inspectionInterval">
-                    <!--<span> 小时</span>-->
-                  </div>
-                </div>
+              </form>
+            </div>
+            <div class="second" v-show="isSecond">
+              <div class="bg">
               </div>
-              <div class="form_list" v-show="isGetOrInput">
-                <div class="form_part">
-                  <div class="list_left text-right">
-                    <i>*</i>经度
-                  </div>
-                  <div class="list_right">
-                    <input type="text" class="form-control" v-model="nodeForm.Lon" placeholder="请输入坐标点（84）">
-                  </div>
-                </div>
-                <div class="form_part">
-                  <div class="list_left text-right">
-                    <i>*</i>纬度
-                  </div>
-                  <div class="list_right">
-                    <input type="text" class="form-control" v-model="nodeForm.Lat" placeholder="请输入坐标点（84）">
-                  </div>
-                </div>
-              </div>
-              <div class="form_list">
-                <div class="form_part">
-                  <div class="list_left text-right">
-                    有效半径
-                  </div>
-                  <div class="list_right">
-                    <input type="text" class="form-control " placeholder="单位：米" v-model="nodeForm.effectiveRadius">
-                    <!--<span> 米</span>-->
-                  </div>
-                </div>
-                <div class="form_part">
-                  <div class="list_left text-right">
-                    位置
-                  </div>
-                  <div class="list_right">
-                    <input type="text" class="form-control " placeholder="请输入位置" v-model="nodeForm.address">
-                  </div>
-                </div>
-              </div>
-              <div class="form_list">
-                <div class="list_left text-right">
-                  备注
-                </div>
-                <div class="list_right textarea_text">
-                  <textarea id="event_description" oninput="checkLen(this)" class="form-control"></textarea>
-                  <span class="text_num">(160字)</span>
-                </div>
+              <div class="sub_wrapper">
+                <ul id="people_list" class="ztree"></ul>
               </div>
             </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button class="btn submit" @click="submit">确定</button>
-          <button class="btn" data-dismiss="modal" @click="cancel">取消</button>
+          </div>
+          <div class="modal-footer">
+            <button class="btn submit" @click="submit" v-show="isFirst">保存并关闭</button>
+            <button class="btn" @click="next" v-show="isFirst">下一步</button>
+            <button class="btn submit" @click="back" v-show="isSecond">上一步</button>
+            <button class="btn" @click="cancel" v-show="isSecond">确定</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+
   <script type="text/javascript" src="/lib/js/vue.min.js"></script>
   <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
   <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
@@ -270,8 +288,12 @@
   <script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
   <script type="text/javascript" src="https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
   <script src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
-  <script src="/src/js/common/bootstrap.modal.alert.js"></script>
+  <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+  <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+  <script type="text/javascript" src="/src/js/common/coordTransform.js"></script>
+  <script type="text/javascript" src="/src/js/common/common.js"></script>
   <script type="text/javascript" src="/src/js/node/collectNode.js"></script>
+  <script type="text/javascript" src="/src/js/common/people.tree.js"></script>
   <script>
     $(".scrollContainer").mCustomScrollbar({
       advanced: {

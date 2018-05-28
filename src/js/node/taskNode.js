@@ -118,7 +118,13 @@ var indexs = new Vue({
           visible: true, //false表示不显示
           sortable: false, //启用排序
           width: '15%',
-          // editable: true,
+        }, {
+          field: 'peopleCount', //域值
+          title: '巡检人数', //内容
+          align: 'center',
+          visible: true, //false表示不显示
+          sortable: false, //启用排序  peopleCount
+          width: '15%',
         }, {
           field: 'createUser', //域值
           title: '创建人', //内容
@@ -126,7 +132,6 @@ var indexs = new Vue({
           visible: true, //false表示不显示
           sortable: false, //启用排序
           width: '15%',
-          // editable: true,
         }, {
           field: 'operate',
           title: '操作',

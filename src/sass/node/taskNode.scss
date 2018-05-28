@@ -35,11 +35,12 @@ body {
         display: inline-block;
         width: 19px;
         height: 21px;
-        background: url(/src/images/task/management.png) no-repeat;
+        background: url(/src/images/node/modify.png) no-repeat;
         vertical-align: middle;
         margin: 0 5px;
+        cursor: pointer;
         &:hover {
-          background: url(/src/images/task/management_h.png) no-repeat;
+          background: url(/src/images/node/modify_h.png) no-repeat;
         }
       }
     }
@@ -49,7 +50,7 @@ body {
         display: inline-block;
         width: 19px;
         height: 21px;
-        background: url(/src/images/task/management_e.png) no-repeat;
+        background: url(/src/images/node/modify_e.png) no-repeat;
         vertical-align: middle;
         margin: 0 5px;
       }
