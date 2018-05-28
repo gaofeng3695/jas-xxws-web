@@ -7,14 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <link href="/lib/css/bootstrap.css" rel="stylesheet">
-   <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
+  <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
   <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
   <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
   <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
   <link href="/src/css/common/search_table.css" rel="stylesheet">
   <link href="/src/css/common/view.pic.css" rel="stylesheet">
   <link href="/src/css/node/allotNode.css" rel="stylesheet">
-   <link href="/src/css/event.css" rel="stylesheet">
+  <link href="/src/css/details_common.css" rel="stylesheet">
+  <link href="/src/css/event.css" rel="stylesheet">
 </head>
 
 <body>
@@ -77,6 +78,53 @@
       <!--/数据列表-->
     </div>
     <!-- /.container-fluid -->
+
+
+    <!--任务详情-->
+    <div id="details" class="modal fade bs-example-modal-lg" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>查看<a class="close" data-dismiss="modal">×</a></h3>
+          </div>
+          <div class="modal-body">
+            <div class="details_main">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-2 col-sm-2 text-right details_title">名称</div>
+                  <div class="col-md-4 col-sm-4 details_text">{{detailForm.name}}</div>
+                  <div class="col-md-2 col-sm-2 text-right details_title">编号</div>
+                  <div class="col-md-4 col-sm-4 details_text">{{detailForm.code}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2 col-sm-2 text-right details_title">巡检频次</div>
+                  <div class="col-md-4  col-sm-4 details_text">{{detailForm.inspectionDays}}</div>
+                  <div class="col-md-2 col-sm-2 text-right details_title">间隔时间</div>
+                  <div class="col-md-4  col-sm-4 details_text">{{detailForm.inspectionInterval}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2 col-sm-2 text-right details_title">有效半径</div>
+                  <div class="col-md-10  col-sm-10 details_text">{{detailForm.effectiveRadius}}</div>
+
+                </div>
+                <div class="row">
+                  <div class="col-md-2 col-sm-2 text-right details_title">位置</div>
+                  <div class="col-md-10  col-sm-10 details_text">{{detailForm.location}}</div>
+
+                </div>
+                <div class="row">
+                  <div class="col-md-2 col-sm-2 text-right details_title">备注</div>
+                  <div class="col-md-10  col-sm-10 details_text">{{detailForm.remark}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!--人员信息-->
@@ -98,6 +146,8 @@
       </div>
     </div>
   </div>
+
+
   <!-- /#page-wrapper -->
   <script type="text/javascript" src="/src/js/common/drafting.js"></script>
   <script type="text/javascript" src="/lib/js/vue.min.js"></script>
@@ -115,7 +165,7 @@
   <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
   <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
   <script type="text/javascript" src="/src/js/common/common.js"></script>
-   <script type="text/javascript" src="/src/js/common/people.tree.js"></script>
+  <script type="text/javascript" src="/src/js/common/people.tree.js"></script>
   <script type="text/javascript" src="/src/js/node/allotNode.js"></script>
 
 
