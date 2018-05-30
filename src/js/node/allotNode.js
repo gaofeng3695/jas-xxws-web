@@ -369,7 +369,7 @@ var index = new Vue({
               that.detailForm.peopleCount = 0;
             }
 
-          } else {`1  AQW345TRFDCFGYU89IUJJKOPOL;.,;[][';.`
+          } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
         }
