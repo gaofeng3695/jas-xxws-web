@@ -6,6 +6,7 @@ var index = new Vue({
       isSearchNode: false, //是否展示搜索下拉面板
       isDetailNode: false, //点详细信息
       isShowTool: false, //是否展示增加方式列表
+      noResult: false,
       isEditOrView: true,
       nodeInfoArrys: [], //所有点信息集合
       drawNodeArray: [], //绘制点
@@ -18,7 +19,7 @@ var index = new Vue({
       noallot: true,
       searchInput: "",
       nodeDetail: {
-        name: "11",
+        name: "",
         inspectionDays: 1
       },
       //新增基本使用数据
@@ -29,66 +30,92 @@ var index = new Vue({
         location: "",
         name: "",
         code: "",
-        inspectionDays: "",
-        inspectionInterval: "",
-        Lon: "",
-        Lat: "",
+        inspectionDays: 1, //巡检天数
+        inspectionTimes: "", //巡检频次
+        inspectionInterval: "", //巡检间隔
+        lon: "",
+        lat: "",
         remark: "",
-        effectiveRadius: ""
+        effectiveRadius: "",
+        personFormList: []
       },
-      textCount: 160
+      textCount: 160,
+      getNodeMarker: "",
     }
   },
   watch: {
-    nodeForm: {
-      handler: function (val) {
-        var that = this;
-        if (that.nodeForm.remark.length > 160) {
-          that.nodeForm.remark = that.nodeForm.remark.substring(0, 160);
-        }
-        this.textCount = 160 - that.nodeForm.remark.length;
-      },
-      deep: true
+    'nodeForm.remark': function (val, oldVal) {
+      var that = this;
+      if (val.length > 160) {
+        that.nodeForm.remark = val.substring(0, 160);
+      }
+      that.textCount = 160 - that.nodeForm.remark.length;
     },
-
+    'nodeForm.lon': function (val, oldVal) {
+      var that = this;
+      if (val == oldVal) {
+        return;
+      }
+      if (that.nodeForm.lon && that.nodeForm.lat) {
+        that._locationBd();
+      }
+    },
+    'nodeForm.lat': function (val, oldVal) {
+      var that = this;
+      if (val == oldVal) {
+        return;
+      }
+      if (that.nodeForm.lon && that.nodeForm.lat) {
+        that._locationBd();
+      }
+    },
   },
   mounted: function () {
     var that = this;
     that.mapObj = new BMap.Map("container"); // 创建Map实例
-    var mPoint = new BMap.Point(116.404, 39.915);
-    that.mapObj.centerAndZoom(mPoint, 15);
-    that.mapObj.enableScrollWheelZoom();
+    that.mapObj.enableScrollWheelZoom(true);
     that.defaultCursor = that.mapObj.getDefaultCursor();
     that.draggingCursor = that.mapObj.getDraggingCursor();
     that._requestNode();
-    // $("#addEvent").modal()
   },
   methods: {
     search: function () {
       var that = this;
       that.isShowTool = false;
-      // alert(this.searchInput);//进行ajax请求，获取点的信息
       that._requestNode(that.searchInput, function () {
         that.isSearchNode = true;
+        that.isDetailNode = false; //必经点详情列表隐藏
+        that.isEditOrView = true;
+        if (that.nodeInfoArrys.length == 0) {
+          that.noResult = true;
+        } else {
+          that.noResult = false;
+        }
+        that.removePoint();
+        that.mapObj.clearOverlays();
       })
-
     },
     _requestNode: function (value, callback) {
       var that = this;
       $.ajax({
-        type: "get",
+        type: "post",
         contentType: "application/json",
         dataType: "json",
-        url: "../js/node/node.json",
-        data: {
-          "keyword": that.searchInput
-        },
+        url: "/cloudlink-inspection-event/necessityNode/getPage?token=" + lsObj.getLocalStorage('token'),
+        data: JSON.stringify({
+          "keyword": that.searchInput,
+          pageNum: 1,
+          pageSize: 100000,
+          withRelationPerson: true,
+          orderBy :"distributionStatus",
+          orderDirection :"asc"
+        }),
         success: function (data) {
-          if (data.status == 1) {
+          if (data.success == 1) {
             that.nodeInfoArrys = data.rows;
+            that._setMapCenterAndZoom();
             if (callback) {
               callback();
-              return;
             }
             that._drawPoint(); //根据请求的数据，进行点的绘制
           }
@@ -100,8 +127,9 @@ var index = new Vue({
       var myIcons = null;
       var markers = null;
       var point = null;
-      that.drawNodeArray = [];
       var data = that.nodeInfoArrys;
+      that.currentDrawNode = [];
+      that.drawNodeArray = [];
       for (var i = 0; i < data.length; i++) {
         point = new BMap.Point(data[i].bdLon, data[i].bdLat);
         if (data[i].distributionStatus == 0) {
@@ -118,12 +146,12 @@ var index = new Vue({
         });
         that.drawNodeArray.push({
           'status': data[i].distributionStatus + "",
-          'key': data[i].oid,
+          'key': data[i].objectId,
           'value': markers
         });
         that.currentDrawNode.push({
           'status': data[i].distributionStatus + "",
-          'key': data[i].oid,
+          'key': data[i].objectId,
           'value': markers
         });
         markers.addEventListener("click", function (e) {
@@ -137,18 +165,22 @@ var index = new Vue({
       }
       that._addPoints();
     },
-
     _pointClick: function (e) {
       var that = this;
-      for (var i = 0; i < this.drawNodeArray.length; i++) {
-        this.drawNodeArray[i].value.setAnimation();
+      if (!that.isEditOrView) {
+        xxwsWindowObj.xxwsAlert("目前存在正在编辑的必经点，请先保存")
+        return;
+      }
+      for (var i = 0; i < that.drawNodeArray.length; i++) {
+        that.drawNodeArray[i].value.setAnimation();
       }
       var p = e.target;
       p.setAnimation(BMAP_ANIMATION_BOUNCE); //添加跳动
-      for (var i = 0; i < this.drawNodeArray.length; i++) {
-        if (this.drawNodeArray[i].value == p) {
-          this.currentEditNode = this.drawNodeArray[i];
-          this.getNodeDetailById(this.drawNodeArray[i].key);
+      for (var i = 0; i < that.drawNodeArray.length; i++) {
+        if (that.drawNodeArray[i].value == p) {
+          that.currentEditNode = that.drawNodeArray[i];
+          that._getNodeDetailById(that.drawNodeArray[i].key);
+          return;
         }
       }
     },
@@ -160,15 +192,6 @@ var index = new Vue({
       new BMap.Geocoder().getLocation(point, function (result) {
         that.nodeDetail.location = result.address;
       });
-    },
-    getNodeDetailById: function (oid) {
-      this.isDetailNode = true;
-      for (var i = 0; i < this.nodeInfoArrys.length; i++) {
-        if (this.nodeInfoArrys[i].oid == oid) {
-          this.nodeDetail = this.nodeInfoArrys[i];
-          return;
-        }
-      }
     },
     clickItem: function (item) {
       var that = this;
@@ -185,7 +208,7 @@ var index = new Vue({
       }
       //将该店设置为中心点并进行跳动
       for (var i = 0; i < that.drawNodeArray.length; i++) {
-        if (that.drawNodeArray[i].key == item.oid) {
+        if (that.drawNodeArray[i].key == item.objectId) {
           var cenLng = that.drawNodeArray[i].value.getPosition().lng;
           var cenLat = that.drawNodeArray[i].value.getPosition().lat;
           that.mapObj.centerAndZoom(new BMap.Point(cenLng, cenLat), 19);
@@ -195,7 +218,7 @@ var index = new Vue({
           that.drawNodeArray[i].value.setAnimation();
         }
       }
-      that.getNodeDetailById(item.oid);
+      that._getNodeDetailById(item.objectId);
     },
     allotBtn: function () {
       var that = this;
@@ -215,13 +238,17 @@ var index = new Vue({
       }
       that.noallot = !that.noallot;
     },
+    _isHasDetailNode: function (value) {
+      var that = this;
+      if (that.currentEditNode && that.currentEditNode.status == value) {
+        that.isDetailNode = false;
+      }
+    }, //用于判断页面上面是否存在详情点
     _addPoints: function (value) {
       var that = this;
       var markersArr = [];
       that.markerClusterer = null;
-      if (!value) {
-
-      } else {
+      if (!value) {} else {
         that.drawNodeArray.forEach(function (item) {
           if (item.status == value) {
             that.currentDrawNode.push(item);
@@ -235,6 +262,18 @@ var index = new Vue({
         markers: markersArr
       });
     },
+    refreshDraw: function () { //刷新
+      var that = this;
+      that.removePoint();
+      that.searchInput = "";
+      that.mapObj.clearOverlays();
+      that.isDetailNode = false; //必经点详情列表隐藏
+      that.isSearchNode = false; //必经点列表隐藏
+      that.isEditOrView = true;
+      that.allot = true;
+      that.noallot = true;
+      that._requestNode();
+    }, //刷新进行重新绘制  数据的请求
     removePoint: function (value) {
       var that = this;
       var node = [];
@@ -254,19 +293,22 @@ var index = new Vue({
         that.currentDrawNode = that.delObj(that.currentDrawNode, node[i]);
         that.markerClusterer.removeMarker(node[i].value);
       }
+      that._isHasDetailNode(value); //进行详情页面的关闭
     },
     delObj: function (_arr, _obj) {
-      var length = _arr.length;
-      for (var i = 0; i < length; i++) {
-        if (_arr[i].key && _arr[i].key == _obj.key) {
-          _arr.splice(i, 1);
-          return _arr;
+      if (_arr) {
+        var length = _arr.length;
+        for (var i = 0; i < length; i++) {
+          if (_arr[i].key && _arr[i].key == _obj.key) {
+            _arr.splice(i, 1);
+            return _arr;
+          }
         }
       }
-
     },
     getNode: function () {
       var that = this;
+      that.isGetOrInput = false;
       that.mapObj.setDefaultCursor('crosshair');
       that.mapObj.setDraggingCursor('crosshair');
       that.initAddForm(); //每次新增之前先初始化页面
@@ -274,22 +316,29 @@ var index = new Vue({
         if (that.isShowTool) {
           that.isShowTool = !that.isShowTool;
           var point = new BMap.Point(e.point.lng, e.point.lat);
-          var marker = new BMap.Marker(point);
-          that.mapObj.addOverlay(marker);
+          that.nodeForm.bdLon = e.point.lng;
+          that.nodeForm.bdLat = e.point.lat;
+          that.getNodeMarker = new BMap.Marker(point);
+          that.mapObj.addOverlay( that.getNodeMarker);
+          that._locationBdFor84();
           new BMap.Geocoder().getLocation(point, function (result) {
+            that.nodeForm.location = result.address;
             $("#addEvent").modal();
             $("#addEvent").on('shown.bs.modal', function (e) {
               var selectPeople = [];
               peopleTreeObj.requestPeopleTree("", selectPeople);
             });
 
-            that.nodeForm.location = result.address;
           });
         }
       })
     },
     inputNode: function () {
       $("#addEvent").modal();
+      $("#addEvent").on('shown.bs.modal', function (e) {
+        var selectPeople = [];
+        peopleTreeObj.requestPeopleTree("", selectPeople);
+      });
       this.isShowTool = !this.isShowTool;
       this.isGetOrInput = true;
     },
@@ -300,7 +349,7 @@ var index = new Vue({
     },
     editNode: function () { //编辑按钮
       var that = this;
-      that.isEditOrView = !that.isEditOrView;
+      that.isEditOrView = false;
       /**编辑之前 先保留一份历史数据 */
       var history = {};
       for (var key in that.nodeDetail) {
@@ -318,16 +367,43 @@ var index = new Vue({
     },
     saveNode: function () { //保存修改后的
       var that = this;
-      this.isEditOrView = !this.isEditOrView;
-      if (that.nodeDetail.distributionStatus == 0) {
-        that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
-          anchor: new BMap.Size(15, 42)
-        }));
-      } else {
-        that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/allot.png", new BMap.Size(29, 42), {
-          anchor: new BMap.Size(15, 42)
-        }));
+      //修改保存之前进行巡检人员的处理
+      var objs = [];
+      if (!that.nodeDetail.personFormList) {
+        that.nodeDetail.personNames = that.nodeDetail.personNames.split(",")
+        that.nodeDetail.personIdList.forEach(function (item, index) {
+          objs.push({
+            personId: item,
+            personName: that.nodeDetail.personNames[index]
+          })
+        });
+        that.nodeDetail.personFormList = objs;
       }
+      delete that.nodeDetail.personNames;
+      delete that.nodeDetail.personIdList;
+      $.ajax({
+        type: "post",
+        contentType: "application/json",
+        url: "/cloudlink-inspection-event/necessityNode/update?token=" + lsObj.getLocalStorage('token'),
+        data: JSON.stringify(that.nodeDetail),
+        dataType: "json",
+        success: function (data) {
+          if (data.success == 1) {
+            that.isEditOrView = !that.isEditOrView;
+            that.refreshDraw();
+            // if (that.nodeDetail.distributionStatus == 0) {
+            //   that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
+            //     anchor: new BMap.Size(15, 42)
+            //   }));
+            // } else {
+            //   that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/allot.png", new BMap.Size(29, 42), {
+            //     anchor: new BMap.Size(15, 42)
+            //   }));
+            // }
+            // that.currentEditNode.value.disableDragging();
+          }
+        }
+      });
     },
     cancelEditNode: function () {
       //取消点的编辑
@@ -344,15 +420,74 @@ var index = new Vue({
           anchor: new BMap.Size(15, 42)
         }));
       }
-      // var point = new BMap.Point(that.nodeDetail.bdLon, that.nodeDetail.bdLat);
       that.currentEditNode.value.setPosition(new BMap.Point(that.nodeDetail.bdLon, that.nodeDetail.bdLat));
+      that.currentEditNode.value.disableDragging();
       that.isEditOrView = !that.isEditOrView;
     },
     submit: function () {
       /*如果是手动输入，则需要将坐标转换为百度坐标 */
-
       var that = this;
-      var coordinate = coordtransform.wgs84togcj02(that.nodeForm.Lon, that.nodeForm.Lat);
+      if (that.verrify()) {
+        that.nodeForm.personFormList = [];
+        that.saveNodeToServer();
+      }
+    },
+    next: function () {
+      //首先进行验证
+      var that = this;
+      if (that.verrify()) {
+        that.isFirst = false;
+        that.isSecond = true;
+      }
+    },
+    back: function () {
+      /*如果是手动输入，则需要将坐标转换为百度坐标 */
+      this.isFirst = true;
+      this.isSecond = false;
+    },
+    saveInfo: function () {
+      var that = this;
+      var peopleArr = [];
+      var peopleObj = peopleTreeObj.getSelectPeople();
+      peopleObj.selectedArr.forEach(function (item) {
+        peopleArr.push({
+          personId: item.relationshipPersonId,
+          personName: item.relationshipPersonName
+        });
+      });
+      that.nodeForm.personFormList = peopleArr;
+      that.saveNodeToServer();
+    },
+    saveNodeToServer: function () {
+      var that = this;
+      that.nodeForm.inspectionDays = 1;
+      $.ajax({
+        type: "post",
+        contentType: "application/json",
+        url: "/cloudlink-inspection-event/necessityNode/save?token=" + lsObj.getLocalStorage('token'),
+        data: JSON.stringify(that.nodeForm),
+        dataType: "json",
+        success: function (data) {
+          if (data.success == 1) {
+            $("#addEvent").modal("hide");
+            that.isFirst = true;
+            that.isSecond = false;
+            that.mapObj.setDefaultCursor(that.defaultCursor);
+            that.mapObj.setDraggingCursor(that.draggingCursor);
+            that.refreshDraw();
+          }
+        }
+      });
+    },
+
+    initAddForm: function () {
+      for (var key in this.nodeForm) {
+        this.nodeForm[key] = "";
+      }
+    },
+    _locationBd: function () {
+      var that = this;
+      var coordinate = coordtransform.wgs84togcj02(that.nodeForm.lon, that.nodeForm.lat);
       var coordinateBd = coordtransform.gcj02tobd09(coordinate[0], coordinate[1]);
       that.nodeForm.bdLon = coordinateBd[0];
       that.nodeForm.bdLat = coordinateBd[1];
@@ -360,36 +495,96 @@ var index = new Vue({
       new BMap.Geocoder().getLocation(point, function (result) {
         that.nodeForm.location = result.address;
       });
-      // console.log()
-      // if (that.verrify()) {
-        that.isFirst = true;
-        that.isSecond = false;
-        index.mapObj.setDefaultCursor(index.defaultCursor);
-        index.mapObj.setDraggingCursor(index.draggingCursor);
-        $("#addEvent").modal("hide");
-      // }
     },
-    next: function () {
-      //首先进行验证
+    _locationBdFor84: function () {
       var that = this;
-      // if (that.verrify()) {
-        index.mapObj.setDefaultCursor(index.defaultCursor);
-        index.mapObj.setDraggingCursor(index.draggingCursor);
-        that.isFirst = false;
-        that.isSecond = true;
-      // }
+      var coordinate = coordtransform.bd09togcj02(that.nodeForm.bdLon, that.nodeForm.bdLat);
+      var coordinateBd = coordtransform.gcj02towgs84(coordinate[0], coordinate[1]);
+      that.nodeForm.lon = coordinateBd[0];
+      that.nodeForm.lat = coordinateBd[1];
     },
-    back: function () {
-      /*如果是手动输入，则需要将坐标转换为百度坐标 */
-      this.isFirst = true;
-      this.isSecond = false;
+    _getNodeDetailById: function (oid) {
+      var that = this;
+      $.ajax({
+        type: "get",
+        url: "/cloudlink-inspection-event/necessityNode/get?token=" + lsObj.getLocalStorage('token'),
+        contentType: "application/json",
+        dataType: "json",
+        data: {
+          id: oid
+        },
+        success: function (data) {
+          if (data.success == 1) {
+            that.nodeDetail = data.rows[0];
+            that.isDetailNode = true;
+          } else {
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
+          }
+        }
+      })
     },
-    cancel: function () {
-      index.mapObj.setDefaultCursor(index.defaultCursor);
-      index.mapObj.setDraggingCursor(index.draggingCursor);
-      this.isFirst = true;
-      this.isSecond = false;
-      $("#addEvent").modal("hide");
+    _setMapCenterAndZoom: function () {
+      var that = this;
+      var data = that.nodeInfoArrys;
+      var _length = data.length;
+      var _arr = [];
+      try {
+        for (var i = 0; i < _length; i++) {
+          if (data[i].bdLon != "" && data[i].bdLat != "") {
+            _arr.push(new BMap.Point(data[i].bdLon, data[i].bdLat));
+          }
+        }
+
+        if (_arr.length > 0) {
+          that.mapObj.setViewport(_arr, {
+            zoomFactor: -1
+          });
+        } else {
+          var point = new BMap.Point(116.404, 39.915); // 创建点坐标
+          that.mapObj.centerAndZoom(point, 5); // 初始化地图，设置中心点坐标和地图级别
+        }
+
+      } catch (e) {
+        var point = new BMap.Point(116.404, 39.915); // 创建点坐标
+        that.mapObj.centerAndZoom(point, 5); // 初始化地图，设置中心点坐标和地图级别
+      }
+
+    },
+    choosePeople: function () {
+      var that = this;
+      $("#choosePeople").modal();
+      $("#choosePeople").on('shown.bs.modal', function (e) {
+        var selectPeople = [];
+        if (that.nodeDetail.personIdList && that.nodeDetail.personIdList.length > 0) {
+          that.nodeDetail.personIdList.forEach(function (item) {
+            selectPeople.push({
+              relationshipPersonId: item
+            });
+          });
+        }
+        peopleTreeObj.requestPeopleTree("", selectPeople, "", "people_list1");
+      });
+    },
+    savePeople: function () {
+      var that = this;
+      var peopleArr = [];
+      var names = "";
+      var peopleObj = peopleTreeObj.getSelectPeople();
+      console.log(peopleObj.selectedArr);
+      peopleObj.selectedArr.forEach(function (item) {
+        peopleArr.push({
+          personId: item.relationshipPersonId,
+          personName: item.relationshipPersonName
+        });
+        names += item.relationshipPersonName + ",";
+      });
+      console.log(peopleArr);
+      that.nodeDetail.personNames = names.substring(0, names.length - 1);
+      that.nodeDetail.personFormList = peopleArr;
+      $("#choosePeople").modal('hide');
+    },
+    cancelPeople: function () {
+      $("#choosePeople").modal('hide');
     },
     verrify: function () {
       //验证
@@ -410,12 +605,12 @@ var index = new Vue({
         xxwsWindowObj.xxwsAlert("必经点编号长度不能超过45个");
         return false;
       }
-      if (!that.nodeForm.inspectionDays.trim()) {
+      if (!that.nodeForm.inspectionTimes.trim()) {
         xxwsWindowObj.xxwsAlert("巡检频次不能为空");
         return false;
       }
       var regNum = /^[0-9]*$/;
-      if (!regNum.test(this.nodeForm.inspectionDays.trim())) {
+      if (!regNum.test(this.nodeForm.inspectionTimes.trim())) {
         xxwsWindowObj.xxwsAlert("巡检频次只能是整数");
         return false;
       }
@@ -437,11 +632,11 @@ var index = new Vue({
         xxwsWindowObj.xxwsAlert("有效半径只能是数字");
         return false;
       }
-      // if (!that.nodeForm.Lon.trim()) {
+      // if (!that.nodeForm.lon.trim()) {
       //   xxwsWindowObj.xxwsAlert("纬度不能为空");
       //   return false;
       // }
-      // if (!that.nodeForm.Lat.trim()) {
+      // if (!that.nodeForm.lat.trim()) {
       //   xxwsWindowObj.xxwsAlert("经度不能为空");
       //   return false;
       // }
@@ -451,20 +646,13 @@ var index = new Vue({
       // }
       return true;
     },
-    initAddForm: function () {
-      for (var key in this.nodeForm) {
-        this.nodeForm[key] = "";
-      }
+    cancalNode: function () { //取消点的增加
+      var that = this;
+      that.mapObj.setDefaultCursor(that.defaultCursor);
+      that.mapObj.setDraggingCursor(that.draggingCursor);
+      that.mapObj.removeOverlay(that.getNodeMarker);
+      that.isShowTool = false;
+      $("#addEvent").modal("hide");
     }
   },
 });
-
-
-
-//  var coordinate = coordtransform.bd09togcj02(_this.addressObj.lng, _this.addressObj.lat);
-// var coordinateGps = coordtransform.gcj02towgs84(coordinate[0], coordinate[1]);
-// _this.addressObj.gpsLon = coordinateGps[0];
-// _this.addressObj.gpsLat = coordinateGps[1];
-// _this.addressObj.name = _this.$addressText.val().trim();
-
-//新增的时候，需要传入百度坐标 wps坐标

@@ -24,11 +24,14 @@
         <li class="border"></li>
         <li id="addNode" class="item wid80" @click="addNode"><span class="fa fa-plus-square pdr"></span>添加</li>
         <li class="border"></li>
-        <li id="refresh" class="item wid80 "><span class="fa fa-refresh pdr"></span>刷新</li>
+        <li id="refresh" class="item wid80 " @click="refreshDraw"><span class="fa fa-refresh pdr"></span>刷新</li>
       </ul>
       <div class="nodeList " v-show="isSearchNode">
         <div id="node" class="  sub_wrapper">
           <div class=" result scrollContainer">
+            <div v-show="noResult" style="text-align: center;margin-top:10px;">
+              没有查到数据
+            </div>
             <ul>
               <li v-for="item in nodeInfoArrys" @click="clickItem(item)">
                 <div class="item">
@@ -51,7 +54,7 @@
                 <div class="item">
                   <div class="wid364 hidd">
                     <span>巡检人员：</span>
-                    <span>正更新，网授，李四</span>
+                    <span>{{item.personNames}}</span>
                   </div>
                 </div>
               </li>
@@ -137,7 +140,7 @@
         <div class="item">
           <div class="fl wid60">巡检人员</div>
           <div class="fl">
-            <input type="text" class="form-control " v-model="nodeDetail.code" :disabled="isEditOrView">
+            <input @click="choosePeople" type="text" class="form-control " readyonly v-model="nodeDetail.personNames" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item footer">
@@ -156,7 +159,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h3>添加必经点<a class="close" data-dismiss="modal">×</a></h3>
+            <h3>添加必经点<a class="close" @click="cancalNode">×</a></h3>
           </div>
           <div class="modal-body">
             <div class="first" v-show="isFirst">
@@ -188,7 +191,7 @@
                         巡检频次
                       </div>
                       <div class="list_right">
-                        <input type="text" class="form-control" placeholder="单位：每天" v-model="nodeForm.inspectionDays">
+                        <input type="text" class="form-control" placeholder="单位：每天" v-model="nodeForm.inspectionTimes">
                         <!--<span>次/每天</span>-->
                         <!--<input type="text" class="form-control inline wid110" v-model="nodeForm.inspectionDays" disabled>
                     <span> 天</span>-->
@@ -210,7 +213,7 @@
                         <i>*</i>经度
                       </div>
                       <div class="list_right">
-                        <input type="text" class="form-control" v-model="nodeForm.Lon" placeholder="请输入坐标点（84）">
+                        <input type="text" class="form-control" v-model="nodeForm.lon" placeholder="请输入坐标点（84）">
                       </div>
                     </div>
                     <div class="form_part">
@@ -218,7 +221,7 @@
                         <i>*</i>纬度
                       </div>
                       <div class="list_right">
-                        <input type="text" class="form-control" v-model="nodeForm.Lat" placeholder="请输入坐标点（84）">
+                        <input type="text" class="form-control" v-model="nodeForm.lat" placeholder="请输入坐标点（84）">
                       </div>
                     </div>
                   </div>
@@ -246,8 +249,8 @@
                       备注
                     </div>
                     <div class="list_right textarea_text">
-                      <textarea id="event_description"v-model="nodeForm.remark"  class="form-control"></textarea>
-                      <span class="text_num" >({{textCount}}字)</span>
+                      <textarea id="event_description" v-model="nodeForm.remark" class="form-control"></textarea>
+                      <span class="text_num">({{textCount}}字)</span>
                     </div>
                   </div>
                 </div>
@@ -265,14 +268,34 @@
             <button class="btn submit" @click="submit" v-show="isFirst">保存并关闭</button>
             <button class="btn" @click="next" v-show="isFirst">下一步</button>
             <button class="btn submit" @click="back" v-show="isSecond">上一步</button>
-            <button class="btn" @click="cancel" v-show="isSecond">确定</button>
+            <button class="btn" @click="saveInfo" v-show="isSecond">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!--必经点新增模态框-->
+    <div id="choosePeople" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>选择巡线人员<a class="close" data-dismiss="modal">×</a></h3>
+          </div>
+          <div class="modal-body">
+            <div class="sub_wrapper">
+              <ul id="people_list1" class="ztree"></ul>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn " @click="savePeople">确定</button>
+            <button class="btn" @click="cancelPeople">取消</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-
   <script type="text/javascript" src="/lib/js/vue.min.js"></script>
   <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
   <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>

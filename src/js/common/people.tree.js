@@ -2,8 +2,10 @@
  * frameName---字符串(必填),可以为""，用于辨别来自哪个窗口
  * selectArr---人员数组（必填），默认选中的节点
  * boolean---ture or false（选填），删除自己
+ * treeid--默认是people_list(选填),可以传入
+ * choosePeople--[]需要展示过滤的人员
  */
-/** 
+/**
  * 调用getSelectPeople()，返回所选节点对象obj = {key: "",selectedArr: arr,selectedName:names };
  * obj.key 来自哪个窗口的名称
  * obj.selectedArr 人员数组
@@ -15,9 +17,12 @@ var peopleTreeObj = {
     _frameName: null,
     aPeopleName: [],
     selectPersonArr: [],
-    init: function() {},
-    requestPeopleTree: function(frameName, selectArr, boolean) { //请求人员信息
+    init: function () {},
+    requestPeopleTree: function (frameName, selectArr, boolean, treeid, choosePoeple) { //请求人员信息
         var _this = this;
+        if (treeid) {
+            _this.$tree = $("#" + treeid);
+        }
         _this.selectPersonArr = [];
         _this._frameName = frameName;
         if (selectArr) {
@@ -38,7 +43,7 @@ var peopleTreeObj = {
                 status: 1
             },
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 var peopleAllArr = data.rows;
                 if (data.success != 1) {
                     xxwsWindowObj.xxwsAlert('获取人员信息失败！');
@@ -52,18 +57,35 @@ var peopleTreeObj = {
                         }
                     }
                 }
-
-                _this.aAllPeople = peopleAllArr;
+                if (choosePoeple) {
+                    var filterPeople = [];
+                    var indexs = choosePoeple.map(function (item) {
+                        return item.personId;
+                    });
+                    peopleAllArr.forEach(function (item) {
+                        if (item.isParent=="true") {
+                            filterPeople.push(item);
+                        } else {
+                            var index = $.inArray(item.id, indexs);
+                            if (index >= 0) {
+                                filterPeople.push(item);
+                            }
+                        }
+                    });
+                    _this.aAllPeople = filterPeople;
+                } else {
+                    _this.aAllPeople = peopleAllArr;
+                }
                 _this.renderPeopleTree(_this.aAllPeople);
             },
             statusCode: {
-                404: function() {
+                404: function () {
                     xxwsWindowObj.xxwsAlert('获取人员信息失败！');
                 }
             }
         });
     },
-    renderPeopleTree: function(data) { //遍历tree
+    renderPeopleTree: function (data) { //遍历tree
         var _this = this;
         var setting = {
             view: {
@@ -87,7 +109,7 @@ var peopleTreeObj = {
         _this.zTree.expandAll(true);
         _this.setSelectPeople();
     },
-    setSelectPeople: function() { //设置被选中的人员
+    setSelectPeople: function () { //设置被选中的人员
         var _this = this;
         if (_this.selectPersonArr.length > 0) {
             for (var i = 0; i < _this.selectPersonArr.length; i++) {
@@ -96,13 +118,13 @@ var peopleTreeObj = {
             }
         }
     },
-    getSelectPeople: function() { //获取选中的人员
+    getSelectPeople: function () { //获取选中的人员
         var _this = this;
         _this.aPeopleName = [];
         _this.selectPersonArr = []; //人员数组
         var userObj = null;
         var arr = _this.zTree.getCheckedNodes(true);
-        arr.forEach(function(item, index) {
+        arr.forEach(function (item, index) {
             if (item.isParent) {
                 return;
             }
@@ -121,7 +143,7 @@ var peopleTreeObj = {
         $('#stakeholder').modal('hide');
         return selectedObj;
     },
-    initPeopleList: function() { //清空人员信息
+    initPeopleList: function () { //清空人员信息
         var _this = this;
         _this.aPeopleName = [];
         _this.selectPersonArr = [];
@@ -131,6 +153,6 @@ var peopleTreeObj = {
         }
     },
 };
-$(function() {
+$(function () {
     peopleTreeObj.init();
 });

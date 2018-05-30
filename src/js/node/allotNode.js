@@ -3,12 +3,15 @@ var index = new Vue({
   data: function () {
     return {
       mapObj: null,
+      selectItems: [], //当前选中的行数
       nodeInfoArrys: [], //所有点信息
       drawNodeArray: [], //当前绘制的点信息
       markerClusterer: null,
       searchObj: {},
+      keyword: "",
+      distributionStatus: "",
       selectPersonArr: [],
-      detailForm:{}
+      detailForm: {}
     }
   },
   mounted: function () {
@@ -31,8 +34,8 @@ var index = new Vue({
     initTable: function () {
       var that = this;
       $('#table').bootstrapTable({
-        url: "../js/node/node.json", //请求数据url
-        method: 'get',
+        url: "/cloudlink-inspection-event/necessityNode/getPage?token=" + lsObj.getLocalStorage('token'),
+        method: 'post',
         toolbar: "#toolbar",
         toolbarAlign: "left",
         cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -51,13 +54,16 @@ var index = new Vue({
         queryParams: function (params) {
           that.searchObj.pageSize = params.pageSize;
           that.searchObj.pageNum = params.pageNumber;
+          that.searchObj.orderDirection = 'asc';
+          that.searchObj.orderBy = 'distributionStatus';
+          that.searchObj.withRelationPerson = true;
           return that.searchObj;
         },
         responseHandler: function (res) {
           return res;
         },
         onLoadSuccess: function (data) {
-          if (data.status == 1) {
+          if (data.success == 1) {
             if (data.rows.length > 0) {
               that.nodeInfoArrys = data.rows;
               that.setPointCenter();
@@ -65,7 +71,6 @@ var index = new Vue({
               that.removePoint();
             }
           }
-
         },
         //表格的列
         columns: [{
@@ -91,7 +96,7 @@ var index = new Vue({
               }
             }
           }, {
-            field: 'oid', //域值
+            field: 'objectId', //域值
             title: '名称',
             align: 'center',
             visible: false, //false表示不显示
@@ -121,7 +126,7 @@ var index = new Vue({
               };
             }
           }, {
-            field: 'inspectionDays', //域值
+            field: 'inspectionTimes', //域值
             title: '巡检频次', //内容
             align: 'center',
             visible: true, //false表示不显示
@@ -151,21 +156,29 @@ var index = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '25%',
+            width: '35%',
             editable: true,
           }, {
-            field: 'peopleList', //域值
+            field: 'personIdList', //域值
             title: '巡检人员', //内容
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '20%',
+            width: '8%',
             editable: true,
+            formatter: function (value) {
+              if (value) {
+                return value.length;
+              } else {
+                return "";
+              }
+
+            }
           }, {
             field: 'operate',
             title: '操作',
             align: 'center',
-            class: "W60",
+            // class: "W60",
             events: {
               //定位功能
               'click .location': function (e, value, row, index) {
@@ -181,8 +194,7 @@ var index = new Vue({
               },
               //查看详情
               'click .check': function (e, value, row, index) {
-              that.detailForm=row;
-                $("#details").modal(); //打开详情模态框
+                that.getNodeDeatilByObjectId(row.objectId);
                 return false;
               },
               //查看详情
@@ -208,6 +220,32 @@ var index = new Vue({
         ]
       });
 
+    },
+    refreshTable: function () {
+      var that = this;
+      that.searchObj.pageNum = '1';
+      that.searchObj.keyword = that.keyword;
+      that.searchObj.distributionStatus = that.distributionStatus;
+      $('#table').bootstrapTable('refreshOptions', {
+        pageNumber: +that.searchObj.pageNum,
+        pageSize: +that.searchObj.pageSize,
+        queryParams: function (params) {
+          that.searchObj.pageSize = params.pageSize;
+          that.searchObj.pageNum = params.pageNumber;
+          return that.searchObj;
+        }
+      });
+    },
+    clearTable: function () {
+      var that = this;
+      that.keyword = "";
+      that.distributionStatus = "";
+      that.refreshTable();
+    },
+    chooseStatus: function (e) {
+      var t = e.target;
+      this.distributionStatus = $(t).attr('data-value');
+      this.refreshTable();
     },
     singlePointLocation: function (selectedItem) {
       var that = this;
@@ -285,21 +323,20 @@ var index = new Vue({
     allotPeople: function (value) {
       var that = this;
       var selectPeople = [];
-      var selectItem = [];
       //是否选中条数
-      if (value.oid) {
-        selectItem.push(value);
+      if (value.objectId) {
+        that.selectItems.push(value);
       } else {
-        selectItem = $('#table').bootstrapTable('getAllSelections');
+        that.selectItems = $('#table').bootstrapTable('getAllSelections');
       }
-      if (selectItem.length == 0) {
+      if (that.selectItems.length == 0) {
         xxwsWindowObj.xxwsAlert("请选中一行数据");
         return;
       }
       $("#stakeholder").modal();
       $("#stakeholder").on('shown.bs.modal', function (e) {
-        if (selectItem.length == 1) {
-          selectItem[0].peopleLiseId.forEach(function (item) {
+        if (that.selectItems.length == 1) {
+          that.selectItems[0].personIdList.forEach(function (item) {
             selectPeople.push({
               relationshipPersonId: item
             })
@@ -312,14 +349,70 @@ var index = new Vue({
       });
 
     },
+    getNodeDeatilByObjectId: function (objectId) {
+      $("#details").modal(); //打开详情模态框
+      var that = this;
+      $.ajax({
+        type: "get",
+        url: "/cloudlink-inspection-event/necessityNode/get?token=" + lsObj.getLocalStorage('token'),
+        contentType: "application/json",
+        dataType: "json",
+        data: {
+          id: objectId
+        },
+        success: function (data) {
+          if (data.success == 1) {
+            that.detailForm = data.rows[0];
+            if (that.detailForm.personIdList) {
+              that.detailForm.peopleCount = that.detailForm.personIdList.length;
+            } else {
+              that.detailForm.peopleCount = 0;
+            }
+
+          } else {`1  AQW345TRFDCFGYU89IUJJKOPOL;.,;[][';.`
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
+          }
+        }
+      })
+    },
     selectPeople: function () {
-      var ids = []; //获取点的id
-      var selectItem = $('#table').bootstrapTable('getAllSelections');
-      for (var i = 0; i < selectItem.length; i++) {
-        ids.push(selectItem[i].oid);
+      var that = this;
+      var peopleArr = [];
+      var peopleObj = peopleTreeObj.getSelectPeople();
+      var obj = {
+        necessityNodeIdList: [],
+        personFormList: []
+      };
+      for (var i = 0; i < that.selectItems.length; i++) {
+        obj.necessityNodeIdList.push(that.selectItems[i].objectId);
       }
-      var dataObj = peopleTreeObj.getSelectPeople();
-      alert("人员分配" + dataObj.selectedName);
+      peopleObj.selectedArr.forEach(function (item) {
+        peopleArr.push({
+          personId: item.relationshipPersonId,
+          personName: item.relationshipPersonName
+        });
+      });
+      obj.personFormList = peopleArr;
+      that.updateRelation(obj);
+    },
+    updateRelation: function (obj) {
+      var that = this;
+      $.ajax({
+        type: "post",
+        contentType: "application/json",
+        dataType: "json",
+        url: "/cloudlink-inspection-event/necessityNode/updateRelationPerson?token=" + lsObj.getLocalStorage('token'),
+        data: JSON.stringify(obj),
+        success: function (data) {
+          if (data.success == 1) {
+            xxwsWindowObj.xxwsAlert("分配成功", function () {
+              that.refreshTable();
+            });
+          } else {
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
+          }
+        }
+      });
     }
   }
 });

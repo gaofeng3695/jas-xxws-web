@@ -36,26 +36,25 @@
     <!--/地图-->
     <div class="wrapper-main">
       <!--高级搜索-->
-
       <div class="container-fluid search_item_wrapper">
         <div class="top">
           <div class="row search_title">
             <div class="col-lg-6 col-md-6 col-xs-12 btn_wrapper">
               <div class="col=lg-10 col-xs-10">
-                <div class="item col-xs-4" data-value="20,21,30">全部</div>
-                <div class="item col-xs-4" data-value="20">已分配</div>
-                <div class="item col-xs-4" data-value="21,30">未分配</div>
+                <div class="item col-xs-4 " data-value="" @click="chooseStatus" :class="distributionStatus==''?'active':''">全部</div>
+                <div class="item col-xs-4" data-value="1" @click="chooseStatus" :class="distributionStatus=='1'?'active':''">已分配</div>
+                <div class="item col-xs-4" data-value="0" @click="chooseStatus" :class="distributionStatus=='0'?'active':''">未分配</div>
               </div>
             </div>
             <div class="col-lg-6 col-md-6 col-xs-12 right_wrapper">
               <div class="search_btn_right">
-                <div class="search_reset" id="gf_reset_Btn">重置</div>
+                <div class="search_reset" @click="clearTable">重置</div>
               </div>
               <div class="search_wrapper">
                 <div class="input_wrapper">
-                  <input class="" id="searchInput" type="text" placeholder="输入关键字搜索">
+                  <input class="" v-model="keyword" type="text" placeholder="输入关键字搜索">
                 </div>
-                <span class="mybtn" id="gf_Btn">确定</span>
+                <span class="mybtn" @click="refreshTable">确定</span>
               </div>
             </div>
           </div>
@@ -104,7 +103,13 @@
                 </div>
                 <div class="row">
                   <div class="col-md-2 col-sm-2 text-right details_title">有效半径</div>
-                  <div class="col-md-10  col-sm-10 details_text">{{detailForm.effectiveRadius}}</div>
+                  <div class="col-md-4  col-sm-4 details_text">{{detailForm.effectiveRadius}}</div>
+                  <div class="col-md-2 col-sm-2 text-right details_title">巡检人数</div>
+                  <div class="col-md-4  col-sm-4 details_text">{{detailForm.peopleCount}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2 col-sm-2 text-right details_title">巡检人员</div>
+                  <div class="col-md-10  col-sm-10 details_text">{{detailForm.personNames}}</div>
 
                 </div>
                 <div class="row">
