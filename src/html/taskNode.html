@@ -26,20 +26,20 @@
           <div class="row search_title">
             <div class="col-lg-6 col-md-6 col-xs-12 btn_wrapper">
               <div class="col=lg-10 col-xs-10">
-                <div class="item col-xs-4" data-value="20,21,30">全部</div>
-                <div class="item col-xs-4" data-value="20">已发布</div>
-                <div class="item col-xs-4" data-value="21,30">未发布</div>
+                <div class="item col-xs-4 " data-value="" :class="currentStatus==''?'active':''" @click="changeStatus">全部</div>
+                <div class="item col-xs-4" data-value="1" :class="currentStatus=='1'?'active':''" @click="changeStatus">已发布</div>
+                <div class="item col-xs-4" data-value="0" :class="currentStatus=='0'?'active':''" @click="changeStatus">未发布</div>
               </div>
             </div>
             <div class="col-lg-6 col-md-6 col-xs-12 right_wrapper">
               <div class="search_btn_right">
-                <div class="search_reset" id="gf_reset_Btn">重置</div>
+                <div class="search_reset" @click="claerSearch">重置</div>
               </div>
               <div class="search_wrapper">
                 <div class="input_wrapper">
-                  <input class="" id="searchInput" type="text" placeholder="输入关键字搜索">
+                  <input class="" v-model="keyword" id="searchInput" type="text" placeholder="输入关键字搜索">
                 </div>
-                <span class="mybtn" id="gf_Btn">确定</span>
+                <span class="mybtn" @click="refreshTable">确定</span>
               </div>
             </div>
           </div>
@@ -61,142 +61,146 @@
       </div>
       <!--/数据列表-->
     </div>
-  </div>
 
 
-  <!--任务新建-->
-  <div id="task" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>{{title}}<a class="close" data-dismiss="modal">×</a></h3>
-        </div>
-        <div class="modal-body">
-          <div class="taskform">
-            <div class="form_list">
-              <div class="form_part">
+    <div id="task" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>{{title}}<a class="close" data-dismiss="modal">×</a></h3>
+          </div>
+          <div class="modal-body">
+            <div class="taskform">
+              <div class="form_list">
+                <div class="form_part">
+                  <div class="list_left text-right">
+                    <i>*</i>任务名称
+                  </div>
+                  <div class="list_right">
+                    <input type="text" class="form-control" placeholder="请输入任务名称" v-model="taskForm.name">
+                  </div>
+                </div>
+                <div class="form_part">
+                  <div class="list_left text-right">
+                    任务编号
+                  </div>
+                  <div class="list_right">
+                    <input type="text" class="form-control" placeholder="请输入任务编号" v-model="taskForm.code">
+                  </div>
+                </div>
+              </div>
+              <div class="form_list">
+                <div class="form_part">
+                  <div class="list_left text-right">
+                    <i>*</i>开始时间
+                  </div>
+                  <div class="list_right has-feedback">
+                    <input type="text" id="startTime" class="form-control form_datetime" v-model="taskForm.startTime">
+                  </div>
+                </div>
+                <div class="form_part">
+                  <div class="list_left text-right">
+                    <i>*</i>结束时间
+                  </div>
+                  <div class="list_right ">
+                    <input type="text" id="endTime" class="form-control form_datetime" v-model="taskForm.endTime">
+                  </div>
+                </div>
+              </div>
+              <div class="form_list">
                 <div class="list_left text-right">
-                  <i>*</i>任务名称
+                  安检人员
                 </div>
-                <div class="list_right">
-                  <input type="text" class="form-control" placeholder="请输入任务名称" v-model="taskForm.taskName">
-                </div>
-              </div>
-              <div class="form_part">
-                <div class="list_left text-right">
-                  任务编号
-                </div>
-                <div class="list_right">
-                  <input type="text" class="form-control" placeholder="请输入任务编号" v-model="taskForm.taskCode">
-                </div>
-              </div>
-            </div>
-            <div class="form_list">
-              <div class="form_part">
-                <div class="list_left text-right">
-                  <i>*</i>开始时间
-                </div>
-                <div class="list_right has-feedback">
-                  <input type="text" id="startTime" class="form-control form_datetime" v-model="taskForm.startTime">
-                </div>
-              </div>
-              <div class="form_part">
-                <div class="list_left text-right">
-                  <i>*</i>结束时间
-                </div>
-                <div class="list_right ">
-                  <input type="text" id="endTime" class="form-control form_datetime" v-model="taskForm.endTime">
-                </div>
-              </div>
-            </div>
-            <div class="form_list">
-              <div class="list_left text-right">
-                安检人员
-              </div>
-              <div class="list_right postionr ">
-                <input type="text" class="form-control hander" placeholder="请选择安检人员" readonly v-model="taskForm.people" @click="selectPeople">
-                <span class="form-control-feedback right10" aria-hidden="true">
+                <div class="list_right postionr ">
+                  <input type="text" class="form-control hander" placeholder="请选择安检人员" readonly v-model="taskForm.personNames" @click="selectPeople">
+                  <span class="form-control-feedback right10" aria-hidden="true">
                        <img src="/src/images/event/slaff.png" alt="">
                 </span>
+                </div>
               </div>
-            </div>
-            <div class="form_list">
-              <div class="list_left text-right">
-                备注
-              </div>
-              <div class="list_right textarea_text">
-                <textarea oninput="checkLen(this)" class="form-control" v-model="taskForm.remark"></textarea>
-                <span class="text_num">(160字)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button @click="saveTask" type="button" class="btn modal_active btn-primary">确定</button>
-          <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--任务详情-->
-  <div id="details" class="modal fade bs-example-modal-lg" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>{{title}}<a class="close" data-dismiss="modal">×</a></h3>
-        </div>
-        <div class="modal-body">
-          <div class="details_main">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-2 col-sm-2 text-right details_title">任务名称</div>
-                <div class="col-md-4 col-sm-4 details_text ">{{detailForm.taskName}}</div>
-                <div class="col-md-2 col-sm-2 text-right details_title">任务编号</div>
-                <div class="col-md-4 col-sm-4 details_text" >{{detailForm.taskCode}}</div>
-              </div>
-              <div class="row">
-                <div class="col-md-2 col-sm-2 text-right details_title">开始时间</div>
-                <div class="col-md-4  col-sm-4 details_text">{{detailForm.startTime}}</div>
-                <div class="col-md-2 col-sm-2 text-right details_title">结束时间</div>
-                <div class="col-md-4  col-sm-4 details_text" >{{detailForm.endTime}}</div>
-              </div>
-              <div class="row">
-                <div class="col-md-2 col-sm-2 text-right details_title">安检人员</div>
-                <div class="col-md-10  col-sm-10 details_text">{{detailForm.people}}</div>
-              </div>
-              <div class="row">
-                <div class="col-md-2 col-sm-2 text-right details_title">备注</div>
-                <div class="col-md-10  col-sm-10 details_text" >{{detailForm.remark}}</div>
+              <div class="form_list">
+                <div class="list_left text-right">
+                  备注
+                </div>
+                <div class="list_right textarea_text">
+                  <textarea oninput="checkLen(this)" class="form-control" v-model="taskForm.remark"></textarea>
+                  <span class="text_num">(160字)</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn" data-dismiss="modal">关闭</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--人员信息-->
-  <div id="people" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>人员添加<a class="close" data-dismiss="modal">×</a></h3>
-        </div>
-        <div class="modal-body">
-          <div class="sub_wrapper">
-            <ul id="people_list" class="ztree"></ul>
+          <div class="modal-footer">
+            <button type="button" class="btn modal_close btn-default" data-dismiss="modal">取消</button>
+            <button @click="saveTask" type="button" class="btn modal_active btn-primary">确定</button>
+
           </div>
         </div>
-        <div class="modal-footer">
-          <button id="choose" type="button" class="btn modal_active btn-primary">确定</button>
-          <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+
+
+    <div id="details" class="modal fade bs-example-modal-lg" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>任务详情<a class="close" data-dismiss="modal">×</a></h3>
+          </div>
+          <div class="modal-body">
+            <div class="details_main">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-2 col-sm-2 text-right details_title">任务名称</div>
+                  <div class="col-md-4 col-sm-4 details_text ">{{detailForm.name}}</div>
+                  <div class="col-md-2 col-sm-2 text-right details_title">任务编号</div>
+                  <div class="col-md-4 col-sm-4 details_text">{{detailForm.code}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2 col-sm-2 text-right details_title">开始时间</div>
+                  <div class="col-md-4  col-sm-4 details_text">{{detailForm.startTime}}</div>
+                  <div class="col-md-2 col-sm-2 text-right details_title">结束时间</div>
+                  <div class="col-md-4  col-sm-4 details_text">{{detailForm.endTime}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2 col-sm-2 text-right details_title">安检人员</div>
+                  <div class="col-md-10  col-sm-10 details_text">{{detailForm.personNames}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2 col-sm-2 text-right details_title">备注</div>
+                  <div class="col-md-10  col-sm-10 details_text">{{detailForm.remark}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">关闭</button>
+          </div>
         </div>
       </div>
     </div>
+
+
+
   </div>
-  <!-- /#page-wrapper -->
+
+
+    <div id="people" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>人员添加<a class="close" data-dismiss="modal">×</a></h3>
+          </div>
+          <div class="modal-body">
+            <div class="sub_wrapper">
+              <ul id="people_list" class="ztree"></ul>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="selectPeople" type="button" class="btn modal_active btn-primary">确定</button>
+            <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
   <script type="text/javascript" src="/lib/js/vue.min.js"></script>
   <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
