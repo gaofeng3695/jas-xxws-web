@@ -3,9 +3,9 @@ var indexs = new Vue({
   data: function () {
     return {
       currentStatus: "",
-      title: "新建任务",
+      title: "新建计划",
       taskForm: {
-        personNames: "", //巡检人员
+        personNames: "", //安检人员
         name: "",
         code: "",
         startTime: "",
@@ -14,7 +14,7 @@ var indexs = new Vue({
         personFormList: []
       },
       detailForm: {
-        personNames: "", //巡检人员
+        personNames: "", //安检人员
         name: "",
         code: "",
         startTime: "",
@@ -22,10 +22,12 @@ var indexs = new Vue({
         remark: "",
         objectId: ""
       },
-      keyword:"",
+      keyword: "",
       searchObj: {
 
-      }
+      },
+      isUpdateStartTime: false,
+      isUpdateEndTime: false
     }
   },
   mounted: function () {
@@ -154,7 +156,7 @@ var indexs = new Vue({
             }
           }, {
             field: 'peopleCount', //域值
-            title: '巡检人数', //内容
+            title: '安检人数', //内容
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序  peopleCount
@@ -187,7 +189,7 @@ var indexs = new Vue({
               //删除
               'click .closed': function (e, value, row, index) {
                 var defaultOptions = {
-                  tip: '您是否删除该任务？',
+                  tip: '您是否删除该计划？',
                   name_title: '提示',
                   name_cancel: '取消',
                   name_confirm: '确定',
@@ -203,14 +205,22 @@ var indexs = new Vue({
                 that.editTask(row.objectId);
               },
               'click .publish1': function (e, value, row, index) {
+                var tip = "您是否发布该计划？"
+                if (row.publishStatus == 1) {
+                  tip = "您是否取消已发布的计划？"
+                }
                 var defaultOptions = {
-                  tip: '您是否发布该任务？',
+                  tip: tip,
                   name_title: '提示',
                   name_cancel: '取消',
                   name_confirm: '确定',
                   isCancelBtnShow: true,
                   callBack: function () {
-                    that.toPublish(row.objectId);
+                    if (row.publishStatus == 1) {
+                      that.cancelPublish(row.objectId);
+                    } else {
+                      that.toPublish(row.objectId);
+                    }
                   }
                 };
                 xxwsWindowObj.xxwsAlert(defaultOptions);
@@ -222,6 +232,7 @@ var indexs = new Vue({
               var close = "";
               var edit = "";
               var publish = "";
+              var title = "发布";
               if (row.publishStatus == 0) {
                 close = "closed";
                 edit = "management";
@@ -229,10 +240,11 @@ var indexs = new Vue({
               } else {
                 close = "closed_end";
                 edit = "management_end ";
-                publish = "publish1_end"
+                publish = "publish1_end";
+                title = "取消发布";
               }
               return [
-                '<a class="publish1"  href="javascript:void(0)" title="发布">',
+                '<a class="publish1"  href="javascript:void(0)" title="' + title + '">',
                 '<i></i>',
                 '<a class="check" href="javascript:void(0)" title="查看">',
                 '<i></i>',
@@ -250,9 +262,10 @@ var indexs = new Vue({
     },
     addTask: function () {
       var that = this;
-      that.title = "新建"
+      that.title = "新建";
+      that.initStatus();
       that.taskForm = {
-        personNames: "", //巡检人员
+        personNames: "", //安检人员
         name: "",
         startTime: "",
         endTime: "",
@@ -277,7 +290,13 @@ var indexs = new Vue({
           if (data.success == 1) {
             that.taskForm = data.rows[0];
             that.taskForm.startTime = data.rows[0].startTime.substring(0, 10);
+            if (new Date(that.taskForm.startTime) <= new Date()) {
+              that.isUpdateStartTime = true;
+            }
             that.taskForm.endTime = data.rows[0].endTime.substring(0, 10);
+            if (new Date(that.taskForm.endTime) <= new Date()) {
+              that.isUpdateEndTime = true;
+            }
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
@@ -319,9 +338,9 @@ var indexs = new Vue({
         },
         success: function (data) {
           if (data.success == 1) {
-            that.refreshTable();
-            xxwsWindowObj.xxwsAlert("删除成功");
-
+            xxwsWindowObj.xxwsAlert("删除成功", function () {
+              that.refreshTable();
+            });
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
@@ -340,8 +359,9 @@ var indexs = new Vue({
         },
         success: function (data) {
           if (data.success == 1) {
-            that.refreshTable();
-            xxwsWindowObj.xxwsAlert("发布成功");
+            xxwsWindowObj.xxwsAlert("发布成功", function () {
+              that.refreshTable();
+            });
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
@@ -367,44 +387,16 @@ var indexs = new Vue({
           dataType: "json",
           success: function (data) {
             if (data.success == 1) {
-              $("#task").modal('hide');
-              that.refreshTable();
-              xxwsWindowObj.xxwsAlert(msg);
+              xxwsWindowObj.xxwsAlert(msg, function () {
+                $("#task").modal('hide');
+                that.refreshTable();
+              });
             } else {
               xxwsWindowObj.xxwsAlert("服务器异常，请稍候尝试");
             }
           }
         });
       }
-    },
-    selectPeople: function () {
-      var that = this;
-      var selectPeople = [];
-      if (that.taskForm.personIdList && that.taskForm.personIdList.length > 0) {
-        that.taskForm.personIdList.forEach(function (item) {
-          selectPeople.push({
-            relationshipPersonId: item
-          });
-        });
-      }
-      $("#people").modal();
-      $("#people").on('shown.bs.modal', function (e) {
-        peopleTreeObj.requestPeopleTree('', selectPeople);
-      });
-    },
-    getSelectPeople: function () {
-      var that = this;
-      var peopleArr = [];
-      var peopleObj = peopleTreeObj.getSelectPeople();
-      peopleObj.selectedArr.forEach(function (item) {
-        peopleArr.push({
-          personId: item.relationshipPersonId,
-          personName: item.relationshipPersonName
-        });
-      });
-      that.taskForm.personFormList = peopleArr;
-      that.taskForm.personNames = peopleObj.selectedName;
-      $('#people').modal('hide');
     },
     bindDate: function () {
       var that = this;
@@ -414,6 +406,7 @@ var indexs = new Vue({
         language: 'zh-CN',
         autoclose: true,
       }).on("click", function () {
+        $("#startTime").datetimepicker("setStartDate", new Date());
         $("#startTime").datetimepicker("setEndDate", $("#endTime").val());
       }).on("changeDate", function (ev) {
         that.taskForm.startTime = ev.date.Format("yyyy-MM-dd");
@@ -424,7 +417,11 @@ var indexs = new Vue({
         language: 'zh-CN',
         autoclose: true,
       }).on("click", function () {
-        $("#endTime").datetimepicker("setStartDate", $("#startTime").val())
+        if (new Date(that.taskForm.startTime) < new Date()) {
+          $("#endTime").datetimepicker("setStartDate", new Date());
+        } else {
+          $("#endTime").datetimepicker("setStartDate", $("#startTime").val());
+        }
       }).on("changeDate", function (ev) {
         that.taskForm.endTime = ev.date.Format("yyyy-MM-dd");
       });
@@ -435,19 +432,23 @@ var indexs = new Vue({
     verify: function () {
       var that = this;
       if (!that.taskForm.name.trim()) {
-        xxwsWindowObj.xxwsAlert("任务名称不能为空");
+        xxwsWindowObj.xxwsAlert("请输入计划名称");
         return false;
       }
       if (that.taskForm.name.length > 45) {
-        xxwsWindowObj.xxwsAlert("任务名称长度不能超过45个");
+        xxwsWindowObj.xxwsAlert("计划名称长度不能超过45个");
         return false;
       }
       if (!that.taskForm.startTime) {
-        xxwsWindowObj.xxwsAlert("开始时间不能为空");
+        xxwsWindowObj.xxwsAlert("请选择开始时间");
         return false;
       }
       if (!that.taskForm.endTime) {
-        xxwsWindowObj.xxwsAlert("结束时间不能为空");
+        xxwsWindowObj.xxwsAlert("请选择结束时间");
+        return false;
+      }
+      if (!that.taskForm.personNames) {
+        xxwsWindowObj.xxwsAlert("请选择安检人员");
         return false;
       }
       return true;
@@ -472,12 +473,62 @@ var indexs = new Vue({
         }
       });
     },
-    claerSearch:function(){
-      var that=this;
-      that.keyword="";
-      that.currentStatus="";
+    claerSearch: function () {
+      var that = this;
+      that.keyword = "";
+      that.currentStatus = "";
       that.refreshTable();
-    }
+    },
+    initStatus: function () {
+      this.isUpdateStartTime = false;
+      this.isUpdateEndTime = false;
+    }, //关于人员信息
+    selectPeople: function () {
+      var that = this;
+      //先去获取已经分配了点的人员
+      var choosePoeple = [];
+      $.ajax({
+        type: "get",
+        url: "/cloudlink-inspection-event/necessityNode/getRelationPerson?token=" + lsObj.getLocalStorage('token'),
+        contentType: "application/json",
+        dataType: "json",
+        success: function (data) {
+          if (data.success == 1) {
+            choosePoeple = data.rows;
+            that.renderPeople(choosePoeple);
+          }
+        }
+      });
+    },
+    renderPeople: function (choosePoeple) {
+      var that = this;
+      var selectPeople = [];
+      if (that.taskForm.personIdList && that.taskForm.personIdList.length > 0) {
+        that.taskForm.personIdList.forEach(function (item) {
+          selectPeople.push({
+            relationshipPersonId: item
+          });
+        });
+      }
+      $("#people").modal();
+      $("#people").on('shown.bs.modal', function (e) {
+        peopleTreeObj.requestPeopleTree('', selectPeople, false, '', choosePoeple);
+      });
+    },
+    getSelectPeople: function () {
+      var that = this;
+      var peopleArr = [];
+      var peopleObj = peopleTreeObj.getSelectPeople();
+      peopleObj.selectedArr.forEach(function (item) {
+        peopleArr.push({
+          personId: item.relationshipPersonId,
+          personName: item.relationshipPersonName
+        });
+      });
+      that.taskForm.personFormList = peopleArr;
+      that.taskForm.personNames = peopleObj.selectedName;
+      $('#people').modal('hide');
+    },
   },
 
 });

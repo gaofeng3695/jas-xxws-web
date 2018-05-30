@@ -6,6 +6,7 @@ var index = new Vue({
       isSearchNode: false, //是否展示搜索下拉面板
       isDetailNode: false, //点详细信息
       isShowTool: false, //是否展示增加方式列表
+      noResult: false,
       isEditOrView: true,
       nodeInfoArrys: [], //所有点信息集合
       drawNodeArray: [], //绘制点
@@ -82,6 +83,13 @@ var index = new Vue({
       that.isShowTool = false;
       that._requestNode(that.searchInput, function () {
         that.isSearchNode = true;
+        that.isDetailNode = false; //必经点详情列表隐藏
+        that.isEditOrView = true;
+        if (that.nodeInfoArrys.length == 0) {
+          that.noResult = true;
+        } else {
+          that.noResult = false;
+        }
         that.removePoint();
         that.mapObj.clearOverlays();
       })
@@ -154,7 +162,6 @@ var index = new Vue({
       }
       that._addPoints();
     },
-
     _pointClick: function (e) {
       var that = this;
       if (!that.isEditOrView) {
@@ -259,6 +266,7 @@ var index = new Vue({
       that.mapObj.clearOverlays();
       that.isDetailNode = false; //必经点详情列表隐藏
       that.isSearchNode = false; //必经点列表隐藏
+      that.isEditOrView = true;
       that.allot = true;
       that.noallot = true;
       that._requestNode();
@@ -467,66 +475,7 @@ var index = new Vue({
         }
       });
     },
-    verrify: function () {
-      //验证
-      var that = this;
-      if (!that.nodeForm.name.trim()) {
-        xxwsWindowObj.xxwsAlert("必经点名称不能为空");
-        return false;
-      }
-      if (that.nodeForm.name.length > 45) {
-        xxwsWindowObj.xxwsAlert("必经点名称长度不能超过45个");
-        return false;
-      }
-      if (!that.nodeForm.code.trim()) {
-        xxwsWindowObj.xxwsAlert("必经点编号不能为空");
-        return false;
-      }
-      if (that.nodeForm.code.length > 45) {
-        xxwsWindowObj.xxwsAlert("必经点编号长度不能超过45个");
-        return false;
-      }
-      if (!that.nodeForm.inspectionTimes.trim()) {
-        xxwsWindowObj.xxwsAlert("巡检频次不能为空");
-        return false;
-      }
-      var regNum = /^[0-9]*$/;
-      if (!regNum.test(this.nodeForm.inspectionTimes.trim())) {
-        xxwsWindowObj.xxwsAlert("巡检频次只能是整数");
-        return false;
-      }
-      if (!that.nodeForm.inspectionInterval.trim()) {
-        xxwsWindowObj.xxwsAlert("巡检间隔不能为空");
-        return false;
-      }
-      var regNum1 = /^[0-9]+(()||(.[0-9]{1}))?$/;
-      if (!regNum1.test(this.nodeForm.inspectionInterval.trim())) {
-        xxwsWindowObj.xxwsAlert("巡检间隔为整数或者小数点后一位");
-        return false;
-      }
-      if (!that.nodeForm.effectiveRadius.trim()) {
-        xxwsWindowObj.xxwsAlert("有效半径不能为空");
-        return false;
-      }
-      var regNum1 = /^[0-9]+(()||(.[0-9]{3}))?$/;
-      if (!regNum1.test(this.nodeForm.effectiveRadius.trim())) {
-        xxwsWindowObj.xxwsAlert("有效半径只能是数字");
-        return false;
-      }
-      // if (!that.nodeForm.lon.trim()) {
-      //   xxwsWindowObj.xxwsAlert("纬度不能为空");
-      //   return false;
-      // }
-      // if (!that.nodeForm.lat.trim()) {
-      //   xxwsWindowObj.xxwsAlert("经度不能为空");
-      //   return false;
-      // }
-      // if (!that.nodeForm.location.trim()) {
-      //   xxwsWindowObj.xxwsAlert("位置不能为空");
-      //   return false;
-      // }
-      return true;
-    },
+
     initAddForm: function () {
       for (var key in this.nodeForm) {
         this.nodeForm[key] = "";
@@ -632,6 +581,66 @@ var index = new Vue({
     },
     cancelPeople: function () {
       $("#choosePeople").modal('hide');
-    }
+    },
+    verrify: function () {
+      //验证
+      var that = this;
+      if (!that.nodeForm.name.trim()) {
+        xxwsWindowObj.xxwsAlert("必经点名称不能为空");
+        return false;
+      }
+      if (that.nodeForm.name.length > 45) {
+        xxwsWindowObj.xxwsAlert("必经点名称长度不能超过45个");
+        return false;
+      }
+      if (!that.nodeForm.code.trim()) {
+        xxwsWindowObj.xxwsAlert("必经点编号不能为空");
+        return false;
+      }
+      if (that.nodeForm.code.length > 45) {
+        xxwsWindowObj.xxwsAlert("必经点编号长度不能超过45个");
+        return false;
+      }
+      if (!that.nodeForm.inspectionTimes.trim()) {
+        xxwsWindowObj.xxwsAlert("巡检频次不能为空");
+        return false;
+      }
+      var regNum = /^[0-9]*$/;
+      if (!regNum.test(this.nodeForm.inspectionTimes.trim())) {
+        xxwsWindowObj.xxwsAlert("巡检频次只能是整数");
+        return false;
+      }
+      if (!that.nodeForm.inspectionInterval.trim()) {
+        xxwsWindowObj.xxwsAlert("巡检间隔不能为空");
+        return false;
+      }
+      var regNum1 = /^[0-9]+(()||(.[0-9]{1}))?$/;
+      if (!regNum1.test(this.nodeForm.inspectionInterval.trim())) {
+        xxwsWindowObj.xxwsAlert("巡检间隔为整数或者小数点后一位");
+        return false;
+      }
+      if (!that.nodeForm.effectiveRadius.trim()) {
+        xxwsWindowObj.xxwsAlert("有效半径不能为空");
+        return false;
+      }
+      var regNum1 = /^[0-9]+(()||(.[0-9]{3}))?$/;
+      if (!regNum1.test(this.nodeForm.effectiveRadius.trim())) {
+        xxwsWindowObj.xxwsAlert("有效半径只能是数字");
+        return false;
+      }
+      // if (!that.nodeForm.lon.trim()) {
+      //   xxwsWindowObj.xxwsAlert("纬度不能为空");
+      //   return false;
+      // }
+      // if (!that.nodeForm.lat.trim()) {
+      //   xxwsWindowObj.xxwsAlert("经度不能为空");
+      //   return false;
+      // }
+      // if (!that.nodeForm.location.trim()) {
+      //   xxwsWindowObj.xxwsAlert("位置不能为空");
+      //   return false;
+      // }
+      return true;
+    },
   },
 });

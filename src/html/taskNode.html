@@ -74,18 +74,18 @@
               <div class="form_list">
                 <div class="form_part">
                   <div class="list_left text-right">
-                    <i>*</i>任务名称
+                    <i>*</i>计划名称
                   </div>
                   <div class="list_right">
-                    <input type="text" class="form-control" placeholder="请输入任务名称" v-model="taskForm.name">
+                    <input type="text" class="form-control" placeholder="请输入计划名称" v-model="taskForm.name">
                   </div>
                 </div>
                 <div class="form_part">
                   <div class="list_left text-right">
-                    任务编号
+                    计划编号
                   </div>
                   <div class="list_right">
-                    <input type="text" class="form-control" placeholder="请输入任务编号" v-model="taskForm.code">
+                    <input type="text" class="form-control" placeholder="请输入计划编号" v-model="taskForm.code">
                   </div>
                 </div>
               </div>
@@ -95,7 +95,7 @@
                     <i>*</i>开始时间
                   </div>
                   <div class="list_right has-feedback">
-                    <input type="text" id="startTime" class="form-control form_datetime" v-model="taskForm.startTime">
+                    <input type="text" id="startTime" :disabled="isUpdateStartTime" class="form-control form_datetime" v-model="taskForm.startTime">
                   </div>
                 </div>
                 <div class="form_part">
@@ -103,13 +103,13 @@
                     <i>*</i>结束时间
                   </div>
                   <div class="list_right ">
-                    <input type="text" id="endTime" class="form-control form_datetime" v-model="taskForm.endTime">
+                    <input type="text" id="endTime" :disabled="isUpdateEndTime" class="form-control form_datetime" v-model="taskForm.endTime">
                   </div>
                 </div>
               </div>
               <div class="form_list">
                 <div class="list_left text-right">
-                  安检人员
+                 <i>*</i>  安检人员
                 </div>
                 <div class="list_right postionr ">
                   <input type="text" class="form-control hander" placeholder="请选择安检人员" readonly v-model="taskForm.personNames" @click="selectPeople">
@@ -143,15 +143,15 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h3>任务详情<a class="close" data-dismiss="modal">×</a></h3>
+            <h3>计划详情<a class="close" data-dismiss="modal">×</a></h3>
           </div>
           <div class="modal-body">
             <div class="details_main">
               <div class="container-fluid">
                 <div class="row">
-                  <div class="col-md-2 col-sm-2 text-right details_title">任务名称</div>
+                  <div class="col-md-2 col-sm-2 text-right details_title">计划名称</div>
                   <div class="col-md-4 col-sm-4 details_text ">{{detailForm.name}}</div>
-                  <div class="col-md-2 col-sm-2 text-right details_title">任务编号</div>
+                  <div class="col-md-2 col-sm-2 text-right details_title">计划编号</div>
                   <div class="col-md-4 col-sm-4 details_text">{{detailForm.code}}</div>
                 </div>
                 <div class="row">

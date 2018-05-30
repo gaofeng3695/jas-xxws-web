@@ -2,6 +2,8 @@
  * frameName---字符串(必填),可以为""，用于辨别来自哪个窗口
  * selectArr---人员数组（必填），默认选中的节点
  * boolean---ture or false（选填），删除自己
+ * treeid--默认是people_list(选填),可以传入
+ * choosePeople--[]需要展示过滤的人员
  */
 /**
  * 调用getSelectPeople()，返回所选节点对象obj = {key: "",selectedArr: arr,selectedName:names };
@@ -16,7 +18,7 @@ var peopleTreeObj = {
     aPeopleName: [],
     selectPersonArr: [],
     init: function () {},
-    requestPeopleTree: function (frameName, selectArr, boolean, treeid) { //请求人员信息
+    requestPeopleTree: function (frameName, selectArr, boolean, treeid, choosePoeple) { //请求人员信息
         var _this = this;
         if (treeid) {
             _this.$tree = $("#" + treeid);
@@ -55,8 +57,25 @@ var peopleTreeObj = {
                         }
                     }
                 }
-
-                _this.aAllPeople = peopleAllArr;
+                if (choosePoeple) {
+                    var filterPeople = [];
+                    var indexs = choosePoeple.map(function (item) {
+                        return item.personId;
+                    });
+                    peopleAllArr.forEach(function (item) {
+                        if (item.isParent=="true") {
+                            filterPeople.push(item);
+                        } else {
+                            var index = $.inArray(item.id, indexs);
+                            if (index >= 0) {
+                                filterPeople.push(item);
+                            }
+                        }
+                    });
+                    _this.aAllPeople = filterPeople;
+                } else {
+                    _this.aAllPeople = peopleAllArr;
+                }
                 _this.renderPeopleTree(_this.aAllPeople);
             },
             statusCode: {

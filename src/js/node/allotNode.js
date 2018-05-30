@@ -55,8 +55,8 @@ var index = new Vue({
           that.searchObj.pageSize = params.pageSize;
           that.searchObj.pageNum = params.pageNumber;
           // that.searchObj.orderDirection = 'acs';
-          that.searchObj.orderBy= 'distributionStatus';
-          that.searchObj.withRelationPerson= true;
+          that.searchObj.orderBy = 'distributionStatus';
+          that.searchObj.withRelationPerson = true;
           return that.searchObj;
         },
         responseHandler: function (res) {
@@ -369,7 +369,7 @@ var index = new Vue({
               that.detailForm.peopleCount = 0;
             }
 
-          } else {
+          } else {`1  AQW345TRFDCFGYU89IUJJKOPOL;.,;[][';.`
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
         }
@@ -405,8 +405,9 @@ var index = new Vue({
         data: JSON.stringify(obj),
         success: function (data) {
           if (data.success == 1) {
-            that.refreshTable();
-            xxwsWindowObj.xxwsAlert("分配成功");
+            xxwsWindowObj.xxwsAlert("分配成功", function () {
+              that.refreshTable();
+            });
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }

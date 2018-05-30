@@ -29,6 +29,9 @@
       <div class="nodeList " v-show="isSearchNode">
         <div id="node" class="  sub_wrapper">
           <div class=" result scrollContainer">
+            <div v-show="noResult" style="text-align: center;margin-top:10px;">
+              没有查到数据
+            </div>
             <ul>
               <li v-for="item in nodeInfoArrys" @click="clickItem(item)">
                 <div class="item">
@@ -286,8 +289,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn " @click="savePeople" >确定</button>
-            <button class="btn" @click="cancelPeople" >取消</button>
+            <button class="btn " @click="savePeople">确定</button>
+            <button class="btn" @click="cancelPeople">取消</button>
           </div>
         </div>
       </div>
