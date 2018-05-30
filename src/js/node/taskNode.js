@@ -22,6 +22,7 @@ var indexs = new Vue({
         remark: "",
         objectId: ""
       },
+      textCount: 160,
       keyword: "",
       searchObj: {
 
@@ -29,6 +30,15 @@ var indexs = new Vue({
       isUpdateStartTime: false,
       isUpdateEndTime: false
     }
+  },
+  watch: {
+    'taskForm.remark': function (val, oldVal) {
+      var that = this;
+      if (val.length > 160) {
+        that.taskForm.remark = val.substring(0, 160);
+      }
+      that.textCount = 160 - that.taskForm.remark.length;
+    },
   },
   mounted: function () {
     this.initTable();
@@ -89,8 +99,10 @@ var indexs = new Vue({
             formatter: function (value) {
               if (value == 0) {
                 return '<span class="nopublish">未发布<span>'
-              } else {
+              } else if (value == 1) {
                 return '<span class="publish">已发布<span>'
+              } else {
+                return '<span class="closePlan">已关闭<span>'
               }
             }
           }, {
@@ -229,26 +241,23 @@ var indexs = new Vue({
             },
             width: '40%',
             formatter: function (value, row, index) {
-              var close = "";
-              var edit = "";
-              var publish = "";
               var title = "发布";
+              var close = "closed";
+              var edit = "management";
+              var publish = "publish1";
               if (row.publishStatus == 0) {
-                close = "closed";
-                edit = "management";
-                publish = "publish1";
-              } else {
-                close = "closed_end";
-                edit = "management_end ";
-                publish = "publish1_end";
                 title = "取消发布";
               }
+              if (row.publishStatus == -1) {
+                publish = "publish1_end";
+                edit = "management_end ";
+              }
               return [
-                '<a class="publish1"  href="javascript:void(0)" title="' + title + '">',
+                '<a class="' + publish + '"  href="javascript:void(0)" title="' + title + '">',
                 '<i></i>',
                 '<a class="check" href="javascript:void(0)" title="查看">',
                 '<i></i>',
-                '<a class="management" href="javascript:void(0)" title="编辑">',
+                '<a class="' + edit + '" href="javascript:void(0)" title="编辑">',
                 '<i></i>',
                 '</a>',
                 '<a class="closed"  href="javascript:void(0)" title="删除">',
@@ -277,7 +286,7 @@ var indexs = new Vue({
     editTask: function (objectId) {
       var that = this;
       that.title = "修改";
-      $("#task").modal();
+
       $.ajax({
         type: "get",
         url: "/cloudlink-inspection-event/necessityPlan/get?token=" + lsObj.getLocalStorage('token'),
@@ -289,6 +298,17 @@ var indexs = new Vue({
         success: function (data) {
           if (data.success == 1) {
             that.taskForm = data.rows[0];
+            if (data.rows[0].personIdList && data.rows[0].personIdList.length > 0) {
+              var arr = [];
+              var personNames = data.rows[0].personNames.split(",");
+              data.rows[0].personIdList.forEach(function (item, index) {
+                arr.push({
+                  personId: item,
+                  personName: personNames[index]
+                });
+              });
+              that.taskForm.personFormList = arr;
+            }
             that.taskForm.startTime = data.rows[0].startTime.substring(0, 10);
             if (new Date(that.taskForm.startTime) <= new Date()) {
               that.isUpdateStartTime = true;
@@ -297,6 +317,7 @@ var indexs = new Vue({
             if (new Date(that.taskForm.endTime) <= new Date()) {
               that.isUpdateEndTime = true;
             }
+            $("#task").modal();
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
@@ -368,6 +389,27 @@ var indexs = new Vue({
         }
       })
     },
+    cancelPublish: function (objectId) {
+      var that = this;
+      $.ajax({
+        type: "get",
+        url: "/cloudlink-inspection-event/necessityPlan/cancel?token=" + lsObj.getLocalStorage('token'),
+        contentType: "application/json",
+        dataType: "json",
+        data: {
+          id: objectId
+        },
+        success: function (data) {
+          if (data.success == 1) {
+            xxwsWindowObj.xxwsAlert("取消成功", function () {
+              that.refreshTable();
+            });
+          } else {
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
+          }
+        }
+      });
+    },
     saveTask: function () {
       var that = this;
       var url = "";
@@ -392,6 +434,14 @@ var indexs = new Vue({
                 that.refreshTable();
               });
             } else {
+              if (data.msg.indexOf("name") > -1) {
+                xxwsWindowObj.xxwsAlert("该计划名称已经存在");
+                return;
+              }
+              if (data.msg.indexOf("code") > -1) {
+                xxwsWindowObj.xxwsAlert("该计划编号已经存在");
+                return;
+              }
               xxwsWindowObj.xxwsAlert("服务器异常，请稍候尝试");
             }
           }

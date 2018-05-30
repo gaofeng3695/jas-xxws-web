@@ -121,6 +121,16 @@ body {
   font-size: 12px;
 }
 
+.closePlan {
+  background: #e3e3e3; //#42d28c;
+  color: #fff;
+  height: 20px;
+  line-height: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
 .publish {
   background: #59b6fc; //#42d28c;
   color: #fff;
@@ -250,7 +260,8 @@ body {
 }
 
 /**人员信息**/
-#people{
+
+#people {
   .modal-lg {
     .modal-content {
       width: 400px;
@@ -305,15 +316,14 @@ body {
   }
 }
 
-
-#details{
- .modal-content{
-   height:400px !important;
- }
- .modal-body{
-   height:310px !important;
- }
- .details_main{
-  min-height:290px !important;
- }
+#details {
+  .modal-content {
+    height: 400px !important;
+  }
+  .modal-body {
+    height: 310px !important;
+  }
+  .details_main {
+    min-height: 290px !important;
+  }
 }

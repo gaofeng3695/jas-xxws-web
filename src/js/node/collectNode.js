@@ -39,7 +39,8 @@ var index = new Vue({
         effectiveRadius: "",
         personFormList: []
       },
-      textCount: 160
+      textCount: 160,
+      getNodeMarker: "",
     }
   },
   watch: {
@@ -106,6 +107,8 @@ var index = new Vue({
           pageNum: 1,
           pageSize: 100000,
           withRelationPerson: true,
+          orderBy :"distributionStatus",
+          orderDirection :"asc"
         }),
         success: function (data) {
           if (data.success == 1) {
@@ -315,16 +318,17 @@ var index = new Vue({
           var point = new BMap.Point(e.point.lng, e.point.lat);
           that.nodeForm.bdLon = e.point.lng;
           that.nodeForm.bdLat = e.point.lat;
-          var marker = new BMap.Marker(point);
-          that.mapObj.addOverlay(marker);
+          that.getNodeMarker = new BMap.Marker(point);
+          that.mapObj.addOverlay( that.getNodeMarker);
           that._locationBdFor84();
           new BMap.Geocoder().getLocation(point, function (result) {
+            that.nodeForm.location = result.address;
             $("#addEvent").modal();
             $("#addEvent").on('shown.bs.modal', function (e) {
               var selectPeople = [];
               peopleTreeObj.requestPeopleTree("", selectPeople);
             });
-            that.nodeForm.location = result.address;
+
           });
         }
       })
@@ -642,5 +646,13 @@ var index = new Vue({
       // }
       return true;
     },
+    cancalNode: function () { //取消点的增加
+      var that = this;
+      that.mapObj.setDefaultCursor(that.defaultCursor);
+      that.mapObj.setDraggingCursor(that.draggingCursor);
+      that.mapObj.removeOverlay(that.getNodeMarker);
+      that.isShowTool = false;
+      $("#addEvent").modal("hide");
+    }
   },
 });

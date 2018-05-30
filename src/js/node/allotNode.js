@@ -54,7 +54,7 @@ var index = new Vue({
         queryParams: function (params) {
           that.searchObj.pageSize = params.pageSize;
           that.searchObj.pageNum = params.pageNumber;
-          // that.searchObj.orderDirection = 'acs';
+          that.searchObj.orderDirection = 'asc';
           that.searchObj.orderBy = 'distributionStatus';
           that.searchObj.withRelationPerson = true;
           return that.searchObj;
