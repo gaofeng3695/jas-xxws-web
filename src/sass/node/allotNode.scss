@@ -89,6 +89,19 @@ html,
         }
       }
     }
+    .del {
+     i {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        background: url(/src/images/task/closed.png) no-repeat;
+        vertical-align: middle;
+        margin: 0 5px;
+        &:hover {
+          background: url(/src/images/task/closed_h.png) no-repeat;
+        }
+      }
+    }
     .allotstyle {
       i {
         display: inline-block;
