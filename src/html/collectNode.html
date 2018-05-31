@@ -19,7 +19,7 @@
     <div class="tab_wrapper">
       <ul class="item_wrapper">
         <li id="search" class="item wid250">
-          <input type="text" class="form-control" style="display:inline-block" v-model="searchInput">
+          <input type="text" @focus.nactive="search" class="form-control" style="display:inline-block" v-model="searchInput">
           <span style="padding-left:10px;" class="fa fa-search" @click="search"></span></li>
         <li class="border"></li>
         <li id="addNode" class="item wid80" @click="addNode"><span class="fa fa-plus-square pdr"></span>添加</li>
@@ -145,6 +145,7 @@
         </div>
         <div class="item footer">
           <button @click="editNode" v-show="isEditOrView">编辑</button>
+          <button @click="delNode" v-show="isEditOrView">删除</button>
           <button @click="saveNode" v-show="!isEditOrView">保存</button>
           <button @click="cancelEditNode" v-show="!isEditOrView">取消</button>
         </div>
@@ -188,7 +189,7 @@
                   <div class="form_list">
                     <div class="form_part">
                       <div class="list_left text-right">
-                        巡检频次
+                        <i>*</i> 巡检频次
                       </div>
                       <div class="list_right">
                         <input type="text" class="form-control" placeholder="单位：每天" v-model="nodeForm.inspectionTimes">
@@ -199,7 +200,7 @@
                     </div>
                     <div class="form_part">
                       <div class="list_left text-right">
-                        巡检间隔
+                        <i>*</i>巡检间隔
                       </div>
                       <div class="list_right">
                         <input type="text" class="form-control" placeholder="单位：小时" v-model="nodeForm.inspectionInterval">

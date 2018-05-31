@@ -276,6 +276,7 @@ var indexs = new Vue({
       that.taskForm = {
         personNames: "", //安检人员
         name: "",
+        code:"",
         startTime: "",
         endTime: "",
         remark: "",
@@ -487,6 +488,10 @@ var indexs = new Vue({
       }
       if (that.taskForm.name.length > 45) {
         xxwsWindowObj.xxwsAlert("计划名称长度不能超过45个");
+        return false;
+      }
+      if (!that.taskForm.code.trim()) {
+        xxwsWindowObj.xxwsAlert("请输入计划编号");
         return false;
       }
       if (!that.taskForm.startTime) {

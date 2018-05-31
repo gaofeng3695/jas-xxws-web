@@ -201,7 +201,22 @@ var index = new Vue({
               'click .allotstyle': function (e, value, row, index) {
                 that.allotPeople(row);
                 return false;
-              }
+              },
+              // //删除
+              // 'click .del': function (e, value, row, index) {
+              //   var defaultOptions = {
+              //     tip: '您是否删除该必经点？',
+              //     name_title: '提示',
+              //     name_cancel: '取消',
+              //     name_confirm: '确定',
+              //     isCancelBtnShow: true,
+              //     callBack: function () {
+              //       that.deleteNode(row.objectId);
+              //     }
+              //   };
+              //   xxwsWindowObj.xxwsAlert(defaultOptions);
+              //   return false;
+              // }
             },
             width: '40%',
             formatter: function (value, row, index) {
@@ -213,6 +228,7 @@ var index = new Vue({
                 '</a>',
                 '<a class="check" data-toggle="modal" href="javascript:void(0)" title="查看">',
                 '<i></i>',
+
                 '</a>',
               ].join('');
             }
@@ -252,13 +268,14 @@ var index = new Vue({
       var isExist = 0; //用于表示当前地图上面有无该店
       that.mapObj.centerAndZoom(new BMap.Point(selectedItem.bdLon, selectedItem.bdLat), 18);
       for (var i = 0; i < that.drawNodeArray.length; i++) {
-        if (that.drawNodeArray[i].key == selectedItem.oid) {
+        if (that.drawNodeArray[i].key == selectedItem.objectId) {
           isExist++;
           this.drawNodeArray[i].value.setAnimation(BMAP_ANIMATION_BOUNCE);
         } else {
           this.drawNodeArray[i].value.setAnimation();
         }
       }
+      console.log(isExist)
       if (isExist > 0) return;
       //如果当前地图上面没有该点，需要进行绘制
     },
@@ -303,7 +320,7 @@ var index = new Vue({
         });
         that.drawNodeArray.push({
           'status': data[i].distributionStatus + "",
-          'key': data[i].oid,
+          'key': data[i].objectId,
           'value': markers
         });
       }
@@ -323,6 +340,7 @@ var index = new Vue({
     allotPeople: function (value) {
       var that = this;
       var selectPeople = [];
+      that.selectItems = [];
       //是否选中条数
       if (value.objectId) {
         that.selectItems.push(value);
@@ -373,7 +391,28 @@ var index = new Vue({
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
         }
-      })
+      });
+    },
+    deleteNode: function (objectId) {
+      var that = this;
+      $.ajax({
+        type: "get",
+        url: "/cloudlink-inspection-event/necessityNode/delete?token=" + lsObj.getLocalStorage('token'),
+        contentType: "application/json",
+        dataType: "json",
+        data: {
+          id: objectId
+        },
+        success: function (data) {
+          if (data.success == 1) {
+            xxwsWindowObj.xxwsAlert("删除成功", function () {
+              that.refreshTable();
+            });
+          } else {
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
+          }
+        }
+      });
     },
     selectPeople: function () {
       var that = this;
