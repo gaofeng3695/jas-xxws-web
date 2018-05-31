@@ -385,6 +385,20 @@ var index = new Vue({
     },
     delNode: function () {
       var that = this;
+      var defaultOptions = {
+        tip: '您是否删除该必经点？',
+        name_title: '提示',
+        name_cancel: '取消',
+        name_confirm: '确定',
+        isCancelBtnShow: true,
+        callBack: function () {
+          that._delNodeToServer();
+        }
+      };
+      xxwsWindowObj.xxwsAlert(defaultOptions);
+    },
+    _delNodeToServer: function () {
+      var that=this;
       $.ajax({
         type: "get",
         url: "/cloudlink-inspection-event/necessityNode/delete?token=" + lsObj.getLocalStorage('token'),
@@ -397,7 +411,7 @@ var index = new Vue({
           if (data.success == 1) {
             xxwsWindowObj.xxwsAlert("删除成功", function () {
               that.isDetailNode = false;
-              that.isEditOrView = false;
+              that.isEditOrView = true;
               that.delArrById();
               that.markerClusterer.removeMarker(that.currentEditNode.value);
             });
