@@ -63,19 +63,20 @@
  *依赖Jquery 和 bootstrap.js
  *基于GF的版本 Alex重新进行了单例模式的封装 modify by Alex on 2017.03.01
  */
-var xxwsWindowObj = (function() {　　　　
+var xxwsWindowObj = (function () {　　　　
     var defaultOptions = {
         tip: '请输入提示',
         name_title: '提示',
         name_cancel: '取消',
         name_confirm: '确定',
         isCancelBtnShow: false,
-        callBack: null
+        callBack: null,
+        cancelCallBack: null,
     };
     var id = 'xxws_alert_';
     var index = 0;
     var $modalAlert = null;
-    var formatParams = function(arguments) {
+    var formatParams = function (arguments) {
         /*
          ** 参数三种方式
          ** 1. 参数为对象，覆盖默认参数，后将其导出
@@ -92,6 +93,9 @@ var xxwsWindowObj = (function() {　　　　
                 if (Object.prototype.toString.call(arguments[1]) === '[object Function]') {
                     paramObj.callBack = arguments[1];
                 }
+                if (Object.prototype.toString.call(arguments[3]) === '[object Function]') {
+                    paramObj.cancelCallBack = arguments[3];
+                }
                 if (Object.prototype.toString.call(arguments[2]) === '[object Boolean]') {
                     paramObj.isCancelBtnShow = arguments[2];
                 }
@@ -100,7 +104,7 @@ var xxwsWindowObj = (function() {　　　　
         }
         return $.extend(true, {}, defaultOptions);
     };
-    var renderAlert = function(obj) {
+    var renderAlert = function (obj) {
         var sHtml = [
             '<div class="modal fade  bs-example-modal-sm" id="' + id + (++index) + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">',
             '<div class="modal-dialog modal-sm" role="document">',
@@ -133,13 +137,15 @@ var xxwsWindowObj = (function() {　　　　
         if (obj.isCancelBtnShow === true) {
             $modalAlert.find('.name_cancel').css('display', 'inline-block');
         }
-        // $modalAlert.on('hidden.bs.modal', function(e) {
-        //     if (typeof obj.callBack === 'function') {
-        //         return obj.callBack();
-        //     }
-        // });
-        $modalAlert.find('.btn_confirm')[0].onclick = function() {
-            $modalAlert.on('hidden.bs.modal', function(e) {
+        $modalAlert.find('.btn_close')[0].onclick = function () {
+            $modalAlert.on('hidden.bs.modal', function (e) {
+                    if (typeof obj.cancelCallBack === 'function') {
+                        return obj.cancelCallBack();
+                    }
+                })
+            };
+        $modalAlert.find('.btn_confirm')[0].onclick = function () {
+            $modalAlert.on('hidden.bs.modal', function (e) {
                 if (typeof obj.callBack === 'function') {
                     return obj.callBack();
                 }
@@ -149,7 +155,7 @@ var xxwsWindowObj = (function() {　　　　
             // }
         }
     };
-    var xxwsAlert = function() {
+    var xxwsAlert = function () {
         /*if($modalAlert){
             $modalAlert.remove();
         }*/

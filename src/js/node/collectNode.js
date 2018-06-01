@@ -82,19 +82,21 @@ var index = new Vue({
   methods: {
     search: function () {
       var that = this;
-      that.isShowTool = false;
-      that._requestNode(that.searchInput, function () {
-        that.isSearchNode = true;
-        that.isDetailNode = false; //必经点详情列表隐藏
-        that.isEditOrView = true;
-        if (that.nodeInfoArrys.length == 0) {
-          that.noResult = true;
-        } else {
-          that.noResult = false;
-        }
-        that.removePoint('all');
-        that.cancalNode();
-      })
+      that.currentEditIsSave(function () {
+        that.isShowTool = false;
+        that._requestNode(that.searchInput, function () {
+          that.isSearchNode = true;
+          that.isDetailNode = false; //必经点详情列表隐藏
+          that.isEditOrView = true;
+          if (that.nodeInfoArrys.length == 0) {
+            that.noResult = true;
+          } else {
+            that.noResult = false;
+          }
+          that.removePoint('all');
+          that.cancalNode();
+        });
+      });
     },
     _requestNode: function (value, callback) {
       var that = this;
@@ -180,9 +182,28 @@ var index = new Vue({
     _pointClick: function (e) {
       var that = this;
       if (!that.isEditOrView) {
-        xxwsWindowObj.xxwsAlert("目前存在正在编辑的必经点，请先保存")
-        return;
+        var defaultOptions = {
+          tip: '目前存在正在编辑的点，是否进行保存？',
+          name_title: '提示',
+          name_cancel: '取消',
+          name_confirm: '确定',
+          isCancelBtnShow: true,
+          callBack: function () {
+            that.saveNode(function () {
+              that._getCurrentEditNode(e);
+            });
+          },
+          cancelCallBack: function () {
+            that.cancelEditNode();
+          }
+        };
+        xxwsWindowObj.xxwsAlert(defaultOptions);
+      } else {
+        that._getCurrentEditNode(e);
       }
+    },
+    _getCurrentEditNode: function (e) { //获取当前编辑点击的点
+      var that = this;
       for (var i = 0; i < that.drawNodeArray.length; i++) {
         that.drawNodeArray[i].value.setAnimation();
       }
@@ -248,6 +269,29 @@ var index = new Vue({
     },
     clickItem: function (item) {
       var that = this;
+      if (!that.isEditOrView) {
+        var defaultOptions = {
+          tip: '目前存在正在编辑的点，是否进行保存？',
+          name_title: '提示',
+          name_cancel: '取消',
+          name_confirm: '确定',
+          isCancelBtnShow: true,
+          callBack: function () {
+            that.saveNode(function () {
+              that.clickItemDetail(item);
+            });
+          },
+          cancelCallBack: function () {
+            that.cancelEditNode();
+          }
+        };
+        xxwsWindowObj.xxwsAlert(defaultOptions);
+      } else {
+        that.clickItemDetail(item);
+      }
+    },
+    clickItemDetail: function (item) {
+      var that = this;
       if (item.distributionStatus == 0) {
         if (!that.noallot) {
           that.noallot = true;
@@ -265,8 +309,8 @@ var index = new Vue({
           var cenLng = that.drawNodeArray[i].value.getPosition().lng;
           var cenLat = that.drawNodeArray[i].value.getPosition().lat;
           that.mapObj.centerAndZoom(new BMap.Point(cenLng, cenLat), 19);
-          that.currentEditNode = that.drawNodeArray[i];
           that.drawNodeArray[i].value.setAnimation(BMAP_ANIMATION_BOUNCE);
+          that.currentEditNode = that.drawNodeArray[i];
         } else {
           that.drawNodeArray[i].value.setAnimation();
         }
@@ -275,23 +319,27 @@ var index = new Vue({
     },
     allotBtn: function () {
       var that = this;
-      if (that.allot) {
-        that.allot = false;
-        that.removePoint(); //移除已经分配的点
-      } else {
-        that.allot = true;
-        that._addPoints(); //移除已经分配的点
-      }
+      that.currentEditIsSave(function () {
+        if (that.allot) {
+          that.allot = false;
+          that.removePoint(); //移除已经分配的点
+        } else {
+          that.allot = true;
+          that._addPoints(); //移除已经分配的点
+        }
+      });
     },
     noAllotBtn: function () {
       var that = this;
-      if (that.noallot) {
-        that.noallot = false;
-        that.removePoint(); //移除已经分配的点
-      } else {
-        that.noallot = true;
-        that._addPoints();
-      }
+      that.currentEditIsSave(function () {
+        if (that.noallot) {
+          that.noallot = false;
+          that.removePoint(); //移除已经分配的点
+        } else {
+          that.noallot = true;
+          that._addPoints();
+        }
+      });
     },
     refreshDraw: function () { //刷新
       var that = this;
@@ -361,9 +409,12 @@ var index = new Vue({
       this.isGetOrInput = true;
     },
     addNode: function () {
-      this.initAddForm();
-      this.isShowTool = !this.isShowTool;
-      this.isSearchNode = false;
+      var that = this;
+      that.currentEditIsSave(function () {
+        that.initAddForm();
+        that.isShowTool = !that.isShowTool;
+        that.isSearchNode = false;
+      });
     },
     editNode: function () { //编辑按钮
       var that = this;
@@ -398,7 +449,7 @@ var index = new Vue({
       xxwsWindowObj.xxwsAlert(defaultOptions);
     },
     _delNodeToServer: function () {
-      var that=this;
+      var that = this;
       $.ajax({
         type: "get",
         url: "/cloudlink-inspection-event/necessityNode/delete?token=" + lsObj.getLocalStorage('token'),
@@ -442,7 +493,7 @@ var index = new Vue({
         });
       }
     },
-    saveNode: function () { //保存修改后的
+    saveNode: function (callback) { //保存修改后的
       var that = this;
       //修改保存之前进行巡检人员的处理
       var objs = [];
@@ -458,19 +509,34 @@ var index = new Vue({
       }
       delete that.nodeDetail.personNames;
       delete that.nodeDetail.personIdList;
-      $.ajax({
-        type: "post",
-        contentType: "application/json",
-        url: "/cloudlink-inspection-event/necessityNode/update?token=" + lsObj.getLocalStorage('token'),
-        data: JSON.stringify(that.nodeDetail),
-        dataType: "json",
-        success: function (data) {
-          if (data.success == 1) {
-            that.isEditOrView = !that.isEditOrView;
-            that.refreshDraw();
+      if (that.verrify(that.nodeDetail)) {
+        $.ajax({
+          type: "post",
+          contentType: "application/json",
+          url: "/cloudlink-inspection-event/necessityNode/update?token=" + lsObj.getLocalStorage('token'),
+          data: JSON.stringify(that.nodeDetail),
+          dataType: "json",
+          success: function (data) {
+            if (data.success == 1) {
+              that.isEditOrView = !that.isEditOrView;
+              if (typeof callback === 'function') {
+                if (that.nodeDetail.distributionStatus == 0) {
+                  that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
+                    anchor: new BMap.Size(15, 42)
+                  }));
+                } else {
+                  that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/allot.png", new BMap.Size(29, 42), {
+                    anchor: new BMap.Size(15, 42)
+                  }));
+                }
+                callback();
+              } else {
+                that.refreshDraw();
+              }
+            }
           }
-        }
-      });
+        });
+      };
     },
     cancelEditNode: function () {
       //取消点的编辑
@@ -494,7 +560,7 @@ var index = new Vue({
     submit: function () {
       /*如果是手动输入，则需要将坐标转换为百度坐标 */
       var that = this;
-      if (that.verrify()) {
+      if (that.verrify(that.nodeForm)) {
         that.nodeForm.personFormList = [];
         that.saveNodeToServer();
       }
@@ -502,7 +568,7 @@ var index = new Vue({
     next: function () {
       //首先进行验证
       var that = this;
-      if (that.verrify()) {
+      if (that.verrify(that.nodeForm)) {
         that.isFirst = false;
         that.isSecond = true;
       }
@@ -610,7 +676,6 @@ var index = new Vue({
             _arr.push(new BMap.Point(data[i].bdLon, data[i].bdLat));
           }
         }
-
         if (_arr.length > 0) {
           that.mapObj.setViewport(_arr, {
             zoomFactor: -1
@@ -619,12 +684,10 @@ var index = new Vue({
           var point = new BMap.Point(116.404, 39.915); // 创建点坐标
           that.mapObj.centerAndZoom(point, 5); // 初始化地图，设置中心点坐标和地图级别
         }
-
       } catch (e) {
         var point = new BMap.Point(116.404, 39.915); // 创建点坐标
         that.mapObj.centerAndZoom(point, 5); // 初始化地图，设置中心点坐标和地图级别
       }
-
     },
     choosePeople: function () {
       var that = this;
@@ -654,59 +717,73 @@ var index = new Vue({
         names += item.relationshipPersonName + ",";
       });
       that.nodeDetail.personNames = names.substring(0, names.length - 1);
+      // that.$set(that.nodeDetail, "personNames", names.substring(0, names.length - 1));
       that.nodeDetail.personFormList = peopleArr;
       $("#choosePeople").modal('hide');
     },
     cancelPeople: function () {
       $("#choosePeople").modal('hide');
     },
-    verrify: function () {
+    verrify: function (obj) {
       //验证
       var that = this;
-      if (!that.nodeForm.name.trim()) {
+      if (!obj.name.trim()) {
         xxwsWindowObj.xxwsAlert("必经点名称不能为空");
         return false;
       }
-      if (that.nodeForm.name.length > 45) {
+      if (obj.name.length > 45) {
         xxwsWindowObj.xxwsAlert("必经点名称长度不能超过45个");
         return false;
       }
-      if (!that.nodeForm.code.trim()) {
+      if (!obj.code.trim()) {
         xxwsWindowObj.xxwsAlert("必经点编号不能为空");
         return false;
       }
-      if (that.nodeForm.code.length > 45) {
+      if (obj.code.length > 45) {
         xxwsWindowObj.xxwsAlert("必经点编号长度不能超过45个");
         return false;
       }
-      if (!that.nodeForm.inspectionTimes.trim()) {
+      var times = obj.inspectionTimes + "";
+      if (!times.trim()) {
         xxwsWindowObj.xxwsAlert("巡检频次不能为空");
         return false;
       }
       var regNum = /^[0-9]*$/;
-      if (!regNum.test(this.nodeForm.inspectionTimes.trim())) {
+      if (!regNum.test(times)) {
         xxwsWindowObj.xxwsAlert("巡检频次只能是整数");
         return false;
       }
-      if (!that.nodeForm.inspectionInterval.trim()) {
+      var interval = obj.inspectionInterval + "";
+      if (!interval.trim()) {
         xxwsWindowObj.xxwsAlert("巡检间隔不能为空");
         return false;
       }
       var regNum1 = /^[0-9]+(()||(.[0-9]{1}))?$/;
-      if (!regNum1.test(this.nodeForm.inspectionInterval.trim())) {
+      if (!regNum1.test(interval.trim())) {
         xxwsWindowObj.xxwsAlert("巡检间隔为整数或者小数点后一位");
         return false;
       }
-      if (!that.nodeForm.effectiveRadius.trim()) {
+      var r = obj.effectiveRadius + "";
+      if (!r.trim()) {
         xxwsWindowObj.xxwsAlert("有效半径不能为空");
         return false;
       }
       var regNum1 = /^[0-9]+(()||(.[0-9]{3}))?$/;
-      if (!regNum1.test(this.nodeForm.effectiveRadius.trim())) {
+      if (!regNum1.test(r.trim())) {
         xxwsWindowObj.xxwsAlert("有效半径只能是数字");
         return false;
       }
-      if (!that.nodeForm.location.trim()) {
+      var lon = obj.lon + "";
+      if (!lon.trim()) {
+        xxwsWindowObj.xxwsAlert("经度不能为空");
+        return false;
+      }
+      var lat = obj.lat + "";
+      if (!lat.trim()) {
+        xxwsWindowObj.xxwsAlert("经度不能为空");
+        return false;
+      }
+      if (!obj.location.trim()) {
         xxwsWindowObj.xxwsAlert("位置不能为空");
         return false;
       }
@@ -721,6 +798,29 @@ var index = new Vue({
       });
       that.isShowTool = false;
       $("#addEvent").modal("hide");
+    },
+    currentEditIsSave: function (callback) { //当前存在点的编辑，是否进行取消或者保存
+      var that = this;
+      if (!that.isEditOrView) {
+        var defaultOptions = {
+          tip: '目前存在正在编辑的点，是否进行保存？',
+          name_title: '提示',
+          name_cancel: '取消',
+          name_confirm: '确定',
+          isCancelBtnShow: true,
+          callBack: function () {
+            that.saveNode(function () {
+              callback();
+            });
+          },
+          cancelCallBack: function () {
+            that.cancelEditNode();
+          }
+        };
+        xxwsWindowObj.xxwsAlert(defaultOptions);
+      } else {
+        callback();
+      }
     }
   },
 });
