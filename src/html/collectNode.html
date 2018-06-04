@@ -65,6 +65,7 @@
       <div class="tool" v-show="isShowTool">
         <div class="item" @click="getNode">取点录入</div>
         <div class="item" @click="inputNode">手动录入</div>
+        <!--<div class="item" @click="eventNode">事件转换</div>-->
       </div>
     </div>
     <!-- 左上角tab切换 结束-->
@@ -81,65 +82,65 @@
     <div class="detail" v-show="isDetailNode">
       <div class="content">
         <div class="item">
-          <div class="fl wid60 w2 title">名称</div>
-          <div class="fl">
+          <div class="fl  wid100"><span style="color:red">*</span>名称</div>
+          <div class="fl wid">
             <input type="text" class="form-control" v-model="nodeDetail.name" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60 w2 title">编号</div>
-          <div class="fl">
+          <div class="fl  wid100"><span style="color:red">*</span>编号</div>
+          <div class="fl wid">
             <input type="text" class="form-control" v-model="nodeDetail.code" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60">巡检频次</div>
-          <div class="fl">
+          <div class="fl wid100"><span style="color:red">*</span>巡检频次</div>
+          <div class="fl wid">
             <input type="text" class="form-control wid80" v-model="nodeDetail.inspectionTimes" :disabled="isEditOrView">
             <span>次/每天</span>
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60">巡检间隔</div>
-          <div class="fl">
+          <div  class="fl wid100"><span style="color:red">*</span>巡检间隔</div>
+          <div class="fl wid">
             <input type="text" class="form-control wid160" v-model="nodeDetail.inspectionInterval" :disabled="isEditOrView">
             <span>小时</span>
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60">有效半径</div>
-          <div class="fl">
+          <div  class="fl wid100"><span style="color:red">*</span>有效半径</div>
+          <div class="fl wid">
             <input type="text" class="form-control wid160" v-model="nodeDetail.effectiveRadius" :disabled="isEditOrView">
             <span>米</span>
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60 title w2">位置</div>
-          <div class="fl">
+           <div  class="fl wid100"><span style="color:red">*</span>位置</div>
+          <div class="fl wid">
             <input type="text" class="form-control " v-model="nodeDetail.location" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60 title w2">经度</div>
-          <div class="fl">
+          <div  class="fl wid100"><span style="color:red">*</span>经度</div>
+          <div class="fl wid">
             <input type="text" class="form-control " v-model="nodeDetail.bdLon" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60 title w2">纬度</div>
-          <div class="fl">
+         <div  class="fl wid100"><span style="color:red">*</span>纬度</div>
+          <div class="fl wid">
             <input type="text" class="form-control " v-model="nodeDetail.bdLat" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60  title w2">备注</div>
-          <div class="fl">
+          <div class="fl wid100">备注</div>
+          <div class="fl wid">
             <input type="textarea" class="form-control " v-model="nodeDetail.remark" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60">巡检人员</div>
-          <div class="fl">
+          <div class="fl wid100">巡检人员</div>
+          <div class="fl wid">
             <input @click="choosePeople" type="text" class="form-control " readyonly v-model="nodeDetail.personNames" :disabled="isEditOrView">
           </div>
         </div>
@@ -152,9 +153,6 @@
       </div>
     </div>
     <!--必经点详情结束-->
-
-
-
     <!--必经点新增模态框-->
     <div id="addEvent" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
@@ -296,6 +294,8 @@
         </div>
       </div>
     </div>
+
+    <!--事件列表模态框用于转换-->
   </div>
   <script type="text/javascript" src="/lib/js/vue.min.js"></script>
   <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>

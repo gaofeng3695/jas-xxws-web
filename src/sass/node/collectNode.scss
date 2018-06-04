@@ -225,11 +225,11 @@ body {
       width: 176px;
     }
     .wid80 {
-      width: 130px;
+      width: 120px;
       display: inline-block;
     }
     .wid160 {
-      width: 144px;
+      width: 138px;
       display: inline-block;
     }
     .fl {
@@ -259,6 +259,15 @@ body {
       }
     }
   }
+}
+
+.wid {
+  width: 176px;
+}
+
+.wid100 {
+  width: 62px;
+  text-align: right
 }
 
 .title {
