@@ -181,14 +181,7 @@ var indexs = new Vue({
               }
             },
           },
-          //  {
-          //   field: 'createUser', //域值
-          //   title: '创建人', //内容
-          //   align: 'center',
-          //   visible: true, //false表示不显示
-          //   sortable: false, //启用排序
-          //   width: '15%',
-          // },
+
           {
             field: 'operate',
             title: '操作',
@@ -219,7 +212,7 @@ var indexs = new Vue({
               'click .publish1': function (e, value, row, index) {
                 var tip = "您是否发布该计划？"
                 if (row.publishStatus == 1) {
-                  tip = "您是否取消已发布的计划？"
+                  tip = "您是否关闭已发布的计划？"
                 }
                 var defaultOptions = {
                   tip: tip,
@@ -246,11 +239,15 @@ var indexs = new Vue({
               var edit = "management";
               var publish = "publish1";
               if (row.publishStatus == 0) {
-                title = "取消发布";
+                title = "发布";
+              }
+              if (row.publishStatus == 1) {
+                title = "关闭计划";
               }
               if (row.publishStatus == -1) {
                 publish = "publish1_end";
                 edit = "management_end ";
+                title = "已关闭";
               }
               return [
                 '<a class="' + publish + '"  href="javascript:void(0)" title="' + title + '">',
@@ -276,7 +273,7 @@ var indexs = new Vue({
       that.taskForm = {
         personNames: "", //安检人员
         name: "",
-        code:"",
+        code: "",
         startTime: "",
         endTime: "",
         remark: "",

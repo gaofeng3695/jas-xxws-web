@@ -101,33 +101,47 @@
           </div>
         </div>
         <div class="item">
-          <div  class="fl wid100"><span style="color:red">*</span>巡检间隔</div>
+          <div class="fl wid100"><span style="color:red">*</span>巡检间隔</div>
           <div class="fl wid">
-            <input type="text" class="form-control wid160" v-model="nodeDetail.inspectionInterval" :disabled="isEditOrView">
+            <!--<input type="text" class="form-control wid160" v-model="nodeDetail.inspectionInterval" :disabled="isEditOrView">-->
+            <select name="inspectionInterval" style="margin-left:5px" id="inspectionInterval" class="form-control wid160" v-model="nodeDetail.inspectionInterval"  :disabled="isEditOrView">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                        </select>
             <span>小时</span>
           </div>
         </div>
         <div class="item">
-          <div  class="fl wid100"><span style="color:red">*</span>有效半径</div>
+          <div class="fl wid100"><span style="color:red">*</span>有效半径</div>
           <div class="fl wid">
             <input type="text" class="form-control wid160" v-model="nodeDetail.effectiveRadius" :disabled="isEditOrView">
             <span>米</span>
           </div>
         </div>
         <div class="item">
-           <div  class="fl wid100"><span style="color:red">*</span>位置</div>
+          <div class="fl wid100"><span style="color:red">*</span>位置</div>
           <div class="fl wid">
             <input type="text" class="form-control " v-model="nodeDetail.location" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div  class="fl wid100"><span style="color:red">*</span>经度</div>
+          <div class="fl wid100"><span style="color:red">*</span>经度</div>
           <div class="fl wid">
             <input type="text" class="form-control " v-model="nodeDetail.bdLon" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-         <div  class="fl wid100"><span style="color:red">*</span>纬度</div>
+          <div class="fl wid100"><span style="color:red">*</span>纬度</div>
           <div class="fl wid">
             <input type="text" class="form-control " v-model="nodeDetail.bdLat" :disabled="isEditOrView">
           </div>
@@ -201,7 +215,21 @@
                         <i>*</i>巡检间隔
                       </div>
                       <div class="list_right">
-                        <input type="text" class="form-control" placeholder="单位：小时" v-model="nodeForm.inspectionInterval">
+                        <select name="inspectionInterval" id="inspectionInterval" class="form-control" v-model="nodeForm.inspectionInterval">
+                          <option value="1">1小时</option>
+                          <option value="2">2小时</option>
+                          <option value="3">3小时</option>
+                          <option value="4">4小时</option>
+                          <option value="5">5小时</option>
+                          <option value="6">6小时</option>
+                          <option value="7">7小时</option>
+                          <option value="8">8小时</option>
+                          <option value="9">9小时</option>
+                          <option value="10">10小时</option>
+                          <option value="11">11小时</option>
+                          <option value="12">12小时</option>
+                        </select>
+                        <!--<input type="text" class="form-control" placeholder="单位：小时" v-model="nodeForm.inspectionInterval">-->
                         <!--<span> 小时</span>-->
                       </div>
                     </div>

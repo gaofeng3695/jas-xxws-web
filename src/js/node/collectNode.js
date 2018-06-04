@@ -35,7 +35,7 @@ var index = new Vue({
         code: "",
         inspectionDays: 1, //巡检天数
         inspectionTimes: "", //巡检频次
-        inspectionInterval: "", //巡检间隔
+        inspectionInterval: 1, //巡检间隔
         lon: "",
         lat: "",
         remark: "",
@@ -77,6 +77,8 @@ var index = new Vue({
     var that = this;
     that.mapObj = new BMap.Map("container"); // 创建Map实例
     that.mapObj.enableScrollWheelZoom(true);
+    var point = new BMap.Point(116.404, 39.915); // 创建点坐标
+    that.mapObj.centerAndZoom(point,10); // 初始化地图，设置中心点坐标和地图级别
     that.defaultCursor = that.mapObj.getDefaultCursor();
     that.draggingCursor = that.mapObj.getDraggingCursor();
     that._requestNode();
@@ -90,9 +92,13 @@ var index = new Vue({
         that.removeNoAllotPoint();
         that.cancalNode();
         that._requestNode(that.searchInput, function () {
+          /**一些状态需要初始化 */
           that.isSearchNode = true;
           that.isDetailNode = false; //必经点详情列表隐藏
           that.isEditOrView = true;
+          that.allot = true;
+          that.noallot = true;
+          /**一些状态初始化完成 */
           if (that.nodeInfoArrys.length == 0) {
             that.noResult = true;
           } else {
@@ -238,8 +244,13 @@ var index = new Vue({
       that.currentAllotNode.forEach(function (item) {
         markersArr.push(item.value);
       });
+      // var _styles = [{
+      //   url: "/src/images/node/allotPoints.png",
+      //   size: new BMap.Size(48, 48)
+      // }]
       that.markerAllotClusterer = new BMapLib.MarkerClusterer(that.mapObj, {
-        markers: markersArr
+        markers: markersArr,
+        // styles: _styles
       });
       if (typeof callback == 'function') {
         console.log(1);
@@ -253,8 +264,13 @@ var index = new Vue({
       that.currentNoAllotNode.forEach(function (item) {
         markersArr.push(item.value);
       });
+      var _styles = [{
+        url: "/src/images/node/m0.png",
+        size: new BMap.Size(53, 53)
+      }]
       that.markerNOAllotClusterer = new BMapLib.MarkerClusterer(that.mapObj, {
-        markers: markersArr
+        markers: markersArr,
+        styles: _styles
       });
     },
     // _addPoints: function () {
@@ -682,8 +698,9 @@ var index = new Vue({
       for (var key in this.nodeForm) {
         this.nodeForm[key] = "";
       }
+      this.nodeForm.inspectionInterval = 1;
     },
-    _locationBd: function () {
+    _locationBd: function () { //84转百度
       var that = this;
       var coordinate = coordtransform.wgs84togcj02(that.nodeForm.lon, that.nodeForm.lat);
       var coordinateBd = coordtransform.gcj02tobd09(coordinate[0], coordinate[1]);
