@@ -84,17 +84,18 @@ var index = new Vue({
       var that = this;
       that.currentEditIsSave(function () {
         that.isShowTool = false;
-        that._requestNode(that.searchInput, function () {
-          that.isSearchNode = true;
-          that.isDetailNode = false; //必经点详情列表隐藏
-          that.isEditOrView = true;
-          if (that.nodeInfoArrys.length == 0) {
-            that.noResult = true;
-          } else {
-            that.noResult = false;
-          }
-          that.removePoint('all');
+        that.removePoint(function () {
           that.cancalNode();
+          that._requestNode(that.searchInput, function () {
+            that.isSearchNode = true;
+            that.isDetailNode = false; //必经点详情列表隐藏
+            that.isEditOrView = true;
+            if (that.nodeInfoArrys.length == 0) {
+              that.noResult = true;
+            } else {
+              that.noResult = false;
+            }
+          });
         });
       });
     },
@@ -253,6 +254,9 @@ var index = new Vue({
         that.drawNodeArray.forEach(function (item) {
           that.markerClusterer.removeMarker(item.value);
         });
+        if (typeof value == "function") {
+          value();
+        }
       } else {
         if (!that.allot) {
           that.currentAllotNode.forEach(function (item) {
@@ -328,6 +332,7 @@ var index = new Vue({
           that._addPoints(); //移除已经分配的点
         }
       });
+
     },
     noAllotBtn: function () {
       var that = this;
@@ -343,15 +348,16 @@ var index = new Vue({
     },
     refreshDraw: function () { //刷新
       var that = this;
-      that.removePoint('all');
-      that.cancalNode(); //清除所有的点
-      that.searchInput = "";
-      that.isDetailNode = false; //必经点详情列表隐藏
-      that.isSearchNode = false; //必经点列表隐藏
-      that.isEditOrView = true;
-      that.allot = true;
-      that.noallot = true;
-      that._requestNode();
+      that.removePoint(function () {
+        that.cancalNode(); //清除所有的点
+        that.searchInput = "";
+        that.isDetailNode = false; //必经点详情列表隐藏
+        that.isSearchNode = false; //必经点列表隐藏
+        that.isEditOrView = true;
+        that.allot = true;
+        that.noallot = true;
+        that._requestNode();
+      });
     }, //刷新进行重新绘制  数据的请求
 
     _isHasDetailNode: function () {
@@ -821,6 +827,6 @@ var index = new Vue({
       } else {
         callback();
       }
-    }
+    },
   },
 });

@@ -82,65 +82,65 @@
     <div class="detail" v-show="isDetailNode">
       <div class="content">
         <div class="item">
-          <div class="fl wid60 w2 title">名称</div>
-          <div class="fl">
+          <div class="fl  wid100"><span style="color:red">*</span>名称</div>
+          <div class="fl wid">
             <input type="text" class="form-control" v-model="nodeDetail.name" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60 w2 title">编号</div>
-          <div class="fl">
+          <div class="fl  wid100"><span style="color:red">*</span>编号</div>
+          <div class="fl wid">
             <input type="text" class="form-control" v-model="nodeDetail.code" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60">巡检频次</div>
-          <div class="fl">
+          <div class="fl wid100"><span style="color:red">*</span>巡检频次</div>
+          <div class="fl wid">
             <input type="text" class="form-control wid80" v-model="nodeDetail.inspectionTimes" :disabled="isEditOrView">
             <span>次/每天</span>
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60">巡检间隔</div>
-          <div class="fl">
+          <div  class="fl wid100"><span style="color:red">*</span>巡检间隔</div>
+          <div class="fl wid">
             <input type="text" class="form-control wid160" v-model="nodeDetail.inspectionInterval" :disabled="isEditOrView">
             <span>小时</span>
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60">有效半径</div>
-          <div class="fl">
+          <div  class="fl wid100"><span style="color:red">*</span>有效半径</div>
+          <div class="fl wid">
             <input type="text" class="form-control wid160" v-model="nodeDetail.effectiveRadius" :disabled="isEditOrView">
             <span>米</span>
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60 title w2">位置</div>
-          <div class="fl">
+           <div  class="fl wid100"><span style="color:red">*</span>位置</div>
+          <div class="fl wid">
             <input type="text" class="form-control " v-model="nodeDetail.location" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60 title w2">经度</div>
-          <div class="fl">
+          <div  class="fl wid100"><span style="color:red">*</span>经度</div>
+          <div class="fl wid">
             <input type="text" class="form-control " v-model="nodeDetail.bdLon" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60 title w2">纬度</div>
-          <div class="fl">
+         <div  class="fl wid100"><span style="color:red">*</span>纬度</div>
+          <div class="fl wid">
             <input type="text" class="form-control " v-model="nodeDetail.bdLat" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60  title w2">备注</div>
-          <div class="fl">
+          <div class="fl wid100">备注</div>
+          <div class="fl wid">
             <input type="textarea" class="form-control " v-model="nodeDetail.remark" :disabled="isEditOrView">
           </div>
         </div>
         <div class="item">
-          <div class="fl wid60">巡检人员</div>
-          <div class="fl">
+          <div class="fl wid100">巡检人员</div>
+          <div class="fl wid">
             <input @click="choosePeople" type="text" class="form-control " readyonly v-model="nodeDetail.personNames" :disabled="isEditOrView">
           </div>
         </div>
