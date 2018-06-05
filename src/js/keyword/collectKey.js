@@ -78,7 +78,7 @@ var index = new Vue({
     that.mapObj = new BMap.Map("container"); // 创建Map实例
     that.mapObj.enableScrollWheelZoom(true);
     var point = new BMap.Point(116.404, 39.915); // 创建点坐标
-    that.mapObj.centerAndZoom(point,10); // 初始化地图，设置中心点坐标和地图级别
+    that.mapObj.centerAndZoom(point, 10); // 初始化地图，设置中心点坐标和地图级别
     that.defaultCursor = that.mapObj.getDefaultCursor();
     that.draggingCursor = that.mapObj.getDraggingCursor();
     that._requestNode();
@@ -273,6 +273,24 @@ var index = new Vue({
         styles: _styles
       });
     },
+    // _addPoints: function () {
+    //   var that = this;
+    //   var markersArr = [];
+    //   that.markerClusterer = "";
+    //   if (that.allot) {
+    //     that.currentAllotNode.forEach(function (item) {
+    //       markersArr.push(item.value);
+    //     });
+    //   }
+    //   if (that.noallot) {
+    //     that.currentNoAllotNode.forEach(function (item) {
+    //       markersArr.push(item.value);
+    //     });
+    //   }
+    //   that.markerClusterer = new BMapLib.MarkerClusterer(that.mapObj, {
+    //     markers: markersArr
+    //   });
+    // },
     removeAllotPoint: function () {
       var that = this;
       if (!that.markerAllotClusterer) {
@@ -518,12 +536,11 @@ var index = new Vue({
               that.isDetailNode = false;
               that.isEditOrView = true;
               that.delArrById();
-              if(that.nodeDetail.distributionStatus==0){
+              if (that.nodeDetail.distributionStatus == 0) {
                 that.markerNOAllotClusterer.removeMarker(that.currentEditNode.value);
-              }else{
-                 that.markerAllotClusterer.removeMarker(that.currentEditNode.value);
+              } else {
+                that.markerAllotClusterer.removeMarker(that.currentEditNode.value);
               }
-              // that.markerClusterer.removeMarker(that.currentEditNode.value);
             });
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");

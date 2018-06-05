@@ -106,7 +106,7 @@ var xxwsWindowObj = (function () {　　　　
     };
     var renderAlert = function (obj) {
         var sHtml = [
-            '<div class="modal fade  bs-example-modal-sm" id="' + id + (++index) + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">',
+            '<div style="z-index:1060" class="modal fade  bs-example-modal-sm" id="' + id + (++index) + '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">',
             '<div class="modal-dialog modal-sm" role="document">',
             '<div class="modal-content">',
             '<div class="modal-header" style="padding:6px 15px;">',
