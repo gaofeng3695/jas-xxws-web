@@ -281,7 +281,7 @@ body {
   .modal-lg {
     .modal-content {
       width: 400px;
-      height: 600px;
+      height: 800px;
       margin: 0 auto;
       border-radius: 8px;
       overflow: hidden;
@@ -308,7 +308,7 @@ body {
       .modal-body {
         padding: 20px 20px 0 20px;
         overflow-y: auto;
-        height: 510px;
+        height: 710px;
       }
       .modal-footer {
         text-align: center;
@@ -426,7 +426,7 @@ body {
         .left,
         .right {
           display: inline-block;
-          overflow-y: auto;
+          // overflow-y: auto;
           height: 470px;
           width: 380px;
           border: 1px solid #ebeef5;
@@ -499,6 +499,10 @@ body {
                 float: left;
                 width: 125px;
               }
+              &:hover{
+                background: #edf7ff;
+
+              }
             }
           }
         }
@@ -569,6 +573,14 @@ body {
         input,
         button {
           outline: none;
+        }
+        .right_wrapper{
+          .search_btn_right{
+            width:100px;
+          }
+          .search_wrapper{
+            margin-right:120px;
+          }
         }
         .noallot {
           background: #ec7244;

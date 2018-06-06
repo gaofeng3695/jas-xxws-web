@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <link href="/lib/css/bootstrap.css" rel="stylesheet">
+  <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
   <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
   <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
   <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
@@ -161,10 +162,10 @@
                   <div class="col-md-2 col-sm-2 text-right details_title">结束时间</div>
                   <div class="col-md-4  col-sm-4 details_text">{{detailForm.endTime}}</div>
                 </div>
-                <div class="row">
+                <!--<div class="row">
                   <div class="col-md-2 col-sm-2 text-right details_title">安检人员</div>
                   <div class="col-md-10  col-sm-10 details_text">{{detailForm.personNames}}</div>
-                </div>
+                </div>-->
                 <div class="row">
                   <div class="col-md-2 col-sm-2 text-right details_title">备注</div>
                   <div class="col-md-10  col-sm-10 details_text">{{detailForm.remark}}</div>
@@ -191,24 +192,26 @@
         </div>
         <div class="modal-body">
           <div class="container-fluid">
-            <div class="left fl">
+            <div class="left fl ">
               <div class="top">
                 <span class=" inputbg" :class="isAllCheckedNoAllot?'inputbg_h':'inputbg'" @click="isAllCheckedNoAllotNode">
                  未纳入</span>
               </div>
               <div class="search">
-                <input type="text" placeholder="请输入名称，编号" class="form-control">
+                <input type="text" placeholder="请输入名称，编号" class="form-control" v-model="noallotKeyWord">
               </div>
-              <ul class="noallot">
-                <li v-for="(item,index) in noAllotNodeArrs" @click="clickNoAllotItem(item,index)">
-                  <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span>
-                  <span class="name hidd">{{item.name}}</span>
-                  <span class="code hidd">{{item.code}}</span>
-                  <span class="location hidd">{{item.location}}</span>
-                </li>
-              </ul>
+              <div style="height:370px;overflow: auto" class="scrollContainer">
+                <ul class="noallot">
+                  <li v-for="(item,index) in noAllotNodeArrs" @click="clickNoAllotItem(item,index)" data-toggle="tooltip" title="已纳入计划：">
+                    <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span>
+                    <span class="name hidd">{{item.name}}</span>
+                    <span class="code hidd">{{item.code}}</span>
+                    <span class="location hidd">{{item.location}}</span>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div class="btn-left fl">
+            <div class="btn-left fl ">
               <button class="upleft" :disabled="toNoAllot" :class="toNoAllotBg?'bgblue':''" @click="toRight">
                  >
                 </button>
@@ -221,21 +224,24 @@
                  已纳入</span>
               </div>
               <div class="search">
-                <input type="text" placeholder="请输入名称，编号" class="form-control">
+                <input type="text" placeholder="请输入名称，编号" class="form-control" v-model="allotKeyWord">
               </div>
-              <ul class="allot">
-                <li v-for="(item,index) in allotNodeArrs" @click="clickItem(item,index)">
-                  <span class="check " :class="item.checked?'inputbg_h':'inputbg'"></span>
-                  <span class="name hidd">{{item.name}}</span>
-                  <span class="code hidd">{{item.code}}</span>
-                  <span class="location hidd">{{item.location}}</span>
-                </li>
-              </ul>
+              <div style="height:370px;overflow: auto" class="scrollContainer">
+                <ul class="allot">
+                  <li v-for="(item,index) in allotNodeArrs" @click="clickItem(item,index)">
+                    <span class="check " :class="item.checked?'inputbg_h':'inputbg'"></span>
+                    <span class="name hidd">{{item.name}}</span>
+                    <span class="code hidd">{{item.code}}</span>
+                    <span class="location hidd">{{item.location}}</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn" @click="next">下一步</button>
+          <button class="btn modal_active btn-primary" @click="submit">保存并关闭</button>
+          <button class="btn modal_active btn-primary" @click="next">下一步</button>
         </div>
       </div>
     </div>
@@ -347,6 +353,7 @@
   <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
   <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
   <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
   <script type="text/javascript" src="/lib/js/common_base.js"></script>
   <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
   <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
@@ -354,7 +361,13 @@
   <script type="text/javascript" src="/src/js/common/people.tree.js"></script>
   <script type="text/javascript" src="/src/js/keyword/keyplan.js"></script>
 
-
+  <script>
+    $(".scrollContainer").mCustomScrollbar({
+      advanced: {
+        updateOnContentResize: true
+      }
+    });
+  </script>
 </body>
 
 </html>

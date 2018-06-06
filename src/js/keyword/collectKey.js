@@ -27,8 +27,6 @@ var index = new Vue({
       },
       //新增基本使用数据
       isGetOrInput: false, //用于表示
-      isSecond: false,
-      isFirst: true,
       nodeForm: {
         location: "",
         name: "",
@@ -114,13 +112,13 @@ var index = new Vue({
         type: "post",
         contentType: "application/json",
         dataType: "json",
-        url: "/cloudlink-inspection-event/necessityNode/getPage?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPoint/getPage?token=" + lsObj.getLocalStorage('token'),
         data: JSON.stringify({
           "keyword": that.searchInput,
           pageNum: 1,
           pageSize: 100000,
           withRelationPerson: true,
-          orderBy: "distributionStatus",
+          orderBy: "inclusionStatus",
           orderDirection: "asc"
         }),
         success: function (data) {
@@ -146,7 +144,7 @@ var index = new Vue({
       that.drawNodeArray = [];
       for (var i = 0; i < data.length; i++) {
         point = new BMap.Point(data[i].bdLon, data[i].bdLat);
-        if (data[i].distributionStatus == 0) {
+        if (data[i].inclusionStatus == 0) {
           myIcons = new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
             anchor: new BMap.Size(15, 42)
           });
@@ -159,20 +157,20 @@ var index = new Vue({
           icon: myIcons
         });
         that.drawNodeArray.push({
-          'status': data[i].distributionStatus + "",
+          'status': data[i].inclusionStatus + "",
           'key': data[i].objectId,
           'value': markers
         });
-        if (data[i].distributionStatus == 0) {
+        if (data[i].inclusionStatus == 0) {
           that.currentNoAllotNode.push({
-            'status': data[i].distributionStatus + "",
+            'status': data[i].inclusionStatus + "",
             'key': data[i].objectId,
             'value': markers
           });
         }
-        if (data[i].distributionStatus == 1) {
+        if (data[i].inclusionStatus == 1) {
           that.currentAllotNode.push({
-            'status': data[i].distributionStatus + "",
+            'status': data[i].inclusionStatus + "",
             'key': data[i].objectId,
             'value': markers
           });
@@ -244,16 +242,10 @@ var index = new Vue({
       that.currentAllotNode.forEach(function (item) {
         markersArr.push(item.value);
       });
-      // var _styles = [{
-      //   url: "/src/images/node/allotPoints.png",
-      //   size: new BMap.Size(48, 48)
-      // }]
       that.markerAllotClusterer = new BMapLib.MarkerClusterer(that.mapObj, {
         markers: markersArr,
-        // styles: _styles
       });
       if (typeof callback == 'function') {
-        console.log(1);
         callback();
       }
     },
@@ -273,24 +265,6 @@ var index = new Vue({
         styles: _styles
       });
     },
-    // _addPoints: function () {
-    //   var that = this;
-    //   var markersArr = [];
-    //   that.markerClusterer = "";
-    //   if (that.allot) {
-    //     that.currentAllotNode.forEach(function (item) {
-    //       markersArr.push(item.value);
-    //     });
-    //   }
-    //   if (that.noallot) {
-    //     that.currentNoAllotNode.forEach(function (item) {
-    //       markersArr.push(item.value);
-    //     });
-    //   }
-    //   that.markerClusterer = new BMapLib.MarkerClusterer(that.mapObj, {
-    //     markers: markersArr
-    //   });
-    // },
     removeAllotPoint: function () {
       var that = this;
       if (!that.markerAllotClusterer) {
@@ -311,32 +285,6 @@ var index = new Vue({
       });
       that._isHasDetailNode(); //进行详情页面的关闭
     },
-    // removePoint: function (value) {
-    //   var that = this;
-    //   if (!that.markerClusterer) {
-    //     return;
-    //   }
-    //   if (value) {
-    //     that.drawNodeArray.forEach(function (item) {
-    //       that.markerClusterer.removeMarker(item.value);
-    //     });
-    //     if (typeof value == "function") {
-    //       value();
-    //     }
-    //   } else {
-    //     if (!that.allot) {
-    //       that.currentAllotNode.forEach(function (item) {
-    //         that.markerClusterer.removeMarker(item.value);
-    //       });
-    //     }
-    //     if (!that.noallot) {
-    //       that.currentNoAllotNode.forEach(function (item) {
-    //         that.markerClusterer.removeMarker(item.value);
-    //       });
-    //     }
-    //   }
-    //   that._isHasDetailNode(); //进行详情页面的关闭
-    // },
     clickItem: function (item) {
       var that = this;
       if (!that.isEditOrView) {
@@ -362,7 +310,7 @@ var index = new Vue({
     },
     clickItemDetail: function (item) {
       var that = this;
-      if (item.distributionStatus == 0) {
+      if (item.inclusionStatus == 0) {
         if (!that.noallot) {
           that.noallot = true;
           that._addNoAllotPoints();
@@ -442,8 +390,6 @@ var index = new Vue({
     //用于判断页面上面是否存在详情点
     getNode: function () {
       var that = this;
-      that.isFirst = true;
-      that.isSecond = false;
       that.isGetOrInput = false; //用于判断84坐标系输入框是否出现
       that.isShowTool = !that.isShowTool;
       that.mapObj.setDefaultCursor('crosshair');
@@ -461,22 +407,12 @@ var index = new Vue({
           new BMap.Geocoder().getLocation(point, function (result) {
             that.nodeForm.location = result.address;
             $("#addEvent").modal();
-            $("#addEvent").on('shown.bs.modal', function (e) {
-              var selectPeople = [];
-              peopleTreeObj.requestPeopleTree("", selectPeople);
-            });
           });
         }
       })
     },
     inputNode: function () {
-      this.isFirst = true;
-      this.isSecond = false;
       $("#addEvent").modal();
-      $("#addEvent").on('shown.bs.modal', function (e) {
-        var selectPeople = [];
-        peopleTreeObj.requestPeopleTree("", selectPeople);
-      });
       this.isShowTool = !this.isShowTool;
       this.isGetOrInput = true;
     },
@@ -524,7 +460,7 @@ var index = new Vue({
       var that = this;
       $.ajax({
         type: "get",
-        url: "/cloudlink-inspection-event/necessityNode/delete?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPoint/delete?token=" + lsObj.getLocalStorage('token'),
         contentType: "application/json",
         dataType: "json",
         data: {
@@ -536,7 +472,7 @@ var index = new Vue({
               that.isDetailNode = false;
               that.isEditOrView = true;
               that.delArrById();
-              if (that.nodeDetail.distributionStatus == 0) {
+              if (that.nodeDetail.inclusionStatus == 0) {
                 that.markerNOAllotClusterer.removeMarker(that.currentEditNode.value);
               } else {
                 that.markerAllotClusterer.removeMarker(that.currentEditNode.value);
@@ -555,7 +491,7 @@ var index = new Vue({
           that.currentNoAllotNode.splice(index, 1);
         }
       });
-      if (that.nodeDetail.distributionStatus == 0) {
+      if (that.nodeDetail.inclusionStatus == 0) {
         that.currentNoAllotNode.forEach(function (item, index) {
           if (item.key == that.nodeDetail.objectId) {
             that.currentNoAllotNode.splice(index, 1);
@@ -589,14 +525,14 @@ var index = new Vue({
         $.ajax({
           type: "post",
           contentType: "application/json",
-          url: "/cloudlink-inspection-event/necessityNode/update?token=" + lsObj.getLocalStorage('token'),
+          url: "/cloudlink-inspection-event/keyPoint/update?token=" + lsObj.getLocalStorage('token'),
           data: JSON.stringify(that.nodeDetail),
           dataType: "json",
           success: function (data) {
             if (data.success == 1) {
               that.isEditOrView = !that.isEditOrView;
               if (typeof callback === 'function') {
-                if (that.nodeDetail.distributionStatus == 0) {
+                if (that.nodeDetail.inclusionStatus == 0) {
                   that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
                     anchor: new BMap.Size(15, 42)
                   }));
@@ -620,7 +556,7 @@ var index = new Vue({
       that.nodeDetail = that.nodeDetail.history;
       that.$set(that.nodeDetail, that.nodeDetail.history);
       delete that.nodeDetail.history;
-      if (that.nodeDetail.distributionStatus == 0) {
+      if (that.nodeDetail.inclusionStatus == 0) {
         that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
           anchor: new BMap.Size(15, 42)
         }));
@@ -637,35 +573,8 @@ var index = new Vue({
       /*如果是手动输入，则需要将坐标转换为百度坐标 */
       var that = this;
       if (that.verrify(that.nodeForm)) {
-        that.nodeForm.personFormList = [];
         that.saveNodeToServer();
       }
-    },
-    next: function () {
-      //首先进行验证
-      var that = this;
-      if (that.verrify(that.nodeForm)) {
-        that.isFirst = false;
-        that.isSecond = true;
-      }
-    },
-    back: function () {
-      /*如果是手动输入，则需要将坐标转换为百度坐标 */
-      this.isFirst = true;
-      this.isSecond = false;
-    },
-    saveInfo: function () {
-      var that = this;
-      var peopleArr = [];
-      var peopleObj = peopleTreeObj.getSelectPeople();
-      peopleObj.selectedArr.forEach(function (item) {
-        peopleArr.push({
-          personId: item.relationshipPersonId,
-          personName: item.relationshipPersonName
-        });
-      });
-      that.nodeForm.personFormList = peopleArr;
-      that.saveNodeToServer();
     },
     saveNodeToServer: function () {
       var that = this;
@@ -673,14 +582,12 @@ var index = new Vue({
       $.ajax({
         type: "post",
         contentType: "application/json",
-        url: "/cloudlink-inspection-event/necessityNode/save?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPoint/save?token=" + lsObj.getLocalStorage('token'),
         data: JSON.stringify(that.nodeForm),
         dataType: "json",
         success: function (data) {
           if (data.success == 1) {
             $("#addEvent").modal("hide");
-            that.isFirst = true;
-            that.isSecond = false;
             that.mapObj.setDefaultCursor(that.defaultCursor);
             that.mapObj.setDraggingCursor(that.draggingCursor);
             that.refreshDraw();
@@ -726,7 +633,7 @@ var index = new Vue({
       var that = this;
       $.ajax({
         type: "get",
-        url: "/cloudlink-inspection-event/necessityNode/get?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPoint/get?token=" + lsObj.getLocalStorage('token'),
         contentType: "application/json",
         dataType: "json",
         data: {
@@ -765,41 +672,6 @@ var index = new Vue({
         var point = new BMap.Point(116.404, 39.915); // 创建点坐标
         that.mapObj.centerAndZoom(point, 5); // 初始化地图，设置中心点坐标和地图级别
       }
-    },
-    choosePeople: function () {
-      var that = this;
-      $("#choosePeople").modal();
-      $("#choosePeople").on('shown.bs.modal', function (e) {
-        var selectPeople = [];
-        if (that.nodeDetail.personIdList && that.nodeDetail.personIdList.length > 0) {
-          that.nodeDetail.personIdList.forEach(function (item) {
-            selectPeople.push({
-              relationshipPersonId: item
-            });
-          });
-        }
-        peopleTreeObj.requestPeopleTree("", selectPeople, "", "people_list1");
-      });
-    },
-    savePeople: function () {
-      var that = this;
-      var peopleArr = [];
-      var names = "";
-      var peopleObj = peopleTreeObj.getSelectPeople();
-      peopleObj.selectedArr.forEach(function (item) {
-        peopleArr.push({
-          personId: item.relationshipPersonId,
-          personName: item.relationshipPersonName
-        });
-        names += item.relationshipPersonName + ",";
-      });
-      that.nodeDetail.personNames = names.substring(0, names.length - 1);
-      // that.$set(that.nodeDetail, "personNames", names.substring(0, names.length - 1));
-      that.nodeDetail.personFormList = peopleArr;
-      $("#choosePeople").modal('hide');
-    },
-    cancelPeople: function () {
-      $("#choosePeople").modal('hide');
     },
     verrify: function (obj) {
       //验证

@@ -2,19 +2,17 @@ var indexs = new Vue({
   el: "#page",
   data: function () {
     return {
+      currentPlanId: "", //当前操作的计划
       currentStatus: "",
       title: "新建计划",
       taskForm: {
-        personNames: "", //安检人员
         name: "",
         code: "",
         startTime: "",
         endTime: "",
         remark: "",
-        personFormList: []
       },
       detailForm: {
-        personNames: "", //安检人员
         name: "",
         code: "",
         startTime: "",
@@ -49,7 +47,7 @@ var indexs = new Vue({
     initTable: function () {
       var that = this;
       $('#table').bootstrapTable({
-        url: "/cloudlink-inspection-event/necessityPlan/getPage?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPointPlan/getPage?token=" + lsObj.getLocalStorage('token'),
         method: 'post',
         toolbar: "#toolbar",
         toolbarAlign: "left",
@@ -69,8 +67,6 @@ var indexs = new Vue({
         queryParams: function (params) {
           that.searchObj.pageSize = params.pageSize;
           that.searchObj.pageNum = params.pageNumber;
-          that.searchObj.withRelationPerson = true;
-          // that.searchObj.orderBy = 'distributionStatus';
           return that.searchObj;
         },
         responseHandler: function (res) {
@@ -167,25 +163,12 @@ var indexs = new Vue({
                 return "";
               }
             }
-          }, {
-            field: 'peopleCount', //域值
-            title: '安检人数', //内容
-            align: 'center',
-            visible: true, //false表示不显示
-            sortable: false, //启用排序  peopleCount
-            width: '15%',
-            formatter: function (value, row, index) {
-              if (row.personIdList && row.personIdList.length > 0) {
-                return row.personIdList.length;
-              } else {
-                return 0;
-              }
-            },
-          }, {
+          },
+          {
             field: 'operate1',
             title: '计划配置',
             align: 'center',
-            width: "20%",
+            width: "10%",
             events: {
               'click .publish1': function (e, value, row, index) {
                 var tip = "您是否发布该计划？"
@@ -211,9 +194,11 @@ var indexs = new Vue({
               },
               'click .setNode': function (e, value, row, index) {
                 $("#chooseNode").modal();
-                $("#chooseNode").on('shown.bs.modal', function (e) {
-                  chooseNode.requestNoAllNodes(); //请求所有的关键点
-                });
+                // $("#chooseNode").on('shown.bs.modal', function (e) {
+                console.log(1);
+                that.currentPlanId = row.objectId;
+                chooseNode.requestNoAllNodes(); //请求所有的关键点
+                // });
               }
             },
             formatter: function (value, row, index) {
@@ -266,7 +251,7 @@ var indexs = new Vue({
               },
 
             },
-            width: '20%',
+            width: '10%',
             formatter: function (value, row, index) {
               var close = "closed";
               var edit = "management";
@@ -305,13 +290,11 @@ var indexs = new Vue({
       that.title = "新建";
       that.initStatus();
       that.taskForm = {
-        personNames: "", //安检人员
         name: "",
         code: "",
         startTime: "",
         endTime: "",
         remark: "",
-        personFormList: []
       };
       $("#task").modal();
     },
@@ -321,7 +304,7 @@ var indexs = new Vue({
 
       $.ajax({
         type: "get",
-        url: "/cloudlink-inspection-event/necessityPlan/get?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPointPlan/get?token=" + lsObj.getLocalStorage('token'),
         contentType: "application/json",
         dataType: "json",
         data: {
@@ -330,17 +313,6 @@ var indexs = new Vue({
         success: function (data) {
           if (data.success == 1) {
             that.taskForm = data.rows[0];
-            if (data.rows[0].personIdList && data.rows[0].personIdList.length > 0) {
-              var arr = [];
-              var personNames = data.rows[0].personNames.split(",");
-              data.rows[0].personIdList.forEach(function (item, index) {
-                arr.push({
-                  personId: item,
-                  personName: personNames[index]
-                });
-              });
-              that.taskForm.personFormList = arr;
-            }
             that.taskForm.startTime = data.rows[0].startTime.substring(0, 10);
             if (new Date(that.taskForm.startTime) <= new Date()) {
               that.isUpdateStartTime = true;
@@ -361,7 +333,7 @@ var indexs = new Vue({
       var that = this;
       $.ajax({
         type: "get",
-        url: "/cloudlink-inspection-event/necessityPlan/get?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPointPlan/get?token=" + lsObj.getLocalStorage('token'),
         contentType: "application/json",
         dataType: "json",
         data: {
@@ -383,7 +355,7 @@ var indexs = new Vue({
       var that = this;
       $.ajax({
         type: "get",
-        url: "/cloudlink-inspection-event/necessityPlan/delete?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPointPlan/delete?token=" + lsObj.getLocalStorage('token'),
         contentType: "application/json",
         dataType: "json",
         data: {
@@ -404,7 +376,7 @@ var indexs = new Vue({
       var that = this;
       $.ajax({
         type: "get",
-        url: "/cloudlink-inspection-event/necessityPlan/publish?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPointPlan/publish?token=" + lsObj.getLocalStorage('token'),
         contentType: "application/json",
         dataType: "json",
         data: {
@@ -425,7 +397,7 @@ var indexs = new Vue({
       var that = this;
       $.ajax({
         type: "get",
-        url: "/cloudlink-inspection-event/necessityPlan/cancel?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPointPlan/cancel?token=" + lsObj.getLocalStorage('token'),
         contentType: "application/json",
         dataType: "json",
         data: {
@@ -447,10 +419,10 @@ var indexs = new Vue({
       var url = "";
       var msg = "新增成功";
       if (that.taskForm.objectId) {
-        url = "/cloudlink-inspection-event/necessityPlan/update?token=" + lsObj.getLocalStorage('token');
+        url = "/cloudlink-inspection-event/keyPointPlan/update?token=" + lsObj.getLocalStorage('token');
         var msg = "修改成功";
       } else {
-        url = "/cloudlink-inspection-event/necessityPlan/save?token=" + lsObj.getLocalStorage('token');
+        url = "/cloudlink-inspection-event/keyPointPlan/save?token=" + lsObj.getLocalStorage('token');
       }
       if (that.verify()) {
         $.ajax({
@@ -530,10 +502,6 @@ var indexs = new Vue({
         xxwsWindowObj.xxwsAlert("请选择结束时间");
         return false;
       }
-      if (!that.taskForm.personNames) {
-        xxwsWindowObj.xxwsAlert("请选择安检人员");
-        return false;
-      }
       return true;
     },
     changeStatus: function (e) {
@@ -586,9 +554,19 @@ var chooseNode = new Vue({
       allotNodeArrs: [],
       chooseAllotNode: [], //选中已经分配的点
       chooseNoAllotNode: [], //选中的没有分配的点
+      noallotKeyWord: "",
+      allotKeyWord: "",
     }
   },
   watch: {
+    allotKeyWord: function () {
+      var that = this;
+      that.requestAllotNodes(1);
+    },
+    noallotKeyWord: function () {
+      var that = this;
+      that.requestNoAllNodes();
+    },
     chooseAllotNode: function () {
       var that = this;
       if (that.chooseAllotNode.length > 0) {
@@ -738,37 +716,102 @@ var chooseNode = new Vue({
     next: function () {
       var that = this;
       if (that.allotNodeArrs.length > 0) {
-        $("#share").modal();
-        $("#share").on('shown.bs.modal', function (e) {
+        that.nodeAndPlanToServer(function () {
+          $("#share").modal();
+          // $("#share").on('shown.bs.modal', function (e) {
           second.initTable(); //请求所有的关键点
+          // });
         });
       } else {
         xxwsWindowObj.xxwsAlert("请选择需要分配的必经点");
       }
     },
-    requestNoAllNodes: function () {
+    submit: function () {
       var that = this;
+      if (that.allotNodeArrs.length == 0) {
+        xxwsWindowObj.xxwsAlert("请选择需要分配的必经点");
+        return;
+      }
+      that.nodeAndPlanToServer(function () {
+        that.noAllotNodeArrs = [];
+        that.allotNodeArrs = [];
+        that.chooseAllotNode = []; //选中已经分配的点
+        that.chooseNoAllotNode = []; //选中的没有分配的点
+        xxwsWindowObj.xxwsAlert("保存成功");
+        $("#chooseNode").modal('hide');
+      });
+    }, //进行计划和选择的关键点之间的关系存储
+    nodeAndPlanToServer: function (callback) {
+      var that = this;
+      var obj = {
+        planId: indexs.currentPlanId,
+        keyPointIdList: []
+      };
+      that.allotNodeArrs.forEach(function (item) {
+        obj.keyPointIdList.push(item.objectId);
+      });
       $.ajax({
         type: "post",
         contentType: "application/json",
         dataType: "json",
-        url: "/cloudlink-inspection-event/necessityNode/getPage?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPointPlan/updateRelationKeyPoint?token=" + lsObj.getLocalStorage('token'),
+        data: JSON.stringify(obj),
+        success: function (data) {
+          if (data.success == 1) {
+            callback();
+          }
+        }
+      });
+    },
+    requestNoAllNodes: function (value) {
+      var that = this;
+      $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        url: "/cloudlink-inspection-event/keyPoint/getDistributableByPlanId?token=" + lsObj.getLocalStorage('token'),
         data: JSON.stringify({
-          orderBy: "distributionStatus",
-          orderDirection: "asc",
-          pageNum: 1,
-          pageSize: 100000,
-          withRelationPerson: true,
+          planId: indexs.currentPlanId,
+          keyword: that.noallotKeyWord
         }),
         success: function (data) {
           if (data.success == 1) {
+            if (!value) {
+              that.requestAllotNodes();
+            }
+            that.noAllotNodeArrs = [];
             if (data.rows.length > 0) {
               data.rows.forEach(function (item) {
                 item.checked = false;
                 that.noAllotNodeArrs.push(item);
               });
             }
-
+          } else {
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
+          }
+        }
+      });
+    },
+    requestAllotNodes: function () {
+      var that = this;
+      $.ajax({
+        type: "post",
+        contentType: "application/json",
+        dataType: "json",
+        url: "/cloudlink-inspection-event/keyPoint/getListByPlanId?token=" + lsObj.getLocalStorage('token'),
+        data: JSON.stringify({
+          planId: indexs.currentPlanId,
+          keyword: that.allotKeyWord
+        }),
+        success: function (data) {
+          if (data.success == 1) {
+            if (data.rows.length > 0) {
+              that.allotNodeArrs = [];
+              data.rows.forEach(function (item) {
+                item.checked = false;
+                that.allotNodeArrs.push(item);
+              });
+            }
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
@@ -823,7 +866,7 @@ var second = new Vue({
   },
   methods: {
     bindEvent: function () {
-      var that=this;
+      var that = this;
       $("#selectPeople").click(function () {
         that.selectPeople();
       })
@@ -831,7 +874,7 @@ var second = new Vue({
     initTable: function () {
       var that = this;
       $('#table1').bootstrapTable({
-        url: "/cloudlink-inspection-event/necessityNode/getPage?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPoint/getPageByPlanId?token=" + lsObj.getLocalStorage('token'),
         method: 'post',
         toolbar: "#toolbar1",
         toolbarAlign: "left",
@@ -851,9 +894,10 @@ var second = new Vue({
         queryParams: function (params) {
           that.searchObj.pageSize = params.pageSize;
           that.searchObj.pageNum = params.pageNumber;
-          that.searchObj.orderDirection = 'asc';
-          that.searchObj.orderBy = 'distributionStatus';
-          that.searchObj.withRelationPerson = true;
+          that.searchObj.planId=indexs.currentPlanId;
+          // that.searchObj.orderDirection = 'asc';
+          // that.searchObj.orderBy = 'distributionStatus';
+          // that.searchObj.withRelationPerson = true;
           return that.searchObj;
         },
         responseHandler: function (res) {
@@ -1016,6 +1060,8 @@ var second = new Vue({
     },
     refreshTable: function () {
       var that = this;
+      that.removeNoAllotPoint();
+      that.removeAllotPoint();
       that.searchObj.pageNum = '1';
       that.searchObj.keyword = that.keyword;
       that.searchObj.distributionStatus = that.distributionStatus;
@@ -1232,16 +1278,17 @@ var second = new Vue({
       }
       $("#people").modal();
       $("#people").on('shown.bs.modal', function (e) {
-        if (that.selectItems.length == 1) {
-          that.selectItems[0].personIdList.forEach(function (item) {
-            selectPeople.push({
-              relationshipPersonId: item
-            })
-          });
-          peopleTreeObj.requestPeopleTree($("#people"), selectPeople);
-        } else {
-          peopleTreeObj.requestPeopleTree($("#people"), selectPeople);
-        }
+      if (that.selectItems.length == 1 && that.selectItems[0].personIdList.length > 0) {
+        that.selectItems[0].personIdList.forEach(function (item) {
+          selectPeople.push({
+            relationshipPersonId: item
+          })
+        });
+        console.log(selectPeople);
+        peopleTreeObj.requestPeopleTree($("#people"), selectPeople);
+      } else {
+        peopleTreeObj.requestPeopleTree($("#people"), selectPeople);
+      }
       });
     },
     getNodeDeatilByObjectId: function (objectId) {
@@ -1249,7 +1296,7 @@ var second = new Vue({
       var that = this;
       $.ajax({
         type: "get",
-        url: "/cloudlink-inspection-event/necessityNode/get?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPoint/get?token=" + lsObj.getLocalStorage('token'),
         contentType: "application/json",
         dataType: "json",
         data: {
@@ -1274,7 +1321,7 @@ var second = new Vue({
       var that = this;
       $.ajax({
         type: "get",
-        url: "/cloudlink-inspection-event/necessityNode/delete?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPoint/delete?token=" + lsObj.getLocalStorage('token'),
         contentType: "application/json",
         dataType: "json",
         data: {
@@ -1296,11 +1343,12 @@ var second = new Vue({
       var peopleArr = [];
       var peopleObj = peopleTreeObj.getSelectPeople();
       var obj = {
-        necessityNodeIdList: [],
+        planId:indexs.currentPlanId,
+        keyPointIdList: [],
         personFormList: []
       };
       for (var i = 0; i < that.selectItems.length; i++) {
-        obj.necessityNodeIdList.push(that.selectItems[i].objectId);
+        obj.keyPointIdList.push(that.selectItems[i].objectId);
       }
       peopleObj.selectedArr.forEach(function (item) {
         peopleArr.push({
@@ -1317,7 +1365,7 @@ var second = new Vue({
         type: "post",
         contentType: "application/json",
         dataType: "json",
-        url: "/cloudlink-inspection-event/necessityNode/updateRelationPerson?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPoint/updateRelationPerson?token=" + lsObj.getLocalStorage('token'),
         data: JSON.stringify(obj),
         success: function (data) {
           if (data.success == 1) {
@@ -1341,10 +1389,12 @@ var second = new Vue({
     hide: function () {
       $("#allot_map").slideUp();
       $(".map_up").attr("class", "map_down");
+      $(".change").css("display", "none");
     },
     show: function () {
       $("#allot_map").slideDown();
       $(".map_down").attr("class", "map_up");
+      $(".change").css("display", "block");
     },
     back: function () {
       $("#share").modal('hide');
@@ -1372,3 +1422,24 @@ var second = new Vue({
     },
   }
 });
+
+
+
+
+
+
+
+// new sofa.form.ListView({
+//                 "labelWidth": 60,
+//                 "indexField": "treatWay",
+//                 "width": 150,
+//                 "label": "处理方式",
+//                 "forceSelection": false,
+//                "store": new Ext.data.SimpleStore({ fields: ['Id', 'Name'], data: [['1', '李白'], ['2', '李杜'], ['3', '李丽']] }),
+//                 "mode": "remote",
+//                 "id": "treatWay",
+//                 "renderTo": "ct_form_field_bond",//页面写个元素，将这个渲染上去
+//                 "hideTrigger": true,
+//                 "displayField": "name",
+//                 "fields": "code"
+//             });
