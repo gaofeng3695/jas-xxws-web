@@ -106,6 +106,18 @@ body {
         }
       }
     }
+    .setNode_end {
+      cursor: default;
+      i {
+        display: inline-block;
+        width: 26px;
+        height: 26px;
+        background: url(/src/images/node/set_ed.png) no-repeat;
+        background-size: 26px 26px;
+        vertical-align: middle;
+        margin: 0 5px;
+      }
+    }
     .publish1 {
       cursor: pointer;
       i {
@@ -425,8 +437,7 @@ body {
         }
         .left,
         .right {
-          display: inline-block;
-          // overflow-y: auto;
+          display: inline-block; // overflow-y: auto;
           height: 470px;
           width: 380px;
           border: 1px solid #ebeef5;
@@ -499,9 +510,8 @@ body {
                 float: left;
                 width: 125px;
               }
-              &:hover{
+              &:hover {
                 background: #edf7ff;
-
               }
             }
           }
@@ -574,16 +584,16 @@ body {
         button {
           outline: none;
         }
-        .right_wrapper{
-          .search_btn_right{
-            width:100px;
+        .right_wrapper {
+          .search_btn_right {
+            width: 100px;
           }
-          .search_wrapper{
-            margin-right:120px;
-            .input_wrapper{
-              input{
-                margin-top:1px;
-                height:33px !important;
+          .search_wrapper {
+            margin-right: 120px;
+            .input_wrapper {
+              input {
+                margin-top: 1px;
+                height: 33px !important;
               }
             }
           }
@@ -696,7 +706,7 @@ body {
               width: 22px;
               height: 16px;
               background: url(/src/images/node/allots.png) no-repeat;
-              background-size:22px 16px;
+              background-size: 22px 16px;
               vertical-align: middle;
               margin: 0 5px;
               &:hover {
@@ -728,8 +738,6 @@ body {
   }
 }
 
-
-
 .change {
   // width: 260px;
   background: #686866;
@@ -759,14 +767,13 @@ body {
     {
     text-align: center;
   }
-  .fl{
-    float:left;
+  .fl {
+    float: left;
   }
-  .fr{
-    float:right
+  .fr {
+    float: right
   }
 }
-
 
 .W60 .th-inner {
   width: 100px !important;
