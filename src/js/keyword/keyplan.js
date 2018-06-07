@@ -233,18 +233,7 @@ var indexs = new Vue({
               },
               //删除
               'click .closed': function (e, value, row, index) {
-                var defaultOptions = {
-                  tip: '您是否删除该计划？',
-                  name_title: '提示',
-                  name_cancel: '取消',
-                  name_confirm: '确定',
-                  isCancelBtnShow: true,
-                  callBack: function () {
-                    that.deleteTask(row.objectId);
-                  }
-                };
-                xxwsWindowObj.xxwsAlert(defaultOptions);
-                return false;
+                that.deleteTask(row.objectId);
               },
               'click .management': function (e, value, row, index) {
                 that.editTask(row.objectId);
@@ -353,13 +342,46 @@ var indexs = new Vue({
     },
     deleteTask: function (objectId) {
       var that = this;
+      var tip = "";
       $.ajax({
         type: "get",
         url: "/cloudlink-inspection-event/keyPointPlan/delete?token=" + lsObj.getLocalStorage('token'),
         contentType: "application/json",
         dataType: "json",
         data: {
-          id: objectId
+          id: objectId,
+          confirm: false,
+        },
+        success: function (data) {
+          if (data.code == "GJD001") {
+            tip = "该计划下存在关键点,是否继续删除"
+          } else {
+            tip = '您是否删除该计划？';
+          }
+          var defaultOptions = {
+            tip: tip,
+            name_title: '提示',
+            name_cancel: '取消',
+            name_confirm: '确定',
+            isCancelBtnShow: true,
+            callBack: function () {
+              that.deleteTaskToServer(objectId);
+            }
+          };
+          xxwsWindowObj.xxwsAlert(defaultOptions);
+        }
+      })
+    },
+    deleteTaskToServer: function (objectId) {
+      var that = this;
+      $.ajax({
+        type: "get",
+        url: "/cloudlink-inspection-event/keyPointPlan/delete?token=" + lsObj.getLocalStorage('token'),
+        contentType: "application/json",
+        dataType: "json",
+        data: {
+          id: objectId,
+          confirm: true,
         },
         success: function (data) {
           if (data.success == 1) {
@@ -405,7 +427,7 @@ var indexs = new Vue({
         },
         success: function (data) {
           if (data.success == 1) {
-            xxwsWindowObj.xxwsAlert("取消成功", function () {
+            xxwsWindowObj.xxwsAlert("关闭成功", function () {
               that.refreshTable();
             });
           } else {
@@ -719,9 +741,9 @@ var chooseNode = new Vue({
         that.nodeAndPlanToServer(function () {
           $("#share").modal();
           // second.initTable();
-          // $("#share").on('shown.bs.modal', function (e) {
-          second.initTable(); //请求所有的关键点
-          // });
+          $("#share").on('shown.bs.modal', function (e) {
+            second.initTable(); //请求所有的关键点
+          });
         });
       } else {
         xxwsWindowObj.xxwsAlert("请选择需要分配的必经点");
@@ -729,10 +751,10 @@ var chooseNode = new Vue({
     },
     submit: function () {
       var that = this;
-      if (that.allotNodeArrs.length == 0) {
-        xxwsWindowObj.xxwsAlert("请选择需要分配的必经点");
-        return;
-      }
+      // if (that.allotNodeArrs.length == 0) {
+      //   xxwsWindowObj.xxwsAlert("请选择需要分配的必经点");
+      //   return;
+      // }
       that.nodeAndPlanToServer(function () {
         that.noAllotNodeArrs = [];
         that.allotNodeArrs = [];
@@ -904,6 +926,9 @@ var second = new Vue({
         },
         responseHandler: function (res) {
           return res;
+        },
+        onRefresh: function () {
+          that.refreshTable();
         },
         onLoadSuccess: function (data) {
           if (data.success == 1) {
@@ -1084,6 +1109,14 @@ var second = new Vue({
     chooseStatus: function (e) {
       var t = e.target;
       this.distributionStatus = $(t).attr('data-value');
+      if (this.distributionStatus == "0") {
+        this.noallot = true; //只要刷新表，就会进行点的重新绘制
+      } else if (this.distributionStatus == "1") {
+        this.allot = true;
+      } else {
+        this.allot = true; //只要刷新表，就会进行点的重新绘制
+        this.noallot = true;
+      }
       this.refreshTable();
     },
     singlePointLocation: function (selectedItem) {
@@ -1139,12 +1172,13 @@ var second = new Vue({
       var myIcons = null;
       var markers = null;
       var point = null;
+      that.removeAllotPoint();
+      that.removeNoAllotPoint();
       that.currentAllotNode = []; //表示当前在地图上面绘制的已分配点
       that.currentNoAllotNode = []; //表示当前在地图上面绘制的未分配点
       that.drawNodeArray = [];
       that.drawNodeArray = [];
       var data = that.nodeInfoArrys;
-      console.log(that.nodeInfoArrys)
       for (var i = 0; i < data.length; i++) {
         point = new BMap.Point(data[i].bdLon, data[i].bdLat);
         if (data[i].distributionStatus == 0) {
@@ -1417,6 +1451,12 @@ var second = new Vue({
       $(".change").css("display", "block");
     },
     back: function () {
+      //地图相关数据 需要全部初始化
+      var that = this;
+      that.allot = true;
+      that.noallot = true;
+      that.removeAllotPoint();
+      that.removeNoAllotPoint();
       $("#share").modal('hide');
       $("#chooseNode").modal();
       // $("#chooseNode").on('shown.bs.modal', function (e) {

@@ -444,8 +444,12 @@ var index = new Vue({
     },
     delNode: function () {
       var that = this;
+      var tip='您是否删除该必经点？';
+      if(that.nodeDetail.planNames){
+        tip="删除该点，将影响【"+that.nodeDetail.planNames+"】等计划，是否继续删除!";
+      }
       var defaultOptions = {
-        tip: '您是否删除该必经点？',
+        tip:tip,
         name_title: '提示',
         name_cancel: '取消',
         name_confirm: '确定',

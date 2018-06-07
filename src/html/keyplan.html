@@ -202,7 +202,7 @@
               </div>
               <div style="height:370px;overflow: auto" class="scrollContainer">
                 <ul class="noallot">
-                  <li v-for="(item,index) in noAllotNodeArrs" @click="clickNoAllotItem(item,index)" data-toggle="tooltip" title="已纳入计划：">
+                  <li v-for="(item,index) in noAllotNodeArrs" @click="clickNoAllotItem(item,index)" data-html="true" data-toggle="tooltip" :title="item.planNames">
                     <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span>
                     <span class="name hidd">{{item.name}}</span>
                     <span class="code hidd">{{item.code}}</span>
