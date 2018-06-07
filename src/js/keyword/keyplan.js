@@ -91,6 +91,7 @@ var indexs = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
+            // width:"10%",
             class: "W60",
             editable: true,
             formatter: function (value) {
@@ -124,7 +125,7 @@ var indexs = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '10%',
+            width: '12%',
             editable: true,
             cellStyle: function (value, row, index) {
               return {
@@ -168,7 +169,7 @@ var indexs = new Vue({
             field: 'operate1',
             title: '计划配置',
             align: 'center',
-            width: "10%",
+            width: "20%",
             events: {
               'click .publish1': function (e, value, row, index) {
                 var tip = "您是否发布该计划？"
@@ -195,7 +196,6 @@ var indexs = new Vue({
               'click .setNode': function (e, value, row, index) {
                 $("#chooseNode").modal();
                 // $("#chooseNode").on('shown.bs.modal', function (e) {
-                console.log(1);
                 that.currentPlanId = row.objectId;
                 chooseNode.requestNoAllNodes(); //请求所有的关键点
                 // });
@@ -251,7 +251,7 @@ var indexs = new Vue({
               },
 
             },
-            width: '10%',
+            width: '20%',
             formatter: function (value, row, index) {
               var close = "closed";
               var edit = "management";
@@ -561,11 +561,11 @@ var chooseNode = new Vue({
   watch: {
     allotKeyWord: function () {
       var that = this;
-      that.requestAllotNodes(1);
+      that.requestAllotNodes();
     },
     noallotKeyWord: function () {
       var that = this;
-      that.requestNoAllNodes();
+      that.requestNoAllNodes(1);
     },
     chooseAllotNode: function () {
       var that = this;
@@ -718,6 +718,7 @@ var chooseNode = new Vue({
       if (that.allotNodeArrs.length > 0) {
         that.nodeAndPlanToServer(function () {
           $("#share").modal();
+          // second.initTable();
           // $("#share").on('shown.bs.modal', function (e) {
           second.initTable(); //请求所有的关键点
           // });
@@ -738,7 +739,7 @@ var chooseNode = new Vue({
         that.chooseAllotNode = []; //选中已经分配的点
         that.chooseNoAllotNode = []; //选中的没有分配的点
         xxwsWindowObj.xxwsAlert("保存成功");
-        $("#chooseNode").modal('hide');
+
       });
     }, //进行计划和选择的关键点之间的关系存储
     nodeAndPlanToServer: function (callback) {
@@ -758,6 +759,7 @@ var chooseNode = new Vue({
         data: JSON.stringify(obj),
         success: function (data) {
           if (data.success == 1) {
+            $("#chooseNode").modal('hide');
             callback();
           }
         }
@@ -805,8 +807,8 @@ var chooseNode = new Vue({
         }),
         success: function (data) {
           if (data.success == 1) {
+            that.allotNodeArrs = [];
             if (data.rows.length > 0) {
-              that.allotNodeArrs = [];
               data.rows.forEach(function (item) {
                 item.checked = false;
                 that.allotNodeArrs.push(item);
@@ -865,6 +867,9 @@ var second = new Vue({
     that.bindEvent();
   },
   methods: {
+    cancel: function () {
+      $("#share").modal("hide");
+    },
     bindEvent: function () {
       var that = this;
       $("#selectPeople").click(function () {
@@ -873,7 +878,7 @@ var second = new Vue({
     },
     initTable: function () {
       var that = this;
-      $('#table1').bootstrapTable({
+      $('#table1').bootstrapTable('destroy').bootstrapTable({
         url: "/cloudlink-inspection-event/keyPoint/getPageByPlanId?token=" + lsObj.getLocalStorage('token'),
         method: 'post',
         toolbar: "#toolbar1",
@@ -894,10 +899,7 @@ var second = new Vue({
         queryParams: function (params) {
           that.searchObj.pageSize = params.pageSize;
           that.searchObj.pageNum = params.pageNumber;
-          that.searchObj.planId=indexs.currentPlanId;
-          // that.searchObj.orderDirection = 'asc';
-          // that.searchObj.orderBy = 'distributionStatus';
-          // that.searchObj.withRelationPerson = true;
+          that.searchObj.planId = indexs.currentPlanId;
           return that.searchObj;
         },
         responseHandler: function (res) {
@@ -909,7 +911,6 @@ var second = new Vue({
               that.nodeInfoArrys = data.rows;
               that.setPointCenter();
             }
-
           }
         },
         //表格的列
@@ -1056,7 +1057,6 @@ var second = new Vue({
           }
         ]
       });
-
     },
     refreshTable: function () {
       var that = this;
@@ -1144,6 +1144,7 @@ var second = new Vue({
       that.drawNodeArray = [];
       that.drawNodeArray = [];
       var data = that.nodeInfoArrys;
+      console.log(that.nodeInfoArrys)
       for (var i = 0; i < data.length; i++) {
         point = new BMap.Point(data[i].bdLon, data[i].bdLat);
         if (data[i].distributionStatus == 0) {
@@ -1197,7 +1198,6 @@ var second = new Vue({
         markers: markersArr,
       });
       if (typeof callback == 'function') {
-        console.log(1);
         callback();
       }
     },
@@ -1234,6 +1234,26 @@ var second = new Vue({
       that.currentNoAllotNode.forEach(function (item) {
         that.markerNOAllotClusterer.removeMarker(item.value);
       });
+    },
+    allotBtn: function () {
+      var that = this;
+      if (that.allot) {
+        that.allot = false;
+        that.removeAllotPoint(); //移除已经分配的点
+      } else {
+        that.allot = true;
+        that._addAllotPoints(); //移除已经分配的点
+      }
+    },
+    noAllotBtn: function () {
+      var that = this;
+      if (that.noallot) {
+        that.noallot = false;
+        that.removeNoAllotPoint(); //移除已经分配的点
+      } else {
+        that.noallot = true;
+        that._addNoAllotPoints();
+      }
     },
     pointInfo: function (e) {
       var that = this;
@@ -1278,17 +1298,17 @@ var second = new Vue({
       }
       $("#people").modal();
       $("#people").on('shown.bs.modal', function (e) {
-      if (that.selectItems.length == 1 && that.selectItems[0].personIdList.length > 0) {
-        that.selectItems[0].personIdList.forEach(function (item) {
-          selectPeople.push({
-            relationshipPersonId: item
-          })
-        });
-        console.log(selectPeople);
-        peopleTreeObj.requestPeopleTree($("#people"), selectPeople);
-      } else {
-        peopleTreeObj.requestPeopleTree($("#people"), selectPeople);
-      }
+        if (that.selectItems.length == 1 && that.selectItems[0].personIdList.length > 0) {
+          that.selectItems[0].personIdList.forEach(function (item) {
+            selectPeople.push({
+              relationshipPersonId: item
+            })
+          });
+          console.log(selectPeople);
+          peopleTreeObj.requestPeopleTree($("#people"), selectPeople);
+        } else {
+          peopleTreeObj.requestPeopleTree($("#people"), selectPeople);
+        }
       });
     },
     getNodeDeatilByObjectId: function (objectId) {
@@ -1343,7 +1363,7 @@ var second = new Vue({
       var peopleArr = [];
       var peopleObj = peopleTreeObj.getSelectPeople();
       var obj = {
-        planId:indexs.currentPlanId,
+        planId: indexs.currentPlanId,
         keyPointIdList: [],
         personFormList: []
       };
@@ -1398,48 +1418,12 @@ var second = new Vue({
     },
     back: function () {
       $("#share").modal('hide');
+      $("#chooseNode").modal();
+      // $("#chooseNode").on('shown.bs.modal', function (e) {
+      // that.currentPlanId = row.objectId;
+      chooseNode.requestNoAllNodes(); //请求所有的关键点
+      // });
+    },
 
-    },
-    allotBtn: function () {
-      var that = this;
-      if (that.allot) {
-        that.allot = false;
-        that.removeAllotPoint(); //移除已经分配的点
-      } else {
-        that.allot = true;
-        that._addAllotPoints(); //移除已经分配的点
-      }
-    },
-    noAllotBtn: function () {
-      var that = this;
-      if (that.noallot) {
-        that.noallot = false;
-        that.removeNoAllotPoint(); //移除已经分配的点
-      } else {
-        that.noallot = true;
-        that._addNoAllotPoints();
-      }
-    },
   }
 });
-
-
-
-
-
-
-
-// new sofa.form.ListView({
-//                 "labelWidth": 60,
-//                 "indexField": "treatWay",
-//                 "width": 150,
-//                 "label": "处理方式",
-//                 "forceSelection": false,
-//                "store": new Ext.data.SimpleStore({ fields: ['Id', 'Name'], data: [['1', '李白'], ['2', '李杜'], ['3', '李丽']] }),
-//                 "mode": "remote",
-//                 "id": "treatWay",
-//                 "renderTo": "ct_form_field_bond",//页面写个元素，将这个渲染上去
-//                 "hideTrigger": true,
-//                 "displayField": "name",
-//                 "fields": "code"
-//             });

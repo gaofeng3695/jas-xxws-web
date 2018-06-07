@@ -690,6 +690,7 @@ body {
               width: 22px;
               height: 16px;
               background: url(/src/images/node/allots.png) no-repeat;
+              background-size:22px 16px;
               vertical-align: middle;
               margin: 0 5px;
               &:hover {
@@ -758,4 +759,17 @@ body {
   .fr{
     float:right
   }
+}
+
+
+.W60 .th-inner {
+  width: 100px !important;
+}
+
+.allotbg {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background: url(/src/images/node/allots.png) no-repeat;
 }

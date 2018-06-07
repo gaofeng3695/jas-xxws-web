@@ -323,7 +323,7 @@
                   <div class="container-fluid">
                     <div id="toolbar1" class="btn-group">
                       <button @click="allotPeople" type="button" data-toggle="modal" class="btn btn-default">
-                <span style="padding-right:5px"class="fa fa-share-alt" aria-hidden="true"></span>分配
+                <span style="padding-right:5px"class="allotbg" ></span>分配
               </button>
                     </div>
                     <table id="table1"></table>
@@ -336,7 +336,7 @@
         </div>
         <div class="modal-footer">
           <button @click="back" type="button" class="btn modal_active btn-primary">上一步</button>
-          <button type="button" class="btn modal_active btn-primary">确定</button>
+          <button type="button" @click="cancel"class="btn modal_active btn-primary">关闭</button>
         </div>
       </div>
     </div>
