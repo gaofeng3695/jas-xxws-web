@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <link href="/lib/css/bootstrap.css" rel="stylesheet">
+  <link rel="stylesheet" href="/lib/element-ui/v2.2.1/theme-chalk/index.min.css">
   <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
   <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
   <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
@@ -202,11 +203,14 @@
               </div>
               <div style="height:370px;overflow: auto" class="scrollContainer">
                 <ul class="noallot">
-                  <li v-for="(item,index) in noAllotNodeArrs" @click="clickNoAllotItem(item,index)" data-html="true" data-toggle="tooltip" :title="item.planNames">
-                    <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span>
-                    <span class="name hidd">{{item.name}}</span>
-                    <span class="code hidd">{{item.code}}</span>
-                    <span class="location hidd">{{item.location}}</span>
+                  <li v-for="(item,index) in noAllotNodeArrs" @click="clickNoAllotItem(item,index)">
+                    <el-tooltip effect="dark" :content="isContent(item)" placement="top-start">
+                      <div>
+                        <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span> <span class="name hidd">{{item.name}}</span>
+                        <span class="code hidd">{{item.code}}</span>
+                        <span class="location hidd">{{item.location}}</span>
+                      </div>
+                    </el-tooltip>
                   </li>
                 </ul>
               </div>
@@ -336,13 +340,14 @@
         </div>
         <div class="modal-footer">
           <button @click="back" type="button" class="btn modal_active btn-primary">上一步</button>
-          <button type="button" @click="cancel"class="btn modal_active btn-primary">关闭</button>
+          <button type="button" @click="cancel" class="btn modal_active btn-primary">关闭</button>
         </div>
       </div>
     </div>
   </div>
   <script type="text/javascript" src="/src/js/common/drafting.js"></script>
   <script type="text/javascript" src="/lib/js/vue.min.js"></script>
+  <script src="/lib/element-ui/v2.2.1/index.min.js"></script>
   <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
   <script type="text/javascript" src="https://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
   <script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>

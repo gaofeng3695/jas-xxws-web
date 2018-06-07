@@ -611,6 +611,13 @@ var chooseNode = new Vue({
     }
   },
   methods: {
+    isContent: function (item) {
+      if (item.planNames) {
+        return "已纳入计划【" + item.planNames + "】";
+      }else{
+         return "未纳入任何计划";
+      }
+    },
     clickItem: function (item, index) {
       var that = this;
       if (item.checked) {

@@ -580,6 +580,12 @@ body {
           }
           .search_wrapper{
             margin-right:120px;
+            .input_wrapper{
+              input{
+                margin-top:1px;
+                height:33px !important;
+              }
+            }
           }
         }
         .noallot {
