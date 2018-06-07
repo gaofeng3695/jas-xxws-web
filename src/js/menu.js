@@ -244,6 +244,28 @@ var routerObj = {
           // // vm.sessionRoute('userArea');
         }
       },
+      '/collectKey': {
+        on: function () {
+          vm.loadRelativePage("#/collectKey");
+          if (tjSwitch == 1) {
+            tjSdk.track('关键点采集');
+          }
+        },
+        after: function () {
+          vm.$data.initRouteName = 'collectKey';
+        }
+      },
+      '/keyplan': {
+        on: function () {
+          vm.loadRelativePage("#/keyplan");
+          if (tjSwitch == 1) {
+            tjSdk.track('关键点采集');
+          }
+        },
+        after: function () {
+          vm.$data.initRouteName = 'keyplan';
+        }
+      },
       '/taskNode': {
         on: function () {
           // vm.loadRelativePage("/src/html/userArea.html");

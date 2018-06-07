@@ -90,7 +90,7 @@ html,
       }
     }
     .del {
-     i {
+      i {
         display: inline-block;
         width: 18px;
         height: 18px;
@@ -108,6 +108,7 @@ html,
         width: 22px;
         height: 16px;
         background: url(/src/images/node/allots.png) no-repeat;
+        background-size:20px 16px;
         vertical-align: middle;
         margin: 0 5px;
         &:hover {
@@ -116,6 +117,14 @@ html,
       }
     }
   }
+}
+
+.allotbg {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background: url(/src/images/node/allots.png) no-repeat;
 }
 
 .noallot {

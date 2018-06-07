@@ -318,6 +318,10 @@ var index = new Vue({
         markers = new BMap.Marker(point, {
           icon: myIcons
         });
+
+        markers.addEventListener("click", function (e) {
+          that.pointInfo(e);
+        });
         that.drawNodeArray.push({
           'status': data[i].distributionStatus + "",
           'key': data[i].objectId,
@@ -325,6 +329,33 @@ var index = new Vue({
         });
       }
       that.addPoints();
+    },
+    pointInfo: function (e) {
+      var that = this;
+      var opts = {
+        width: 250, // 信息窗口宽度
+        height: 80, // 信息窗口高度
+      };
+      var p = e.target;
+      var id = "";
+      var txts = "";
+      var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+      for (var i = 0; i < that.drawNodeArray.length; i++) {
+        if (that.drawNodeArray[i].value == p) {
+          id = that.drawNodeArray[i].key;
+          break;
+        }
+      }
+      for (var j = 0; j < that.nodeInfoArrys.length; j++) {
+        if (that.nodeInfoArrys[j].objectId == id) {
+          txts = '<div><p class="text">名称：' + that.nodeInfoArrys[j].name + '</p>' +
+            '<p>编号：' + that.nodeInfoArrys[j].code + '</p>' +
+            '<p>位置：' + that.nodeInfoArrys[j].location + '</p></div>';
+        break;
+        }
+      }
+      var infoWindow = new BMap.InfoWindow(txts, opts); // 创建信息窗口对象
+      that.mapObj.openInfoWindow(infoWindow, point); //开启信息窗口
     },
     addPoints: function () {
       var that = this;
@@ -452,6 +483,21 @@ var index = new Vue({
           }
         }
       });
-    }
+    },
+    mapSwitch: function () { //地图展开、收缩的开关
+      if ($(".bottom_btn span").hasClass("map_down")) {
+        this.show();
+      } else {
+        this.hide();
+      }
+    },
+    hide: function () {
+      $("#allot_map").slideUp();
+      $(".map_up").attr("class", "map_down");
+    },
+    show: function () {
+      $("#allot_map").slideDown();
+      $(".map_down").attr("class", "map_up");
+    },
   }
 });
