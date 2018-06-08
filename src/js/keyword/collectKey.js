@@ -176,9 +176,9 @@ var index = new Vue({
           });
         }
         markers.addEventListener("click", function (e) {
-          if (!that.isShowTool) {
+          // if (!that.isShowTool) {
             that._pointClick(e);
-          }
+          // }
         });
         markers.addEventListener("dragging", function (e) {
           that._editNodeLocation(e);
