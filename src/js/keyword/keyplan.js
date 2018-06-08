@@ -309,9 +309,9 @@ var indexs = new Vue({
               that.isUpdateStartTime = true;
             }
             that.taskForm.endTime = data.rows[0].endTime.substring(0, 10);
-            if (new Date(that.taskForm.endTime) <= new Date()) {
-              that.isUpdateEndTime = true;
-            }
+            // if (new Date(that.taskForm.endTime) < new Date()) {
+            //   that.isUpdateEndTime = true;
+            // }
             $("#task").modal();
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
@@ -799,7 +799,7 @@ var chooseNode = new Vue({
           $("#share").modal();
           // second.initTable();
           $("#share").on('shown.bs.modal', function (e) {
-            second.initTable(); //请求所有的关键点
+            second.initSearch(); //请求所有的关键点
           });
         });
       } else {
@@ -1007,6 +1007,15 @@ var second = new Vue({
         that.selectPeople();
       })
     },
+    initSearch: function () {
+      var that = this;
+      that.keyword = "";
+      that.distributionStatus = "";
+      that.searchObj={},
+      that.allot = true;
+      that.noallot = true;
+      that.initTable();
+    },
     initTable: function () {
       var that = this;
       $('#table1').bootstrapTable('destroy').bootstrapTable({
@@ -1037,13 +1046,24 @@ var second = new Vue({
           return res;
         },
         onRefresh: function () {
-          that.refreshTable();
+          if (that.distributionStatus == "0") {
+            that.noallot = true;
+          } else if (that.distributionStatus == "1") {
+            that.allot = true;
+          } else {
+            that.noallot = true;
+            that.allot = true;
+          }
+          that.removeAllotPoint();
+          that.removeNoAllotPoint();
         },
         onLoadSuccess: function (data) {
           if (data.success == 1) {
             if (data.rows.length > 0) {
               that.nodeInfoArrys = data.rows;
               that.setPointCenter();
+            } else {
+              that.nodeInfoArrys = [];
             }
           }
         },
@@ -1230,19 +1250,22 @@ var second = new Vue({
     },
     singlePointLocation: function (selectedItem) {
       var that = this;
-      var isExist = 0; //用于表示当前地图上面有无该店
+      if (selectedItem.distributionStatus == 0 && !that.noallot) {
+        that.noallot = true;
+        that._addNoAllotPoints();
+      }
+      if (selectedItem.distributionStatus == 1 && !that.allot) {
+        that.allot = true;
+        that._addAllotPoints();
+      }
       that.mapObj.centerAndZoom(new BMap.Point(selectedItem.bdLon, selectedItem.bdLat), 18);
       for (var i = 0; i < that.drawNodeArray.length; i++) {
         if (that.drawNodeArray[i].key == selectedItem.objectId) {
-          isExist++;
           this.drawNodeArray[i].value.setAnimation(BMAP_ANIMATION_BOUNCE);
         } else {
           this.drawNodeArray[i].value.setAnimation();
         }
       }
-      console.log(isExist)
-      if (isExist > 0) return;
-      //如果当前地图上面没有该点，需要进行绘制
     },
     removePoint: function () {
       var that = this;
