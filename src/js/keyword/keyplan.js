@@ -292,7 +292,7 @@ var indexs = new Vue({
     editTask: function (objectId) {
       var that = this;
       that.title = "修改";
-
+      that.isUpdateStartTime = false;
       $.ajax({
         type: "get",
         url: "/cloudlink-inspection-event/keyPointPlan/get?token=" + lsObj.getLocalStorage('token'),
@@ -1011,8 +1011,8 @@ var second = new Vue({
       var that = this;
       that.keyword = "";
       that.distributionStatus = "";
-      that.searchObj={},
-      that.allot = true;
+      that.searchObj = {},
+        that.allot = true;
       that.noallot = true;
       that.initTable();
     },
@@ -1155,7 +1155,7 @@ var second = new Vue({
             editable: true,
           }, {
             field: 'personIdList', //域值
-            title: '巡检人员', //内容
+            title: '巡检人数', //内容
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
@@ -1258,7 +1258,7 @@ var second = new Vue({
         that.allot = true;
         that._addAllotPoints();
       }
-      that.mapObj.centerAndZoom(new BMap.Point(selectedItem.bdLon, selectedItem.bdLat), 18);
+      that.mapObj.centerAndZoom(new BMap.Point(selectedItem.bdLon, selectedItem.bdLat), 20);
       for (var i = 0; i < that.drawNodeArray.length; i++) {
         if (that.drawNodeArray[i].key == selectedItem.objectId) {
           this.drawNodeArray[i].value.setAnimation(BMAP_ANIMATION_BOUNCE);
@@ -1327,7 +1327,7 @@ var second = new Vue({
         });
 
         markers.addEventListener("click", function (e) {
-          that.pointInfo(e);
+          // that.pointInfo(e);
         });
         that.drawNodeArray.push({
           'status': data[i].distributionStatus + "",
@@ -1430,7 +1430,8 @@ var second = new Vue({
       var p = e.target;
       var id = "";
       var txts = "";
-      var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+      var lng = "";
+      var lat = "";
       for (var i = 0; i < that.drawNodeArray.length; i++) {
         if (that.drawNodeArray[i].value == p) {
           id = that.drawNodeArray[i].key;
@@ -1439,12 +1440,15 @@ var second = new Vue({
       }
       for (var j = 0; j < that.nodeInfoArrys.length; j++) {
         if (that.nodeInfoArrys[j].objectId == id) {
+          lng=that.nodeInfoArrys[j].bdLon;
+          lat=that.nodeInfoArrys[j].bdLat;
           txts = '<div><p class="text">名称：' + that.nodeInfoArrys[j].name + '</p>' +
             '<p>编号：' + that.nodeInfoArrys[j].code + '</p>' +
             '<p>位置：' + that.nodeInfoArrys[j].location + '</p></div>';
           break;
         }
       }
+      var point = new BMap.Point(lng, lat);
       var infoWindow = new BMap.InfoWindow(txts, opts); // 创建信息窗口对象
       that.mapObj.openInfoWindow(infoWindow, point); //开启信息窗口
     },
