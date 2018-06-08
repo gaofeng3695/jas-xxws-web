@@ -98,7 +98,8 @@
                     <i>*</i>开始时间
                   </div>
                   <div class="list_right has-feedback">
-                    <input type="text" id="startTime" :disabled="isUpdateStartTime" class="form-control form_datetime" v-model="taskForm.startTime">
+                    <input type="text" placeholder="请选择开始时间" readOnly id="startTime" :disabled="isUpdateStartTime" class="form-control form_datetime"
+                      v-model="taskForm.startTime">
                   </div>
                 </div>
                 <div class="form_part">
@@ -106,7 +107,8 @@
                     <i>*</i>结束时间
                   </div>
                   <div class="list_right ">
-                    <input type="text" id="endTime" :disabled="isUpdateEndTime" class="form-control form_datetime" v-model="taskForm.endTime">
+                    <input type="text" placeholder="请选择结束时间" readOnly id="endTime" :disabled="isUpdateEndTime" class="form-control form_datetime"
+                      v-model="taskForm.endTime">
                   </div>
                 </div>
               </div>
@@ -133,9 +135,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn modal_close btn-default" data-dismiss="modal">取消</button>
             <button @click="saveTask" type="button" class="btn modal_active btn-primary">确定</button>
-
+            <button type="button" class="btn modal_close btn-default" data-dismiss="modal">取消</button>
           </div>
         </div>
       </div>
@@ -202,6 +203,9 @@
                 <input type="text" placeholder="请输入名称，编号" class="form-control" v-model="noallotKeyWord">
               </div>
               <div style="height:370px;overflow: auto" class="scrollContainer">
+                <div style="color:#333;text-align: center" v-show="noAllotNodeArrs.length==0">
+                  暂无数据
+                </div>
                 <ul class="noallot">
                   <li v-for="(item,index) in noAllotNodeArrs" @click="clickNoAllotItem(item,index)">
                     <el-tooltip effect="dark" :content="isContent(item)" placement="top-start">
@@ -217,10 +221,10 @@
             </div>
             <div class="btn-left fl ">
               <button class="upleft" :disabled="toNoAllot" :class="toNoAllotBg?'bgblue':''" @click="toRight">
-                 》
+                 <i class="fa fa-angle-right"></i>
                 </button>
               <button class="upright" :disabled="toAllot" :class="toAllotBg?'bgblue':''" @click="toLeft">
-                《 </button>
+                 <i class="fa fa-angle-left"></i> </button>
             </div>
             <div class="right fr">
               <div class="top">
@@ -231,6 +235,9 @@
                 <input type="text" placeholder="请输入名称，编号" class="form-control" v-model="allotKeyWord">
               </div>
               <div style="height:370px;overflow: auto" class="scrollContainer">
+                <div style="color:#333;text-align: center" v-show="allotNodeArrs.length==0">
+                  暂无数据
+                </div>
                 <ul class="allot">
                   <li v-for="(item,index) in allotNodeArrs" @click="clickItem(item,index)">
                     <span class="check " :class="item.checked?'inputbg_h':'inputbg'"></span>

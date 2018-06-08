@@ -203,6 +203,7 @@ var indexs = new Vue({
             },
             formatter: function (value, row, index) {
               var publish = "publish1";
+              var set = "setNode";
               var title = "发布";
               if (row.publishStatus == 0) {
                 title = "发布";
@@ -213,11 +214,12 @@ var indexs = new Vue({
               if (row.publishStatus == -1) {
                 publish = "publish1_end";
                 title = "已关闭";
+                set = "setNode_end";
               }
               return [
                 '<a class="' + publish + '"  href="javascript:void(0)" title="' + title + '">',
                 '<i></i>',
-                '<a class="setNode"  href="javascript:void(0)" title="配置">',
+                '<a class="' + set + '"  href="javascript:void(0)" title="配置">',
                 '<i></i>',
               ].join('');
             }
@@ -493,7 +495,7 @@ var indexs = new Vue({
         language: 'zh-CN',
         autoclose: true,
       }).on("click", function () {
-        if (new Date(that.taskForm.startTime) < new Date()) {
+        if (new Date(that.taskForm.startTime) <= new Date()) {
           $("#endTime").datetimepicker("setStartDate", new Date());
         } else {
           $("#endTime").datetimepicker("setStartDate", $("#startTime").val());
@@ -574,20 +576,24 @@ var chooseNode = new Vue({
       isAllCheckedNoAllot: false,
       noAllotNodeArrs: [],
       allotNodeArrs: [],
+      allotNodeArrsByServer: [],
+      noAllotNodeArrsByServer: [],
       chooseAllotNode: [], //选中已经分配的点
       chooseNoAllotNode: [], //选中的没有分配的点
       noallotKeyWord: "",
       allotKeyWord: "",
+      // allowNoAllot: 1,
+      // allowAllot: 1,
     }
   },
   watch: {
     allotKeyWord: function () {
       var that = this;
-      that.requestAllotNodes();
+      that.requestAllotNodesByLocal();
     },
     noallotKeyWord: function () {
       var that = this;
-      that.requestNoAllNodes(1);
+      that.requestNoAllNodesByLocal();
     },
     chooseAllotNode: function () {
       var that = this;
@@ -611,11 +617,39 @@ var chooseNode = new Vue({
     }
   },
   methods: {
+    requestAllotNodesByLocal: function () {
+      var that = this;
+      var keyword = that.allotKeyWord;
+      that.allotNodeArrs = [];
+      that.allotNodeArrsByServer.forEach(function (item, index) {
+        if (keyword) {
+          if (item.name.indexOf(keyword) > -1 || item.code.indexOf(keyword) > -1 || item.location.indexOf(keyword) > -1) {
+            that.allotNodeArrs.push(item);
+          }
+        } else {
+          that.allotNodeArrs.push(item);
+        }
+      });
+    }, //本地搜索
+    requestNoAllNodesByLocal: function () {
+      var that = this;
+      var keyword = that.noallotKeyWord;
+      that.noAllotNodeArrs = [];
+      that.noAllotNodeArrsByServer.forEach(function (item, index) {
+        if (keyword) {
+          if (item.name.indexOf(keyword) > -1 || item.code.indexOf(keyword) > -1 || item.location.indexOf(keyword) > -1) {
+            that.noAllotNodeArrs.push(item);
+          }
+        } else {
+          that.noAllotNodeArrs.push(item);
+        }
+      });
+    },
     isContent: function (item) {
       if (item.planNames) {
         return "已纳入计划【" + item.planNames + "】";
-      }else{
-         return "未纳入任何计划";
+      } else {
+        return "未纳入任何计划";
       }
     },
     clickItem: function (item, index) {
@@ -681,7 +715,15 @@ var chooseNode = new Vue({
       if (that.chooseNoAllotNode.length > 0) {
         that.chooseNoAllotNode.forEach(function (item) {
           item.checked = false;
+          // item.allowNoAllot = 1;
           that.allotNodeArrs.push(item);
+          that.allotNodeArrsByServer.push(item);
+          that.noAllotNodeArrsByServer.forEach(function (s, index) {
+            if (s.objectId == item.objectId) {
+              that.noAllotNodeArrsByServer.splice(index, 1);
+              return;
+            }
+          });
           that.noAllotNodeArrs.forEach(function (s, index) {
             if (s.objectId == item.objectId) {
               that.noAllotNodeArrs.splice(index, 1);
@@ -698,7 +740,15 @@ var chooseNode = new Vue({
       if (that.chooseAllotNode.length > 0) {
         that.chooseAllotNode.forEach(function (item) {
           item.checked = false;
+          item.allowAllot = 1;
           that.noAllotNodeArrs.push(item);
+          that.noAllotNodeArrsByServer.push(item);
+          that.allotNodeArrsByServer.forEach(function (s, index) {
+            if (s.objectId == item.objectId) {
+              that.allotNodeArrsByServer.splice(index, 1);
+              return;
+            }
+          });
           that.allotNodeArrs.forEach(function (s, index) {
             if (s.objectId == item.objectId) {
               that.allotNodeArrs.splice(index, 1);
@@ -744,7 +794,7 @@ var chooseNode = new Vue({
     },
     next: function () {
       var that = this;
-      if (that.allotNodeArrs.length > 0) {
+      if (that.allotNodeArrsByServer.length > 0) {
         that.nodeAndPlanToServer(function () {
           $("#share").modal();
           // second.initTable();
@@ -777,7 +827,7 @@ var chooseNode = new Vue({
         planId: indexs.currentPlanId,
         keyPointIdList: []
       };
-      that.allotNodeArrs.forEach(function (item) {
+      that.allotNodeArrsByServer.forEach(function (item) {
         obj.keyPointIdList.push(item.objectId);
       });
       $.ajax({
@@ -794,8 +844,9 @@ var chooseNode = new Vue({
         }
       });
     },
-    requestNoAllNodes: function (value) {
+    requestNoAllNodes: function () {
       var that = this;
+      that.noallotKeyWord = "";
       $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -803,18 +854,36 @@ var chooseNode = new Vue({
         url: "/cloudlink-inspection-event/keyPoint/getDistributableByPlanId?token=" + lsObj.getLocalStorage('token'),
         data: JSON.stringify({
           planId: indexs.currentPlanId,
-          keyword: that.noallotKeyWord
         }),
         success: function (data) {
           if (data.success == 1) {
-            if (!value) {
-              that.requestAllotNodes();
-            }
+            // var alldatas = data.rows;
             that.noAllotNodeArrs = [];
+            that.noAllotNodeArrsByServer = [];
+            that.requestAllotNodes();
             if (data.rows.length > 0) {
+              // var del = [];
+              // if (that.allotNodeArrs.length > 0) {
+              //   that.allotNodeArrs.forEach(function (item) {
+              //     if (item.allowNoAllot) {
+              //       del.push(item);
+              //     }
+              //   });
+              //   if (del.length > 0) {
+              //     del.forEach(function (item) {
+              //       alldatas.forEach(function (child, index) {
+              //         if (child.objectId == item.objectId) {
+              //           alldatas.splice(index, 1);
+              //           return;
+              //         }
+              //       })
+              //     });
+              //   }
+              // }
               data.rows.forEach(function (item) {
                 item.checked = false;
                 that.noAllotNodeArrs.push(item);
+                that.noAllotNodeArrsByServer.push(item);
               });
             }
           } else {
@@ -823,8 +892,10 @@ var chooseNode = new Vue({
         }
       });
     },
+
     requestAllotNodes: function () {
       var that = this;
+      that.allotKeyWord = "";
       $.ajax({
         type: "post",
         contentType: "application/json",
@@ -832,15 +903,42 @@ var chooseNode = new Vue({
         url: "/cloudlink-inspection-event/keyPoint/getListByPlanId?token=" + lsObj.getLocalStorage('token'),
         data: JSON.stringify({
           planId: indexs.currentPlanId,
-          keyword: that.allotKeyWord
         }),
         success: function (data) {
           if (data.success == 1) {
             that.allotNodeArrs = [];
+            that.allotNodeArrsByServer = [];
+            // var alldatas = data.rows;
+            // if (data.rows.length > 0) {
+            //   var del = [];
+            //   if (that.noAllotNodeArrs.length > 0) {
+            //     that.noAllotNodeArrs.forEach(function (item) {
+            //       if (item.allowAllot) {
+            //         del.push(item);
+            //       }
+            //     });
+            //     if (del.length > 0) {
+            //       del.forEach(function (item) {
+            //         alldatas.forEach(function (child, index) {
+            //           if (child.objectId == item.objectId) {
+            //             alldatas.splice(index, 1);
+            //             return;
+            //           }
+            //         })
+            //       });
+            //     }
+            //   }
+            //   console.log(alldatas);
+            //   alldatas.forEach(function (item) {
+            //     item.checked = false;
+            //     that.allotNodeArrs.push(item);
+            //   });
+            // }
             if (data.rows.length > 0) {
               data.rows.forEach(function (item) {
                 item.checked = false;
                 that.allotNodeArrs.push(item);
+                that.allotNodeArrsByServer.push(item);
               });
             }
           } else {
@@ -851,17 +949,21 @@ var chooseNode = new Vue({
     },
     cancalChooseNode: function () {
       var that = this;
-      that.toAllotBg = false;
-      that.toNoAllot = true;
-      that.toNoAllotBg = false;
-      that.isAllChecked = false;
+      that.initChoose();
+      $("#chooseNode").modal('hide');
+    },
+    initChoose: function () {
+      var that = this;
       that.isAllCheckedNoAllot = false;
       that.noAllotNodeArrs = [];
       that.allotNodeArrs = [];
       that.chooseAllotNode = []; //选中已经分配的点
       that.chooseNoAllotNode = []; //选中的没有分配的点
-      $("#chooseNode").modal('hide');
-    },
+      that.toAllotBg = false;
+      that.toNoAllot = true;
+      that.toNoAllotBg = false;
+      that.isAllChecked = false;
+    }
   }
 });
 
@@ -1464,6 +1566,8 @@ var second = new Vue({
       that.noallot = true;
       that.removeAllotPoint();
       that.removeNoAllotPoint();
+      //进行关于选点的数据初始化
+      chooseNode.initChoose();
       $("#share").modal('hide');
       $("#chooseNode").modal();
       // $("#chooseNode").on('shown.bs.modal', function (e) {
