@@ -1059,6 +1059,7 @@ var second = new Vue({
         },
         onLoadSuccess: function (data) {
           if (data.success == 1) {
+            that.mapObj.clearOverlays(); //每次绘制点标准的时候，进行清除
             if (data.rows.length > 0) {
               that.nodeInfoArrys = data.rows;
               that.setPointCenter();
@@ -1180,6 +1181,7 @@ var second = new Vue({
                 if ($(this).find('i').attr("class") == 'active') {} else {
                   $(".location").find('i').attr("class", "");
                   $(this).find('i').attr("class", "active");
+                  that.mapObj.closeInfoWindow();
                   that.singlePointLocation(row);
                 }
                 $('body,html').animate({
@@ -1327,7 +1329,7 @@ var second = new Vue({
         });
 
         markers.addEventListener("click", function (e) {
-          // that.pointInfo(e);
+          that.pointInfo(e);
         });
         that.drawNodeArray.push({
           'status': data[i].distributionStatus + "",
@@ -1403,6 +1405,7 @@ var second = new Vue({
     },
     allotBtn: function () {
       var that = this;
+      that.mapObj.closeInfoWindow();
       if (that.allot) {
         that.allot = false;
         that.removeAllotPoint(); //移除已经分配的点
@@ -1413,6 +1416,7 @@ var second = new Vue({
     },
     noAllotBtn: function () {
       var that = this;
+      that.mapObj.closeInfoWindow();
       if (that.noallot) {
         that.noallot = false;
         that.removeNoAllotPoint(); //移除已经分配的点
@@ -1440,8 +1444,8 @@ var second = new Vue({
       }
       for (var j = 0; j < that.nodeInfoArrys.length; j++) {
         if (that.nodeInfoArrys[j].objectId == id) {
-          lng=that.nodeInfoArrys[j].bdLon;
-          lat=that.nodeInfoArrys[j].bdLat;
+          lng = that.nodeInfoArrys[j].bdLon;
+          lat = that.nodeInfoArrys[j].bdLat;
           txts = '<div><p class="text">名称：' + that.nodeInfoArrys[j].name + '</p>' +
             '<p>编号：' + that.nodeInfoArrys[j].code + '</p>' +
             '<p>位置：' + that.nodeInfoArrys[j].location + '</p></div>';
