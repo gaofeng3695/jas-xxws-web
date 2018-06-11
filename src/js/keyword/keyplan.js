@@ -292,7 +292,7 @@ var indexs = new Vue({
     editTask: function (objectId) {
       var that = this;
       that.title = "修改";
-
+      that.isUpdateStartTime = false;
       $.ajax({
         type: "get",
         url: "/cloudlink-inspection-event/keyPointPlan/get?token=" + lsObj.getLocalStorage('token'),
@@ -309,9 +309,9 @@ var indexs = new Vue({
               that.isUpdateStartTime = true;
             }
             that.taskForm.endTime = data.rows[0].endTime.substring(0, 10);
-            if (new Date(that.taskForm.endTime) <= new Date()) {
-              that.isUpdateEndTime = true;
-            }
+            // if (new Date(that.taskForm.endTime) < new Date()) {
+            //   that.isUpdateEndTime = true;
+            // }
             $("#task").modal();
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
@@ -799,7 +799,7 @@ var chooseNode = new Vue({
           $("#share").modal();
           // second.initTable();
           $("#share").on('shown.bs.modal', function (e) {
-            second.initTable(); //请求所有的关键点
+            second.initSearch(); //请求所有的关键点
           });
         });
       } else {
@@ -1007,6 +1007,15 @@ var second = new Vue({
         that.selectPeople();
       })
     },
+    initSearch: function () {
+      var that = this;
+      that.keyword = "";
+      that.distributionStatus = "";
+      that.searchObj = {},
+        that.allot = true;
+      that.noallot = true;
+      that.initTable();
+    },
     initTable: function () {
       var that = this;
       $('#table1').bootstrapTable('destroy').bootstrapTable({
@@ -1037,13 +1046,25 @@ var second = new Vue({
           return res;
         },
         onRefresh: function () {
-          that.refreshTable();
+          if (that.distributionStatus == "0") {
+            that.noallot = true;
+          } else if (that.distributionStatus == "1") {
+            that.allot = true;
+          } else {
+            that.noallot = true;
+            that.allot = true;
+          }
+          that.removeAllotPoint();
+          that.removeNoAllotPoint();
         },
         onLoadSuccess: function (data) {
           if (data.success == 1) {
+            that.mapObj.clearOverlays(); //每次绘制点标准的时候，进行清除
             if (data.rows.length > 0) {
               that.nodeInfoArrys = data.rows;
               that.setPointCenter();
+            } else {
+              that.nodeInfoArrys = [];
             }
           }
         },
@@ -1135,7 +1156,7 @@ var second = new Vue({
             editable: true,
           }, {
             field: 'personIdList', //域值
-            title: '巡检人员', //内容
+            title: '巡检人数', //内容
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
@@ -1160,6 +1181,7 @@ var second = new Vue({
                 if ($(this).find('i').attr("class") == 'active') {} else {
                   $(".location").find('i').attr("class", "");
                   $(this).find('i').attr("class", "active");
+                  that.mapObj.closeInfoWindow();
                   that.singlePointLocation(row);
                 }
                 $('body,html').animate({
@@ -1230,19 +1252,22 @@ var second = new Vue({
     },
     singlePointLocation: function (selectedItem) {
       var that = this;
-      var isExist = 0; //用于表示当前地图上面有无该店
-      that.mapObj.centerAndZoom(new BMap.Point(selectedItem.bdLon, selectedItem.bdLat), 18);
+      if (selectedItem.distributionStatus == 0 && !that.noallot) {
+        that.noallot = true;
+        that._addNoAllotPoints();
+      }
+      if (selectedItem.distributionStatus == 1 && !that.allot) {
+        that.allot = true;
+        that._addAllotPoints();
+      }
+      that.mapObj.centerAndZoom(new BMap.Point(selectedItem.bdLon, selectedItem.bdLat), 20);
       for (var i = 0; i < that.drawNodeArray.length; i++) {
         if (that.drawNodeArray[i].key == selectedItem.objectId) {
-          isExist++;
           this.drawNodeArray[i].value.setAnimation(BMAP_ANIMATION_BOUNCE);
         } else {
           this.drawNodeArray[i].value.setAnimation();
         }
       }
-      console.log(isExist)
-      if (isExist > 0) return;
-      //如果当前地图上面没有该点，需要进行绘制
     },
     removePoint: function () {
       var that = this;
@@ -1380,6 +1405,7 @@ var second = new Vue({
     },
     allotBtn: function () {
       var that = this;
+      that.mapObj.closeInfoWindow();
       if (that.allot) {
         that.allot = false;
         that.removeAllotPoint(); //移除已经分配的点
@@ -1390,6 +1416,7 @@ var second = new Vue({
     },
     noAllotBtn: function () {
       var that = this;
+      that.mapObj.closeInfoWindow();
       if (that.noallot) {
         that.noallot = false;
         that.removeNoAllotPoint(); //移除已经分配的点
@@ -1407,7 +1434,8 @@ var second = new Vue({
       var p = e.target;
       var id = "";
       var txts = "";
-      var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+      var lng = "";
+      var lat = "";
       for (var i = 0; i < that.drawNodeArray.length; i++) {
         if (that.drawNodeArray[i].value == p) {
           id = that.drawNodeArray[i].key;
@@ -1416,12 +1444,15 @@ var second = new Vue({
       }
       for (var j = 0; j < that.nodeInfoArrys.length; j++) {
         if (that.nodeInfoArrys[j].objectId == id) {
+          lng = that.nodeInfoArrys[j].bdLon;
+          lat = that.nodeInfoArrys[j].bdLat;
           txts = '<div><p class="text">名称：' + that.nodeInfoArrys[j].name + '</p>' +
             '<p>编号：' + that.nodeInfoArrys[j].code + '</p>' +
             '<p>位置：' + that.nodeInfoArrys[j].location + '</p></div>';
           break;
         }
       }
+      var point = new BMap.Point(lng, lat);
       var infoWindow = new BMap.InfoWindow(txts, opts); // 创建信息窗口对象
       that.mapObj.openInfoWindow(infoWindow, point); //开启信息窗口
     },
