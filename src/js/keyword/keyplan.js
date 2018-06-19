@@ -305,7 +305,7 @@ var indexs = new Vue({
           if (data.success == 1) {
             that.taskForm = data.rows[0];
             that.taskForm.startTime = data.rows[0].startTime.substring(0, 10);
-            if (new Date(that.taskForm.startTime) <= new Date()) {
+            if (data.rows[0].publishStatus == 1) {
               that.isUpdateStartTime = true;
             }
             that.taskForm.endTime = data.rows[0].endTime.substring(0, 10);
@@ -355,10 +355,12 @@ var indexs = new Vue({
           confirm: false,
         },
         success: function (data) {
-          if (data.code == "GJD001") {
-            tip = "该计划下存在关键点,是否继续删除"
-          } else {
-            tip = '您是否删除该计划？';
+          if (data.success == -1) {
+            if (data.code == "GJD001") {
+              tip = "该计划下存在关键点,是否继续删除"
+            } else if(data.code=="GJD005"){
+              tip = '您是否删除该计划？';
+            }
           }
           var defaultOptions = {
             tip: tip,
