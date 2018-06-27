@@ -266,6 +266,17 @@ var routerObj = {
           vm.$data.initRouteName = 'keyplan';
         }
       },
+      '/checkOnWork': {
+        on: function () {
+          vm.loadRelativePage("#/checkOnWork");
+          if (tjSwitch == 1) {
+            tjSdk.track('考勤日历');
+          }
+        },
+        after: function () {
+          vm.$data.initRouteName = 'checkOnWork';
+        }
+      },
       '/taskNode': {
         on: function () {
           // vm.loadRelativePage("/src/html/userArea.html");
