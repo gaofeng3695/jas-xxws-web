@@ -327,9 +327,60 @@ body {
 
 .table_wrapper {
     @include wrapper_border;
-    background: #fff;
-    //font-size: 40px;
-    text-align: center;
-    //line-height: 400px;
+    background: #fff; //font-size: 40px;
+    text-align: center; //line-height: 400px;
     padding-bottom: 15px;
+}
+
+//模态框基本样式
+.modal-lg {
+    .modal-content {
+        width: 900px;
+        height: 600px;
+        margin: 0 auto;
+        border-radius: 8px;
+        overflow: hidden;
+        .modal-header {
+            height: 38px;
+            background: #344052;
+            color: #fff;
+            padding: 0;
+            margin: 0;
+            h3 {
+                line-height: 40px;
+                font-size: 16px;
+                text-align: center;
+                margin: 0;
+                a {
+                    color: #fff;
+                    margin-top: 6px;
+                    margin-right: 10px;
+                    font-weight: none;
+                    opacity: 1;
+                }
+            }
+        }
+        .modal-body {
+            padding: 20px;
+            height: 510px;
+        }
+        .modal-footer {
+            text-align: center;
+            background: #344052;
+            height: 50px;
+            padding: 0;
+            margin: 0;
+            button {
+                height: 36px;
+                border: none;
+                width: 120px;
+                margin: 7px 30px 0 30px;
+                font-size: 16px;
+            }
+            .submit {
+                background: #59b6fc;
+                color: #fff;
+            }
+        }
+    }
 }

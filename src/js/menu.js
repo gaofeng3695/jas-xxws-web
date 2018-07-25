@@ -277,6 +277,14 @@ var routerObj = {
           vm.$data.initRouteName = 'settingArea';
         }
       },
+      '/peopleAndNodeRelation': {
+        on: function () {
+          vm.loadRelativePage("#/peopleAndNodeRelation");
+          if (tjSwitch == 1) {
+            tjSdk.track('人员关系设置');
+          }
+        },
+      },
       '/checkOnWork': {
         on: function () {
           vm.loadRelativePage("#/checkOnWork");

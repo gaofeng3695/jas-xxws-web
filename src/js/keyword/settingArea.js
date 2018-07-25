@@ -2,6 +2,7 @@ var vue = new Vue({
     el: ".page",
     data: function () {
         return {
+            isClick: false,
             isRight: false,
             currentNode: {
                 nodeId: "",
@@ -24,6 +25,7 @@ var vue = new Vue({
     },
     watch: {
         'currentNode.nodeId': function () {
+            this.isClick = true;
             if (this.currentNode.leaf) {
                 this.disabled = false;
                 // this.searchObj.ifRecursion = false;
@@ -65,7 +67,10 @@ var vue = new Vue({
                     return that.searchObj;
                 },
                 responseHandler: function (res) {
-                    return res;
+                    return {
+                        rows: res.rows,
+                        total: res.rows.length
+                    }
                 },
                 //表格的列
                 columns: [{
@@ -137,8 +142,11 @@ var vue = new Vue({
                 edit: {
                     enable: true,
                     showRemoveBtn: function setRemoveBtn(treeId, treeNode) {
-                        return !treeNode.isParent;
-                    }
+                        return !treeNode.isParent && (_this.currentNode.nodeId == treeNode.id);
+                    },
+                    showRenameBtn:function setRenameBtn(treeId, treeNode) {
+                        return _this.currentNode.nodeId == treeNode.id;
+                    },
                 },
                 view: {
                     showLine: false,

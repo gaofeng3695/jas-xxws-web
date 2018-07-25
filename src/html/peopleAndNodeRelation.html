@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <link href="/lib/css/bootstrap.css" rel="stylesheet">
+  <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
+  <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+  <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+  <link href="/src/css/common/search_table.css" rel="stylesheet">
+  <link href="/src/css/keyword/peopleAndNodeRelation.css" rel="stylesheet">
+</head>
+<div id="page-wrapper">
+  <!-- container-fluid -->
+  <div class="container-fluid">
+    <div class="wrapper-main">
+      <!--高级搜索-->
+      <div class="container-fluid search_item_wrapper">
+        <div class="top">
+          <div class="row search_title">
+            <div class="col-lg-6 col-md-6 col-xs-12 btn_wrapper">
+              <div class="col=lg-10 col-xs-10">
+                <div class="item col-xs-4 " data-value="" @click="chooseStatus" :class="distributionStatus==''?'active':''">全部</div>
+                <div class="item col-xs-4" data-value="1" @click="chooseStatus" :class="distributionStatus=='1'?'active':''">已分配</div>
+                <div class="item col-xs-4" data-value="0" @click="chooseStatus" :class="distributionStatus=='0'?'active':''">未分配</div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-xs-12 right_wrapper">
+              <div class="search_btn_right">
+                <div class="search_reset" @click="clearTable">重置</div>
+              </div>
+              <div class="search_wrapper">
+                <div class="input_wrapper">
+                  <input class="" v-model="keyword" type="text" placeholder="输入关键字搜索">
+                </div>
+                <span class="mybtn" @click="refreshTable">确定</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/高级搜索-->
+      <!--数据列表-->
+      <div class="data_tab">
+        <div class="row">
+          <div class="container-fluid">
+            <div id="toolbar" class="btn-group">
+              <button @click="allotNode" type="button" data-toggle="modal" class="btn btn-default">
+                <span style="padding-right:5px"class="allotbg" ></span>分配
+              </button>
+            </div>
+            <table id="table"></table>
+          </div>
+        </div>
+      </div>
+      <!--/数据列表-->
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+
+
+  <!--任务详情-->
+  <!--<div id="details" class="modal fade bs-example-modal-lg" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>查看<a class="close" data-dismiss="modal">×</a></h3>
+        </div>
+        <div class="modal-body">
+          <div class="details_main">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-2 col-sm-2 text-right details_title">名称</div>
+                <div class="col-md-4 col-sm-4 details_text">{{detailForm.name}}</div>
+                <div class="col-md-2 col-sm-2 text-right details_title">编号</div>
+                <div class="col-md-4 col-sm-4 details_text">{{detailForm.code}}</div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 col-sm-2 text-right details_title">巡检频次</div>
+                <div class="col-md-4  col-sm-4 details_text">{{detailForm.inspectionDays}}</div>
+                <div class="col-md-2 col-sm-2 text-right details_title">间隔时间</div>
+                <div class="col-md-4  col-sm-4 details_text">{{detailForm.inspectionInterval}}</div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 col-sm-2 text-right details_title">有效半径</div>
+                <div class="col-md-4  col-sm-4 details_text">{{detailForm.effectiveRadius}}</div>
+                <div class="col-md-2 col-sm-2 text-right details_title">巡检人数</div>
+                <div class="col-md-4  col-sm-4 details_text">{{detailForm.peopleCount}}</div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 col-sm-2 text-right details_title">巡检人员</div>
+                <div class="col-md-10  col-sm-10 details_text">{{detailForm.personNames}}</div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-2 col-sm-2 text-right details_title">位置</div>
+                <div class="col-md-10  col-sm-10 details_text">{{detailForm.location}}</div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-2 col-sm-2 text-right details_title">备注</div>
+                <div class="col-md-10  col-sm-10 details_text">{{detailForm.remark}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>-->
+
+
+</div>
+ <!--分配页面-->
+  <div id="chooseNode" class="modal fade bs-example-modal-lg" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>必经点配置<a class="close" @click="cancalChooseNode">×</a></h3>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="left fl ">
+              <div class="top">
+                <span class=" inputbg" :class="isAllCheckedNoAllot?'inputbg_h':'inputbg'" @click="isAllCheckedNoAllotNode">
+                 未分配</span>
+              </div>
+              <div class="search">
+                <input type="text" placeholder="请输入名称，编号" class="form-control" v-model="noallotKeyWord">
+              </div>
+              <div style="height:370px;overflow: auto" class="scrollContainer">
+                <div style="color:#333;text-align: center" v-show="noAllotNodeArrs.length==0">
+                  暂无数据
+                </div>
+                <ul class="noallot">
+                  <li v-for="(item,index) in noAllotNodeArrs" @click="clickNoAllotItem(item,index)">
+                    <!--<el-tooltip effect="dark" :content="isContent(item)" placement="top-start">-->
+                      <div>
+                        <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span> <span class="name hidd">{{item.name}}</span>
+                        <span class="code hidd">{{item.code}}</span>
+                        <span class="location hidd">{{item.location}}</span>
+                      </div>
+                    <!--</el-tooltip>-->
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="btn-left fl ">
+              <button class="upleft" :disabled="toNoAllot" :class="toNoAllotBg?'bgblue':''" @click="toRight">
+                 <i class="fa fa-angle-right"></i>
+                </button>
+              <button class="upright" :disabled="toAllot" :class="toAllotBg?'bgblue':''" @click="toLeft">
+                 <i class="fa fa-angle-left"></i> </button>
+            </div>
+            <div class="right fr">
+              <div class="top">
+                <span class="all" :class="isAllChecked?'inputbg_h':'inputbg'" @click="isAllCheckedAllot">
+                 已分配</span>
+              </div>
+              <div class="search">
+                <input type="text" placeholder="请输入名称，编号" class="form-control" v-model="allotKeyWord">
+              </div>
+              <div style="height:370px;overflow: auto" class="scrollContainer">
+                <div style="color:#333;text-align: center" v-show="allotNodeArrs.length==0">
+                  暂无数据
+                </div>
+                <ul class="allot">
+                  <li v-for="(item,index) in allotNodeArrs" @click="clickItem(item,index)">
+                    <span class="check " :class="item.checked?'inputbg_h':'inputbg'"></span>
+                    <span class="name hidd">{{item.name}}</span>
+                    <span class="code hidd">{{item.code}}</span>
+                    <span class="location hidd">{{item.location}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn modal_active btn-primary" @click="cancalChooseNode">取消</button>
+          <button class="btn modal_active btn-primary" @click="submit">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<body>
+  <script type="text/javascript" src="/lib/js/vue.min.js"></script>
+  <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript" src="/lib/js/common_base.js"></script>
+  <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+  <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+  <script type="text/javascript" src="/src/js/common/common.js"></script>
+  <script src="/src/js/keyword/peopleAndNodeRelation.js"></script>
+</body>
+
+</html>

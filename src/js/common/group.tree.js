@@ -2,10 +2,16 @@ var groupTreeObj = {
     $tree: $("#group_list"),
     selectGroupArr: [],
     aAllGroup: [],
+    isCheckbox: true,
     init: function () {},
-    requestPeopleTree: function (selectArr) { //请求人员信息
+    requestPeopleTree: function (selectArr, isCheckbox) { //请求人员信息
         var _this = this;
         _this.selectGroupArr = [];
+        if (isCheckbox == 'checkBox') {
+            _this.isCheckbox = true;
+        } else {
+            _this.isCheckbox = false;
+        }
         if (selectArr) {
             for (var i = 0; i < selectArr.length; i++) {
                 _this.selectGroupArr[i] = selectArr[i];
@@ -39,7 +45,17 @@ var groupTreeObj = {
         var _this = this;
         var setting = {
             view: {
-                showLine: true
+                showLine: true,
+                showIcon:false,
+            },
+            callback: {
+                beforeCheck: function (treeId, treeNode, clickFlag) {
+                    if (!_this.isCheckbox) {
+                        return treeNode.leaf;
+                    }else{
+                        return true;
+                    }
+                }
             },
             data: {
                 key: {
@@ -52,7 +68,7 @@ var groupTreeObj = {
             },
             check: {
                 enable: true,
-                chkStyle: "radio",
+                chkStyle:_this.isCheckbox?"checkbox":"radio",
                 radioType: "all"
             }
         };

@@ -123,16 +123,12 @@ var index = new Vue({
           "keyword": that.searchInput,
           pageNum: 1,
           pageSize: 100000,
-          withRelationPerson: true,
-          orderBy: "inclusionStatus",
+          orderBy: "distributionStatus",
           orderDirection: "asc"
         }),
         success: function (data) {
           if (data.success == 1) {
             that.nodeInfoArrys = data.rows;
-            that.nodeInfoArrys.forEach(function (item) {
-              item.inclusionStatus = 0;
-            });
             that._setMapCenterAndZoom();
             if (callback) {
               callback();
@@ -153,7 +149,7 @@ var index = new Vue({
       that.drawNodeArray = [];
       for (var i = 0; i < data.length; i++) {
         point = new BMap.Point(data[i].bdLon, data[i].bdLat);
-        if (data[i].inclusionStatus == 0) {
+        if (data[i].distributionStatus == 0) {
           myIcons = new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
             anchor: new BMap.Size(15, 42)
           });
@@ -166,20 +162,20 @@ var index = new Vue({
           icon: myIcons
         });
         that.drawNodeArray.push({
-          'status': data[i].inclusionStatus + "",
+          'status': data[i].distributionStatus + "",
           'key': data[i].objectId,
           'value': markers
         });
-        if (data[i].inclusionStatus == 0) {
+        if (data[i].distributionStatus == 0) {
           that.currentNoAllotNode.push({
-            'status': data[i].inclusionStatus + "",
+            'status': data[i].distributionStatus + "",
             'key': data[i].objectId,
             'value': markers
           });
         }
-        if (data[i].inclusionStatus == 1) {
+        if (data[i].distributionStatus == 1) {
           that.currentAllotNode.push({
-            'status': data[i].inclusionStatus + "",
+            'status': data[i].distributionStatus + "",
             'key': data[i].objectId,
             'value': markers
           });
@@ -319,7 +315,7 @@ var index = new Vue({
     },
     clickItemDetail: function (item) {
       var that = this;
-      if (item.inclusionStatus == 0) {
+      if (item.distributionStatus == 0) {
         if (!that.noallot) {
           that.noallot = true;
           that._addNoAllotPoints();
@@ -397,7 +393,7 @@ var index = new Vue({
       }
     },
     //用于判断页面上面是否存在详情点
-    getNode: function () {
+    getNode: function () {//取点录入
       var that = this;
       that.isGetOrInput = false; //用于判断84坐标系输入框是否出现
       that.isShowTool = !that.isShowTool;
@@ -421,13 +417,13 @@ var index = new Vue({
         }
       })
     },
-    inputNode: function () {
+    inputNode: function () {//手动录入
       $("#addEvent").modal();
       this.isShowTool = !this.isShowTool;
       this.isGetOrInput = true;
       this.nodeForm.origin = 0;
     },
-    addNode: function () {
+    addNode: function () {//点击添加
       var that = this;
       that.currentEditIsSave(function () {
         that.initAddForm();
@@ -487,7 +483,7 @@ var index = new Vue({
               that.isDetailNode = false;
               that.isEditOrView = true;
               that.delArrById();
-              if (that.nodeDetail.inclusionStatus == 0) {
+              if (that.nodeDetail.distributionStatus == 0) {
                 that.markerNOAllotClusterer.removeMarker(that.currentEditNode.value);
               } else {
                 that.markerAllotClusterer.removeMarker(that.currentEditNode.value);
@@ -506,7 +502,7 @@ var index = new Vue({
           that.currentNoAllotNode.splice(index, 1);
         }
       });
-      if (that.nodeDetail.inclusionStatus == 0) {
+      if (that.nodeDetail.distributionStatus == 0) {
         that.currentNoAllotNode.forEach(function (item, index) {
           if (item.key == that.nodeDetail.objectId) {
             that.currentNoAllotNode.splice(index, 1);
@@ -547,7 +543,7 @@ var index = new Vue({
             if (data.success == 1) {
               that.isEditOrView = !that.isEditOrView;
               if (typeof callback === 'function') {
-                if (that.nodeDetail.inclusionStatus == 0) {
+                if (that.nodeDetail.distributionStatus == 0) {
                   that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
                     anchor: new BMap.Size(15, 42)
                   }));
@@ -571,7 +567,7 @@ var index = new Vue({
       that.nodeDetail = that.nodeDetail.history;
       that.$set(that.nodeDetail, that.nodeDetail.history);
       delete that.nodeDetail.history;
-      if (that.nodeDetail.inclusionStatus == 0) {
+      if (that.nodeDetail.distributionStatus == 0) {
         that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
           anchor: new BMap.Size(15, 42)
         }));
@@ -796,7 +792,7 @@ var index = new Vue({
             id: that.nodeDetail.groupId,
           });
         }
-        groupTreeObj.requestPeopleTree(selectArr);
+        groupTreeObj.requestPeopleTree(selectArr,'radio');
       });
     },
     quiteChooseGroup: function () {

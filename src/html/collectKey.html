@@ -41,11 +41,11 @@
                   <div class=" fl hidd  wid300">
                     <span>名称：</span>
                     <span> {{item.name}} </span> </div>
-                  <div class="fr clred" v-if="item.inclusionStatus==0">
-                    未纳入
+                  <div class="fr clred" v-if="item.distributionStatus==0">
+                    未分配
                   </div>
-                  <div class="fr clrb" v-if="item.inclusionStatus==1">
-                    已纳入
+                  <div class="fr clrb" v-if="item.distributionStatus==1">
+                    已分配
                   </div>
                 </div>
                 <div class="item">
@@ -56,8 +56,8 @@
                 </div>
                 <div class="item">
                   <div class="wid364 hidd">
-                    <span>所属计划：</span>
-                    <span>{{item.planNames}}</span>
+                    <span>所属组别：</span>
+                    <span>{{item.groupName}}</span>
                   </div>
                 </div>
               </li>
@@ -78,8 +78,8 @@
     <!-- 地图容器 结束 -->
     <!--右上角切换-->
     <div class="change">
-      <div class="allot fl" @click="allotBtn">已纳入 <span :class="allot?'active':''"></span></div>
-      <div class="noAllot fr" @click="noAllotBtn">未纳入 <span :class="noallot?'active':''"></span></div>
+      <div class="allot fl" @click="allotBtn">已分配 <span :class="allot?'active':''"></span></div>
+      <div class="noAllot fr" @click="noAllotBtn">未分配 <span :class="noallot?'active':''"></span></div>
     </div>
     <!--必经点详情开始-->
     <div class="detail" v-show="isDetailNode">
