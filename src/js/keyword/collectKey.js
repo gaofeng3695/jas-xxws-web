@@ -23,7 +23,9 @@ var index = new Vue({
       searchInput: "",
       nodeDetail: {
         name: "",
-        inspectionDays: 1
+        inspectionDays: 1,
+        groupId:"",
+        groupName:""
       },
       //新增基本使用数据
       isGetOrInput: false, //用于表示
@@ -38,7 +40,11 @@ var index = new Vue({
         lat: "",
         remark: "",
         effectiveRadius: "",
-        personFormList: []
+        // personFormList: [],
+        origin: "",
+        groupName: "",
+        groupId:"",
+        category: "", //关键点类别
       },
       textCount: 160,
       getNodeMarker: [],
@@ -112,7 +118,7 @@ var index = new Vue({
         type: "post",
         contentType: "application/json",
         dataType: "json",
-        url: "/cloudlink-inspection-event/keyPoint/getPage?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPoint/page?token=" + lsObj.getLocalStorage('token'),
         data: JSON.stringify({
           "keyword": that.searchInput,
           pageNum: 1,
@@ -124,6 +130,9 @@ var index = new Vue({
         success: function (data) {
           if (data.success == 1) {
             that.nodeInfoArrys = data.rows;
+            that.nodeInfoArrys.forEach(function (item) {
+              item.inclusionStatus = 0;
+            });
             that._setMapCenterAndZoom();
             if (callback) {
               callback();
@@ -177,7 +186,7 @@ var index = new Vue({
         }
         markers.addEventListener("click", function (e) {
           // if (!that.isShowTool) {
-            that._pointClick(e);
+          that._pointClick(e);
           // }
         });
         markers.addEventListener("dragging", function (e) {
@@ -400,6 +409,7 @@ var index = new Vue({
           var point = new BMap.Point(e.point.lng, e.point.lat);
           that.nodeForm.bdLon = e.point.lng;
           that.nodeForm.bdLat = e.point.lat;
+          that.nodeForm.origin = 0;
           var masker = new BMap.Marker(point);
           that.getNodeMarker.push(masker);
           that.mapObj.addOverlay(masker);
@@ -415,6 +425,7 @@ var index = new Vue({
       $("#addEvent").modal();
       this.isShowTool = !this.isShowTool;
       this.isGetOrInput = true;
+      this.nodeForm.origin = 0;
     },
     addNode: function () {
       var that = this;
@@ -444,12 +455,12 @@ var index = new Vue({
     },
     delNode: function () {
       var that = this;
-      var tip='您是否删除该必经点？';
-      if(that.nodeDetail.planNames){
-        tip="删除该点，将影响【"+that.nodeDetail.planNames+"】等计划，是否继续删除!";
+      var tip = '您是否删除该必经点？';
+      if (that.nodeDetail.planNames) {
+        tip = "删除该点，将影响【" + that.nodeDetail.planNames + "】等计划，是否继续删除!";
       }
       var defaultOptions = {
-        tip:tip,
+        tip: tip,
         name_title: '提示',
         name_cancel: '取消',
         name_confirm: '确定',
@@ -513,18 +524,18 @@ var index = new Vue({
       var that = this;
       //修改保存之前进行巡检人员的处理
       var objs = [];
-      if (!that.nodeDetail.personFormList && that.nodeDetail.personNames) {
-        that.nodeDetail.personNames = that.nodeDetail.personNames.split(",")
-        that.nodeDetail.personIdList.forEach(function (item, index) {
-          objs.push({
-            personId: item,
-            personName: that.nodeDetail.personNames[index]
-          })
-        });
-        that.nodeDetail.personFormList = objs;
-      }
-      delete that.nodeDetail.personNames;
-      delete that.nodeDetail.personIdList;
+      // if (!that.nodeDetail.personFormList && that.nodeDetail.personNames) {
+      //   that.nodeDetail.personNames = that.nodeDetail.personNames.split(",")
+      //   that.nodeDetail.personIdList.forEach(function (item, index) {
+      //     objs.push({
+      //       personId: item,
+      //       personName: that.nodeDetail.personNames[index]
+      //     })
+      //   });
+      //   that.nodeDetail.personFormList = objs;
+      // }
+      // delete that.nodeDetail.personNames;
+      // delete that.nodeDetail.personIdList;
       if (that.verrify(that.nodeDetail)) {
         $.ajax({
           type: "post",
@@ -775,5 +786,31 @@ var index = new Vue({
         callback();
       }
     },
+    chooseGroup: function () {
+      var that=this;
+      $("#departmentSelect").modal();
+      $("#departmentSelect").on('shown.bs.modal', function (e) {
+        var selectArr = [];
+        if (!that.isEditOrView) {
+          selectArr.push({
+            id: that.nodeDetail.groupId,
+          });
+        }
+        groupTreeObj.requestPeopleTree(selectArr);
+      });
+    },
+    quiteChooseGroup: function () {
+      var that = this;
+      var obj = groupTreeObj.getSelectGroup();
+      if (!that.isEditOrView) {
+        that.nodeDetail.groupName = obj[0].name;
+        that.nodeDetail.groupId = obj[0].id;
+        console.log(that.nodeDetail)
+      } else {
+        that.nodeForm.groupName = obj[0].name;
+        that.nodeForm.groupId = obj[0].id;
+      }
+      $("#departmentSelect").modal('hide');
+    }
   },
 });

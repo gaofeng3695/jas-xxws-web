@@ -266,6 +266,17 @@ var routerObj = {
           vm.$data.initRouteName = 'keyplan';
         }
       },
+      '/settingArea': {
+        on: function () {
+          vm.loadRelativePage("#/settingArea");
+          if (tjSwitch == 1) {
+            tjSdk.track('区域分组管理');
+          }
+        },
+        after: function () {
+          vm.$data.initRouteName = 'settingArea';
+        }
+      },
       '/checkOnWork': {
         on: function () {
           vm.loadRelativePage("#/checkOnWork");
