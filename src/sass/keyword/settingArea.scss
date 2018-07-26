@@ -367,12 +367,16 @@ body {
         }
     }
 }
-
 .edit,
 .remove {
     float: right;
     margin-top: 4px !important;
 }
-// #department_list_1_a{
-//     display: none;
-// }
+.clickNade{
+    line-height: 26px !important;
+   width: 100px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+}

@@ -6,13 +6,13 @@ var groupTreeObj = {
     init: function () {},
     requestPeopleTree: function (selectArr, isCheckbox) { //请求人员信息
         var _this = this;
-        _this.selectGroupArr = [];
         if (isCheckbox == 'checkBox') {
             _this.isCheckbox = true;
         } else {
             _this.isCheckbox = false;
         }
         if (selectArr) {
+            _this.selectGroupArr = [];
             for (var i = 0; i < selectArr.length; i++) {
                 _this.selectGroupArr[i] = selectArr[i];
             }
@@ -31,6 +31,7 @@ var groupTreeObj = {
                     xxwsWindowObj.xxwsAlert('获取信息失败！');
                     return;
                 }
+                data.rows[0].text = JSON.parse(lsObj.getLocalStorage("userBo")).enterpriseName;
                 _this.aAllGroup = data.rows;
                 _this.renderGroupTree(data.rows);
             },
@@ -46,13 +47,13 @@ var groupTreeObj = {
         var setting = {
             view: {
                 showLine: true,
-                showIcon:false,
+                showIcon: false,
             },
             callback: {
                 beforeCheck: function (treeId, treeNode, clickFlag) {
                     if (!_this.isCheckbox) {
                         return treeNode.leaf;
-                    }else{
+                    } else {
                         return true;
                     }
                 }
@@ -68,7 +69,7 @@ var groupTreeObj = {
             },
             check: {
                 enable: true,
-                chkStyle:_this.isCheckbox?"checkbox":"radio",
+                chkStyle: _this.isCheckbox ? "checkbox" : "radio",
                 radioType: "all"
             }
         };
@@ -88,7 +89,6 @@ var groupTreeObj = {
     },
     getSelectGroup: function () { //
         var _this = this;
-
         _this.selectGroupArr = [];
         var groupObj = null;
         var arr = _this.zTree.getCheckedNodes(true);

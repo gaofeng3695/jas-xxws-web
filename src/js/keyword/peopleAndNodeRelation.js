@@ -5,6 +5,7 @@ var vue = new Vue({
       distributionStatus: "",
       keyword: "",
       searchObj: {},
+      currentAllotPeople: {} //当前分配的人
     }
   },
   mounted: function () {
@@ -63,7 +64,7 @@ var vue = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '10%',
+
             editable: true,
             cellStyle: function (value, row, index) {
               return {
@@ -78,7 +79,7 @@ var vue = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '15%',
+
             editable: true,
           }, {
             field: 'keyPointCount', //域值
@@ -86,78 +87,39 @@ var vue = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '5%',
+
             editable: true,
           },
-          // {
-          //   field: 'location', //域值
-          //   title: '位置', //内容
-          //   align: 'center',
-          //   visible: true, //false表示不显示
-          //   sortable: false, //启用排序
-          //   width: '35%',
-          //   editable: true,
-          // }, {
-          //   field: 'personIdList', //域值
-          //   title: '巡检人员', //内容
-          //   align: 'center',
-          //   visible: true, //false表示不显示
-          //   sortable: false, //启用排序
-          //   width: '8%',
-          //   editable: true,
-          //   formatter: function (value) {
-          //     if (value) {
-          //       return value.length;
-          //     } else {
-          //       return "";
-          //     }
+          {
+            field: 'operate',
+            title: '操作',
+            align: 'center',
+            class: "W60",
+            events: {
+              //查看详情
+              'click .check': function (e, value, row, index) {
+                // that.getNodeDeatilByObjectId(row.objectId);
+                return false;
+              },
+              //查看详情
+              'click .allotstyle': function (e, value, row, index) {
+                that.allotNode(row);
+                return false;
+              },
+            },
+            width: '40%',
+            formatter: function (value, row, index) {
+              return [
+                '<a class="allotstyle"  href="javascript:void(0)" title="分配">',
+                '<i></i>',
+                '</a>',
+                '<a class="check" data-toggle="modal" href="javascript:void(0)" title="查看">',
+                '<i></i>',
 
-          //   }
-          // },
-          // {
-          //     field: 'operate',
-          //     title: '操作',
-          //     align: 'center',
-          //     // class: "W60",
-          //     events: {
-          //       //定位功能
-          //       'click .location': function (e, value, row, index) {
-          //         if ($(this).find('i').attr("class") == 'active') {} else {
-          //           $(".location").find('i').attr("class", "");
-          //           $(this).find('i').attr("class", "active");
-          //           that.singlePointLocation(row);
-          //         }
-          //         $('body,html').animate({
-          //           scrollTop: 0
-          //         }, 500);
-          //         return false;
-          //       },
-          //       //查看详情
-          //       'click .check': function (e, value, row, index) {
-          //         that.getNodeDeatilByObjectId(row.objectId);
-          //         return false;
-          //       },
-          //       //查看详情
-          //       'click .allotstyle': function (e, value, row, index) {
-          //         that.allotPeople(row);
-          //         return false;
-          //       },
-          //     },
-          //     width: '40%',
-          //     formatter: function (value, row, index) {
-          //       return [
-          //         '<a class="allotstyle"  href="javascript:void(0)" title="分配">',
-          //         '<i></i>',
-          //         '<a class="location" href="javascript:void(0)" title="定位">',
-          //         '<i></i>',
-          //         '</a>',
-          //         '<a class="check" data-toggle="modal" href="javascript:void(0)" title="查看">',
-          //         '<i></i>',
-
-          //         '</a>',
-          //       ].join('');
-          //     }
-          //   }
+                '</a>',
+              ].join('');
+            }
+          }
         ]
       });
 
@@ -188,15 +150,15 @@ var vue = new Vue({
         }
       });
     },
-    allotNode: function () {
+    allotNode: function (row) {
+      var that = this;
+      that.currentAllotPeople = row;
       $("#chooseNode").modal();
-      chooseNode.requestNoAllNodes(); //请求所有的关键点
+      chooseNode.initChoose();
+      chooseNode.requestAllNodes(); //请求所有的关键点
     }
   }
 });
-
-
-
 var chooseNode = new Vue({
   el: "#chooseNode",
   data: function () {
@@ -277,13 +239,6 @@ var chooseNode = new Vue({
         }
       });
     },
-    // isContent: function (item) {
-    //   if (item.planNames) {
-    //     return "已纳入计划【" + item.planNames + "】";
-    //   } else {
-    //     return "未纳入任何计划";
-    //   }
-    // },
     clickItem: function (item, index) {
       var that = this;
       if (item.checked) {
@@ -347,7 +302,6 @@ var chooseNode = new Vue({
       if (that.chooseNoAllotNode.length > 0) {
         that.chooseNoAllotNode.forEach(function (item) {
           item.checked = false;
-          // item.allowNoAllot = 1;
           that.allotNodeArrs.push(item);
           that.allotNodeArrsByServer.push(item);
           that.noAllotNodeArrsByServer.forEach(function (s, index) {
@@ -424,19 +378,41 @@ var chooseNode = new Vue({
         that.chooseNoAllotNode = [];
       }
     },
-    next: function () {
+    requestAllNodes: function () {
       var that = this;
-      if (that.allotNodeArrsByServer.length > 0) {
-        that.nodeAndPlanToServer(function () {
-          $("#share").modal();
-          // second.initTable();
-          $("#share").on('shown.bs.modal', function (e) {
-            second.initSearch(); //请求所有的关键点
-          });
-        });
-      } else {
-        xxwsWindowObj.xxwsAlert("请选择需要分配的必经点");
-      }
+      that.noallotKeyWord = "";
+      $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        dataType: "json",
+        url: "/cloudlink-inspection-event/keyPoint/listAssignedWithPerson?token=" + lsObj.getLocalStorage('token'),
+        data: {
+          groupId: vue.currentAllotPeople.groupId,
+          personId: vue.currentAllotPeople.personId
+        },
+        success: function (data) {
+          if (data.success == 1) {
+            that.noAllotNodeArrs = [];
+            that.noAllotNodeArrsByServer = [];
+            if (data.rows[0].distributableKeyPointList.length > 0) {
+              data.rows[0].distributableKeyPointList.forEach(function (item) {
+                item.checked = false;
+                that.noAllotNodeArrs.push(item);
+                that.noAllotNodeArrsByServer.push(item);
+              });
+            }
+            if (data.rows[0].assignedkeyPointList.length > 0) {
+              data.rows[0].assignedkeyPointList.forEach(function (item) {
+                item.checked = false;
+                that.allotNodeArrs.push(item);
+                that.allotNodeArrsByServer.push(item);
+              });
+            }
+          } else {
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
+          }
+        }
+      });
     },
     submit: function () {
       var that = this;
@@ -456,7 +432,9 @@ var chooseNode = new Vue({
     nodeAndPlanToServer: function (callback) {
       var that = this;
       var obj = {
-        planId: indexs.currentPlanId,
+        groupId: vue.currentAllotPeople.groupId,
+        personId: vue.currentAllotPeople.personId,
+        personName: vue.currentAllotPeople.personName,
         keyPointIdList: []
       };
       that.allotNodeArrsByServer.forEach(function (item) {
@@ -466,7 +444,7 @@ var chooseNode = new Vue({
         type: "post",
         contentType: "application/json",
         dataType: "json",
-        url: "/cloudlink-inspection-event/keyPointPlan/updateRelationKeyPoint?token=" + lsObj.getLocalStorage('token'),
+        url: "/cloudlink-inspection-event/keyPoint/updateWithPersonRelation?token=" + lsObj.getLocalStorage('token'),
         data: JSON.stringify(obj),
         success: function (data) {
           if (data.success == 1) {
@@ -476,67 +454,8 @@ var chooseNode = new Vue({
         }
       });
     },
-    requestNoAllNodes: function () {
-      // var that = this;
-      // that.noallotKeyWord = "";
-      // $.ajax({
-      //   type: "POST",
-      //   contentType: "application/json",
-      //   dataType: "json",
-      //   url: "/cloudlink-inspection-event/keyPoint/getDistributableByPlanId?token=" + lsObj.getLocalStorage('token'),
-      //   data: JSON.stringify({
-      //     planId: indexs.currentPlanId,
-      //   }),
-      //   success: function (data) {
-      //     if (data.success == 1) {
-      //       // var alldatas = data.rows;
-      //       that.noAllotNodeArrs = [];
-      //       that.noAllotNodeArrsByServer = [];
-      //       that.requestAllotNodes();
-      //       if (data.rows.length > 0) {
-      //         data.rows.forEach(function (item) {
-      //           item.checked = false;
-      //           that.noAllotNodeArrs.push(item);
-      //           that.noAllotNodeArrsByServer.push(item);
-      //         });
-      //       }
-      //     } else {
-      //       xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
-      //     }
-      //   }
-      // });
-    },
-    requestAllotNodes: function () {
-      var that = this;
-      that.allotKeyWord = "";
-      $.ajax({
-        type: "post",
-        contentType: "application/json",
-        dataType: "json",
-        url: "/cloudlink-inspection-event/keyPoint/getListByPlanId?token=" + lsObj.getLocalStorage('token'),
-        data: JSON.stringify({
-          planId: indexs.currentPlanId,
-        }),
-        success: function (data) {
-          if (data.success == 1) {
-            that.allotNodeArrs = [];
-            that.allotNodeArrsByServer = [];
-            if (data.rows.length > 0) {
-              data.rows.forEach(function (item) {
-                item.checked = false;
-                that.allotNodeArrs.push(item);
-                that.allotNodeArrsByServer.push(item);
-              });
-            }
-          } else {
-            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
-          }
-        }
-      });
-    },
     cancalChooseNode: function () {
       var that = this;
-      that.initChoose();
       $("#chooseNode").modal('hide');
     },
     initChoose: function () {
@@ -546,6 +465,8 @@ var chooseNode = new Vue({
       that.allotNodeArrs = [];
       that.chooseAllotNode = []; //选中已经分配的点
       that.chooseNoAllotNode = []; //选中的没有分配的点
+      that.noAllotNodeArrsByServer = [];
+      that.allotNodeArrsByServer = [];
       that.toAllotBg = false;
       that.toNoAllot = true;
       that.toNoAllotBg = false;

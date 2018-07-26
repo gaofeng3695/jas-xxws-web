@@ -1,0 +1,112 @@
+#departmentSelect ,
+#people{
+  .modal-lg {
+    .modal-content {
+      width: 900px;
+      height: 600px;
+      margin: 0 auto;
+      border-radius: 8px;
+      overflow: hidden;
+      .modal-header {
+        height: 38px;
+        background: #344052;
+        color: #fff;
+        padding: 0;
+        margin: 0;
+        h3 {
+          line-height: 40px;
+          font-size: 16px;
+          text-align: center;
+          margin: 0;
+          a {
+            color: #fff;
+            margin-top: 6px;
+            margin-right: 10px;
+            font-weight: none;
+            opacity: 1;
+          }
+        }
+      }
+      .modal-body {
+        padding: 20px;
+        height: 510px;
+        .department_select {
+          overflow: hidden;
+          height: 100%
+        }
+      }
+      .modal-footer {
+        text-align: center;
+        background: #344052;
+        height: 50px;
+        padding: 0;
+        margin: 0;
+        button {
+          height: 36px;
+          border: none;
+          width: 120px;
+          margin: 7px 30px 0 30px;
+          font-size: 16px;
+        }
+        .submit {
+          background: #59b6fc;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.ztree {
+  li {
+    line-height: 20px;
+    a {
+      display: inline-block;
+      height: 20px;
+      margin-bottom: 6px;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: 10px;
+      font-weight: bold;
+    }
+    span.button {
+      &.noline_open,
+      &.bottom_open,
+      &.root_open,
+      &.center_open {
+        background: url(/src/images/management/open.png) center no-repeat;
+      }
+      &.noline_close,
+      &.bottom_close,
+      &.root_close,
+      &.center_close {
+        background: url(/src/images/management/close.png) center no-repeat;
+      } // &.radio_false_full {
+      //   background: url(/src/images/event/radio_n.png) center no-repeat;
+      // }
+      // &.radio_true_full{
+      //    background: url(/src/images/event/radio.png) center no-repeat;
+      // }
+    }
+  }
+  ul {
+    padding: 0;
+    li {
+      padding-left: 18px;
+      overflow: hidden;
+      background: url(/src/images/management/center.png) 8px 0px repeat-y;
+      &:first-child {
+        background: url(/src/images/management/start.png) 8px 13px no-repeat;
+      }
+      &:last-child {
+        background: url(/src/images/management/end.png) 8px -23px no-repeat;
+      }
+      a {
+        color: #666;
+        font-weight: normal;
+      }
+    }
+  }
+}

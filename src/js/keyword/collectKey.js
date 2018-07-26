@@ -13,7 +13,6 @@ var index = new Vue({
       currentEditNode: {}, //表示当前正要编辑的点
       currentAllotNode: [], //表示当前在地图上面绘制的已分配点
       currentNoAllotNode: [], //表示当前在地图上面绘制的未分配点
-      markerClusterer: null,
       markerAllotClusterer: null, //已分配绘制
       markerNOAllotClusterer: null, //未分配
       defaultCursor: "",
@@ -24,8 +23,8 @@ var index = new Vue({
       nodeDetail: {
         name: "",
         inspectionDays: 1,
-        groupId:"",
-        groupName:""
+        groupId: "",
+        groupName: ""
       },
       //新增基本使用数据
       isGetOrInput: false, //用于表示
@@ -43,7 +42,7 @@ var index = new Vue({
         // personFormList: [],
         origin: "",
         groupName: "",
-        groupId:"",
+        groupId: "",
         category: "", //关键点类别
       },
       textCount: 160,
@@ -393,7 +392,7 @@ var index = new Vue({
       }
     },
     //用于判断页面上面是否存在详情点
-    getNode: function () {//取点录入
+    getNode: function () { //取点录入
       var that = this;
       that.isGetOrInput = false; //用于判断84坐标系输入框是否出现
       that.isShowTool = !that.isShowTool;
@@ -405,7 +404,7 @@ var index = new Vue({
           var point = new BMap.Point(e.point.lng, e.point.lat);
           that.nodeForm.bdLon = e.point.lng;
           that.nodeForm.bdLat = e.point.lat;
-          that.nodeForm.origin = 0;
+          that.nodeForm.origin = 1;
           var masker = new BMap.Marker(point);
           that.getNodeMarker.push(masker);
           that.mapObj.addOverlay(masker);
@@ -417,13 +416,13 @@ var index = new Vue({
         }
       })
     },
-    inputNode: function () {//手动录入
+    inputNode: function () { //手动录入
       $("#addEvent").modal();
       this.isShowTool = !this.isShowTool;
       this.isGetOrInput = true;
-      this.nodeForm.origin = 0;
+      this.nodeForm.origin = 2;
     },
-    addNode: function () {//点击添加
+    addNode: function () { //点击添加
       var that = this;
       that.currentEditIsSave(function () {
         that.initAddForm();
@@ -660,30 +659,7 @@ var index = new Vue({
         }
       })
     },
-    _setMapCenterAndZoom: function () {
-      var that = this;
-      var data = that.nodeInfoArrys;
-      var _length = data.length;
-      var _arr = [];
-      try {
-        for (var i = 0; i < _length; i++) {
-          if (data[i].bdLon != "" && data[i].bdLat != "") {
-            _arr.push(new BMap.Point(data[i].bdLon, data[i].bdLat));
-          }
-        }
-        if (_arr.length > 0) {
-          that.mapObj.setViewport(_arr, {
-            zoomFactor: -1
-          });
-        } else {
-          var point = new BMap.Point(116.404, 39.915); // 创建点坐标
-          that.mapObj.centerAndZoom(point, 5); // 初始化地图，设置中心点坐标和地图级别
-        }
-      } catch (e) {
-        var point = new BMap.Point(116.404, 39.915); // 创建点坐标
-        that.mapObj.centerAndZoom(point, 5); // 初始化地图，设置中心点坐标和地图级别
-      }
-    },
+
     verrify: function (obj) {
       //验证
       var that = this;
@@ -783,16 +759,16 @@ var index = new Vue({
       }
     },
     chooseGroup: function () {
-      var that=this;
+      var that = this;
       $("#departmentSelect").modal();
       $("#departmentSelect").on('shown.bs.modal', function (e) {
         var selectArr = [];
-        if (!that.isEditOrView) {
+        if (!that.isEditOrView && that.nodeDetail.distributionStatus != 0) {
           selectArr.push({
             id: that.nodeDetail.groupId,
           });
         }
-        groupTreeObj.requestPeopleTree(selectArr,'radio');
+        groupTreeObj.requestPeopleTree(selectArr, 'radio');
       });
     },
     quiteChooseGroup: function () {
@@ -807,6 +783,30 @@ var index = new Vue({
         that.nodeForm.groupId = obj[0].id;
       }
       $("#departmentSelect").modal('hide');
-    }
+    },
+    _setMapCenterAndZoom: function () {
+      var that = this;
+      var data = that.nodeInfoArrys;
+      var _length = data.length;
+      var _arr = [];
+      try {
+        for (var i = 0; i < _length; i++) {
+          if (data[i].bdLon != "" && data[i].bdLat != "") {
+            _arr.push(new BMap.Point(data[i].bdLon, data[i].bdLat));
+          }
+        }
+        if (_arr.length > 0) {
+          that.mapObj.setViewport(_arr, {
+            zoomFactor: -1
+          });
+        } else {
+          var point = new BMap.Point(116.404, 39.915); // 创建点坐标
+          that.mapObj.centerAndZoom(point, 5); // 初始化地图，设置中心点坐标和地图级别
+        }
+      } catch (e) {
+        var point = new BMap.Point(116.404, 39.915); // 创建点坐标
+        that.mapObj.centerAndZoom(point, 5); // 初始化地图，设置中心点坐标和地图级别
+      }
+    },
   },
 });

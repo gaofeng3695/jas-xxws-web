@@ -20,7 +20,8 @@ var vue = new Vue({
             searchObj: {
                 pageSize: 1,
                 pageNum: 10
-            }
+            },
+            selectPeopleArr: []
         }
     },
     watch: {
@@ -67,6 +68,14 @@ var vue = new Vue({
                     return that.searchObj;
                 },
                 responseHandler: function (res) {
+                    that.selectPeopleArr = [];
+                    res.rows.forEach(function (item) {
+                        var obj = {
+                            relationshipPersonId: item.personId,
+                            relationshipPersonName: item.personName
+                        }
+                        that.selectPeopleArr.push(obj);
+                    });
                     return {
                         rows: res.rows,
                         total: res.rows.length
@@ -132,6 +141,7 @@ var vue = new Vue({
                 contentType: "application/json",
                 dataType: "json",
                 success: function (data) {
+                    data.rows[0].text = JSON.parse(lsObj.getLocalStorage("userBo")).enterpriseName;
                     _this.renderDepartment(data.rows);
                 }
             });
@@ -142,10 +152,10 @@ var vue = new Vue({
                 edit: {
                     enable: true,
                     showRemoveBtn: function setRemoveBtn(treeId, treeNode) {
-                        return !treeNode.isParent && (_this.currentNode.nodeId == treeNode.id);
+                        return treeNode.id && _this.currentNode.nodeId == treeNode.id;
                     },
-                    showRenameBtn:function setRenameBtn(treeId, treeNode) {
-                        return _this.currentNode.nodeId == treeNode.id;
+                    showRenameBtn: function setRenameBtn(treeId, treeNode) {
+                        return treeNode.id && _this.currentNode.nodeId == treeNode.id;
                     },
                 },
                 view: {
@@ -181,8 +191,11 @@ var vue = new Vue({
                         _this.currentNode.nodeId = treeNode.id;
                         _this.currentNode.nodeName = treeNode.text;
                         _this.currentNode.leaf = treeNode.leaf;
+                        _this.currentNode.parentId = treeNode.parentId;
                         _this.zTree.expandNode(treeNode, true); //打开当前节点
                         _this.refreshTable();
+                        $(".node_name").removeClass("clickNade");
+                        $("#" + treeNode.tId + "_a").find(".node_name").addClass("clickNade");
                     },
                     beforeRemove: function (treeId, treeNode) {
                         var defaultOptions = {
@@ -215,20 +228,22 @@ var vue = new Vue({
             if (_this.currentNode.nodeId == '' || _this.currentNode.nodeId == null) {
                 var nodes = _this.zTree.getNodes();
                 _this.zTree.selectNode(nodes[0]);
-                _this.currentNode.nodeId = nodes[0].id;
-                _this.currentNode.nodeName = nodes[0].text;
-                _this.currentNode.leaf = nodes[0].leaf;
+                _this.currentNode.nodeId = nodes[0].nodeId;
+                _this.currentNode.nodeName = nodes[0].nodeName;
             } else {
                 var nodes = _this.zTree.getNodesByParam("id", _this.currentNode.nodeId, null); //根据id查询节点对象数组
                 _this.zTree.selectNode(nodes[0]); //设置默认被选中
-                _this.currentNode.nodeId = nodes[0].id;
-                _this.currentNode.nodeName = nodes[0].text;
-                _this.currentNode.leaf = nodes[0].leaf;
+                _this.currentNode.nodeId = nodes[0].nodeId;
+                _this.currentNode.nodeName = nodes[0].nodeName;
             }
         },
         createArea: function () {
             var that = this;
             delete that.form.id; //新增的时候没有id
+            if (that.currentNode.parentId != '0' && that.currentNode.leaf) {
+                xxwsWindowObj.xxwsAlert("区域划分不能再细分");
+                return;
+            }
             if (that.currentNode.nodeId) {
                 that.form.parentId = that.currentNode.nodeId;
                 that.form.parentName = that.currentNode.nodeName;
@@ -247,11 +262,14 @@ var vue = new Vue({
         save: function () {
             var that = this;
             var url = "";
+            var msg = "";
             if (that.form.title == '修改') {
                 delete that.form.parentName;
+                msg = "修改";
                 url = "/cloudlink-inspection-event/regionalGroup/update?token=" + lsObj.getLocalStorage('token');
 
             } else {
+                msg = "保存";
                 url = "/cloudlink-inspection-event/regionalGroup/save?token=" + lsObj.getLocalStorage('token');
             }
             delete that.form.title;
@@ -263,11 +281,16 @@ var vue = new Vue({
                 dataType: "json",
                 success: function (data) {
                     if (data.success == 1) {
-                        that.cancel();
-                        that.getAllData();
+                        xxwsWindowObj.xxwsAlert(msg + "成功", function () {
+                            that.cancel();
+                            that.getAllData();
+                        });
                     } else {
-
+                        xxwsWindowObj.xxwsAlert(msg + "失敗");
                     }
+                },
+                error: function () {
+                    xxwsWindowObj.xxwsAlert(msg + "失敗");
                 }
             });
         },
@@ -285,17 +308,22 @@ var vue = new Vue({
                     if (data.success == 1) {
                         xxwsWindowObj.xxwsAlert("删除成功", function () {
                             that.getAllData();
+                            that.currentNode.nodeId = "";
                         });
                     } else {
                         xxwsWindowObj.xxwsAlert("删除失败");
                     }
+                },
+                error: function (data) {
+                    xxwsWindowObj.xxwsAlert("删除失败");
                 }
             });
         },
         choosePeople: function () {
+            var that = this;
             $("#stakeholder").modal();
             $("#stakeholder").on('shown.bs.modal', function (e) {
-                peopleTreeObj.requestPeopleTree($("#stakeholder"));
+                peopleTreeObj.requestPeopleTree($("#stakeholder"), that.selectPeopleArr);
             });
         },
         selectPeople: function () {
