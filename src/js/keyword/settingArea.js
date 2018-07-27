@@ -19,7 +19,8 @@ var vue = new Vue({
             },
             searchObj: {
                 pageSize: 1,
-                pageNum: 10
+                pageNum: 10,
+                groupId:""
             },
             selectPeopleArr: []
         }
@@ -63,7 +64,7 @@ var vue = new Vue({
                 queryParams: function (params) {
                     that.searchObj.pageSize = params.pageSize;
                     that.searchObj.pageNum = params.pageNumber;
-                    that.searchObj.groupId = that.currentNode.nodeId;
+                    that.searchObj.groupId = that.currentNode.nodeId||"";
                     that.searchObj.ifRecursion = that.currentNode.leaf ? false : true;
                     return that.searchObj;
                 },
@@ -113,6 +114,13 @@ var vue = new Vue({
                         visible: true, //false表示不显示
                         sortable: false, //启用排序
                         width: '13%',
+                        formatter: function (val) {
+                            console.log(val);
+                            if (val=="null") {
+                                return "";
+                            }
+                            return val
+                        }
                     }, {
                         field: 'position', //域值
                         title: '职位', //内容
@@ -122,7 +130,7 @@ var vue = new Vue({
                         width: '15%',
                         editable: true,
                         formatter: function (value, row, index) {
-                            if (value == null || value == "") {
+                            if (value == "null" || value == "") {
                                 return "";
                             } else {
                                 return value;
@@ -163,15 +171,26 @@ var vue = new Vue({
                     showIcon: false,
                     addDiyDom: function (treeId, treeNode) {
                         var spaceWidth = 0;
-                        var switchObj = $("#" + treeNode.tId + "_switch"),
-                            icoObj = $("#" + treeNode.tId + "_ico");
+                        var switchObj = $("#" + treeNode.tId + "_switch");
+                        var icoObj = $("#" + treeNode.tId + "_ico");
                         switchObj.remove();
-                        icoObj.before(switchObj);
+                        if (!treeNode.leaf) {
+                            icoObj.before(switchObj);
+                        }
+                        var sObj = $("#" + treeNode.tId + "_span"); //获取节点信息
+                        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId + "' title='add node' ></span>"; //定义添加按钮
+                        if (!treeNode.leaf || treeNode.parentId == '0') {
+                            sObj.after(addStr); //加载添加按钮
+                            $("#addBtn_" + treeNode.tId).bind("click", function (e) {
+                                e.stopPropagation();
+                                _this.createArea();
+                            });
+                        }
                         if (treeNode.level > 1) {
                             var spaceStr = "<span style='display: none;width:" + (spaceWidth * (treeNode.level - 1)) + "px'></span>";
                             switchObj.before(spaceStr);
                         }
-                    }
+                    },
                 },
                 data: {
                     key: {
@@ -196,6 +215,8 @@ var vue = new Vue({
                         _this.refreshTable();
                         $(".node_name").removeClass("clickNade");
                         $("#" + treeNode.tId + "_a").find(".node_name").addClass("clickNade");
+                        $(".add").css("display", 'none');
+                        $("#" + treeNode.tId + "_a").find(".add").css("display", "block");
                     },
                     beforeRemove: function (treeId, treeNode) {
                         var defaultOptions = {
@@ -227,15 +248,19 @@ var vue = new Vue({
             _this.zTree.expandAll(true);
             if (_this.currentNode.nodeId == '' || _this.currentNode.nodeId == null) {
                 var nodes = _this.zTree.getNodes();
-                _this.zTree.selectNode(nodes[0]);
-                _this.currentNode.nodeId = nodes[0].nodeId;
-                _this.currentNode.nodeName = nodes[0].nodeName;
+                _this._setCurrenrNode(nodes[0]);
+
             } else {
                 var nodes = _this.zTree.getNodesByParam("id", _this.currentNode.nodeId, null); //根据id查询节点对象数组
-                _this.zTree.selectNode(nodes[0]); //设置默认被选中
-                _this.currentNode.nodeId = nodes[0].nodeId;
-                _this.currentNode.nodeName = nodes[0].nodeName;
+                _this._setCurrenrNode(nodes[0]);
             }
+        },
+        _setCurrenrNode: function (node) {
+            var that = this;
+            $("#" + node.tId + "_a").find(".add").css("display", "block");
+            that.zTree.selectNode(node);
+            that.currentNode.nodeId = node.nodeId;
+            that.currentNode.nodeName = node.nodeName;
         },
         createArea: function () {
             var that = this;
@@ -263,6 +288,10 @@ var vue = new Vue({
             var that = this;
             var url = "";
             var msg = "";
+            if (that.form.name.trim() == "") {
+                xxwsWindowObj.xxwsAlert("名称不能为空");
+                return;
+            }
             if (that.form.title == '修改') {
                 delete that.form.parentName;
                 msg = "修改";
@@ -355,9 +384,11 @@ var vue = new Vue({
                 dataType: "json",
                 success: function (data) {
                     if (data.success == 1) {
-                        that.refreshTable();
+                        xxwsWindowObj.xxwsAlert("分配成功", function () {
+                            that.refreshTable();
+                        });
                     } else {
-
+                        xxwsWindowObj.xxwsAlert("分配失败");
                     }
                 }
             });
@@ -368,7 +399,7 @@ var vue = new Vue({
                 queryParams: function () {
                     that.searchObj.pageSize = 1;
                     that.searchObj.pageNum = 10;
-                    that.searchObj.groupId = that.currentNode.nodeId;
+                    that.searchObj.groupId = that.currentNode.nodeId||"";
                     that.searchObj.ifRecursion = that.currentNode.leaf ? false : true;
                     return that.searchObj;
                 }

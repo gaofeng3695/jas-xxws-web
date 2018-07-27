@@ -332,6 +332,7 @@ body {
             &.edit {
                 width: 17px;
                 height: 17px;
+                margin-right: 8px;
                 background: url(/src/images/pipeline_map/edit.png) center no-repeat;
             }
             &.edit:hover {
@@ -345,6 +346,15 @@ body {
             }
             &.remove:hover {
                 background: url(/src/images/pipeline_map/delete.png) center no-repeat;
+            }
+            &.add {
+                display: none;
+                width: 18px;
+                height: 18px;
+                background: url(/src/images/node/add.png) center no-repeat;
+            }
+            &.add:hover {
+                background: url(/src/images/node/add_h.png) center no-repeat;
             }
         }
     }
@@ -367,14 +377,17 @@ body {
         }
     }
 }
+
 .edit,
-.remove {
+.remove,
+.add {
     float: right;
-    margin-top: 4px !important;
+    margin-top: 4px !important; // padding-left:20px;
 }
-.clickNade{
+
+.clickNade {
     line-height: 26px !important;
-   width: 100px;
+    max-width: 90px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

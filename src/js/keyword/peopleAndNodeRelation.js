@@ -43,15 +43,20 @@ var vue = new Vue({
             total: res.rows[0].total
           }
         },
+        onLoadError: function (res) {
+          xxwsWindowObj.xxwsAlert("网络异常，请稍候尝试")
+        },
         //表格的列
-        columns: [{
-            field: 'state', //域值
-            checkbox: true, //复选框
-            align: 'center',
-            visible: true, //false表示不显示
-            sortable: false, //启用排序
-            width: '3%',
-          }, {
+        columns: [
+          // {
+          //   field: 'state', //域值
+          //   checkbox: true, //复选框
+          //   align: 'center',
+          //   visible: true, //false表示不显示
+          //   sortable: false, //启用排序
+          //   width: '3%',
+          // },
+          {
             field: 'groupId', //域值
             title: '名称',
             align: 'center',
@@ -74,8 +79,8 @@ var vue = new Vue({
               };
             }
           }, {
-            field: 'groupName', //域值
-            title: '组别',
+            field: 'groupCompletePath', //域值
+            title: '所属',
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
@@ -87,7 +92,29 @@ var vue = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-
+            editable: true,
+            formatter: function (val) {
+              if (val == null || val == "") {
+                return 0;
+              } else {
+                return val;
+              }
+            }
+          },
+          {
+            field: 'orgName', //域值
+            title: '部门', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            editable: true,
+          },
+          {
+            field: 'roleNames', //域值
+            title: '角色', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
             editable: true,
           },
           {
@@ -113,9 +140,8 @@ var vue = new Vue({
                 '<a class="allotstyle"  href="javascript:void(0)" title="分配">',
                 '<i></i>',
                 '</a>',
-                '<a class="check" data-toggle="modal" href="javascript:void(0)" title="查看">',
-                '<i></i>',
-
+                // '<a class="check" data-toggle="modal" href="javascript:void(0)" title="查看">',
+                // '<i></i>',
                 '</a>',
               ].join('');
             }
@@ -421,12 +447,14 @@ var chooseNode = new Vue({
       //   return;
       // }
       that.nodeAndPlanToServer(function () {
+        $("#chooseNode").modal('hide');
         that.noAllotNodeArrs = [];
         that.allotNodeArrs = [];
         that.chooseAllotNode = []; //选中已经分配的点
         that.chooseNoAllotNode = []; //选中的没有分配的点
-        xxwsWindowObj.xxwsAlert("保存成功");
-
+        xxwsWindowObj.xxwsAlert("保存成功", function () {
+          vue.refreshTable();
+        });
       });
     }, //进行计划和选择的关键点之间的关系存储
     nodeAndPlanToServer: function (callback) {
@@ -448,7 +476,6 @@ var chooseNode = new Vue({
         data: JSON.stringify(obj),
         success: function (data) {
           if (data.success == 1) {
-            $("#chooseNode").modal('hide');
             callback();
           }
         }
@@ -456,6 +483,7 @@ var chooseNode = new Vue({
     },
     cancalChooseNode: function () {
       var that = this;
+      vue.refreshTable();
       $("#chooseNode").modal('hide');
     },
     initChoose: function () {
@@ -471,6 +499,8 @@ var chooseNode = new Vue({
       that.toNoAllot = true;
       that.toNoAllotBg = false;
       that.isAllChecked = false;
+      that.allotKeyWord = "";
+      that.noallotKeyWord = "";
     }
   }
 });
