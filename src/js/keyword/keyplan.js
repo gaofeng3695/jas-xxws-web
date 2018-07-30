@@ -194,9 +194,7 @@ var indexs = new Vue({
                 return false;
               },
               'click .setNode': function (e, value, row, index) {
-                $("#people").modal();
-                that.currentPlanId = row.objectId;
-                groupTreeObj.requestPeopleTree([], 'checkBox'); //请求所有的关键点
+                that.openChooseGroup(row);
               }
             },
             formatter: function (value, row, index) {
@@ -208,6 +206,7 @@ var indexs = new Vue({
               }
               if (row.publishStatus == 1) {
                 title = "关闭计划";
+                set = "setNode_end";
               }
               if (row.publishStatus == 2) {
                 publish = "publish1_end";
@@ -356,7 +355,9 @@ var indexs = new Vue({
           if (data.success == -1) {
             if (data.code == "GJD001") {
               tip = "该计划下存在关键点,是否继续删除"
-            } else if (data.code == "GJD005") {
+            } else if (data.code == "GJD_PLAN_001") {
+              tip = '该计划已经发布，确认是否删除？';
+            } else {
               tip = '您是否删除该计划？';
             }
           }
@@ -412,6 +413,14 @@ var indexs = new Vue({
               that.refreshTable();
             });
           } else {
+            if (data.code == "GJD_PLAN_003") {
+              xxwsWindowObj.xxwsAlert("该计划下未分配到组，请先分配");
+              return;
+            }
+            if (data.code == "GJD_GROUP_001") {
+              xxwsWindowObj.xxwsAlert("您分配的区域组下面没有人员，请重新分配");
+              return;
+            }
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
         }
@@ -591,6 +600,34 @@ var indexs = new Vue({
           }
         }
       });
+    },
+    openChooseGroup: function (row) {
+      var that = this;
+      that.currentPlanId = row.objectId;
+      $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/cloudlink-inspection-event/keyPointPlan/getRelationGroup?token=" + lsObj.getLocalStorage('token'),
+        data: {
+          planId: that.currentPlanId
+        },
+        dataType: "json",
+        success: function (data) {
+          if (data.success == 1) {
+            var selectArr = [];
+            data.rows.forEach(function (item) {
+              selectArr.push({
+                id: item
+              })
+            });
+            $("#people").modal();
+            groupTreeObj.requestPeopleTree(selectArr, 'checkBox'); //请求所有的关键点
+          } else {
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
+          }
+        }
+      });
+
     }
   },
 });

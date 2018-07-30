@@ -383,6 +383,7 @@ var chooseNode = new Vue({
       var that = this;
       if (!that.isAllChecked) {
         that.isAllChecked = true;
+        that.chooseAllotNode = [];
         that.allotNodeArrs.forEach(function (item) {
           item.checked = true;
           that.chooseAllotNode.push(item);
@@ -399,6 +400,7 @@ var chooseNode = new Vue({
       var that = this;
       if (!that.isAllCheckedNoAllot) {
         that.isAllCheckedNoAllot = true;
+        that.chooseNoAllotNode = [];
         that.noAllotNodeArrs.forEach(function (item) {
           item.checked = true;
           that.chooseNoAllotNode.push(item);
@@ -449,17 +451,17 @@ var chooseNode = new Vue({
     },
     submit: function () {
       var that = this;
-      // if (that.allotNodeArrs.length == 0) {
-      //   xxwsWindowObj.xxwsAlert("请选择需要分配的必经点");
-      //   return;
-      // }
+      if (that.allotNodeArrs.length == 0) {
+        xxwsWindowObj.xxwsAlert("请选择需要分配的必经点");
+        return;
+      }
       that.nodeAndPlanToServer(function () {
         $("#chooseNode").modal('hide');
         that.noAllotNodeArrs = [];
         that.allotNodeArrs = [];
         that.chooseAllotNode = []; //选中已经分配的点
         that.chooseNoAllotNode = []; //选中的没有分配的点
-        xxwsWindowObj.xxwsAlert("保存成功", function () {
+        xxwsWindowObj.xxwsAlert("分配成功", function () {
           vue.refreshTable();
         });
       });
@@ -484,6 +486,8 @@ var chooseNode = new Vue({
         success: function (data) {
           if (data.success == 1) {
             callback();
+          }else{
+             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
         }
       });

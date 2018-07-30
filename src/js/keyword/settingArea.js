@@ -46,8 +46,8 @@ var vue = new Vue({
         inittable: function () { //初始化表格
             var that = this;
             $('#table').bootstrapTable({
-                url: "/cloudlink-inspection-event/regionalGroup/getPersonByGroupId?token=" + lsObj.getLocalStorage('token'), //请求数据url
-                method: 'GET',
+                url: "/cloudlink-inspection-event/regionalGroup/pagePersonByGroupId?token=" + lsObj.getLocalStorage('token'), //请求数据url
+                method: 'post',
                 toolbar: "#toolbar",
                 toolbarAlign: "left",
                 cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -70,7 +70,7 @@ var vue = new Vue({
                 },
                 responseHandler: function (res) {
                     that.selectPeopleArr = [];
-                    res.rows.forEach(function (item) {
+                    res.rows[0].resultList.forEach(function (item) {
                         var obj = {
                             relationshipPersonId: item.personId,
                             relationshipPersonName: item.personName
@@ -78,8 +78,8 @@ var vue = new Vue({
                         that.selectPeopleArr.push(obj);
                     });
                     return {
-                        rows: res.rows,
-                        total: res.rows.length
+                        rows: res.rows[0].resultList,
+                        total: res.rows[0].total
                     }
                 },
                 //表格的列
@@ -396,8 +396,8 @@ var vue = new Vue({
             var that = this;
             $('#table').bootstrapTable('refreshOptions', {
                 queryParams: function () {
-                    that.searchObj.pageSize = 1;
-                    that.searchObj.pageNum = 10;
+                    that.searchObj.pageSize = 10;
+                    that.searchObj.pageNum = 1;
                     that.searchObj.groupId = that.currentNode.nodeId||"";
                     that.searchObj.ifRecursion = that.currentNode.leaf ? false : true;
                     return that.searchObj;
