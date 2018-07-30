@@ -185,7 +185,7 @@
 
     <!--必经点的选择-->
 
-  </div>
+
 
 
   <div id="people" style="z-index:1052" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -200,13 +200,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button id="selectPeople" type="button" class="btn modal_active btn-primary">确定</button>
+          <button @click="getGroupByPlanId" type="button" class="btn modal_active btn-primary">确定</button>
           <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
         </div>
       </div>
     </div>
   </div>
-
+ </div>
   <script type="text/javascript" src="/src/js/common/drafting.js"></script>
   <script type="text/javascript" src="/lib/js/vue.min.js"></script>
   <script src="/lib/element-ui/v2.2.1/index.min.js"></script>

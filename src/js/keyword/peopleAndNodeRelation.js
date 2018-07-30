@@ -93,13 +93,13 @@ var vue = new Vue({
             visible: true, //false表示不显示
             sortable: false, //启用排序
             editable: true,
-            formatter: function (val) {
-              if (val == null || val == "") {
-                return 0;
-              } else {
-                return val;
-              }
-            }
+            // formatter: function (val) {
+            //   if (val == null || val == "") {
+            //     return 0;
+            //   } else {
+            //     return val;
+            //   }
+            // }
           },
           {
             field: 'orgName', //域值
@@ -116,6 +116,13 @@ var vue = new Vue({
             visible: true, //false表示不显示
             sortable: false, //启用排序
             editable: true,
+            formatter: function (val) {
+              if (val == "" || val == "null") {
+                return "";
+              } else {
+                return val;
+              }
+            }
           },
           {
             field: 'operate',

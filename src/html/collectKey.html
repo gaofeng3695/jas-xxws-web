@@ -29,9 +29,6 @@
       </ul>
       <div class="nodeList " v-show="isSearchNode">
         <div id="node" class="  sub_wrapper">
-          <!--<div class="search" style="padding:10px 0px">
-            <input placeholder="请输入关键点关键词" v-model="searchInput"  style="width:300px;margin-left:34px;"type="text" class="form-control">
-          </div>-->
           <div class=" result scrollContainer">
             <div v-show="noResult" style="text-align: center;margin-top:10px;">
               没有查到数据
@@ -42,12 +39,12 @@
                   <div class=" fl hidd  wid300">
                     <span>名称：</span>
                     <span> {{item.name}} </span> </div>
-                  <div class="fr clred" v-if="item.distributionStatus==0">
+                  <!--<div class="fr clred" v-if="item.distributionStatus==0">
                     未分配
                   </div>
                   <div class="fr clrb" v-if="item.distributionStatus==1">
                     已分配
-                  </div>
+                  </div>-->
                 </div>
                 <div class="item">
                   <div class="wid364 hidd">
@@ -69,7 +66,6 @@
       <div class="tool" v-show="isShowTool">
         <div class="item" @click="getNode">取点录入</div>
         <div class="item" @click="inputNode">手动录入</div>
-        <!--<div class="item" @click="eventNode">事件转换</div>-->
       </div>
     </div>
     <!-- 左上角tab切换 结束-->
@@ -78,10 +74,10 @@
     </div>
     <!-- 地图容器 结束 -->
     <!--右上角切换-->
-    <div class="change">
+    <!--<div class="change">
       <div class="allot fl" @click="allotBtn">已分配 <span :class="allot?'active':''"></span></div>
       <div class="noAllot fr" @click="noAllotBtn">未分配 <span :class="noallot?'active':''"></span></div>
-    </div>
+    </div>-->
     <!--必经点详情开始-->
     <div class="detail" v-show="isDetailNode">
       <div class="content">
@@ -107,7 +103,6 @@
         <div class="item">
           <div class="fl wid100"><span style="color:red">*</span>巡检间隔</div>
           <div class="fl wid">
-            <!--<input type="text" class="form-control wid160" v-model="nodeDetail.inspectionInterval" :disabled="isEditOrView">-->
             <select name="inspectionInterval" style="margin-left:5px" id="inspectionInterval" class="form-control wid160" v-model="nodeDetail.inspectionInterval"
               :disabled="isEditOrView">
                           <option value="1">1</option>
@@ -161,7 +156,7 @@
           </div>
         </div>
         <div class="item">
-          <div class="fl wid100">所属组</div>
+          <div class="fl wid100"><span style="color:red">*</span>所属组</div>
           <div class="fl wid">
             <input type="text" readonly class="form-control" :disabled="isEditOrView" placeholder="请选择组别" v-model="nodeDetail.groupName" @click="chooseGroup">
           </div>
@@ -218,9 +213,6 @@
                     </div>
                     <div class="list_right">
                       <input type="text" class="form-control" placeholder="单位：每天" v-model="nodeForm.inspectionTimes">
-                      <!--<span>次/每天</span>-->
-                      <!--<input type="text" class="form-control inline wid110" v-model="nodeForm.inspectionDays" disabled>
-                    <span> 天</span>-->
                     </div>
                   </div>
                   <div class="form_part">
@@ -242,8 +234,6 @@
                           <option value="11">11小时</option>
                           <option value="12">12小时</option>
                         </select>
-                      <!--<input type="text" class="form-control" placeholder="单位：小时" v-model="nodeForm.inspectionInterval">-->
-                      <!--<span> 小时</span>-->
                     </div>
                   </div>
                 </div>
@@ -272,7 +262,6 @@
                     </div>
                     <div class="list_right">
                       <input type="text" class="form-control " placeholder="单位：米" v-model="nodeForm.effectiveRadius">
-                      <!--<span> 米</span>-->
                     </div>
                   </div>
                   <div class="form_part">
@@ -298,7 +287,7 @@
                   </div>
                   <div class="form_part">
                     <div class="list_left text-right">
-                     所属组
+                      <i>*</i>所属组
                     </div>
                     <div class="list_right">
                       <input type="text" readonly class="form-control" placeholder="请选择组别" v-model="nodeForm.groupName" @click="chooseGroup">

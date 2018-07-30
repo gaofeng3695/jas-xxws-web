@@ -115,7 +115,6 @@ var vue = new Vue({
                         sortable: false, //启用排序
                         width: '13%',
                         formatter: function (val) {
-                            console.log(val);
                             if (val=="null") {
                                 return "";
                             }

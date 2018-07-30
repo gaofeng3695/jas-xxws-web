@@ -661,6 +661,7 @@ var index = new Vue({
     },
 
     verrify: function (obj) {
+
       //验证
       var that = this;
       if (!obj.name.trim()) {
@@ -723,6 +724,10 @@ var index = new Vue({
         xxwsWindowObj.xxwsAlert("位置不能为空");
         return false;
       }
+      if (!obj.groupName.trim()) {
+        xxwsWindowObj.xxwsAlert("请选择所属组");
+        return false;
+      }
       return true;
     },
     cancalNode: function () { //取消点的增加
@@ -774,13 +779,16 @@ var index = new Vue({
     quiteChooseGroup: function () {
       var that = this;
       var obj = groupTreeObj.getSelectGroup();
+      if (obj.length == 0) {
+        xxwsWindowObj.xxwsAlert("请选择所属组");
+        return;
+      }
       if (!that.isEditOrView) {
-        that.nodeDetail.groupName = obj[0].name;
-        that.nodeDetail.groupId = obj[0].id;
-        console.log(that.nodeDetail)
+        that.nodeDetail.groupName = obj[0] ? obj[0].name : "";
+        that.nodeDetail.groupId = obj[0] ? obj[0].id : "";
       } else {
-        that.nodeForm.groupName = obj[0].name;
-        that.nodeForm.groupId = obj[0].id;
+        that.nodeForm.groupName = obj[0] ? obj[0].name : "";
+        that.nodeForm.groupId = obj[0] ? obj[0].id : "";
       }
       $("#departmentSelect").modal('hide');
     },

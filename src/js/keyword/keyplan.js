@@ -195,10 +195,8 @@ var indexs = new Vue({
               },
               'click .setNode': function (e, value, row, index) {
                 $("#people").modal();
-                // // $("#chooseNode").on('shown.bs.modal', function (e) {
-                // that.currentPlanId = row.objectId;
-                groupTreeObj.requestPeopleTree([],'checkBox'); //请求所有的关键点
-                // // });
+                that.currentPlanId = row.objectId;
+                groupTreeObj.requestPeopleTree([], 'checkBox'); //请求所有的关键点
               }
             },
             formatter: function (value, row, index) {
@@ -211,7 +209,7 @@ var indexs = new Vue({
               if (row.publishStatus == 1) {
                 title = "关闭计划";
               }
-              if (row.publishStatus == -1) {
+              if (row.publishStatus == 2) {
                 publish = "publish1_end";
                 title = "已关闭";
                 set = "setNode_end";
@@ -358,7 +356,7 @@ var indexs = new Vue({
           if (data.success == -1) {
             if (data.code == "GJD001") {
               tip = "该计划下存在关键点,是否继续删除"
-            } else if(data.code=="GJD005"){
+            } else if (data.code == "GJD005") {
               tip = '您是否删除该计划？';
             }
           }
@@ -560,7 +558,39 @@ var indexs = new Vue({
       this.isUpdateStartTime = false;
       this.isUpdateEndTime = false;
     }, //关于人员信息
-
+    getGroupByPlanId: function () {
+      var that = this;
+      var obj = {
+        planId: that.currentPlanId,
+        groupIdList: []
+      };
+      var groupArr = groupTreeObj.getSelectGroup();
+      if (groupArr.length == 0) {
+        xxwsWindowObj.xxwsAlert("请至少选择一个组");
+        return;
+      }
+      for (var i = 0; i < groupArr.length; i++) {
+        obj.groupIdList.push(groupArr[i].id);
+      }
+      that.setGroupAndPlanToServer(obj);
+    },
+    setGroupAndPlanToServer: function (obj) {
+      $.ajax({
+        type: "post",
+        contentType: "application/json",
+        url: "/cloudlink-inspection-event/keyPointPlan/updateRelationGroup?token=" + lsObj.getLocalStorage('token'),
+        data: JSON.stringify(obj),
+        dataType: "json",
+        success: function (data) {
+          if (data.success == 1) {
+            $("#people").modal('hide');
+            xxwsWindowObj.xxwsAlert("分配成功");
+          } else {
+            $("#people").modal('hide');
+            xxwsWindowObj.xxwsAlert("分配失败");
+          }
+        }
+      });
+    }
   },
 });
-
