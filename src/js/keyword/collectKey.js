@@ -724,7 +724,7 @@ var index = new Vue({
         xxwsWindowObj.xxwsAlert("位置不能为空");
         return false;
       }
-      if (!obj.groupName.trim()) {
+      if (!obj.groupName) {
         xxwsWindowObj.xxwsAlert("请选择所属组");
         return false;
       }

@@ -32,7 +32,7 @@
                 <div class="item col-xs-3 " data-value="" :class="currentStatus==''?'active':''" @click="changeStatus">全部</div>
                 <div class="item col-xs-3" data-value="1" :class="currentStatus=='1'?'active':''" @click="changeStatus">已发布</div>
                 <div class="item col-xs-3" data-value="0" :class="currentStatus=='0'?'active':''" @click="changeStatus">未发布</div>
-                <div class="item col-xs-3" data-value="-1" :class="currentStatus=='-1'?'active':''" @click="changeStatus">已关闭</div>
+                <div class="item col-xs-3" data-value="2" :class="currentStatus=='2'?'active':''" @click="changeStatus">已关闭</div>
               </div>
             </div>
             <div class="col-lg-6 col-md-6 col-xs-12 right_wrapper">
@@ -200,7 +200,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button @click="getGroupByPlanId" type="button" class="btn modal_active btn-primary">确定</button>
+          <button @click="getGroupByPlanId" type="button" class="btn modal_active btn-primary" v-if="edit">确定</button>
           <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
         </div>
       </div>

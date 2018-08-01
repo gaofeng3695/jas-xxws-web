@@ -3,9 +3,11 @@ var groupTreeObj = {
     selectGroupArr: [],
     aAllGroup: [],
     isCheckbox: true,
+    isView:"",//表示是查看还是编辑
     init: function () {},
-    requestPeopleTree: function (selectArr, isCheckbox) { //请求人员信息
+    requestPeopleTree: function (selectArr, isCheckbox,isView) { //请求人员信息
         var _this = this;
+        _this.isView=isView;
         if (isCheckbox == 'checkBox') {
             _this.isCheckbox = true;
         } else {
@@ -51,6 +53,9 @@ var groupTreeObj = {
             },
             callback: {
                 beforeCheck: function (treeId, treeNode, clickFlag) {
+                    if(_this.isView){
+                        return false;
+                    }
                     if (!_this.isCheckbox) {
                         return treeNode.leaf;
                     } else {
@@ -64,7 +69,7 @@ var groupTreeObj = {
                 },
                 simpleData: {
                     enable: true,
-                    pIdKey: 'pid'
+                    pIdKey: 'pid',
                 }
             },
             check: {
@@ -76,7 +81,6 @@ var groupTreeObj = {
         _this.zTree = $.fn.zTree.init($("#group_list"), setting, data);
         _this.zTree.expandAll(true);
         _this.setSelectGroup();
-
     },
     setSelectGroup: function () { //设置被选中的人员
         var _this = this;

@@ -257,7 +257,7 @@ var index = new Vue({
     },
     clickItemDetail: function (item) {
       var that = this;
-      //将该店设置为中心点并进行跳动
+      //将该点设置为中心点并进行跳动
       for (var i = 0; i < that.drawNodeArray.length; i++) {
         if (that.drawNodeArray[i].key == item.objectId) {
           var cenLng = that.drawNodeArray[i].value.getPosition().lng;

@@ -27,6 +27,7 @@ var indexs = new Vue({
       },
       isUpdateStartTime: false,
       isUpdateEndTime: false,
+      edit: true //表示当前是编辑还是查看
     }
   },
   watch: {
@@ -206,7 +207,7 @@ var indexs = new Vue({
               }
               if (row.publishStatus == 1) {
                 title = "关闭计划";
-                set = "setNode_end";
+                // set = "setNode_end";
               }
               if (row.publishStatus == 2) {
                 publish = "publish1_end";
@@ -249,9 +250,10 @@ var indexs = new Vue({
                 title = "发布";
               }
               if (row.publishStatus == 1) {
+                // edit = "management_end ";
                 title = "关闭计划";
               }
-              if (row.publishStatus == -1) {
+              if (row.publishStatus == 2) {
                 publish = "publish1_end";
                 edit = "management_end ";
                 title = "已关闭";
@@ -621,7 +623,13 @@ var indexs = new Vue({
               })
             });
             $("#people").modal();
-            groupTreeObj.requestPeopleTree(selectArr, 'checkBox'); //请求所有的关键点
+            if (row.publishStatus != 0) {
+              that.edit = false;
+              groupTreeObj.requestPeopleTree(selectArr, 'checkBox', 'view'); //请求所有的关键点
+            } else {
+              that.edit = true;
+              groupTreeObj.requestPeopleTree(selectArr, 'checkBox'); //请求所有的关键点
+            }
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
