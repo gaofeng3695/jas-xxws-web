@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <link href="/lib/css/bootstrap.css" rel="stylesheet">
+  <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
+  <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
+  <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+  <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+  <link href="/src/css/keyword/checkOnWork.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="page-wrapper" class="maintenance">
+    <div class="wrapper-main">
+      <div class="container-fluid ">
+        <div class="search">
+          <div class="col-lg-6 col-md-6 col-xs-12 linh">
+            <span class="title textfr">巡线人员</span>
+            <select class="form-control select" name="people" id="people"></select>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-12 linh">
+            <span class="title textfr">考勤日期</span>
+            <div class="times">
+              <input type="text" class="form-control" id="datetimepicker" placeholder="请输入时间">
+            </div>
+          </div>
+        </div>
+        <div class="work">
+          <div class="top">
+            <div class="week" v-for="item in weeks">
+              <span class="week-item"> {{item}}</span>
+            </div>
+          </div>
+          <div class="calendar isOutside" @mouseleave="remove($event)">
+            <div class="item" :class="isbg(item)" v-for="item in newDays">
+              <img src="/src/images/user/detail_h.png"  @click="viewDetail($event,item)" v-if="ifDetail(item)"></img>
+              <span class="date">{{item.days}}</span>
+              <div>完成率：{{item.finish}}</div>
+            </div>
+          </div>
+          <div class="list scrollContainer" v-show="isDetail">
+            <ul class="">
+              <li>
+                <div class="item">
+                  <div class="name">必经点一必经点一</div>
+                  <div class="task">1/9</div>
+                </div>
+                <div class="item address">
+                  海淀区学院路科大天工大厦A座13层
+                </div>
+              </li>
+              <li>
+                <div class="item">
+                  <div class="name">必经点一必经点一</div>
+                  <div class="task">1/9</div>
+                </div>
+                <div class="item address">
+                  海淀区学院路科大天工大厦A座13层
+                </div>
+              </li>
+              <li>
+                <div class="item">
+                  <div class="name">必经点一必经点一</div>
+                  <div class="task">1/9</div>
+                </div>
+                <div class="item address">
+                  海淀区学院路科大天工大厦A座13层
+                </div>
+              </li>
+              <li>
+                <div class="item">
+                  <div class="name">必经点一必经点一</div>
+                  <div class="task">1/9</div>
+                </div>
+                <div class="item address">
+                  海淀区学院路科大天工大厦A座13层
+                </div>
+              </li>
+              <li>
+                <div class="item">
+                  <div class="name">必经点一必经点一</div>
+                  <div class="task">1/9</div>
+                </div>
+                <div class="item address">
+                  海淀区学院路科大天工大厦A座13层
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="text/javascript" src="/lib/js/vue.js"></script>
+  <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript" src="/lib/js/common_base.js"></script>
+  <script type="text/javascript" src="/src/js/common/common.js"></script>
+  <script type="text/javascript" src="/src/js/common/tjSdk.min.js"></script>
+  <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+  <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+  <script src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script type="text/javascript" src="/src/js/keyword/checkOnWork.js"></script>
+  <script>
+    $(".scrollContainer").mCustomScrollbar({
+      advanced: {
+        updateOnContentResize: true
+      }
+    });
+  </script>
+</body>
+
+</html>

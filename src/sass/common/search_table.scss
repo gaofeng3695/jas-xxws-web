@@ -327,9 +327,9 @@ body {
 
 .table_wrapper {
     @include wrapper_border;
-    background: #fff;
-    //font-size: 40px;
-    text-align: center;
-    //line-height: 400px;
+    background: #fff; //font-size: 40px;
+    text-align: center; //line-height: 400px;
     padding-bottom: 15px;
 }
+
+//模态框基本样式

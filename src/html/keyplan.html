@@ -17,6 +17,7 @@
   <link href="/src/css/details_common.css" rel="stylesheet">
   <link href="/src/css/common/view.pic.css" rel="stylesheet">
   <link href="/src/css/keyword/keyplan.css" rel="stylesheet">
+  <link href="/src/css/common/group.tree.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -31,7 +32,7 @@
                 <div class="item col-xs-3 " data-value="" :class="currentStatus==''?'active':''" @click="changeStatus">全部</div>
                 <div class="item col-xs-3" data-value="1" :class="currentStatus=='1'?'active':''" @click="changeStatus">已发布</div>
                 <div class="item col-xs-3" data-value="0" :class="currentStatus=='0'?'active':''" @click="changeStatus">未发布</div>
-                <div class="item col-xs-3" data-value="-1" :class="currentStatus=='-1'?'active':''" @click="changeStatus">已关闭</div>
+                <div class="item col-xs-3" data-value="2" :class="currentStatus=='2'?'active':''" @click="changeStatus">已关闭</div>
               </div>
             </div>
             <div class="col-lg-6 col-md-6 col-xs-12 right_wrapper">
@@ -184,174 +185,28 @@
 
     <!--必经点的选择-->
 
-  </div>
 
-  <div id="chooseNode" class="modal fade bs-example-modal-lg" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>计划配置<a class="close" @click="cancalChooseNode">×</a></h3>
-        </div>
-        <div class="modal-body">
-          <div class="container-fluid">
-            <div class="left fl ">
-              <div class="top">
-                <span class=" inputbg" :class="isAllCheckedNoAllot?'inputbg_h':'inputbg'" @click="isAllCheckedNoAllotNode">
-                 未纳入</span>
-              </div>
-              <div class="search">
-                <input type="text" placeholder="请输入名称，编号" class="form-control" v-model="noallotKeyWord">
-              </div>
-              <div style="height:370px;overflow: auto" class="scrollContainer">
-                <div style="color:#333;text-align: center" v-show="noAllotNodeArrs.length==0">
-                  暂无数据
-                </div>
-                <ul class="noallot">
-                  <li v-for="(item,index) in noAllotNodeArrs" @click="clickNoAllotItem(item,index)">
-                    <el-tooltip effect="dark" :content="isContent(item)" placement="top-start">
-                      <div>
-                        <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span> <span class="name hidd">{{item.name}}</span>
-                        <span class="code hidd">{{item.code}}</span>
-                        <span class="location hidd">{{item.location}}</span>
-                      </div>
-                    </el-tooltip>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="btn-left fl ">
-              <button class="upleft" :disabled="toNoAllot" :class="toNoAllotBg?'bgblue':''" @click="toRight">
-                 <i class="fa fa-angle-right"></i>
-                </button>
-              <button class="upright" :disabled="toAllot" :class="toAllotBg?'bgblue':''" @click="toLeft">
-                 <i class="fa fa-angle-left"></i> </button>
-            </div>
-            <div class="right fr">
-              <div class="top">
-                <span class="all" :class="isAllChecked?'inputbg_h':'inputbg'" @click="isAllCheckedAllot">
-                 已纳入</span>
-              </div>
-              <div class="search">
-                <input type="text" placeholder="请输入名称，编号" class="form-control" v-model="allotKeyWord">
-              </div>
-              <div style="height:370px;overflow: auto" class="scrollContainer">
-                <div style="color:#333;text-align: center" v-show="allotNodeArrs.length==0">
-                  暂无数据
-                </div>
-                <ul class="allot">
-                  <li v-for="(item,index) in allotNodeArrs" @click="clickItem(item,index)">
-                    <span class="check " :class="item.checked?'inputbg_h':'inputbg'"></span>
-                    <span class="name hidd">{{item.name}}</span>
-                    <span class="code hidd">{{item.code}}</span>
-                    <span class="location hidd">{{item.location}}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn modal_active btn-primary" @click="submit">保存并关闭</button>
-          <button class="btn modal_active btn-primary" @click="next">下一步</button>
-        </div>
-      </div>
-    </div>
-  </div>
+
+
   <div id="people" style="z-index:1052" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h3>人员添加<a class="close" data-dismiss="modal">×</a></h3>
+          <h3>分配<a class="close" data-dismiss="modal">×</a></h3>
         </div>
-        <div class="modal-body">
-          <div class="sub_wrapper">
-            <ul id="people_list" class="ztree"></ul>
+        <div class="modal-body ">
+          <div class="department_select scrollContainer ">
+            <ul id="group_list" class="ztree"></ul>
           </div>
         </div>
         <div class="modal-footer">
-          <button id="selectPeople" type="button" class="btn modal_active btn-primary">确定</button>
+          <button @click="getGroupByPlanId" type="button" class="btn modal_active btn-primary" v-if="edit">确定</button>
           <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
         </div>
       </div>
     </div>
   </div>
-  <!--关键点的分配-->
-  <div id="share" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>计划配置<a class="close" @click="cancel">×</a></h3>
-        </div>
-        <div class="modal-body">
-          <div class="page-wrapper">
-            <div class="container-fluid">
-              <!--地图-->
-              <div class="row">
-                <div class="allot_map">
-                  <div id="allot_map"></div>
-                  <div class="bottom_btn text-center">
-                    <div id="drafting_down"></div>
-                    <span class="map_up" @click="mapSwitch"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!--/地图-->
-            <div class="change">
-              <div class="allot1 fl" @click="allotBtn">已分配 <span :class="allot?'active':''"></span></div>
-              <div class="noAllot1 fr" @click="noAllotBtn">未分配 <span :class="noallot?'active':''"></span></div>
-            </div>
-            <div class="wrapper-main">
-              <!--高级搜索-->
-              <div class="container-fluid search_item_wrapper">
-                <div class="top">
-                  <div class="row search_title">
-                    <div class="col-lg-6 col-md-6 col-xs-12 btn_wrapper">
-                      <div class="col=lg-10 col-xs-10">
-                        <div class="item col-xs-4 " data-value="" @click="chooseStatus" :class="distributionStatus==''?'active':''">全部</div>
-                        <div class="item col-xs-4" data-value="1" @click="chooseStatus" :class="distributionStatus=='1'?'active':''">已分配</div>
-                        <div class="item col-xs-4" data-value="0" @click="chooseStatus" :class="distributionStatus=='0'?'active':''">未分配</div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-xs-12 right_wrapper">
-                      <div class="search_btn_right">
-                        <div class="search_reset" @click="clearTable">重置</div>
-                      </div>
-                      <div class="search_wrapper">
-                        <div class="input_wrapper">
-                          <input class="" v-model="keyword" type="text" placeholder="输入关键字搜索">
-                        </div>
-                        <span class="mybtn" @click="refreshTable">确定</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--/高级搜索-->
-              <!--数据列表-->
-              <div class="data_tab">
-                <div class="row">
-                  <div class="container-fluid">
-                    <div id="toolbar1" class="btn-group">
-                      <button @click="allotPeople" type="button" data-toggle="modal" class="btn btn-default">
-                <span style="padding-right:5px"class="allotbg" ></span>分配
-              </button>
-                    </div>
-                    <table id="table1"></table>
-                  </div>
-                </div>
-              </div>
-              <!--/数据列表-->
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button @click="back" type="button" class="btn modal_active btn-primary">上一步</button>
-          <button type="button" @click="cancel" class="btn modal_active btn-primary">关闭</button>
-        </div>
-      </div>
-    </div>
-  </div>
+ </div>
   <script type="text/javascript" src="/src/js/common/drafting.js"></script>
   <script type="text/javascript" src="/lib/js/vue.min.js"></script>
   <script src="/lib/element-ui/v2.2.1/index.min.js"></script>
@@ -370,7 +225,7 @@
   <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
   <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
   <script type="text/javascript" src="/src/js/common/common.js"></script>
-  <script type="text/javascript" src="/src/js/common/people.tree.js"></script>
+  <script type="text/javascript" src="/src/js/common/group.tree.js"></script>
   <script type="text/javascript" src="/src/js/keyword/keyplan.js"></script>
 
   <script>

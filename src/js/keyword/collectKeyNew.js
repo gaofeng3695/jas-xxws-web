@@ -10,15 +10,10 @@ var index = new Vue({
       isEditOrView: true,
       nodeInfoArrys: [], //所有点信息集合
       drawNodeArray: [], //绘制点
+      markerAllClusterer: [],
       currentEditNode: {}, //表示当前正要编辑的点
-      currentAllotNode: [], //表示当前在地图上面绘制的已分配点
-      currentNoAllotNode: [], //表示当前在地图上面绘制的未分配点
-      markerAllotClusterer: null, //已分配绘制
-      markerNOAllotClusterer: null, //未分配
       defaultCursor: "",
       draggingCursor: "",
-      allot: true, //已分配是否显示
-      noallot: true,
       searchInput: "",
       nodeDetail: {
         name: "",
@@ -91,16 +86,13 @@ var index = new Vue({
       var that = this;
       that.currentEditIsSave(function () {
         that.isShowTool = false;
-        that.removeAllotPoint();
-        that.removeNoAllotPoint();
+        that.removeAllPoint();
         that.cancalNode();
         that._requestNode(that.searchInput, function () {
           /**一些状态需要初始化 */
           that.isSearchNode = true;
           that.isDetailNode = false; //必经点详情列表隐藏
           that.isEditOrView = true;
-          that.allot = true;
-          that.noallot = true;
           /**一些状态初始化完成 */
           if (that.nodeInfoArrys.length == 0) {
             that.noResult = true;
@@ -143,8 +135,6 @@ var index = new Vue({
       var markers = null;
       var point = null;
       var data = that.nodeInfoArrys;
-      that.currentAllotNode = []; //表示当前在地图上面绘制的已分配点
-      that.currentNoAllotNode = []; //表示当前在地图上面绘制的未分配点
       that.drawNodeArray = [];
       for (var i = 0; i < data.length; i++) {
         point = new BMap.Point(data[i].bdLon, data[i].bdLat);
@@ -165,32 +155,14 @@ var index = new Vue({
           'key': data[i].objectId,
           'value': markers
         });
-        if (data[i].distributionStatus == 0) {
-          that.currentNoAllotNode.push({
-            'status': data[i].distributionStatus + "",
-            'key': data[i].objectId,
-            'value': markers
-          });
-        }
-        if (data[i].distributionStatus == 1) {
-          that.currentAllotNode.push({
-            'status': data[i].distributionStatus + "",
-            'key': data[i].objectId,
-            'value': markers
-          });
-        }
         markers.addEventListener("click", function (e) {
-          // if (!that.isShowTool) {
           that._pointClick(e);
-          // }
         });
         markers.addEventListener("dragging", function (e) {
           that._editNodeLocation(e);
         });
       }
-      that._addAllotPoints(function () {
-        that._addNoAllotPoints();
-      });
+      that._addAllPoints();
     },
     _pointClick: function (e) {
       var that = this;
@@ -239,53 +211,24 @@ var index = new Vue({
         that.nodeDetail.location = result.address;
       });
     },
-    _addAllotPoints: function (callback) {
+    _addAllPoints: function () {
       var that = this;
       var markersArr = [];
-      that.markerAllotClusterer = null;
-      that.currentAllotNode.forEach(function (item) {
+      that.markerAllClusterer = null;
+      that.drawNodeArray.forEach(function (item) {
         markersArr.push(item.value);
       });
-      that.markerAllotClusterer = new BMapLib.MarkerClusterer(that.mapObj, {
+      that.markerAllClusterer = new BMapLib.MarkerClusterer(that.mapObj, {
         markers: markersArr,
       });
-      if (typeof callback == 'function') {
-        callback();
-      }
     },
-    _addNoAllotPoints: function () {
+    removeAllPoint: function () {
       var that = this;
-      var markersArr = [];
-      that.markerNOAllotClusterer = null;
-      that.currentNoAllotNode.forEach(function (item) {
-        markersArr.push(item.value);
-      });
-      var _styles = [{
-        url: "/src/images/node/m0.png",
-        size: new BMap.Size(53, 53)
-      }]
-      that.markerNOAllotClusterer = new BMapLib.MarkerClusterer(that.mapObj, {
-        markers: markersArr,
-        styles: _styles
-      });
-    },
-    removeAllotPoint: function () {
-      var that = this;
-      if (!that.markerAllotClusterer) {
+      if (!that.markerAllClusterer) {
         return;
       }
-      that.currentAllotNode.forEach(function (item) {
-        that.markerAllotClusterer.removeMarker(item.value);
-      });
-      that._isHasDetailNode(); //进行详情页面的关闭
-    },
-    removeNoAllotPoint: function () {
-      var that = this;
-      if (!that.markerNOAllotClusterer) {
-        return;
-      }
-      that.currentNoAllotNode.forEach(function (item) {
-        that.markerNOAllotClusterer.removeMarker(item.value);
+      that.drawNodeArray.forEach(function (item) {
+        that.markerAllClusterer.removeMarker(item.value);
       });
       that._isHasDetailNode(); //进行详情页面的关闭
     },
@@ -314,18 +257,7 @@ var index = new Vue({
     },
     clickItemDetail: function (item) {
       var that = this;
-      if (item.distributionStatus == 0) {
-        if (!that.noallot) {
-          that.noallot = true;
-          that._addNoAllotPoints();
-        }
-      } else {
-        if (!that.allot) {
-          that.allot = true;
-          that._addAllotPoints();
-        }
-      }
-      //将该店设置为中心点并进行跳动
+      //将该点设置为中心点并进行跳动
       for (var i = 0; i < that.drawNodeArray.length; i++) {
         if (that.drawNodeArray[i].key == item.objectId) {
           var cenLng = that.drawNodeArray[i].value.getPosition().lng;
@@ -339,42 +271,14 @@ var index = new Vue({
       }
       that._getNodeDetailById(item.objectId);
     },
-    allotBtn: function () {
-      var that = this;
-      that.currentEditIsSave(function () {
-        if (that.allot) {
-          that.allot = false;
-          that.removeAllotPoint(); //移除已经分配的点
-        } else {
-          that.allot = true;
-          that._addAllotPoints(); //移除已经分配的点
-        }
-      });
-
-    },
-    noAllotBtn: function () {
-      var that = this;
-      that.currentEditIsSave(function () {
-        if (that.noallot) {
-          that.noallot = false;
-          that.removeNoAllotPoint(); //移除已经分配的点
-        } else {
-          that.noallot = true;
-          that._addNoAllotPoints();
-        }
-      });
-    },
     refreshDraw: function () { //刷新
       var that = this;
-      that.removeAllotPoint();
-      that.removeNoAllotPoint();
+      that.removeAllPoint();
       that.cancalNode(); //清除所有的点
       that.searchInput = "";
       that.isDetailNode = false; //必经点详情列表隐藏
       that.isSearchNode = false; //必经点列表隐藏
       that.isEditOrView = true;
-      that.allot = true;
-      that.noallot = true;
       that._requestNode();
     }, //刷新进行重新绘制  数据的请求
 
@@ -482,11 +386,8 @@ var index = new Vue({
               that.isDetailNode = false;
               that.isEditOrView = true;
               that.delArrById();
-              if (that.nodeDetail.distributionStatus == 0) {
-                that.markerNOAllotClusterer.removeMarker(that.currentEditNode.value);
-              } else {
-                that.markerAllotClusterer.removeMarker(that.currentEditNode.value);
-              }
+              that.search();
+              that.markerAllClusterer.removeMarker(that.currentEditNode.value);
             });
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
@@ -498,39 +399,14 @@ var index = new Vue({
       var that = this;
       that.drawNodeArray.forEach(function (item, index) {
         if (item.key == that.nodeDetail.objectId) {
-          that.currentNoAllotNode.splice(index, 1);
+          that.drawNodeArray.splice(index, 1);
         }
       });
-      if (that.nodeDetail.distributionStatus == 0) {
-        that.currentNoAllotNode.forEach(function (item, index) {
-          if (item.key == that.nodeDetail.objectId) {
-            that.currentNoAllotNode.splice(index, 1);
-          }
-        });
-      } else {
-        that.currentNoAllotNode.forEach(function (item, index) {
-          if (item.key == that.nodeDetail.objectId) {
-            that.currentNoAllotNode.splice(index, 1);
-          }
-        });
-      }
     },
     saveNode: function (callback) { //保存修改后的
       var that = this;
       //修改保存之前进行巡检人员的处理
       var objs = [];
-      // if (!that.nodeDetail.personFormList && that.nodeDetail.personNames) {
-      //   that.nodeDetail.personNames = that.nodeDetail.personNames.split(",")
-      //   that.nodeDetail.personIdList.forEach(function (item, index) {
-      //     objs.push({
-      //       personId: item,
-      //       personName: that.nodeDetail.personNames[index]
-      //     })
-      //   });
-      //   that.nodeDetail.personFormList = objs;
-      // }
-      // delete that.nodeDetail.personNames;
-      // delete that.nodeDetail.personIdList;
       if (that.verrify(that.nodeDetail)) {
         $.ajax({
           type: "post",
@@ -724,7 +600,7 @@ var index = new Vue({
         xxwsWindowObj.xxwsAlert("位置不能为空");
         return false;
       }
-      if (!obj.groupName) {
+      if (!obj.groupName.trim()) {
         xxwsWindowObj.xxwsAlert("请选择所属组");
         return false;
       }
@@ -766,15 +642,19 @@ var index = new Vue({
     chooseGroup: function () {
       var that = this;
       $("#departmentSelect").modal();
-      $("#departmentSelect").on('shown.bs.modal', function (e) {
+      // $("#departmentSelect").on('shown.bs.modal', function (e) {
         var selectArr = [];
         if (!that.isEditOrView && that.nodeDetail.distributionStatus != 0) {
           selectArr.push({
             id: that.nodeDetail.groupId,
           });
+        }else if( that.nodeForm.groupId){
+           selectArr.push({
+            id: that.nodeForm.groupId,
+          });
         }
         groupTreeObj.requestPeopleTree(selectArr, 'radio');
-      });
+      // });
     },
     quiteChooseGroup: function () {
       var that = this;

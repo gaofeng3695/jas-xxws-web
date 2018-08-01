@@ -6,11 +6,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="/lib/css/bootstrap.css" rel="stylesheet">
-  <!--<link href="/lib/css/zTreeStyle.css" rel="stylesheet">-->
+  <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
   <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
   <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
   <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
   <link href="/src/css/keyword/collectKey.css" rel="stylesheet" />
+  <link href="/src/css/common/group.tree.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -28,10 +29,6 @@
       </ul>
       <div class="nodeList " v-show="isSearchNode">
         <div id="node" class="  sub_wrapper">
-          <!--<div class="list-title">
-            必经点列表
-            <span class="list-close"> X</span>
-          </div>-->
           <div class=" result scrollContainer">
             <div v-show="noResult" style="text-align: center;margin-top:10px;">
               没有查到数据
@@ -42,11 +39,17 @@
                   <div class=" fl hidd  wid300">
                     <span>名称：</span>
                     <span> {{item.name}} </span> </div>
-                  <div class="fr clred" v-if="item.inclusionStatus==0">
-                    未纳入
+                  <div class="fr clred" v-if="item.distributionStatus==0">
+                    未分配
                   </div>
-                  <div class="fr clrb" v-if="item.inclusionStatus==1">
-                    已纳入
+                  <div class="fr clrb" v-if="item.distributionStatus==1">
+                    已分配
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="wid364 hidd">
+                    <span>编号：</span>
+                    <span>{{item.code}}</span>
                   </div>
                 </div>
                 <div class="item">
@@ -57,8 +60,8 @@
                 </div>
                 <div class="item">
                   <div class="wid364 hidd">
-                    <span>所属计划：</span>
-                    <span>{{item.planNames}}</span>
+                    <span>所属组别：</span>
+                    <span>{{item.groupName}}</span>
                   </div>
                 </div>
               </li>
@@ -69,7 +72,6 @@
       <div class="tool" v-show="isShowTool">
         <div class="item" @click="getNode">取点录入</div>
         <div class="item" @click="inputNode">手动录入</div>
-        <!--<div class="item" @click="eventNode">事件转换</div>-->
       </div>
     </div>
     <!-- 左上角tab切换 结束-->
@@ -79,8 +81,8 @@
     <!-- 地图容器 结束 -->
     <!--右上角切换-->
     <div class="change">
-      <div class="allot fl" @click="allotBtn">已纳入 <span :class="allot?'active':''"></span></div>
-      <div class="noAllot fr" @click="noAllotBtn">未纳入 <span :class="noallot?'active':''"></span></div>
+      <div class="allot fl" @click="allotBtn">已分配 <span :class="allot?'active':''"></span></div>
+      <div class="noAllot fr" @click="noAllotBtn">未分配 <span :class="noallot?'active':''"></span></div>
     </div>
     <!--必经点详情开始-->
     <div class="detail" v-show="isDetailNode">
@@ -107,7 +109,6 @@
         <div class="item">
           <div class="fl wid100"><span style="color:red">*</span>巡检间隔</div>
           <div class="fl wid">
-            <!--<input type="text" class="form-control wid160" v-model="nodeDetail.inspectionInterval" :disabled="isEditOrView">-->
             <select name="inspectionInterval" style="margin-left:5px" id="inspectionInterval" class="form-control wid160" v-model="nodeDetail.inspectionInterval"
               :disabled="isEditOrView">
                           <option value="1">1</option>
@@ -149,6 +150,22 @@
           <div class="fl wid100"><span style="color:red">*</span>纬度</div>
           <div class="fl wid">
             <input type="text" class="form-control " v-model="nodeDetail.bdLat" :disabled="isEditOrView">
+          </div>
+        </div>
+        <div class="item">
+          <div class="fl wid100"><span style="color:red">*</span>类别</div>
+          <div class="fl wid">
+            <select type="text" class="form-control " v-model="nodeDetail.category" :disabled="isEditOrView">
+                  <option value="1">I类</option>
+                  <option value="2">II类</option>
+            </select>
+          </div>
+        </div>
+        <div class="item">
+          <div class="fl wid100"><span style="color:red">*</span>所属组</div>
+          <div class="fl wid">
+            <input type="text" readonly class="form-control" :disabled="isEditOrView" placeholder="请选择组别" v-model="nodeDetail.groupName"
+              @click="chooseGroup">
           </div>
         </div>
         <div class="item">
@@ -203,9 +220,6 @@
                     </div>
                     <div class="list_right">
                       <input type="text" class="form-control" placeholder="单位：每天" v-model="nodeForm.inspectionTimes">
-                      <!--<span>次/每天</span>-->
-                      <!--<input type="text" class="form-control inline wid110" v-model="nodeForm.inspectionDays" disabled>
-                    <span> 天</span>-->
                     </div>
                   </div>
                   <div class="form_part">
@@ -227,8 +241,6 @@
                           <option value="11">11小时</option>
                           <option value="12">12小时</option>
                         </select>
-                      <!--<input type="text" class="form-control" placeholder="单位：小时" v-model="nodeForm.inspectionInterval">-->
-                      <!--<span> 小时</span>-->
                     </div>
                   </div>
                 </div>
@@ -257,7 +269,6 @@
                     </div>
                     <div class="list_right">
                       <input type="text" class="form-control " placeholder="单位：米" v-model="nodeForm.effectiveRadius">
-                      <!--<span> 米</span>-->
                     </div>
                   </div>
                   <div class="form_part">
@@ -269,6 +280,28 @@
                     </div>
                   </div>
                 </div>
+                <div class="form_list">
+                  <div class="form_part">
+                    <div class="list_left text-right">
+                      <i>*</i>类别
+                    </div>
+                    <div class="list_right">
+                      <select name="category" id="category" class="form-control" v-model="nodeForm.category">
+                          <option value="1">I类</option>
+                          <option value="2">II类</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="form_part">
+                    <div class="list_left text-right">
+                      <i>*</i>所属组
+                    </div>
+                    <div class="list_right">
+                      <input type="text" readonly class="form-control" placeholder="请选择组别" v-model="nodeForm.groupName" @click="chooseGroup">
+                    </div>
+                  </div>
+                </div>
+
                 <div class="form_list">
                   <div class="list_left text-right">
                     备注
@@ -289,9 +322,27 @@
       </div>
     </div>
 
+    <!--组别的选择-->
 
-
-
+    <!--打开邀请人员组织结构的选择-->
+    <div id="departmentSelect" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>选择<a class="close" data-dismiss="modal">×</a></h3>
+          </div>
+          <div class="modal-body">
+            <div class="department_select scrollContainer">
+              <ul id="group_list" class="ztree"></ul>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn submit" @click="quiteChooseGroup">确定</button>
+            <button class="btn" data-dismiss="modal">取消</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!--事件列表模态框用于转换-->
   </div>
@@ -314,6 +365,7 @@
   <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
   <script type="text/javascript" src="/src/js/common/coordTransform.js"></script>
   <script type="text/javascript" src="/src/js/common/common.js"></script>
+  <script type="text/javascript" src="/src/js/common/group.tree.js"></script>
   <script type="text/javascript" src="/src/js/keyword/collectKey.js"></script>
   <!--<script type="text/javascript" src="/src/js/common/people.tree.js"></script>-->
   <script>

@@ -266,6 +266,36 @@ var routerObj = {
           vm.$data.initRouteName = 'keyplan';
         }
       },
+      '/settingArea': {
+        on: function () {
+          vm.loadRelativePage("#/settingArea");
+          if (tjSwitch == 1) {
+            tjSdk.track('区域分组管理');
+          }
+        },
+        after: function () {
+          vm.$data.initRouteName = 'settingArea';
+        }
+      },
+      '/peopleAndNodeRelation': {
+        on: function () {
+          vm.loadRelativePage("#/peopleAndNodeRelation");
+          if (tjSwitch == 1) {
+            tjSdk.track('人员关系设置');
+          }
+        },
+      },
+      '/checkOnWork': {
+        on: function () {
+          vm.loadRelativePage("#/checkOnWork");
+          if (tjSwitch == 1) {
+            tjSdk.track('考勤日历');
+          }
+        },
+        after: function () {
+          vm.$data.initRouteName = 'checkOnWork';
+        }
+      },
       '/taskNode': {
         on: function () {
           // vm.loadRelativePage("/src/html/userArea.html");
