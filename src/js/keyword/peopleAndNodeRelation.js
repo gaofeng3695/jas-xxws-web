@@ -160,17 +160,23 @@ var vue = new Vue({
     chooseStatus: function (e) {
       var t = e.target;
       this.distributionStatus = $(t).attr('data-value');
+      this.searchObj.pageNum = 1;
       this.refreshTable();
     },
     clearTable: function () {
       var that = this;
       that.keyword = "";
       that.distributionStatus = "";
+      that.searchObj.pageNum = 1;
+      that.refreshTable();
+    },
+    search: function () {
+      var that = this;
+      that.searchObj.pageNum = 1;
       that.refreshTable();
     },
     refreshTable: function () {
       var that = this;
-      that.searchObj.pageNum = '1';
       that.searchObj.keyword = that.keyword;
       that.searchObj.distributionStatus = that.distributionStatus;
       $('#table').bootstrapTable('refreshOptions', {
@@ -486,8 +492,8 @@ var chooseNode = new Vue({
         success: function (data) {
           if (data.success == 1) {
             callback();
-          }else{
-             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
+          } else {
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
         }
       });

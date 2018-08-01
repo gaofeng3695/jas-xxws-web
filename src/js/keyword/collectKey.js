@@ -519,46 +519,72 @@ var index = new Vue({
       var that = this;
       //修改保存之前进行巡检人员的处理
       var objs = [];
-      // if (!that.nodeDetail.personFormList && that.nodeDetail.personNames) {
-      //   that.nodeDetail.personNames = that.nodeDetail.personNames.split(",")
-      //   that.nodeDetail.personIdList.forEach(function (item, index) {
-      //     objs.push({
-      //       personId: item,
-      //       personName: that.nodeDetail.personNames[index]
-      //     })
-      //   });
-      //   that.nodeDetail.personFormList = objs;
-      // }
-      // delete that.nodeDetail.personNames;
-      // delete that.nodeDetail.personIdList;
       if (that.verrify(that.nodeDetail)) {
         $.ajax({
-          type: "post",
+          type: "get",
           contentType: "application/json",
-          url: "/cloudlink-inspection-event/keyPoint/update?token=" + lsObj.getLocalStorage('token'),
-          data: JSON.stringify(that.nodeDetail),
+          url: "/cloudlink-inspection-event/keyPoint/updateCheckGroup?token=" + lsObj.getLocalStorage('token'),
+          data: {
+            id: that.nodeDetail.objectId,
+            groupId:that.nodeDetail.groupId
+          },
           dataType: "json",
           success: function (data) {
             if (data.success == 1) {
-              that.isEditOrView = !that.isEditOrView;
-              if (typeof callback === 'function') {
-                if (that.nodeDetail.distributionStatus == 0) {
-                  that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
-                    anchor: new BMap.Size(15, 42)
-                  }));
-                } else {
-                  that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/allot.png", new BMap.Size(29, 42), {
-                    anchor: new BMap.Size(15, 42)
-                  }));
-                }
-                callback();
+              if (data.rows[0] == true) {
+                var defaultOptions = {
+                  tip: '该关键点所在组已经分配到人，是否需要移到其他组进行重新分配',
+                  name_title: '提示',
+                  name_cancel: '取消',
+                  name_confirm: '确定',
+                  isCancelBtnShow: true,
+                  callBack: function () {
+                    that.isUpdateToServer();
+                  },
+                  cancelCallBack: function () {
+                    that.nodeDetail.groupId = that.nodeDetail.history.groupId;
+                    that.nodeDetail.groupName = that.nodeDetail.history.groupName;
+                  },
+                };
+                xxwsWindowObj.xxwsAlert(defaultOptions);
               } else {
-                that.refreshDraw();
+                that.isUpdateToServer();
               }
+            } else {
+              xxwsWindowObj.xxwsAlert("服务器异常，请稍候尝试");
             }
           }
-        });
+        })
       };
+    },
+    isUpdateToServer: function () {
+      var that = this;
+      $.ajax({
+        type: "post",
+        contentType: "application/json",
+        url: "/cloudlink-inspection-event/keyPoint/update?token=" + lsObj.getLocalStorage('token'),
+        data: JSON.stringify(that.nodeDetail),
+        dataType: "json",
+        success: function (data) {
+          if (data.success == 1) {
+            that.isEditOrView = !that.isEditOrView;
+            if (typeof callback === 'function') {
+              if (that.nodeDetail.distributionStatus == 0) {
+                that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
+                  anchor: new BMap.Size(15, 42)
+                }));
+              } else {
+                that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/allot.png", new BMap.Size(29, 42), {
+                  anchor: new BMap.Size(15, 42)
+                }));
+              }
+              callback();
+            } else {
+              that.refreshDraw();
+            }
+          }
+        }
+      });
     },
     cancelEditNode: function () {
       //取消点的编辑
