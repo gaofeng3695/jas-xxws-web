@@ -91,15 +91,17 @@ var vue = new Vue({
                         sortable: false, //启用排序
                         width: '15%',
                         editable: true,
-                    }, {
-                        field: 'mobileNum', //域值
-                        title: '手机号', //内容
-                        align: 'center',
-                        visible: true, //false表示不显示
-                        sortable: false, //启用排序
-                        width: '11%',
-                        editable: true,
-                    }, {
+                    },
+                    //  {
+                    //     field: 'mobileNum', //域值
+                    //     title: '手机号', //内容
+                    //     align: 'center',
+                    //     visible: true, //false表示不显示
+                    //     sortable: false, //启用排序
+                    //     width: '11%',
+                    //     editable: true,
+                    // },
+                     {
                         field: 'orgName', //域值
                         title: '部门', //内容
                         align: 'center',
@@ -158,6 +160,8 @@ var vue = new Vue({
             var setting = {
                 edit: {
                     enable: true,
+                    removeTitle:"删除区域/组",
+                    renameTitle:"修改区域/组",
                     showRemoveBtn: function setRemoveBtn(treeId, treeNode) {
                         return treeNode.id && _this.currentNode.nodeId == treeNode.id;
                     },
@@ -177,7 +181,7 @@ var vue = new Vue({
                             icoObj.before(switchObj);
                         }
                         var sObj = $("#" + treeNode.tId + "_span"); //获取节点信息
-                        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId + "' title='add node' ></span>"; //定义添加按钮
+                        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId + "' title='添加区域/组' ></span>"; //定义添加按钮
                         if (!treeNode.leaf || treeNode.parentId == '0') {
                             sObj.after(addStr); //加载添加按钮
                             $("#addBtn_" + treeNode.tId).bind("click", function (e) {

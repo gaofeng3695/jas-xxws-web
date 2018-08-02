@@ -63,9 +63,17 @@ var vue = new Vue({
             visible: false, //false表示不显示
             sortable: false, //启用排序
             editable: true,
+          },{
+            field: 'groupCompletePath', //域值
+            title: '所属区域/分组',
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+
+            editable: true,
           }, {
             field: 'personName', //域值
-            title: '姓名', //内容
+            title: '人员名称', //内容
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
@@ -79,12 +87,11 @@ var vue = new Vue({
               };
             }
           }, {
-            field: 'groupCompletePath', //域值
-            title: '所属',
+            field: 'orgName', //域值
+            title: '所在部门', //内容
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-
             editable: true,
           }, {
             field: 'keyPointCount', //域值
@@ -101,29 +108,7 @@ var vue = new Vue({
             //   }
             // }
           },
-          {
-            field: 'orgName', //域值
-            title: '部门', //内容
-            align: 'center',
-            visible: true, //false表示不显示
-            sortable: false, //启用排序
-            editable: true,
-          },
-          {
-            field: 'roleNames', //域值
-            title: '角色', //内容
-            align: 'center',
-            visible: true, //false表示不显示
-            sortable: false, //启用排序
-            editable: true,
-            formatter: function (val) {
-              if (val == "" || val == "null") {
-                return "";
-              } else {
-                return val;
-              }
-            }
-          },
+
           {
             field: 'operate',
             title: '操作',
@@ -458,7 +443,7 @@ var chooseNode = new Vue({
     submit: function () {
       var that = this;
       if (that.allotNodeArrs.length == 0) {
-        xxwsWindowObj.xxwsAlert("请选择需要分配的必经点");
+        xxwsWindowObj.xxwsAlert("请选择需要分配的关键点");
         return;
       }
       that.nodeAndPlanToServer(function () {
