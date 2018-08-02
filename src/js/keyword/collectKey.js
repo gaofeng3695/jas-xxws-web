@@ -794,7 +794,7 @@ var index = new Vue({
       $("#departmentSelect").modal();
       $("#departmentSelect").on('shown.bs.modal', function (e) {
         var selectArr = [];
-        if (!that.isEditOrView && that.nodeDetail.distributionStatus != 0) {
+        if (!that.isEditOrView ) {
           selectArr.push({
             id: that.nodeDetail.groupId,
           });
