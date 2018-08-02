@@ -273,8 +273,8 @@ var vue = new Vue({
             var that = this;
             $("#" + node.tId + "_a").find(".add").css("display", "block");
             that.zTree.selectNode(node);
-            that.currentNode.nodeId = node.nodeId;
-            that.currentNode.nodeName = node.nodeName;
+            that.currentNode.nodeId = node.id;
+            that.currentNode.nodeName = node.text;
         },
         createArea: function () {
             var that = this;
@@ -286,12 +286,12 @@ var vue = new Vue({
             }
             if (that.currentNode.nodeId) {
                 that.form.parentId = that.currentNode.nodeId;
-                that.form.parentName = that.currentNode.nodeName;
+                // that.form.parentName = that.currentNode.nodeName;
                 that.form.level = 1;
                 that.addGroup = "分组名称：";
             } else {
                 that.form.parentId = '0';
-                that.form.parentName = "";
+                // that.form.parentName = "";
                 that.form.level = 0;
                 that.addGroup = "区域名称：";
             }
