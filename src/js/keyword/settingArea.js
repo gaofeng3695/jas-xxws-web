@@ -20,7 +20,7 @@ var vue = new Vue({
             searchObj: {
                 pageSize: 1,
                 pageNum: 10,
-                groupId:""
+                groupId: ""
             },
             selectPeopleArr: []
         }
@@ -64,7 +64,7 @@ var vue = new Vue({
                 queryParams: function (params) {
                     that.searchObj.pageSize = params.pageSize;
                     that.searchObj.pageNum = params.pageNumber;
-                    that.searchObj.groupId = that.currentNode.nodeId||"";
+                    that.searchObj.groupId = that.currentNode.nodeId || "";
                     that.searchObj.ifRecursion = that.currentNode.leaf ? false : true;
                     return that.searchObj;
                 },
@@ -115,7 +115,7 @@ var vue = new Vue({
                         sortable: false, //启用排序
                         width: '13%',
                         formatter: function (val) {
-                            if (val=="null") {
+                            if (val == "null") {
                                 return "";
                             }
                             return val
@@ -264,6 +264,7 @@ var vue = new Vue({
         createArea: function () {
             var that = this;
             delete that.form.id; //新增的时候没有id
+            that.form.title = '添加';
             if (that.currentNode.parentId != '0' && that.currentNode.leaf) {
                 xxwsWindowObj.xxwsAlert("区域划分不能再细分");
                 return;
@@ -314,6 +315,10 @@ var vue = new Vue({
                             that.getAllData();
                         });
                     } else {
+                        if (data.code == "4005") {
+                            xxwsWindowObj.xxwsAlert("该名称已存在");
+                            return;
+                        }
                         xxwsWindowObj.xxwsAlert(msg + "失敗");
                     }
                 },
@@ -398,7 +403,7 @@ var vue = new Vue({
                 queryParams: function () {
                     that.searchObj.pageSize = 10;
                     that.searchObj.pageNum = 1;
-                    that.searchObj.groupId = that.currentNode.nodeId||"";
+                    that.searchObj.groupId = that.currentNode.nodeId || "";
                     that.searchObj.ifRecursion = that.currentNode.leaf ? false : true;
                     return that.searchObj;
                 }
