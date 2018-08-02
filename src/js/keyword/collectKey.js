@@ -450,10 +450,10 @@ var index = new Vue({
     },
     delNode: function () {
       var that = this;
-      var tip = '您是否删除该必经点？';
-      if (that.nodeDetail.planNames) {
-        tip = "删除该点，将影响【" + that.nodeDetail.planNames + "】等计划，是否继续删除!";
-      }
+      var tip = '您是否删除该关键点？';
+      // if (that.nodeDetail.planNames) {
+      //   tip = "删除该点，将影响【" + that.nodeDetail.planNames + "】等计划，是否继续删除!";
+      // }
       var defaultOptions = {
         tip: tip,
         name_title: '提示',
@@ -629,11 +629,11 @@ var index = new Vue({
             that.refreshDraw();
           } else {
             if (data.msg.indexOf("name") > -1) {
-              xxwsWindowObj.xxwsAlert("必经点名称重复");
+              xxwsWindowObj.xxwsAlert("关键点名称重复");
               return;
             }
             if (data.msg.indexOf("code") > -1) {
-              xxwsWindowObj.xxwsAlert("必经点编号重复");
+              xxwsWindowObj.xxwsAlert("关键点编号重复");
               return;
             }
             xxwsWindowObj.xxwsAlert("服务器异常，请稍候尝试");
@@ -691,19 +691,19 @@ var index = new Vue({
       //验证
       var that = this;
       if (!obj.name.trim()) {
-        xxwsWindowObj.xxwsAlert("必经点名称不能为空");
+        xxwsWindowObj.xxwsAlert("关键点名称不能为空");
         return false;
       }
       if (obj.name.length > 45) {
-        xxwsWindowObj.xxwsAlert("必经点名称长度不能超过45个");
+        xxwsWindowObj.xxwsAlert("关键点名称长度不能超过45个");
         return false;
       }
       if (!obj.code.trim()) {
-        xxwsWindowObj.xxwsAlert("必经点编号不能为空");
+        xxwsWindowObj.xxwsAlert("关键点编号不能为空");
         return false;
       }
       if (obj.code.length > 45) {
-        xxwsWindowObj.xxwsAlert("必经点编号长度不能超过45个");
+        xxwsWindowObj.xxwsAlert("关键点编号长度不能超过45个");
         return false;
       }
       var times = obj.inspectionTimes + "";
