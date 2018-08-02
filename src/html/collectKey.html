@@ -37,7 +37,6 @@
               <li v-for="item in nodeInfoArrys" @click="clickItem(item)">
                 <div class="item">
                   <div class=" fl hidd  wid300">
-                    <span>名称：</span>
                     <span> {{item.name}} </span> </div>
                   <div class="fr clred" v-if="item.distributionStatus==0">
                     未分配
@@ -47,23 +46,19 @@
                   </div>
                 </div>
                 <div class="item">
-                  <div class="wid364 hidd">
-                    <span>编号：</span>
+                  <div class="wid170 hidd fl">
                     <span>{{item.code}}</span>
                   </div>
-                </div>
-                <div class="item">
-                  <div class="wid364 hidd">
-                    <span>位置：</span>
-                    <span>{{item.location}}</span>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="wid364 hidd">
-                    <span>所属组别：</span>
+                   <div class="wid170 hidd fr">
                     <span>{{item.groupName}}</span>
                   </div>
                 </div>
+                <div class="item">
+                  <div class=" hidd locationbg">
+                    <span>{{item.location}}</span>
+                  </div>
+                </div>
+
               </li>
             </ul>
           </div>

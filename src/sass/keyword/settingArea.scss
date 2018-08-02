@@ -204,16 +204,15 @@ body {
                     height: 170px;
                     overflow: hidden;
                     background: #fff;
-                    border-radius: 5px;
-                    // padding-top: 40px;
-                     padding-top: 60px;
+                    border-radius: 5px; // padding-top: 40px;
+                    padding-top: 60px;
                     .department_list {
                         width: 500px;
                         margin: 0 auto;
                         padding-bottom: 20px;
                         .list_l {
                             float: left;
-                            width: 130px;
+                            width: 100px;
                             font-size: 16px;
                             line-height: 34px;
                             i {
@@ -225,7 +224,7 @@ body {
                         }
                         .list_r {
                             width: auto;
-                            margin-left: 130px;
+                            margin-left: 100px;
                             .parent_input {
                                 cursor: pointer;
                             }
@@ -331,6 +330,7 @@ body {
                 background: url(/src/images/management/close.png) center no-repeat;
             }
             &.edit {
+                display: none;
                 width: 17px;
                 height: 17px;
                 margin-right: 8px;
@@ -340,6 +340,7 @@ body {
                 background: url(/src/images/pipeline_map/edit_h.png) center no-repeat;
             }
             &.remove {
+                display: none;
                 width: 15px;
                 height: 18px;
                 margin-right: 8px;
@@ -383,6 +384,7 @@ body {
 .remove,
 .add {
     float: right;
+    margin-right: 8px !important;
     margin-top: 4px !important; // padding-left:20px;
 }
 

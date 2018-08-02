@@ -8,6 +8,7 @@ var vue = new Vue({
                 nodeId: "",
             }, //当前选中的节点
             disabled: true,
+            addGroup: "",
             form: {
                 objectId: "",
                 title: '添加',
@@ -101,7 +102,7 @@ var vue = new Vue({
                     //     width: '11%',
                     //     editable: true,
                     // },
-                     {
+                    {
                         field: 'orgName', //域值
                         title: '部门', //内容
                         align: 'center',
@@ -160,8 +161,8 @@ var vue = new Vue({
             var setting = {
                 edit: {
                     enable: true,
-                    removeTitle:"删除区域/组",
-                    renameTitle:"修改区域/组",
+                    removeTitle: "删除",
+                    renameTitle: "修改",
                     showRemoveBtn: function setRemoveBtn(treeId, treeNode) {
                         return treeNode.id && _this.currentNode.nodeId == treeNode.id;
                     },
@@ -170,6 +171,7 @@ var vue = new Vue({
                     },
                 },
                 view: {
+                    showTitle: false,
                     showLine: false,
                     showIcon: false,
                     addDiyDom: function (treeId, treeNode) {
@@ -181,9 +183,13 @@ var vue = new Vue({
                             icoObj.before(switchObj);
                         }
                         var sObj = $("#" + treeNode.tId + "_span"); //获取节点信息
-                        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId + "' title='添加区域/组' ></span>"; //定义添加按钮
+                        var title = "添加分组";
+                        if (!treeNode.id) {
+                            title = "添加区域";
+                        }
+                        var addStr = "<span class='button add' id='addBtn_" + treeNode.tId + "' title='" + title + "' ></span>"; //定义添加按钮
                         if (!treeNode.leaf || treeNode.parentId == '0') {
-                            sObj.after(addStr); //加载添加按钮
+                            sObj.before(addStr); //加载添加按钮
                             $("#addBtn_" + treeNode.tId).bind("click", function (e) {
                                 e.stopPropagation();
                                 _this.createArea();
@@ -242,6 +248,11 @@ var vue = new Vue({
                         _this.form.objectId = treeNode.id;
                         _this.form.name = treeNode.text;
                         _this.form.parentId = treeNode.parentId;
+                        if (treeNode.parentId == '0') {
+                            _this.addGroup = "区域名称：";
+                        } else {
+                            _this.addGroup = "分组名称：";
+                        }
                         $("#departmentAdd").modal();
                         return false;
                     }
@@ -277,10 +288,12 @@ var vue = new Vue({
                 that.form.parentId = that.currentNode.nodeId;
                 that.form.parentName = that.currentNode.nodeName;
                 that.form.level = 1;
+                that.addGroup = "分组名称：";
             } else {
                 that.form.parentId = '0';
                 that.form.parentName = "";
                 that.form.level = 0;
+                that.addGroup = "区域名称：";
             }
             that.form.name = "";
             $("#departmentAdd").modal();
@@ -293,7 +306,8 @@ var vue = new Vue({
             var url = "";
             var msg = "";
             if (that.form.name.trim() == "") {
-                xxwsWindowObj.xxwsAlert("名称不能为空");
+                var tip = that.addGroup.subString(0, that.addGroup.length);
+                xxwsWindowObj.xxwsAlert(tip + "不能为空");
                 return;
             }
             if (that.form.title == '修改') {
