@@ -173,26 +173,35 @@ var indexs = new Vue({
             width: "20%",
             events: {
               'click .publish1': function (e, value, row, index) {
-                var tip = "您是否发布该计划？"
-                if (row.publishStatus == 1) {
-                  tip = "您是否关闭已发布的计划？"
+                var tip= "您是否发布该计划？";
+                if(row.publishStatus == 2){
+                  tip= "您是否重新发布该计划？"
                 }
                 var defaultOptions = {
-                  tip: tip,
+                  tip:tip,
                   name_title: '提示',
                   name_cancel: '取消',
                   name_confirm: '确定',
                   isCancelBtnShow: true,
                   callBack: function () {
-                    if (row.publishStatus == 1) {
-                      that.cancelPublish(row.objectId);
-                    } else {
-                      that.toPublish(row.objectId);
-                    }
+                    that.toPublish(row.objectId);
                   }
                 };
                 xxwsWindowObj.xxwsAlert(defaultOptions);
                 return false;
+              },
+              'click .ban': function (e, value, row, index) {
+                var defaultOptions = {
+                  tip: "您是否关闭该计划？",
+                  name_title: '提示',
+                  name_cancel: '取消',
+                  name_confirm: '确定',
+                  isCancelBtnShow: true,
+                  callBack: function () {
+                    that.cancelPublish(row.objectId);
+                  }
+                };
+                xxwsWindowObj.xxwsAlert(defaultOptions);
               },
               'click .setNode': function (e, value, row, index) {
                 that.openChooseGroup(row);
@@ -201,23 +210,27 @@ var indexs = new Vue({
             formatter: function (value, row, index) {
               var publish = "publish1";
               var set = "setNode";
-              var title = "发布";
+              var ban = "ban";
+              var title="发布计划";
               if (row.publishStatus == 0) {
-                title = "发布";
+                ban = "ban_end";
               }
               if (row.publishStatus == 1) {
-                title = "关闭计划";
-                // set = "setNode_end";
+                set = "setNode_end";
+                publish = "publish1_end";
               }
               if (row.publishStatus == 2) {
-                publish = "publish1_end";
-                title = "已关闭";
+                title="重新发布";
+                publish = "publish1";
                 set = "setNode_end";
+                ban = "ban_end";
               }
               return [
-                '<a class="' + publish + '"  href="javascript:void(0)" title="' + title + '">',
+                '<a class="' + publish + '"  href="javascript:void(0)" title="'+title+'">',
                 '<i></i>',
                 '<a class="' + set + '"  href="javascript:void(0)" title="配置">',
+                '<i></i>',
+                '<a class="' + ban + '"  href="javascript:void(0)" title="关闭计划">',
                 '<i></i>',
               ].join('');
             }
@@ -356,7 +369,7 @@ var indexs = new Vue({
         success: function (data) {
           if (data.success == -1) {
             if (data.code == "GJD001") {
-              tip = "该计划下存在关键点,是否继续删除"
+              tip = "该计划下存在关键点,是否继续删除？"
             } else if (data.code == "GJD_PLAN_001") {
               tip = '该计划已经发布，确认是否删除？';
             } else {
@@ -416,11 +429,11 @@ var indexs = new Vue({
             });
           } else {
             if (data.code == "GJD_PLAN_003") {
-              xxwsWindowObj.xxwsAlert("该计划下未分配到组，请先分配");
+              xxwsWindowObj.xxwsAlert("该计划下还未分配到区域/分组，请先分配");
               return;
             }
             if (data.code == "GJD_GROUP_001") {
-              xxwsWindowObj.xxwsAlert("您分配的区域组下面没有人员，请重新分配");
+              xxwsWindowObj.xxwsAlert("您所选择的区域/分组中所包含的关键点，还未分配巡检人员，请先进行【人员关键点设置】");
               return;
             }
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");

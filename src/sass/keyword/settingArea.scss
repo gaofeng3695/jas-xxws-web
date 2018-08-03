@@ -13,6 +13,26 @@ body {
     position: relative;
 }
 
+.mask {
+    position: absolute;
+    background: #000;
+    opacity: .5;
+    height: 100%;
+    width: 100%;
+    z-index: 3000;
+    .add {
+        opacity: 0;
+        width: 300px;
+        height: 40px;
+        position: absolute;
+        top: 40px;
+        left: 20px;
+    }
+    .text {
+        color: #fff;
+    }
+}
+
 .enterprise {
     height: 100%;
     font-size: 14px;
@@ -65,12 +85,33 @@ body {
             overflow: hidden !important;
             width: auto;
             height: 100%;
-            padding: 0px 10px 15px 10px;
+            padding: 0px 10px;
+            background: rgb(255, 255, 255);
             margin-left: 315px; // border: 1px solid #ededed;
             // overflow-x: auto;
             // overflow-y: auto;
             // background: #fff;
-            border-radius: 6px; // box-shadow: 0px 1px 8px #d3d3d3;
+            border-radius: 6px;
+            box-shadow: 0px 1px 8px #d3d3d3;
+            position: relative;
+            .nodata {
+                width: 400px;
+                height: 200px;
+                margin: auto;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                text-align: center;
+                line-height: 200px;
+                border: 2px dashed #ededed;
+                div {
+                    padding-top:10px;
+                    color: #999;
+                    font-size: 16px;
+                }
+            }
             .bootstrap-table {
                 padding-bottom: 15px;
             }

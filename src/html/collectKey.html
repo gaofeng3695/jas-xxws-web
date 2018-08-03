@@ -159,7 +159,7 @@
         <div class="item">
           <div class="fl wid100"><span style="color:red">*</span>所属组</div>
           <div class="fl wid">
-            <input type="text" readonly class="form-control" :disabled="isEditOrView" placeholder="请选择组别" v-model="nodeDetail.groupName"
+            <input type="text" readonly class="form-control"  :disabled="isEditOrView" placeholder="请选择组别" v-model="nodeDetail.groupName"
               @click="chooseGroup">
           </div>
         </div>
@@ -245,7 +245,7 @@
                       <i>*</i>经度
                     </div>
                     <div class="list_right">
-                      <input type="text" class="form-control" v-model="nodeForm.lon" placeholder="请输入坐标点（84）">
+                      <input type="text" class="form-control" v-model="nodeForm.lon" placeholder="请输入WGPS84坐标经度">
                     </div>
                   </div>
                   <div class="form_part">
@@ -253,7 +253,7 @@
                       <i>*</i>纬度
                     </div>
                     <div class="list_right">
-                      <input type="text" class="form-control" v-model="nodeForm.lat" placeholder="请输入坐标点（84）">
+                      <input type="text" class="form-control" v-model="nodeForm.lat" placeholder="请输入WGPS84坐标纬度">
                     </div>
                   </div>
                 </div>
@@ -268,7 +268,7 @@
                   </div>
                   <div class="form_part">
                     <div class="list_left text-right">
-                      <i>*</i>位置
+                      <i>*</i>位置描述
                     </div>
                     <div class="list_right">
                       <input type="text" class="form-control" placeholder="请输入位置" v-model="nodeForm.location">
@@ -292,7 +292,7 @@
                       <i>*</i>所属组
                     </div>
                     <div class="list_right">
-                      <input type="text" readonly class="form-control" placeholder="请选择组别" v-model="nodeForm.groupName" @click="chooseGroup">
+                      <input type="text" readonly class="form-control" style="background:#fff" placeholder="请选择组别" v-model="nodeForm.groupName" @click="chooseGroup">
                     </div>
                   </div>
                 </div>
@@ -324,7 +324,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h3>选择<a class="close" data-dismiss="modal">×</a></h3>
+            <h3>选择区域/分组<a class="close" data-dismiss="modal">×</a></h3>
           </div>
           <div class="modal-body">
             <div class="department_select scrollContainer">

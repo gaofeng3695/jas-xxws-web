@@ -33,17 +33,17 @@ var index = new Vue({
         name: "",
         code: "",
         inspectionDays: 1, //巡检天数
-        inspectionTimes: "", //巡检频次
+        inspectionTimes: "1", //巡检频次
         inspectionInterval: 1, //巡检间隔
         lon: "",
         lat: "",
         remark: "",
-        effectiveRadius: "",
+        effectiveRadius: "50",
         // personFormList: [],
         origin: "",
         groupName: "",
         groupId: "",
-        category: "", //关键点类别
+        category: "1", //关键点类别
       },
       textCount: 160,
       getNodeMarker: [],
@@ -526,7 +526,7 @@ var index = new Vue({
           url: "/cloudlink-inspection-event/keyPoint/updateCheckGroup?token=" + lsObj.getLocalStorage('token'),
           data: {
             id: that.nodeDetail.objectId,
-            groupId:that.nodeDetail.groupId
+            groupId: that.nodeDetail.groupId
           },
           dataType: "json",
           success: function (data) {
@@ -624,6 +624,7 @@ var index = new Vue({
         success: function (data) {
           if (data.success == 1) {
             $("#addEvent").modal("hide");
+            xxwsWindowObj.xxwsAlert("保存成功");
             that.mapObj.setDefaultCursor(that.defaultCursor);
             that.mapObj.setDraggingCursor(that.draggingCursor);
             that.refreshDraw();
@@ -642,10 +643,10 @@ var index = new Vue({
       });
     },
     initAddForm: function () {
-      for (var key in this.nodeForm) {
-        this.nodeForm[key] = "";
-      }
-      this.nodeForm.inspectionInterval = 1;
+      this.nodeForm.name = "";
+      this.nodeForm.code = "";
+      this.nodeForm.groupId = "";
+      this.nodeForm.groupName = "";
     },
     _locationBd: function () { //84转百度
       var that = this;
@@ -794,7 +795,7 @@ var index = new Vue({
       $("#departmentSelect").modal();
       $("#departmentSelect").on('shown.bs.modal', function (e) {
         var selectArr = [];
-        if (!that.isEditOrView ) {
+        if (!that.isEditOrView) {
           selectArr.push({
             id: that.nodeDetail.groupId,
           });

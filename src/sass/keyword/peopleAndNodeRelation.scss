@@ -159,7 +159,7 @@ html,
             height: 40px;
             line-height: 40px;
             display: block;
-            text-align: center;
+            padding-left: 10px; // text-align: center;
             background: #f5f7fa;
             cursor: pointer;
             .inputbg {
@@ -187,10 +187,10 @@ html,
             margin: 0px;
             padding: 0px;
             li {
+              margin-bottom: 10px;
               padding: 0px 10px;
               list-style: none;
-              height: 40px;
-              line-height: 40px;
+              height: 50px;
               cursor: pointer;
               .check {
                 width: 16px;
@@ -198,6 +198,35 @@ html,
                 float: left;
                 height: 16px;
                 margin-top: 11px;
+              }
+              .item {
+                height: 100%;
+                .itemLeft {
+                  float: left;
+                  width: 20px;
+                }
+                .itemRight {
+                  float: left;
+                  div {
+                    line-height: 25px;
+                  }
+                  .base {
+                    width: 300px;
+                    height: 25px;
+                    .name {
+                      display: inline-block;
+                      width: 150px;
+                      padding: 0px 5px 0px 0px;
+                    }
+                  }
+                  .locationbg {
+                    width: 300px;
+                    height: 25px;
+                    padding-left: 18px;
+                    background: url(/src/images/index/icon_loca.png) no-repeat 0 center;
+                    background-size: 13px 16px;
+                  }
+                }
               }
               .inputbg {
                 background: url(/src/images/pipeline_map/checked.png) 0 no-repeat;
@@ -214,10 +243,8 @@ html,
                 padding: 0px 5px;
               }
               .code {
-                display: inline-block;
-                float: left;
-                width: 90px;
-                padding: 0px 5px;
+                font-size: 12px;
+                color: #999;
               }
               .location {
                 display: inline-block;
@@ -243,8 +270,8 @@ html,
           width: 120px;
           margin: 7px 30px 0 30px;
           font-size: 16px;
-          .submit{
-            background:#59b6fc;
+          .submit {
+            background: #59b6fc;
           }
         }
         .submit {
