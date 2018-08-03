@@ -63,7 +63,7 @@ var vue = new Vue({
             visible: false, //false表示不显示
             sortable: false, //启用排序
             editable: true,
-          },{
+          }, {
             field: 'groupCompletePath', //域值
             title: '所属区域/分组',
             align: 'center',
@@ -447,12 +447,12 @@ var chooseNode = new Vue({
         return;
       }
       that.nodeAndPlanToServer(function () {
-        $("#chooseNode").modal('hide');
-        that.noAllotNodeArrs = [];
-        that.allotNodeArrs = [];
-        that.chooseAllotNode = []; //选中已经分配的点
-        that.chooseNoAllotNode = []; //选中的没有分配的点
         xxwsWindowObj.xxwsAlert("分配成功", function () {
+          $("#chooseNode").modal('hide');
+          that.noAllotNodeArrs = [];
+          that.allotNodeArrs = [];
+          that.chooseAllotNode = []; //选中已经分配的点
+          that.chooseNoAllotNode = []; //选中的没有分配的点
           vue.refreshTable();
         });
       });

@@ -94,8 +94,7 @@ var vue = new Vue({
                     }
                 },
                 //表格的列
-                columns: [
-                       {
+                columns: [{
                         field: 'parentGroupName', //域值
                         title: '区域', //内容
                         align: 'center',
@@ -111,7 +110,7 @@ var vue = new Vue({
                         sortable: false, //启用排序
                         width: '25%',
                         editable: true,
-                    },{
+                    }, {
                         field: 'personName', //域值
                         title: '姓名',
                         align: 'center',
@@ -129,7 +128,8 @@ var vue = new Vue({
                         sortable: false, //启用排序
                         width: '25%',
                         editable: true,
-                    }]
+                    }
+                ]
             });
         },
         getAllData: function () { //获取所有的数据
@@ -371,9 +371,9 @@ var vue = new Vue({
         },
         choosePeople: function () {
             var that = this;
-            $("#stakeholder").modal();
-            $("#stakeholder").on('shown.bs.modal', function (e) {
-                peopleTreeObj.requestPeopleTree($("#stakeholder"), that.selectPeopleArr);
+            $("#selectPeople").modal();
+            $("#selectPeople").on('shown.bs.modal', function (e) {
+                peopleTreeObj.requestPeopleTree($("#selectPeople"), that.selectPeopleArr);
             });
         },
         selectPeople: function () {
@@ -406,6 +406,7 @@ var vue = new Vue({
                 success: function (data) {
                     if (data.success == 1) {
                         xxwsWindowObj.xxwsAlert("分配成功", function () {
+                            $("#selectPeople").modal('hide');
                             that.refreshTable();
                         });
                     } else {
