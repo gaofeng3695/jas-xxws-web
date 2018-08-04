@@ -83,8 +83,8 @@ body {
       cursor: default;
       i {
         display: inline-block;
-        width: 26px;
-        height: 26px;
+        width: 22px;
+        height: 22px;
         background: url(/src/images/node/publish_end.png) no-repeat;
         vertical-align: middle;
         margin: 0 5px;
@@ -94,15 +94,15 @@ body {
       cursor: pointer;
       i {
         display: inline-block;
-        width: 26px;
-        height: 26px;
+        width: 22px;
+        height: 22px;
         background: url(/src/images/node/set.png) no-repeat;
-        background-size: 26px 26px;
+        background-size: 22px 22px;
         vertical-align: middle;
         margin: 0 5px;
         &:hover {
           background: url(/src/images/node/set_e.png) no-repeat;
-          background-size: 26px 26px;
+          background-size: 22px 22px;
         }
       }
     }
@@ -110,20 +110,48 @@ body {
       cursor: default;
       i {
         display: inline-block;
-        width: 26px;
-        height: 26px;
+        width: 22px;
+        height: 22px;
         background: url(/src/images/node/set_ed.png) no-repeat;
-        background-size: 26px 26px;
+        background-size: 22px 22px;
         vertical-align: middle;
         margin: 0 5px;
+      }
+    }
+    .ban {
+      cursor: pointer;
+      i {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url(/src/images/node/ban.png) no-repeat;
+        background-size: 20px 20px;
+        vertical-align: middle;
+        margin: 0 10px;
+        &:hover {
+          background: url(/src/images/node/ban_e.png) no-repeat;
+          background-size: 20px 20px;
+        }
+      }
+    }
+    .ban_end {
+      cursor: default;
+      i {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url(/src/images/node/ban_end.png) no-repeat;
+        background-size: 20px 20px;
+        vertical-align: middle;
+        margin: 0 10px;
       }
     }
     .publish1 {
       cursor: pointer;
       i {
         display: inline-block;
-        width: 26px;
-        height: 26px;
+        width: 22px;
+        height: 22px;
         background: url(/src/images/node/publish.png) no-repeat;
         vertical-align: middle;
         margin: 0 5px;
@@ -366,11 +394,6 @@ body {
   background: #409eff;
 }
 
-
-
-
-
-
 .W60 .th-inner {
   width: 100px !important;
 }
@@ -382,3 +405,15 @@ body {
   vertical-align: middle;
   background: url(/src/images/node/allots.png) no-repeat;
 }
+ul,li{
+  margin:0px;
+  padding:0px;
+}
+// ul{
+//   list-style: none;
+// }
+// li{
+//   max-width:200px;
+//   height:20px;
+//   line-height: 20px;
+// }

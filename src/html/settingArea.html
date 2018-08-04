@@ -27,14 +27,20 @@
                 </div>
             </div>
             <div class="enterprise_list">
-                <div class="row">
-                    <div class="container-fluid ml15 mr15" style="background:#fff;box-shadow: 0 1px 8px #e3e3e3;border-radius: 6px;">
-                        <div id="toolbar" class="btn-group" >
+                <div class="row" v-show="isHtml">
+                    <div class="container-fluid ml15 mr15">
+                        <div id="toolbar" class="btn-group">
                             <button id="addPlan" type="button" class="btn btn-default" @click="choosePeople" :disabled="disabled">
                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>人员分配
                         </button>
                         </div>
                         <table id="table"></table>
+                    </div>
+                </div>
+                <div class="nodata" v-show="!isHtml">
+                    <!--<img src="../images/node/data1.png" alt="" style="width:228px;height:228px;margin-top:-150px;">-->
+                    <div>
+                       请先维护区域/分组信息
                     </div>
                 </div>
             </div>
@@ -66,7 +72,7 @@
         </div>
     </div>
     <!--人员信息-->
-    <div id="stakeholder" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div id="selectPeople" class=" modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -78,7 +84,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button  type="button" class="btn modal_active btn-primary" @click="selectPeople">确定</button>
+                    <button type="button" class="btn modal_active btn-primary" @click="selectPeople">确定</button>
                     <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
@@ -96,7 +102,7 @@
     <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
     <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
     <script type="text/javascript" src="/src/js/keyword/settingArea.js"></script>
-      <script type="text/javascript" src="/src/js/common/people.tree.js"></script>
+    <script type="text/javascript" src="/src/js/common/people.tree.js"></script>
     <script src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
     <script type="text/javascript" src="/src/js/common/admin.js"></script>
     <script>

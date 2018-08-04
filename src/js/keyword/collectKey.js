@@ -33,20 +33,25 @@ var index = new Vue({
         name: "",
         code: "",
         inspectionDays: 1, //巡检天数
-        inspectionTimes: "", //巡检频次
-        inspectionInterval: 1, //巡检间隔
+        inspectionTimes: "1", //巡检频次
+        inspectionInterval: 12, //巡检间隔
         lon: "",
         lat: "",
         remark: "",
-        effectiveRadius: "",
+        effectiveRadius: "50",
         // personFormList: [],
         origin: "",
         groupName: "",
         groupId: "",
-        category: "", //关键点类别
+        category: "1", //关键点类别
       },
       textCount: 160,
       getNodeMarker: [],
+      currentAndOrEdit: {
+        bdLon: "",
+        bdLat: "",
+        centerZoom: ""
+      }, //表示当前增加或者编辑的点
     }
   },
   watch: {
@@ -451,9 +456,6 @@ var index = new Vue({
     delNode: function () {
       var that = this;
       var tip = '您是否删除该关键点？';
-      // if (that.nodeDetail.planNames) {
-      //   tip = "删除该点，将影响【" + that.nodeDetail.planNames + "】等计划，是否继续删除!";
-      // }
       var defaultOptions = {
         tip: tip,
         name_title: '提示',
@@ -526,14 +528,14 @@ var index = new Vue({
           url: "/cloudlink-inspection-event/keyPoint/updateCheckGroup?token=" + lsObj.getLocalStorage('token'),
           data: {
             id: that.nodeDetail.objectId,
-            groupId:that.nodeDetail.groupId
+            groupId: that.nodeDetail.groupId
           },
           dataType: "json",
           success: function (data) {
             if (data.success == 1) {
               if (data.rows[0] == true) {
                 var defaultOptions = {
-                  tip: '该关键点所在组已经分配到人，是否需要移到其他组进行重新分配',
+                  tip: '该关键点所在组已经分配到人，是否需要移到其他组进行重新分配？',
                   name_title: '提示',
                   name_cancel: '取消',
                   name_confirm: '确定',
@@ -567,21 +569,15 @@ var index = new Vue({
         dataType: "json",
         success: function (data) {
           if (data.success == 1) {
-            that.isEditOrView = !that.isEditOrView;
-            if (typeof callback === 'function') {
-              if (that.nodeDetail.distributionStatus == 0) {
-                that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/noAllot.png", new BMap.Size(29, 42), {
-                  anchor: new BMap.Size(15, 42)
-                }));
-              } else {
-                that.currentEditNode.value.setIcon(new BMap.Icon("/src/images/node/allot.png", new BMap.Size(29, 42), {
-                  anchor: new BMap.Size(15, 42)
-                }));
-              }
-              callback();
-            } else {
+            xxwsWindowObj.xxwsAlert("修改成功", function () {
+              that.isEditOrView = !that.isEditOrView;
+              that.currentAndOrEdit.bdLon = that.nodeDetail.bdLon;
+              that.currentAndOrEdit.bdLat = that.nodeDetail.bdLat;
+              that.currentAndOrEdit.centerZoom = that.mapObj.getZoom();
               that.refreshDraw();
-            }
+            });
+          } else {
+            xxwsWindowObj.xxwsAlert("服务器异常，请稍候尝试");
           }
         }
       });
@@ -623,10 +619,15 @@ var index = new Vue({
         dataType: "json",
         success: function (data) {
           if (data.success == 1) {
-            $("#addEvent").modal("hide");
-            that.mapObj.setDefaultCursor(that.defaultCursor);
-            that.mapObj.setDraggingCursor(that.draggingCursor);
-            that.refreshDraw();
+            xxwsWindowObj.xxwsAlert("保存成功", function () {
+              $("#addEvent").modal("hide");
+              that.mapObj.setDefaultCursor(that.defaultCursor);
+              that.mapObj.setDraggingCursor(that.draggingCursor);
+              that.currentAndOrEdit.bdLon = that.nodeForm.bdLon;
+              that.currentAndOrEdit.bdLat = that.nodeForm.bdLat;
+              that.currentAndOrEdit.centerZoom = that.mapObj.getZoom();
+              that.refreshDraw();
+            });
           } else {
             if (data.msg.indexOf("name") > -1) {
               xxwsWindowObj.xxwsAlert("关键点名称重复");
@@ -642,10 +643,12 @@ var index = new Vue({
       });
     },
     initAddForm: function () {
-      for (var key in this.nodeForm) {
-        this.nodeForm[key] = "";
-      }
-      this.nodeForm.inspectionInterval = 1;
+      this.nodeForm.name = "";
+      this.nodeForm.code = "";
+      this.nodeForm.bdLat = "";
+      this.nodeForm.bdLon = "";
+      this.nodeForm.groupId = "";
+      this.nodeForm.groupName = "";
     },
     _locationBd: function () { //84转百度
       var that = this;
@@ -794,7 +797,7 @@ var index = new Vue({
       $("#departmentSelect").modal();
       $("#departmentSelect").on('shown.bs.modal', function (e) {
         var selectArr = [];
-        if (!that.isEditOrView ) {
+        if (!that.isEditOrView) {
           selectArr.push({
             id: that.nodeDetail.groupId,
           });
@@ -824,6 +827,14 @@ var index = new Vue({
       var _length = data.length;
       var _arr = [];
       try {
+        if (that.currentAndOrEdit.bdLat != "") {
+          var point = new BMap.Point(that.currentAndOrEdit.bdLon, that.currentAndOrEdit.bdLat); // 创建点坐标
+          that.mapObj.centerAndZoom(point, that.currentAndOrEdit.centerZoom); // 初始化地图，设置中心点坐标和地图级别
+          for (var key in that.currentAndOrEdit) {
+            that.currentAndOrEdit[key] = "";
+          }
+          return;
+        }
         for (var i = 0; i < _length; i++) {
           if (data[i].bdLon != "" && data[i].bdLat != "") {
             _arr.push(new BMap.Point(data[i].bdLon, data[i].bdLat));

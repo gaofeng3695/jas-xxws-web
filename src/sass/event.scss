@@ -579,7 +579,8 @@
     }
 }
 
-#stakeholder {
+#stakeholder ,
+#selectPeople{
     @extend #addEvent;
     // width: 500px;
     // margin-left: -250px;

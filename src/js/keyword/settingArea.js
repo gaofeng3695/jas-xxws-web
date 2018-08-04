@@ -23,7 +23,8 @@ var vue = new Vue({
                 pageNum: 10,
                 groupId: ""
             },
-            selectPeopleArr: []
+            selectPeopleArr: [],
+            isHtml: true,
         }
     },
     watch: {
@@ -78,6 +79,15 @@ var vue = new Vue({
                         }
                         that.selectPeopleArr.push(obj);
                     });
+                    // if (that.currentNode.nodeId == null || that.currentNode.parentId == "0") {
+                    //     if (res.rows[0].resultList.length > 0) {
+                    //         that.isHtml = true;
+                    //     } else {
+                    //         that.isHtml = false;
+                    //     }
+                    // } else {
+                    //     that.isHtml = true;
+                    // }
                     return {
                         rows: res.rows[0].resultList,
                         total: res.rows[0].total
@@ -85,61 +95,40 @@ var vue = new Vue({
                 },
                 //表格的列
                 columns: [{
+                        field: 'parentGroupName', //域值
+                        title: '区域', //内容
+                        align: 'center',
+                        visible: true, //false表示不显示
+                        sortable: false, //启用排序
+                        width: '25%',
+                        editable: true,
+                    }, {
+                        field: 'groupName', //域值
+                        title: '分组', //内容
+                        align: 'center',
+                        visible: true, //false表示不显示
+                        sortable: false, //启用排序
+                        width: '25%',
+                        editable: true,
+                    }, {
                         field: 'personName', //域值
                         title: '姓名',
                         align: 'center',
                         visible: true, //false表示不显示
                         sortable: false, //启用排序
-                        width: '15%',
+                        width: '25%',
                         editable: true,
                     },
-                    //  {
-                    //     field: 'mobileNum', //域值
-                    //     title: '手机号', //内容
-                    //     align: 'center',
-                    //     visible: true, //false表示不显示
-                    //     sortable: false, //启用排序
-                    //     width: '11%',
-                    //     editable: true,
-                    // },
+
                     {
                         field: 'orgName', //域值
                         title: '部门', //内容
                         align: 'center',
                         visible: true, //false表示不显示
                         sortable: false, //启用排序
-                        width: '15%',
+                        width: '25%',
                         editable: true,
-                    }, {
-                        field: 'roleNames', //域值
-                        title: '角色', //内容
-                        align: 'center',
-                        visible: true, //false表示不显示
-                        sortable: false, //启用排序
-                        width: '13%',
-                        formatter: function (val) {
-                            if (val == "null") {
-                                return "";
-                            }
-                            return val
-                        }
-                    }, {
-                        field: 'position', //域值
-                        title: '职位', //内容
-                        align: 'center',
-                        visible: true, //false表示不显示
-                        sortable: false, //启用排序
-                        width: '15%',
-                        editable: true,
-                        formatter: function (value, row, index) {
-                            if (value == "null" || value == "") {
-                                return "";
-                            } else {
-                                return value;
-                            }
-                        }
-                    },
-
+                    }
                 ]
             });
         },
@@ -226,10 +215,16 @@ var vue = new Vue({
                         $("#" + treeNode.tId + "_a").find(".node_name").addClass("clickNade");
                         $(".add").css("display", 'none');
                         $("#" + treeNode.tId + "_a").find(".add").css("display", "block");
+                        //点击的节点是不是又子集
+                        if (treeNode.children.length > 0 || (treeNode.parentId != "0" && treeNode.parentId != null)) {
+                            _this.isHtml = true;
+                        } else {
+                            _this.isHtml = false;
+                        }
                     },
                     beforeRemove: function (treeId, treeNode) {
                         var defaultOptions = {
-                            tip: '是否删除',
+                            tip: '是否删除？',
                             name_title: '提示',
                             name_cancel: '取消',
                             name_confirm: '确定',
@@ -263,7 +258,6 @@ var vue = new Vue({
             if (_this.currentNode.nodeId == '' || _this.currentNode.nodeId == null) {
                 var nodes = _this.zTree.getNodes();
                 _this._setCurrenrNode(nodes[0]);
-
             } else {
                 var nodes = _this.zTree.getNodesByParam("id", _this.currentNode.nodeId, null); //根据id查询节点对象数组
                 _this._setCurrenrNode(nodes[0]);
@@ -273,8 +267,13 @@ var vue = new Vue({
             var that = this;
             $("#" + node.tId + "_a").find(".add").css("display", "block");
             that.zTree.selectNode(node);
-            that.currentNode.nodeId = node.nodeId;
-            that.currentNode.nodeName = node.nodeName;
+            that.currentNode.nodeId = node.id;
+            that.currentNode.nodeName = node.text;
+            if (node.children.length > 0 || (node.parentId != "0" && node.parentId != null)) {
+                that.isHtml = true;
+            } else {
+                that.isHtml = false;
+            }
         },
         createArea: function () {
             var that = this;
@@ -286,12 +285,12 @@ var vue = new Vue({
             }
             if (that.currentNode.nodeId) {
                 that.form.parentId = that.currentNode.nodeId;
-                that.form.parentName = that.currentNode.nodeName;
+                // that.form.parentName = that.currentNode.nodeName;
                 that.form.level = 1;
                 that.addGroup = "分组名称：";
             } else {
                 that.form.parentId = '0';
-                that.form.parentName = "";
+                // that.form.parentName = "";
                 that.form.level = 0;
                 that.addGroup = "区域名称：";
             }
@@ -372,9 +371,9 @@ var vue = new Vue({
         },
         choosePeople: function () {
             var that = this;
-            $("#stakeholder").modal();
-            $("#stakeholder").on('shown.bs.modal', function (e) {
-                peopleTreeObj.requestPeopleTree($("#stakeholder"), that.selectPeopleArr);
+            $("#selectPeople").modal();
+            $("#selectPeople").on('shown.bs.modal', function (e) {
+                peopleTreeObj.requestPeopleTree($("#selectPeople"), that.selectPeopleArr);
             });
         },
         selectPeople: function () {
@@ -407,6 +406,7 @@ var vue = new Vue({
                 success: function (data) {
                     if (data.success == 1) {
                         xxwsWindowObj.xxwsAlert("分配成功", function () {
+                            $("#selectPeople").modal('hide');
                             that.refreshTable();
                         });
                     } else {
