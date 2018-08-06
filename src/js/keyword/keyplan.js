@@ -166,7 +166,7 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              var groupName = "<ul><li class='hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li><li class='hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li></ul>";
+              var groupName = "<ul><li class='groupItem hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li><li class='hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li></ul>";
               return '<span title="分组详情"  data-html="true"  data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">20</span>';
             }
           },
@@ -179,7 +179,15 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              var person = "张三，李四，张三，李四，张三，李四";
+              var persons = ['张三', '李四', '半山烟雨', '测试人员七八', '张测测测测三顶顶顶顶', '李四顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶多'];
+              var person = "<ul>";
+              for (var i = 0; i < persons.length; i++) {
+                if (i % 2 == 0) {
+                  person += "<span style='display:inline-block;width:120px;' class='hidd'>" + persons[i] + "</span>"
+                } else {
+                  person += "<span style='display:inline-block;width:120px;padding-left:5px;' class='hidd'>" + persons[i] + "</span>"
+                }
+              }
               return '<span title="人员详情" data-html="true" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '">20</span>';
             }
           },
