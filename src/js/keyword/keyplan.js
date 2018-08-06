@@ -166,8 +166,8 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              var groupName = "区域一>分组一";
-              return '<span title="分组详情" data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">20</span>';
+              var groupName = "<ul><li class='hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li><li class='hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li></ul>";
+              return '<span title="分组详情"  data-html="true"  data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">20</span>';
             }
           },
           {
@@ -180,7 +180,7 @@ var indexs = new Vue({
             editable: true,
             formatter: function (value, row, index) {
               var person = "张三，李四，张三，李四，张三，李四";
-              return '<span title="人员详情" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '">20</span>';
+              return '<span title="人员详情" data-html="true" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '">20</span>';
             }
           },
           {
@@ -192,8 +192,7 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              var title = "测试关键点一，测试关键点二测试关键点一";
-              return '<span title="关键点详情" data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + title + '">20</span>';
+              return 20;
             }
           },
 
