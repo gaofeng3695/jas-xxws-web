@@ -412,14 +412,17 @@ li {
   padding: 0px;
 }
 
-// ul{
-//   list-style: none;
-// }
-// li{
-//   max-width:200px;
-//   height:20px;
-//   line-height: 20px;
-// }
+ul{
+  list-style: none;
+}
+li{
+ width:260px;
+ max-width: 300px;
+}
+.groupItem{
+  height:25px;
+  line-height: 25px;
+}
 .W100 .th-inner {
   width: 100px !important;
 }

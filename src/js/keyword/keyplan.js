@@ -27,7 +27,6 @@ var indexs = new Vue({
       },
       isUpdateStartTime: false,
       isUpdateEndTime: false,
-      edit: true //表示当前是编辑还是查看
     }
   },
   watch: {
@@ -94,7 +93,7 @@ var indexs = new Vue({
             visible: true, //false表示不显示
             sortable: false, //启用排序
             editable: true,
-            class:"W100",
+            class: "W100",
             formatter: function (value) {
               if (value == 0) {
                 return '<span class="nopublish">未发布<span>'
@@ -167,8 +166,8 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              var groupName = "区域一>分组一";
-              return '<span title="分组详情" data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">20</span>';
+              var groupName = "<ul><li class='groupItem hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li><li class='hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li></ul>";
+              return '<span title="分组详情"  data-html="true"  data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">20</span>';
             }
           },
           {
@@ -180,8 +179,16 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              var person = "张三，李四，张三，李四，张三，李四";
-              return '<span title="人员详情" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '">20</span>';
+              var persons = ['张三', '李四', '半山烟雨', '测试人员七八', '张测测测测三顶顶顶顶', '李四顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶多'];
+              var person = "<ul>";
+              for (var i = 0; i < persons.length; i++) {
+                if (i % 2 == 0) {
+                  person += "<span style='display:inline-block;width:120px;' class='hidd'>" + persons[i] + "</span>"
+                } else {
+                  person += "<span style='display:inline-block;width:120px;padding-left:5px;' class='hidd'>" + persons[i] + "</span>"
+                }
+              }
+              return '<span title="人员详情" data-html="true" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '">20</span>';
             }
           },
           {
@@ -193,8 +200,7 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              var title = "测试关键点一，测试关键点二测试关键点一";
-              return '<span title="关键点详情" data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + title + '">20</span>';
+              return 20;
             }
           },
 
@@ -254,7 +260,7 @@ var indexs = new Vue({
               if (row.publishStatus == 2) {
                 title = "重新发布";
                 publish = "publish1";
-                set = "setNode_end";
+                set = "setNode";
                 ban = "ban_end";
               }
               return [
@@ -287,7 +293,7 @@ var indexs = new Vue({
             },
             width: '15%',
             formatter: function (value, row, index) {
-              var close = "closed";
+              var closed = "closed";
               var edit = "management";
               var publish = "publish1";
               var title = "发布";
@@ -295,12 +301,13 @@ var indexs = new Vue({
                 title = "发布";
               }
               if (row.publishStatus == 1) {
-                // edit = "management_end ";
+                edit = "management_end ";
                 title = "关闭计划";
+                closed = "closed_end";
               }
               if (row.publishStatus == 2) {
                 publish = "publish1_end";
-                edit = "management_end ";
+                // edit = "management_end ";
                 title = "已关闭";
               }
               return [
@@ -311,7 +318,7 @@ var indexs = new Vue({
                 '<a class="' + edit + '" href="javascript:void(0)" title="编辑">',
                 '<i></i>',
                 '</a>',
-                '<a class="closed"  href="javascript:void(0)" title="删除">',
+                '<a class="' + closed + '"  href="javascript:void(0)" title="删除">',
                 '<i></i>',
                 '</a>',
               ].join('');
@@ -668,13 +675,7 @@ var indexs = new Vue({
               })
             });
             $("#people").modal();
-            if (row.publishStatus != 0) {
-              that.edit = false;
-              groupTreeObj.requestPeopleTree(selectArr, 'checkBox', 'view'); //请求所有的关键点
-            } else {
-              that.edit = true;
-              groupTreeObj.requestPeopleTree(selectArr, 'checkBox'); //请求所有的关键点
-            }
+            groupTreeObj.requestPeopleTree(selectArr, 'checkBox'); //请求所有的关键点
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }

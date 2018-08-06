@@ -148,7 +148,7 @@
                     <div class="itemRight">
                       <div class="base hidd">
                         {{item.name}}
-                       <span class="code ">({{item.code}})</span>
+                        <span class="code ">（{{item.code}}）</span>
                       </div>
                       <div class="locationbg hidd">
                         {{item.location}}
@@ -181,56 +181,70 @@
               <ul class="allot">
                 <li v-for="(item,index) in allotNodeArrs" @click="clickItem(item,index)">
                   <div class="item">
+                    <!--<div class="detail">
+                      <div class="check" :class="item.checked?'inputbg_h':'inputbg'"></div>
+                      <div class="base hidd">
+                        {{item.name}}
+                        <span class="code ">（{{item.code}}）</span>
+                      </div>
+                    </div>
+                    <div class="detail">
+                      <div class="locationbg">
+
+                      </div>
+                      <div class="location hidd">
+                        {{item.location}}
+                      </div>
+                    </div>-->
                     <div class="itemLeft">
                       <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span>
                     </div>
                     <div class="itemRight">
                       <div class="base hidd">
                         {{item.name}}
-                       <span class="code ">({{item.code}})</span>
+                        <span class="code ">（{{item.code}}）</span>
                       </div>
                       <div class="locationbg hidd">
                         {{item.location}}
                       </div>
                     </div>
+                  </div>
                 </li>
                 </li>
               </ul>
-              </div>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn modal_active submit" @click="submit">确定</button>
-          <button class="btn modal_active " @click="cancalChooseNode">取消</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn modal_active submit" @click="submit">确定</button>
+        <button class="btn modal_active " @click="cancalChooseNode">取消</button>
       </div>
     </div>
   </div>
+</div>
 
-  <body>
-    <script type="text/javascript" src="/lib/js/vue.min.js"></script>
-    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
-    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
-    <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
-    <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript" src="/lib/js/common_base.js"></script>
-    <script src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
-    <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
-    <script type="text/javascript" src="/src/js/common/common.js"></script>
-    <script src="/src/js/keyword/peopleAndNodeRelation.js"></script>
-    <script>
-      $(".scrollContainer").mCustomScrollbar({
-        advanced: {
-          updateOnContentResize: true
-        }
-      });
-    </script>
-  </body>
+<body>
+  <script type="text/javascript" src="/lib/js/vue.min.js"></script>
+  <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+  <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript" src="/lib/js/common_base.js"></script>
+  <script src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+  <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+  <script type="text/javascript" src="/src/js/common/common.js"></script>
+  <script src="/src/js/keyword/peopleAndNodeRelation.js"></script>
+  <script>
+    $(".scrollContainer").mCustomScrollbar({
+      advanced: {
+        updateOnContentResize: true
+      }
+    });
+  </script>
+</body>
 
 </html>
-
-

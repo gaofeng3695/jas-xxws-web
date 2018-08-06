@@ -40,7 +40,7 @@
               </div>
               <div class="search_wrapper">
                 <div class="input_wrapper">
-                  <input class="" v-model="keyword" id="searchInput" type="text" placeholder="输入名称、编号">
+                  <input class="" v-model="keyword" id="searchInput" type="text" placeholder="输入计划名称、计划编号">
                 </div>
                 <span class="mybtn" @click="refreshTable">确定</span>
               </div>
@@ -199,7 +199,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button @click="getGroupByPlanId" type="button" class="btn modal_active btn-primary" v-if="edit">确定</button>
+          <button @click="getGroupByPlanId" type="button" class="btn modal_active btn-primary" >确定</button>
           <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
         </div>
       </div>

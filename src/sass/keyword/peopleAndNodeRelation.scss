@@ -156,12 +156,12 @@ html,
             background: #f5f7fa;
             cursor: pointer;
             .inputbg {
-              padding-left: 20px;
+              padding-left: 26px;
               background: url(/src/images/pipeline_map/checked.png) 0 no-repeat;
               background-size: 16px 16px;
             }
             .inputbg_h {
-              padding-left: 20px;
+              padding-left: 26px;
               background: url(/src/images/pipeline_map/checked_h.png) 0 no-repeat !important;
               background-size: 16px 16px;
             }
@@ -185,21 +185,21 @@ html,
               list-style: none;
               height: 50px;
               cursor: pointer;
-              .check {
-                width: 16px;
-                display: inline-block;
-                float: left;
-                height: 16px;
-                margin-top: 11px;
-              }
               .item {
                 height: 100%;
                 .itemLeft {
                   float: left;
                   width: 20px;
+                  .check {
+                    width: 16px;
+                    display: inline-block;
+                    height: 16px;
+                    margin-top: 17px;
+                  }
                 }
                 .itemRight {
                   float: left;
+                  padding-left: 6px;
                   div {
                     line-height: 25px;
                   }
@@ -220,6 +220,38 @@ html,
                     background-size: 13px 16px;
                   }
                 }
+                .detail {
+                  height: 25px;
+                  line-height: 25px;
+                  .check {
+                    width: 16px;
+                    display: inline-block;
+                    height: 16px;
+                    float: left;
+                    margin-top: 4.5px;
+                  }
+                  .base {
+                    width: 300px;
+                    padding-left: 10px;
+                    .name {
+                      display: inline-block;
+                      width: 150px;
+                      padding: 0px 5px 0px 0px;
+                    }
+                  }
+                  .locationbg {
+                    width: 16px;
+                    height: 16px;
+                    background: url(/src/images/index/icon_loca.png) no-repeat center center;
+                    background-size: 13px 16px;
+                    float: left;
+                    margin-top: 4px;
+                  }
+                  .location {
+                    width: 300px;
+                    padding-left: 10px;
+                  }
+                } //修改样式
               }
               .inputbg {
                 background: url(/src/images/pipeline_map/checked.png) 0 no-repeat;
@@ -236,7 +268,7 @@ html,
                 padding: 0px 5px;
               }
               .code {
-                font-size: 12px;
+                font-size: 10px;
                 color: #999;
               }
               .location {
