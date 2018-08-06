@@ -64,17 +64,10 @@ html,
       }
     }
     .allotstyle {
-      i {
-        display: inline-block;
-        width: 22px;
-        height: 16px;
-        background: url(/src/images/node/allots.png) no-repeat;
-        background-size: 20px 16px;
-        vertical-align: middle;
-        margin: 0 5px;
-        &:hover {
-          background: url(/src/images/node/noallots.png) no-repeat;
-        }
+      color: #333;
+      text-decoration: none;
+      &:hover {
+        color: #75c3fe;
       }
     }
   }

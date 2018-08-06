@@ -425,6 +425,7 @@ var index = new Vue({
       $("#addEvent").modal();
       this.isShowTool = !this.isShowTool;
       this.isGetOrInput = true;
+      this.initAddForm();
       this.nodeForm.origin = 2;
     },
     addNode: function () { //点击添加
@@ -645,10 +646,11 @@ var index = new Vue({
     initAddForm: function () {
       this.nodeForm.name = "";
       this.nodeForm.code = "";
-      this.nodeForm.bdLat = "";
-      this.nodeForm.bdLon = "";
+      this.nodeForm.lat = "";
+      this.nodeForm.lon = "";
       this.nodeForm.groupId = "";
       this.nodeForm.groupName = "";
+      this.nodeForm.location="";
     },
     _locationBd: function () { //84转百度
       var that = this;
@@ -754,7 +756,7 @@ var index = new Vue({
         return false;
       }
       if (!obj.groupName) {
-        xxwsWindowObj.xxwsAlert("请选择所属组");
+        xxwsWindowObj.xxwsAlert("请选择所属分组");
         return false;
       }
       return true;
@@ -809,7 +811,7 @@ var index = new Vue({
       var that = this;
       var obj = groupTreeObj.getSelectGroup();
       if (obj.length == 0) {
-        xxwsWindowObj.xxwsAlert("请选择所属组");
+        xxwsWindowObj.xxwsAlert("请选择所属分组");
         return;
       }
       if (!that.isEditOrView) {

@@ -65,19 +65,32 @@ var vue = new Vue({
             editable: true,
           }, {
             field: 'groupCompletePath', //域值
-            title: '所属区域/分组',
+            title: '区域',
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-
             editable: true,
-          }, {
+            formatter: function (a) {
+              if (a.indexOf("->") > -1) {
+                return a.split("->")[0];
+              } else {
+                return a;
+              }
+            }
+          },
+           {
+            field: 'groupName', //域值
+            title: '分组',
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            editable: true,
+          },{
             field: 'personName', //域值
             title: '人员名称', //内容
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-
             editable: true,
             cellStyle: function (value, row, index) {
               return {
@@ -86,27 +99,13 @@ var vue = new Vue({
                 }
               };
             }
-          }, {
-            field: 'orgName', //域值
-            title: '所在部门', //内容
-            align: 'center',
-            visible: true, //false表示不显示
-            sortable: false, //启用排序
-            editable: true,
-          }, {
+          },  {
             field: 'keyPointCount', //域值
-            title: '数量', //内容
+            title: '所属关键点数量', //内容
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
             editable: true,
-            // formatter: function (val) {
-            //   if (val == null || val == "") {
-            //     return 0;
-            //   } else {
-            //     return val;
-            //   }
-            // }
           },
 
           {
@@ -129,7 +128,7 @@ var vue = new Vue({
             width: '40%',
             formatter: function (value, row, index) {
               return [
-                '<a class="allotstyle"  href="javascript:void(0)" title="分配">',
+                '<a class="allotstyle fa fa-map-signs"  href="javascript:void(0)" title="分配">',
                 '<i></i>',
                 '</a>',
                 // '<a class="check" data-toggle="modal" href="javascript:void(0)" title="查看">',

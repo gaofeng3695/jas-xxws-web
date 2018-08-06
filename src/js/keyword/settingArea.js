@@ -79,15 +79,6 @@ var vue = new Vue({
                         }
                         that.selectPeopleArr.push(obj);
                     });
-                    // if (that.currentNode.nodeId == null || that.currentNode.parentId == "0") {
-                    //     if (res.rows[0].resultList.length > 0) {
-                    //         that.isHtml = true;
-                    //     } else {
-                    //         that.isHtml = false;
-                    //     }
-                    // } else {
-                    //     that.isHtml = true;
-                    // }
                     return {
                         rows: res.rows[0].resultList,
                         total: res.rows[0].total
@@ -271,6 +262,9 @@ var vue = new Vue({
             that.currentNode.nodeName = node.text;
             if (node.children.length > 0 || (node.parentId != "0" && node.parentId != null)) {
                 that.isHtml = true;
+                if(node.parentId=="0"||node.parentId == null){
+                    that.disabled=true;
+                }
             } else {
                 that.isHtml = false;
             }
