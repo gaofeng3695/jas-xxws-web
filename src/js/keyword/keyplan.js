@@ -93,8 +93,8 @@ var indexs = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: "5%",
             editable: true,
+            class:"W100",
             formatter: function (value) {
               if (value == 0) {
                 return '<span class="nopublish">未发布<span>'
@@ -106,14 +106,14 @@ var indexs = new Vue({
             }
           }, {
             field: 'objectId', //域值
-            title: '名称',
+            title: '计划名称',
             align: 'center',
             visible: false, //false表示不显示
             sortable: false, //启用排序
             editable: true,
           }, {
             field: 'name', //域值
-            title: '名称',
+            title: '计划名称',
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
@@ -122,60 +122,13 @@ var indexs = new Vue({
           },
           {
             field: 'code', //域值
-            title: '编号', //内容
+            title: '计划编号', //内容
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
             width: '10%',
-            editable: true,
-            cellStyle: function (value, row, index) {
-              return {
-                css: {
-                  "max-width": "300px",
-                }
-              };
-            }
-          },
-          {
-            field: 'groupCount', //域值
-            title: '分组数', //内容
-            align: 'center',
-            visible: true, //false表示不显示
-            sortable: false, //启用排序
-            width: "10%",
-            editable: true,
-            formatter: function (value, row, index) {
-              var groupName = "区域一>分组一";
-              return '<span title="分组详情" data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">20</span>';
-            }
-          },
-          {
-            field: 'personCount', //域值
-            title: '人数', //内容
-            align: 'center',
-            visible: true, //false表示不显示
-            sortable: false, //启用排序
-            width: "10%",
-            editable: true,
-            formatter: function (value, row, index) {
-              var person = "张三，李四，张三，李四，张三，李四";
-              return '<span title="人员详情" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '">20</span>';
-            }
-          },
-          {
-            field: 'keyPointCount', //域值
-            title: '关键点数', //内容
-            align: 'center',
-            visible: true, //false表示不显示
-            sortable: false, //启用排序
-            width: "10%",
-            editable: true,
-            formatter: function (value, row, index) {
-              var title = "测试关键点一，测试关键点二测试关键点一";
-              return '<span title="关键点详情" data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + title + '">20</span>';
-            }
-          },
-          {
+            editable: true
+          }, {
             field: 'startTime', //域值
             title: '开始时间', //内容
             align: 'center',
@@ -205,6 +158,46 @@ var indexs = new Vue({
               }
             }
           },
+          {
+            field: 'groupCount', //域值
+            title: '所含分组数', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: "10%",
+            editable: true,
+            formatter: function (value, row, index) {
+              var groupName = "区域一>分组一";
+              return '<span title="分组详情" data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">20</span>';
+            }
+          },
+          {
+            field: 'personCount', //域值
+            title: '所含人数', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: "10%",
+            editable: true,
+            formatter: function (value, row, index) {
+              var person = "张三，李四，张三，李四，张三，李四";
+              return '<span title="人员详情" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '">20</span>';
+            }
+          },
+          {
+            field: 'keyPointCount', //域值
+            title: '所含关键点数', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: "10%",
+            editable: true,
+            formatter: function (value, row, index) {
+              var title = "测试关键点一，测试关键点二测试关键点一";
+              return '<span title="关键点详情" data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + title + '">20</span>';
+            }
+          },
+
           {
             field: 'operate1',
             title: '计划配置',
@@ -329,7 +322,7 @@ var indexs = new Vue({
     },
     addTask: function () {
       var that = this;
-      that.title = "新建";
+      that.title = "新建【关键点巡检计划】";
       that.initStatus();
       that.taskForm = {
         name: "",
@@ -342,7 +335,7 @@ var indexs = new Vue({
     },
     editTask: function (objectId) {
       var that = this;
-      that.title = "修改";
+      that.title = "修改【关键点巡检计划】";
       that.isUpdateStartTime = false;
       $.ajax({
         type: "get",
@@ -629,7 +622,7 @@ var indexs = new Vue({
       };
       var groupArr = groupTreeObj.getSelectGroup();
       if (groupArr.length == 0) {
-        xxwsWindowObj.xxwsAlert("请至少选择一个组");
+        xxwsWindowObj.xxwsAlert("请至少选择一个分组");
         return;
       }
       for (var i = 0; i < groupArr.length; i++) {

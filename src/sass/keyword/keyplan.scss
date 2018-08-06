@@ -164,7 +164,7 @@ body {
 }
 
 .W60 .th-inner {
-  width: 100px !important;
+  width: 200px !important;
 }
 
 .nopublish {
@@ -405,10 +405,13 @@ body {
   vertical-align: middle;
   background: url(/src/images/node/allots.png) no-repeat;
 }
-ul,li{
-  margin:0px;
-  padding:0px;
+
+ul,
+li {
+  margin: 0px;
+  padding: 0px;
 }
+
 // ul{
 //   list-style: none;
 // }
@@ -417,3 +420,6 @@ ul,li{
 //   height:20px;
 //   line-height: 20px;
 // }
+.W100 .th-inner {
+  width: 100px !important;
+}

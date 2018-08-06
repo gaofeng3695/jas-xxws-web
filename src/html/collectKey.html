@@ -157,9 +157,9 @@
           </div>
         </div>
         <div class="item">
-          <div class="fl wid100"><span style="color:red">*</span>所属组</div>
+          <div class="fl wid100"><span style="color:red">*</span>分组</div>
           <div class="fl wid">
-            <input type="text" readonly class="form-control" :class="isEditOrView?'':'bgf'" :disabled="isEditOrView" placeholder="请选择组别" v-model="nodeDetail.groupName"
+            <input type="text" readonly class="form-control" :class="isEditOrView?'':'bgf'" :disabled="isEditOrView" placeholder="请选择分组" v-model="nodeDetail.groupName"
               @click="chooseGroup">
           </div>
         </div>
@@ -289,10 +289,10 @@
                   </div>
                   <div class="form_part">
                     <div class="list_left text-right">
-                      <i>*</i>所属组
+                      <i>*</i>分组
                     </div>
                     <div class="list_right">
-                      <input type="text" readonly class="form-control" style="background:#fff" placeholder="请选择组别" v-model="nodeForm.groupName" @click="chooseGroup">
+                      <input type="text" readonly class="form-control" style="background:#fff" placeholder="请选择分组" v-model="nodeForm.groupName" @click="chooseGroup">
                     </div>
                   </div>
                 </div>
