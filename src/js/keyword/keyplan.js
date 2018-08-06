@@ -27,7 +27,6 @@ var indexs = new Vue({
       },
       isUpdateStartTime: false,
       isUpdateEndTime: false,
-      edit: true //表示当前是编辑还是查看
     }
   },
   watch: {
@@ -94,7 +93,7 @@ var indexs = new Vue({
             visible: true, //false表示不显示
             sortable: false, //启用排序
             editable: true,
-            class:"W100",
+            class: "W100",
             formatter: function (value) {
               if (value == 0) {
                 return '<span class="nopublish">未发布<span>'
@@ -297,7 +296,7 @@ var indexs = new Vue({
               if (row.publishStatus == 1) {
                 edit = "management_end ";
                 title = "关闭计划";
-                closed="closed_end";
+                closed = "closed_end";
               }
               if (row.publishStatus == 2) {
                 publish = "publish1_end";
@@ -312,7 +311,7 @@ var indexs = new Vue({
                 '<a class="' + edit + '" href="javascript:void(0)" title="编辑">',
                 '<i></i>',
                 '</a>',
-                '<a class="'+closed+'"  href="javascript:void(0)" title="删除">',
+                '<a class="' + closed + '"  href="javascript:void(0)" title="删除">',
                 '<i></i>',
                 '</a>',
               ].join('');
@@ -669,13 +668,7 @@ var indexs = new Vue({
               })
             });
             $("#people").modal();
-            if (row.publishStatus != 0) {
-              that.edit = false;
-              groupTreeObj.requestPeopleTree(selectArr, 'checkBox', 'view'); //请求所有的关键点
-            } else {
-              that.edit = true;
-              groupTreeObj.requestPeopleTree(selectArr, 'checkBox'); //请求所有的关键点
-            }
+            groupTreeObj.requestPeopleTree(selectArr, 'checkBox'); //请求所有的关键点
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }

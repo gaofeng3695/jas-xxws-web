@@ -199,7 +199,7 @@ html,
                 }
                 .itemRight {
                   float: left;
-                  padding-left:6px;
+                  padding-left: 6px;
                   div {
                     line-height: 25px;
                   }
@@ -220,6 +220,38 @@ html,
                     background-size: 13px 16px;
                   }
                 }
+                .detail {
+                  height: 25px;
+                  line-height: 25px;
+                  .check {
+                    width: 16px;
+                    display: inline-block;
+                    height: 16px;
+                    float: left;
+                    margin-top: 4.5px;
+                  }
+                  .base {
+                    width: 300px;
+                    padding-left: 10px;
+                    .name {
+                      display: inline-block;
+                      width: 150px;
+                      padding: 0px 5px 0px 0px;
+                    }
+                  }
+                  .locationbg {
+                    width: 16px;
+                    height: 16px;
+                    background: url(/src/images/index/icon_loca.png) no-repeat center center;
+                    background-size: 13px 16px;
+                    float: left;
+                    margin-top: 4px;
+                  }
+                  .location {
+                    width: 300px;
+                    padding-left: 10px;
+                  }
+                } //修改样式
               }
               .inputbg {
                 background: url(/src/images/pipeline_map/checked.png) 0 no-repeat;
