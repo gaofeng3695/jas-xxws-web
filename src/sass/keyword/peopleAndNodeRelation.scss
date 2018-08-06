@@ -156,12 +156,12 @@ html,
             background: #f5f7fa;
             cursor: pointer;
             .inputbg {
-              padding-left: 20px;
+              padding-left: 26px;
               background: url(/src/images/pipeline_map/checked.png) 0 no-repeat;
               background-size: 16px 16px;
             }
             .inputbg_h {
-              padding-left: 20px;
+              padding-left: 26px;
               background: url(/src/images/pipeline_map/checked_h.png) 0 no-repeat !important;
               background-size: 16px 16px;
             }
@@ -185,21 +185,21 @@ html,
               list-style: none;
               height: 50px;
               cursor: pointer;
-              .check {
-                width: 16px;
-                display: inline-block;
-                float: left;
-                height: 16px;
-                margin-top: 11px;
-              }
               .item {
                 height: 100%;
                 .itemLeft {
                   float: left;
                   width: 20px;
+                  .check {
+                    width: 16px;
+                    display: inline-block;
+                    height: 16px;
+                    margin-top: 17px;
+                  }
                 }
                 .itemRight {
                   float: left;
+                  padding-left:6px;
                   div {
                     line-height: 25px;
                   }
@@ -236,7 +236,7 @@ html,
                 padding: 0px 5px;
               }
               .code {
-                font-size: 12px;
+                font-size: 10px;
                 color: #999;
               }
               .location {

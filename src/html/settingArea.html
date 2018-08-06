@@ -29,10 +29,10 @@
             <div class="enterprise_list">
                 <div class="row" v-show="isHtml">
                     <div class="container-fluid ml15 mr15">
-                        <div id="toolbar" class="btn-group">
-                            <button id="addPlan" type="button" class="btn btn-default" @click="choosePeople" :disabled="disabled">
+                        <div id="toolbar" class="btn-group" v-show="!disabled">
+                            <button id="addPlan" type="button" class="btn btn-default" @click="choosePeople" >
                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>人员分配
-                        </button>
+                            </button>
                         </div>
                         <table id="table"></table>
                     </div>

@@ -254,7 +254,7 @@ var indexs = new Vue({
               if (row.publishStatus == 2) {
                 title = "重新发布";
                 publish = "publish1";
-                set = "setNode_end";
+                set = "setNode";
                 ban = "ban_end";
               }
               return [
@@ -287,7 +287,7 @@ var indexs = new Vue({
             },
             width: '15%',
             formatter: function (value, row, index) {
-              var close = "closed";
+              var closed = "closed";
               var edit = "management";
               var publish = "publish1";
               var title = "发布";
@@ -295,12 +295,13 @@ var indexs = new Vue({
                 title = "发布";
               }
               if (row.publishStatus == 1) {
-                // edit = "management_end ";
+                edit = "management_end ";
                 title = "关闭计划";
+                closed="closed_end";
               }
               if (row.publishStatus == 2) {
                 publish = "publish1_end";
-                edit = "management_end ";
+                // edit = "management_end ";
                 title = "已关闭";
               }
               return [
@@ -311,7 +312,7 @@ var indexs = new Vue({
                 '<a class="' + edit + '" href="javascript:void(0)" title="编辑">',
                 '<i></i>',
                 '</a>',
-                '<a class="closed"  href="javascript:void(0)" title="删除">',
+                '<a class="'+closed+'"  href="javascript:void(0)" title="删除">',
                 '<i></i>',
                 '</a>',
               ].join('');
