@@ -2,7 +2,6 @@ var vue = new Vue({
     el: ".page",
     data: function () {
         return {
-            isClick: false,
             isRight: false,
             currentNode: {
                 nodeId: "",
@@ -28,16 +27,14 @@ var vue = new Vue({
         }
     },
     watch: {
-        'currentNode.nodeId': function () {
-            this.isClick = true;
-            if (this.currentNode.leaf) {
-                this.disabled = false;
-                // this.searchObj.ifRecursion = false;
-            } else {
-                this.disabled = true;
-                // this.searchObj.ifRecursion = true;
-            }
-        }
+        // 'currentNode.nodeId': function () {
+        // console.log(this.currentNode);
+        //     if (this.currentNode.leaf) {
+        //         this.disabled = false;
+        //     } else {
+        //         this.disabled = true;
+        //     }
+        // }
     },
     mounted: function () {
         var that = this;
@@ -209,6 +206,11 @@ var vue = new Vue({
                         //点击的节点是不是又子集
                         if (treeNode.children.length > 0 || (treeNode.parentId != "0" && treeNode.parentId != null)) {
                             _this.isHtml = true;
+                            if (treeNode.parentId != "0" && treeNode.parentId != null) {
+                                _this.disabled = false;
+                            } else {
+                                _this.disabled = true;
+                            }
                         } else {
                             _this.isHtml = false;
                         }
@@ -262,8 +264,10 @@ var vue = new Vue({
             that.currentNode.nodeName = node.text;
             if (node.children.length > 0 || (node.parentId != "0" && node.parentId != null)) {
                 that.isHtml = true;
-                if(node.parentId=="0"||node.parentId == null){
-                    that.disabled=true;
+                if (node.parentId != null && node.parentId != "0") {
+                    that.disabled = false;
+                } else {
+                    that.disabled = true;
                 }
             } else {
                 that.isHtml = false;
@@ -312,7 +316,6 @@ var vue = new Vue({
                 msg = "保存";
                 url = "/cloudlink-inspection-event/regionalGroup/save?token=" + lsObj.getLocalStorage('token');
             }
-            delete that.form.title;
             $.ajax({
                 type: "POST",
                 url: url,
