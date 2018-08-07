@@ -3,11 +3,11 @@ var groupTreeObj = {
     selectGroupArr: [],
     aAllGroup: [],
     isCheckbox: true,
-    isView:"",//表示是查看还是编辑
+    isView: "", //表示是查看还是编辑
     init: function () {},
-    requestPeopleTree: function (selectArr, isCheckbox,isView) { //请求人员信息
+    requestPeopleTree: function (selectArr, isCheckbox, isView) { //请求人员信息
         var _this = this;
-        _this.isView=isView;
+        _this.isView = isView;
         if (isCheckbox == 'checkBox') {
             _this.isCheckbox = true;
         } else {
@@ -34,6 +34,7 @@ var groupTreeObj = {
                     return;
                 }
                 data.rows[0].text = JSON.parse(lsObj.getLocalStorage("userBo")).enterpriseName;
+                data.rows[0].id = "1";
                 _this.aAllGroup = data.rows;
                 _this.renderGroupTree(data.rows);
             },
@@ -53,11 +54,15 @@ var groupTreeObj = {
             },
             callback: {
                 beforeCheck: function (treeId, treeNode, clickFlag) {
-                    if(_this.isView){
+                    if (_this.isView) {
                         return false;
                     }
-                    if (!_this.isCheckbox) {
-                        return treeNode.leaf;
+                    if (!_this.isCheckbox) { //表示此时是单选框的时候
+                        if (treeNode.parentId != "0" && treeNode.leaf) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     } else {
                         return true;
                     }

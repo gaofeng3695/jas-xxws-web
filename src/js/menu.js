@@ -281,7 +281,7 @@ var routerObj = {
         on: function () {
           vm.loadRelativePage("#/peopleAndNodeRelation");
           if (tjSwitch == 1) {
-            tjSdk.track('人员关系设置');
+            tjSdk.track('人员关键点设置');
           }
         },
       },

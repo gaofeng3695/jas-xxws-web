@@ -107,7 +107,7 @@ body {
                 line-height: 200px;
                 border: 2px dashed #ededed;
                 div {
-                    padding-top:10px;
+                    padding-top: 10px;
                     color: #999;
                     font-size: 16px;
                 }
@@ -436,4 +436,8 @@ body {
     text-overflow: ellipsis;
     overflow: hidden;
     display: inline-block;
+}
+
+.table tbody tr td {
+    vertical-align: middle;
 }

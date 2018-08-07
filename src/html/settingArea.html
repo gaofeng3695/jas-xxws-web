@@ -15,85 +15,85 @@
     <link href="/src/css/keyword/settingArea.css" rel="stylesheet">
     <link href="/src/css/common/departmentTree.css" rel="stylesheet">
 </head>
-<div class="page">
-    <div class="enterprise">
-        <div class="enterprise_main ">
-            <div class="enterprise_tree scrollContainer" style="max-height:100%;">
-                <div class="enterprise_nav">
-                    <!--<div class="department_add" @click="createArea">
-                        <span>创建&nbsp;+</span>
-                    </div>-->
-                    <ul id="department_list" class="ztree ztreeLeft"></ul>
-                </div>
-            </div>
-            <div class="enterprise_list">
-                <div class="row" v-show="isHtml">
-                    <div class="container-fluid ml15 mr15">
-                        <div id="toolbar" class="btn-group" v-show="!disabled">
-                            <button id="addPlan" type="button" class="btn btn-default" @click="choosePeople" >
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>人员分配
-                            </button>
-                        </div>
-                        <table id="table"></table>
+
+<body>
+    <div class="page">
+        <div class="enterprise">
+            <div class="enterprise_main ">
+                <div class="enterprise_tree scrollContainer" style="max-height:100%;">
+                    <div class="enterprise_nav">
+                        <!--<div class="department_add" @click="createArea">
+                            <span>创建&nbsp;+</span>
+                        </div>-->
+                        <ul id="department_list" class="ztree ztreeLeft"></ul>
                     </div>
                 </div>
-                <div class="nodata" v-show="!isHtml">
-                    <!--<img src="../images/node/data1.png" alt="" style="width:228px;height:228px;margin-top:-150px;">-->
-                    <div>
-                       请先维护区域/分组信息
+                <div class="enterprise_list">
+                    <div class="row" v-show="isHtml">
+                        <div class="container-fluid ml15 mr15">
+                            <div id="toolbar" class="btn-group" v-show="!disabled">
+                                <button id="addPlan" type="button" class="btn btn-default" @click="choosePeople">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>人员分配
+                                </button>
+                            </div>
+                            <table id="table"></table>
+                        </div>
+                    </div>
+                    <div class="nodata" v-show="!isHtml">
+                        <!--<img src="../images/node/data1.png" alt="" style="width:228px;height:228px;margin-top:-150px;">-->
+                        <div>
+                            请先维护区域/分组信息
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!--添加子部门-->
-    <div id="departmentAdd" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>{{form.title}}<a class="close" data-dismiss="modal">×</a></h3>
-                </div>
-                <div class="modal-body">
-                    <div class="department_main">
-                        <div class="department_list">
-                            <div class="list_l"><i>*</i>{{addGroup}}</div>
-                            <div class="list_r">
-                                <input type="text" class="form-control" v-model="form.name" value="">
+        <!--添加子部门-->
+        <div id="departmentAdd" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>{{form.title}}<a class="close" data-dismiss="modal">×</a></h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="department_main">
+                            <div class="department_list">
+                                <div class="list_l"><i>*</i>{{addGroup}}</div>
+                                <div class="list_r">
+                                    <input type="text" class="form-control" v-model="form.name" value="">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="addDepart" class="btn submit" @click="save">保存</button>
-                    <button class="btn" data-dismiss="modal" @click="cancel">取消</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--人员信息-->
-    <div id="selectPeople" class=" modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>人员添加<a class="close" data-dismiss="modal">×</a></h3>
-                </div>
-                <div class="modal-body">
-                    <div class="sub_wrapper">
-                        <ul id="people_list" class="ztree"></ul>
+                    <div class="modal-footer">
+                        <button id="addDepart" class="btn submit" @click="save">保存</button>
+                        <button class="btn" data-dismiss="modal" @click="cancel">取消</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn modal_active btn-primary" @click="selectPeople">确定</button>
-                    <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+        <!--人员信息-->
+        <div id="selectPeople" class=" modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>人员添加<a class="close" data-dismiss="modal">×</a></h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="sub_wrapper">
+                            <ul id="people_list" class="ztree"></ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn modal_active btn-primary" @click="selectPeople">确定</button>
+                        <button type="button" class="btn modal_close btn-default" data-dismiss="modal">关闭</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<body>
-    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+   <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="/lib/js/vue.min.js"></script>
     <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
     <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
@@ -101,10 +101,9 @@
     <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
     <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
     <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+    <script src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
     <script type="text/javascript" src="/src/js/keyword/settingArea.js"></script>
     <script type="text/javascript" src="/src/js/common/people.tree.js"></script>
-    <script src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script type="text/javascript" src="/src/js/common/admin.js"></script>
     <script>
         $(".scrollContainer").mCustomScrollbar({
             advanced: {

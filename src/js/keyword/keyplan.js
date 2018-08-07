@@ -43,7 +43,7 @@ var indexs = new Vue({
     this.initTable();
     this.bindDate();
     $("[data-toggle='popover']").popover();
-    $("[data-toggle='tooltip']").tooltip();
+    // $("[data-toggle='tooltip']").tooltip();
   },
   methods: {
     initTable: function () {
@@ -75,7 +75,7 @@ var indexs = new Vue({
           return res;
         },
         onLoadSuccess: function (data) {
-          $("[data-toggle='tooltip']").tooltip();
+          // $("[data-toggle='tooltip']").tooltip();
           $("[data-toggle='popover']").popover();
         },
         //表格的列

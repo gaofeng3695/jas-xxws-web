@@ -650,7 +650,7 @@ var index = new Vue({
       this.nodeForm.lon = "";
       this.nodeForm.groupId = "";
       this.nodeForm.groupName = "";
-      this.nodeForm.location="";
+      this.nodeForm.location = "";
     },
     _locationBd: function () { //84转百度
       var that = this;
@@ -800,9 +800,11 @@ var index = new Vue({
       $("#departmentSelect").on('shown.bs.modal', function (e) {
         var selectArr = [];
         if (!that.isEditOrView) {
-          selectArr.push({
-            id: that.nodeDetail.groupId,
-          });
+          if (that.nodeDetail.groupId!=null&&that.nodeDetail.groupId!="") {
+            selectArr.push({
+              id: that.nodeDetail.groupId,
+            });
+          }
         }
         groupTreeObj.requestPeopleTree(selectArr, 'radio');
       });

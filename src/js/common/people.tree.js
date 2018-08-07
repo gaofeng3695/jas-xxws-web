@@ -63,7 +63,7 @@ var peopleTreeObj = {
                         return item.personId;
                     });
                     peopleAllArr.forEach(function (item) {
-                        if (item.isParent=="true") {
+                        if (item.isParent == "true") {
                             filterPeople.push(item);
                         } else {
                             var index = $.inArray(item.id, indexs);
