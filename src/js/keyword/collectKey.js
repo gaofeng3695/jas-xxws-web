@@ -87,6 +87,18 @@ var index = new Vue({
     that.mapObj.enableScrollWheelZoom(true);
     var point = new BMap.Point(116.404, 39.915); // 创建点坐标
     that.mapObj.centerAndZoom(point, 10); // 初始化地图，设置中心点坐标和地图级别
+    //声明-比例尺控件（左下角）
+    var bottom_left_ScaleControl = new BMap.ScaleControl({
+      anchor: BMAP_ANCHOR_BOTTOM_LEFT
+    });
+    //声明-平移和缩放按钮控件（右下角）
+    var bottom_right_navigation = new BMap.NavigationControl({
+      anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+      type: BMAP_NAVIGATION_CONTROL_SMALL
+    });
+    //地图加载控件
+    that.mapObj.addControl(bottom_left_ScaleControl);
+    that.mapObj.addControl(bottom_right_navigation);
     that.defaultCursor = that.mapObj.getDefaultCursor();
     that.draggingCursor = that.mapObj.getDraggingCursor();
     that._requestNode();
@@ -800,7 +812,7 @@ var index = new Vue({
       $("#departmentSelect").on('shown.bs.modal', function (e) {
         var selectArr = [];
         if (!that.isEditOrView) {
-          if (that.nodeDetail.groupId!=null&&that.nodeDetail.groupId!="") {
+          if (that.nodeDetail.groupId != null && that.nodeDetail.groupId != "") {
             selectArr.push({
               id: that.nodeDetail.groupId,
             });

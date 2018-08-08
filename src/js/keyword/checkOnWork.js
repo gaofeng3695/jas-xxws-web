@@ -4,6 +4,7 @@ var vue = new Vue({
     return {
       isDetail: false,
       currentDays: "",
+      searchObj: {},
       weeks: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
       days: [{
         month: 6,
@@ -200,8 +201,10 @@ var vue = new Vue({
           days--;
           that.newDays.unshift(obj);
         }
-      }
+      } //上面获取上一个月最后有几天
+      console.log(that.newDays);
       that.newDays = that.newDays.concat(that.days);
+      console.log(that.newDays);
       if (month == 2) {
         days = year % 4 == 0 ? 29 : 28;
         if (days == 29) that.newDays.pop();
@@ -232,28 +235,30 @@ var vue = new Vue({
         this.isDetail = false;
         return;
       }
+      $("#taskList").modal();
+      this.requestDetailByDays();
       //进行div块的展示 位置在鼠标左边
-      if (!this.currentDays || this.currentDays != item.days) {
-        var w = document.body.offsetWidth;
-        if (w - e.clientX < 300) {
-          $(".list").css("left", "");
-          $(".list").css("right", w - e.clientX);
-        } else {
-          $(".list").css("right", "");
-          $(".list").css("left", e.clientX);
-        }
-        var h = document.body.offsetHeight;
-        if (h - e.clientY < 400) {
-          $(".list").css("top", "");
-          $(".list").css("bottom", h - e.clientY);
-        } else {
-          $(".list").css("bottom", "");
-          $(".list").css("top", e.clientY);
-        }
-        this.isDetail = true;
-        this.currentDays = item.days;
-        this.requestDetailByDays(); //进行查询 该天的详细信息
-      }
+      // if (!this.currentDays || this.currentDays != item.days) {
+      //   var w = document.body.offsetWidth;
+      //   if (w - e.clientX < 300) {
+      //     $(".list").css("left", "");
+      //     $(".list").css("right", w - e.clientX);
+      //   } else {
+      //     $(".list").css("right", "");
+      //     $(".list").css("left", e.clientX);
+      //   }
+      //   var h = document.body.offsetHeight;
+      //   if (h - e.clientY < 400) {
+      //     $(".list").css("top", "");
+      //     $(".list").css("bottom", h - e.clientY);
+      //   } else {
+      //     $(".list").css("bottom", "");
+      //     $(".list").css("top", e.clientY);
+      //   }
+      //   this.isDetail = true;
+      //   this.currentDays = item.days;
+      //   this.requestDetailByDays(); //进行查询 该天的详细信息
+      // }
     },
     isbg: function (item) {
       var that = this;
@@ -261,8 +266,8 @@ var vue = new Vue({
         return "chooseBg";
       }
       if (!item.auto) {
-        if(that.chooseDate.getMonth()==new Date().getMonth()&& item.days > new Date().getDate()){
-           return "";
+        if (that.chooseDate.getMonth() == new Date().getMonth() && item.days > new Date().getDate()) {
+          return "";
         }
       }
       if (item.auto) {
@@ -295,7 +300,84 @@ var vue = new Vue({
     },
     requestDetailByDays: function () {
       var that = this;
-      console.log("请求数据")
+      $('#table').bootstrapTable({
+        url: "/cloudlink-inspection-event/keyPointPlan/page?token=" + lsObj.getLocalStorage('token'),
+        method: 'post',
+        // toolbarAlign: "left",
+        cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        showHeader: true,
+        showRefresh: true,
+        pagination: true, //分页
+        striped: true,
+        sidePagination: 'server', //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber: 1,
+        pageSize: 10,
+        pageList: [10, 20, 50], //分页步进值
+        search: false, //显示搜索框
+        searchOnEnterKey: false,
+        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+        // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+        queryParams: function (params) {
+          that.searchObj.pageSize = params.pageSize;
+          that.searchObj.pageNum = params.pageNumber;
+          return that.searchObj;
+        },
+        responseHandler: function (res) {
+          return res;
+        },
+        onLoadSuccess: function (data) {
+          // $("[data-toggle='tooltip']").tooltip();
+          $("[data-toggle='popover']").popover();
+        },
+        //表格的列
+        columns: [{
+            field: 'name', //域值
+            title: '计划名称',
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: '10%',
+            editable: true,
+          },
+          {
+            field: 'code', //域值
+            title: '区域', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: '10%',
+            editable: true
+          }, {
+            field: 'startTime', //域值
+            title: '分组', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: '10%',
+            editable: true,
+          }, {
+            field: 'endTime', //域值
+            title: '关键点名称', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: '10%',
+          },
+          {
+            field: 'groupCount', //域值
+            title: '位置描述', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: "10%",
+            editable: true,
+          }
+        ]
+      });
+    },
+    cancalNode: function () {
+      $('#table').bootstrapTable('destroy');
+      $("#taskList").modal('hide');
     }
   }
 });

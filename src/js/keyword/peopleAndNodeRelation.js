@@ -64,19 +64,12 @@ var vue = new Vue({
             sortable: false, //启用排序
             editable: true,
           }, {
-            field: 'groupCompletePath', //域值
+            field: 'parentGroupName', //域值
             title: '区域',
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            editable: true,
-            formatter: function (a) {
-              if (a.indexOf("->") > -1) {
-                return a.split("->")[0];
-              } else {
-                return a;
-              }
-            }
+            editable: true
           },
            {
             field: 'groupName', //域值
