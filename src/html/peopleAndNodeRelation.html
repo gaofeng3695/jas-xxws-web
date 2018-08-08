@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-  <link href="/lib/css/bootstrap.css" rel="stylesheet">
+  <link href="/lib/css/bootstrap.min.css" rel="stylesheet">
   <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
   <link href="/lib/css/bootstrap-table.css" rel="stylesheet">
   <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
@@ -36,7 +36,7 @@
               </div>
               <div class="search_wrapper">
                 <div class="input_wrapper">
-                  <input class="" v-model="keyword" type="text" placeholder="输入所属区域/分组、人员名称">
+                  <input class="" v-model="keyword" type="text" placeholder="输入区域、分组、人员名称">
                 </div>
                 <span class="mybtn" @click="search">确定</span>
               </div>
@@ -49,11 +49,6 @@
       <div class="data_tab">
         <div class="row">
           <div class="container-fluid">
-            <!--<div id="toolbar" class="btn-group">
-              <button @click="allotNode" type="button" data-toggle="modal" class="btn btn-default">
-                <span style="padding-right:5px"class="allotbg" ></span>分配
-              </button>
-            </div>-->
             <table id="table"></table>
           </div>
         </div>
@@ -61,62 +56,6 @@
       <!--/数据列表-->
     </div>
   </div>
-  <!-- /.container-fluid -->
-
-
-  <!--任务详情-->
-  <!--<div id="details" class="modal fade bs-example-modal-lg" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>查看<a class="close" data-dismiss="modal">×</a></h3>
-        </div>
-        <div class="modal-body">
-          <div class="details_main">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-2 col-sm-2 text-right details_title">名称</div>
-                <div class="col-md-4 col-sm-4 details_text">{{detailForm.name}}</div>
-                <div class="col-md-2 col-sm-2 text-right details_title">编号</div>
-                <div class="col-md-4 col-sm-4 details_text">{{detailForm.code}}</div>
-              </div>
-              <div class="row">
-                <div class="col-md-2 col-sm-2 text-right details_title">巡检频次</div>
-                <div class="col-md-4  col-sm-4 details_text">{{detailForm.inspectionDays}}</div>
-                <div class="col-md-2 col-sm-2 text-right details_title">间隔时间</div>
-                <div class="col-md-4  col-sm-4 details_text">{{detailForm.inspectionInterval}}</div>
-              </div>
-              <div class="row">
-                <div class="col-md-2 col-sm-2 text-right details_title">有效半径</div>
-                <div class="col-md-4  col-sm-4 details_text">{{detailForm.effectiveRadius}}</div>
-                <div class="col-md-2 col-sm-2 text-right details_title">巡检人数</div>
-                <div class="col-md-4  col-sm-4 details_text">{{detailForm.peopleCount}}</div>
-              </div>
-              <div class="row">
-                <div class="col-md-2 col-sm-2 text-right details_title">巡检人员</div>
-                <div class="col-md-10  col-sm-10 details_text">{{detailForm.personNames}}</div>
-
-              </div>
-              <div class="row">
-                <div class="col-md-2 col-sm-2 text-right details_title">位置</div>
-                <div class="col-md-10  col-sm-10 details_text">{{detailForm.location}}</div>
-
-              </div>
-              <div class="row">
-                <div class="col-md-2 col-sm-2 text-right details_title">备注</div>
-                <div class="col-md-10  col-sm-10 details_text">{{detailForm.remark}}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn" data-dismiss="modal">关闭</button>
-        </div>
-      </div>
-    </div>
-  </div>-->
-
-
 </div>
 <!--分配页面-->
 <div id="chooseNode" class="modal fade bs-example-modal-lg" role="dialog">
@@ -142,71 +81,78 @@
               <ul class="noallot">
                 <li v-for="(item,index) in noAllotNodeArrs" @click="clickNoAllotItem(item,index)">
                   <div class="item">
-                    <div class="itemLeft">
-                      <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span>
-                    </div>
-                    <div class="itemRight">
-                      <div class="base hidd">
-                        {{item.name}}
-                        <span class="code ">（{{item.code}}）</span>
+                    <!--<span class="tooltip-show" data-placement="bottom" data-toggle="tooltip" title="show">-->
+                      <div class="itemLeft">
+                        <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span>
                       </div>
-                      <div class="locationbg hidd">
-                        {{item.location}}
+                      <div class="itemRight">
+                        <div class="items">
+                          <div class="base hidd">
+                            {{item.name}}
+                            <span class="code ">（{{item.code}}）</span>
+                          </div>
+                          <div class="status" :style="item.assignStatus=='未分配'?'color:red':''">
+                            {{ item.assignStatus}}
+                          </div>
+                        </div>
+                        <div class="locationbg hidd">
+                          {{item.location}}
+                        </div>
                       </div>
-                    </div>
+                    <!--</span>-->
                   </div>
                 </li>
-              </ul>
-            </div>
+            </ul>
           </div>
-          <div class="btn-left fl ">
-            <button class="upleft" :disabled="toNoAllot" :class="toNoAllotBg?'bgblue':''" @click="toRight">
+        </div>
+        <div class="btn-left fl ">
+          <button class="upleft" :disabled="toNoAllot" :class="toNoAllotBg?'bgblue':''" @click="toRight">
                  <i class="fa fa-angle-right"></i>
                 </button>
-            <button class="upright" :disabled="toAllot" :class="toAllotBg?'bgblue':''" @click="toLeft">
+          <button class="upright" :disabled="toAllot" :class="toAllotBg?'bgblue':''" @click="toLeft">
                  <i class="fa fa-angle-left"></i> </button>
-          </div>
-          <div class="right fr">
-            <div class="top">
-              <span class="all" :class="isAllChecked?'inputbg_h':'inputbg'" @click="isAllCheckedAllot">
+        </div>
+        <div class="right fr">
+          <div class="top">
+            <span class="all" :class="isAllChecked?'inputbg_h':'inputbg'" @click="isAllCheckedAllot">
                  当前人员已分配的关键点</span>
+          </div>
+          <div class="search">
+            <input type="text" placeholder="请输入名称、编号" class="form-control" v-model="allotKeyWord">
+          </div>
+          <div style="height:370px;overflow: auto;padding-bottom: 10px;" class="scrollContainer">
+            <div style="color:#333;text-align: center" v-show="allotNodeArrs.length==0">
+              暂无数据
             </div>
-            <div class="search">
-              <input type="text" placeholder="请输入名称、编号" class="form-control" v-model="allotKeyWord">
-            </div>
-            <div style="height:370px;overflow: auto;padding-bottom: 10px;" class="scrollContainer">
-              <div style="color:#333;text-align: center" v-show="allotNodeArrs.length==0">
-                暂无数据
-              </div>
-              <ul class="allot">
-                <li v-for="(item,index) in allotNodeArrs" @click="clickItem(item,index)">
-                  <div class="item">
-                    <div class="itemLeft">
-                      <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span>
+            <ul class="allot">
+              <li v-for="(item,index) in allotNodeArrs" @click="clickItem(item,index)">
+                <div class="item">
+                  <div class="itemLeft">
+                    <span class="check" :class="item.checked?'inputbg_h':'inputbg'"></span>
+                  </div>
+                  <div class="itemRight">
+                    <div class="base hidd">
+                      {{item.name}}
+                      <span class="code ">（{{item.code}}）</span>
                     </div>
-                    <div class="itemRight">
-                      <div class="base hidd">
-                        {{item.name}}
-                        <span class="code ">（{{item.code}}）</span>
-                      </div>
-                      <div class="locationbg hidd">
-                        {{item.location}}
-                      </div>
+                    <div class="locationbg hidd">
+                      {{item.location}}
                     </div>
                   </div>
-                </li>
-                </li>
-              </ul>
-            </div>
+                </div>
+              </li>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn modal_active submit" @click="submit">确定</button>
-        <button class="btn modal_active " @click="cancalChooseNode">取消</button>
-      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn modal_active submit" @click="submit">确定</button>
+      <button class="btn modal_active " @click="cancalChooseNode">取消</button>
     </div>
   </div>
+</div>
 </div>
 
 <body>

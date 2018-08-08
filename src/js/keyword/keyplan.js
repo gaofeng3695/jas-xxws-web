@@ -166,8 +166,16 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              var groupName = "<ul><li class='groupItem hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li><li class='hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li></ul>";
-              return '<span title="分组详情"  data-html="true"  data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">20</span>';
+              var groupName = "<ul>";
+              if (row.relationGroupBoList.length > 0) {
+                row.relationGroupBoList.forEach(function (item) {
+                  groupName += "<li class='groupItem hidd'>"+item.groupName+"</li>";
+                });
+                groupName+="</ul>";
+                return '<span title="分组详情"  data-html="true"  data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">'+row.relationGroupBoList.length+'</span>';
+              } else {
+                return 0;
+              }
             }
           },
           {
@@ -179,16 +187,23 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              var persons = ['张三', '李四', '半山烟雨', '测试人员七八', '张测测测测三顶顶顶顶', '李四顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶多'];
-              var person = "<ul>";
-              for (var i = 0; i < persons.length; i++) {
-                if (i % 2 == 0) {
-                  person += "<span style='display:inline-block;width:120px;' class='hidd'>" + persons[i] + "</span>"
-                } else {
-                  person += "<span style='display:inline-block;width:120px;padding-left:5px;' class='hidd'>" + persons[i] + "</span>"
+              var persons = [];
+              row.relationPersonBoList.forEach(function (item) {
+                persons.push(item.personName);
+              });
+              if (persons.length > 0) {
+                var person = "<ul>";
+                for (var i = 0; i < persons.length; i++) {
+                  if (i % 2 == 0) {
+                    person += "<span style='display:inline-block;width:120px;' class='hidd'>" + persons[i] + "</span>"
+                  } else {
+                    person += "<span style='display:inline-block;width:120px;padding-left:5px;' class='hidd'>" + persons[i] + "</span>"
+                  }
                 }
+                return '<span title="人员详情" data-html="true" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '">' + row.relationPersonBoList.length + '</span>';
+              } else {
+                return row.relationPersonBoList.length;
               }
-              return '<span title="人员详情" data-html="true" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '">20</span>';
             }
           },
           {
@@ -200,7 +215,7 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              return 20;
+              return row.relationKeyPointBoList.length;
             }
           },
 

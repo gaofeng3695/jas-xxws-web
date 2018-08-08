@@ -71,14 +71,14 @@ var vue = new Vue({
             sortable: false, //启用排序
             editable: true
           },
-           {
+          {
             field: 'groupName', //域值
             title: '分组',
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
             editable: true,
-          },{
+          }, {
             field: 'personName', //域值
             title: '人员名称', //内容
             align: 'center',
@@ -92,7 +92,7 @@ var vue = new Vue({
                 }
               };
             }
-          },  {
+          }, {
             field: 'keyPointCount', //域值
             title: '所属关键点数量', //内容
             align: 'center',
@@ -170,6 +170,9 @@ var vue = new Vue({
       var that = this;
       that.currentAllotPeople = row;
       $("#chooseNode").modal();
+      $("#chooseNode").on('shown.bs.modal', function () {
+        $("[data-toggle='tooltip']").tooltip();
+      });
       chooseNode.initChoose();
       chooseNode.requestAllNodes(); //请求所有的关键点
     }
@@ -195,6 +198,9 @@ var chooseNode = new Vue({
       noallotKeyWord: "",
       allotKeyWord: "",
     }
+  },
+  mounted: function () {
+
   },
   watch: {
     allotKeyWord: function () {
@@ -398,6 +404,7 @@ var chooseNode = new Vue({
     },
     requestAllNodes: function () {
       var that = this;
+      $("[data-toggle='tooltip']").tooltip();
       that.noallotKeyWord = "";
       $.ajax({
         type: "GET",
@@ -414,6 +421,11 @@ var chooseNode = new Vue({
             that.noAllotNodeArrsByServer = [];
             if (data.rows[0].distributableKeyPointList.length > 0) {
               data.rows[0].distributableKeyPointList.forEach(function (item) {
+                if (item.personBoList.length > 0) {
+                  item.assignStatus = '未分配';
+                } else {
+                  item.assignStatus = '已分配';
+                }
                 item.checked = false;
                 that.noAllotNodeArrs.push(item);
                 that.noAllotNodeArrsByServer.push(item);
@@ -421,6 +433,11 @@ var chooseNode = new Vue({
             }
             if (data.rows[0].assignedkeyPointList.length > 0) {
               data.rows[0].assignedkeyPointList.forEach(function (item) {
+                if (item.personBoList && item.personBoList.length > 0) {
+                  item.assignStatus = '未分配';
+                } else {
+                  item.assignStatus = '已分配';
+                }
                 item.checked = false;
                 that.allotNodeArrs.push(item);
                 that.allotNodeArrsByServer.push(item);
