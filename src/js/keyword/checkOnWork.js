@@ -6,7 +6,7 @@ var vue = new Vue({
       taskObj: {
         "startDate": "2018-08-01",
         "endDate": "2018-08-31",
-        "userId": JSON.parse(lsObj.getLocalStorage("userBo")).objectId
+        "userId": "",
       },
       currentDays: "",
       searchObj: {},
@@ -31,7 +31,6 @@ var vue = new Vue({
     var that = this;
     that.initDate();
     that.requestPeopleList(); //请求企业下面的人员
-    that.getParams();
   },
   methods: {
     getParams: function () {
@@ -186,10 +185,9 @@ var vue = new Vue({
     },
     requestDetailByDays: function () {
       var that = this;
-      $('#table').bootstrapTable({
+      $('#table').bootstrapTable('destroy').bootstrapTable({
         url: "/cloudlink-inspection-event/keyPointTask/workAttendanceDetail?token=" + lsObj.getLocalStorage('token'),
         method: 'post',
-        // toolbarAlign: "left",
         cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
         showHeader: true,
         showRefresh: true,
@@ -209,11 +207,14 @@ var vue = new Vue({
           return that.searchObj;
         },
         responseHandler: function (res) {
-          return res;
+          return {
+            rows: res.rows[0].resultList,
+            total: res.rows[0].total
+          };
         },
         //表格的列
         columns: [{
-            field: 'name', //域值
+            field: 'planName', //域值
             title: '计划名称',
             align: 'center',
             visible: true, //false表示不显示
@@ -221,16 +222,17 @@ var vue = new Vue({
             width: '10%',
             editable: true,
           },
-          {
-            field: 'code', //域值
-            title: '区域', //内容
-            align: 'center',
-            visible: true, //false表示不显示
-            sortable: false, //启用排序
-            width: '10%',
-            editable: true
-          }, {
-            field: 'startTime', //域值
+          // {
+          //   field: 'code', //域值
+          //   title: '区域', //内容
+          //   align: 'center',
+          //   visible: true, //false表示不显示
+          //   sortable: false, //启用排序
+          //   width: '10%',
+          //   editable: true
+          // },
+           {
+            field: 'groupName', //域值
             title: '分组', //内容
             align: 'center',
             visible: true, //false表示不显示
@@ -238,7 +240,7 @@ var vue = new Vue({
             width: '10%',
             editable: true,
           }, {
-            field: 'endTime', //域值
+            field: 'keyPointName', //域值
             title: '关键点名称', //内容
             align: 'center',
             visible: true, //false表示不显示
@@ -246,13 +248,20 @@ var vue = new Vue({
             width: '10%',
           },
           {
-            field: 'groupCount', //域值
-            title: '位置描述', //内容
+            field: 'checkStatus', //域值
+            title: '状态', //内容
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
             width: "10%",
             editable: true,
+            formatter: function (a) {
+              if (a == 0) {
+                return '未检查'
+              } else {
+                return '已检查'
+              }
+            }
           }
         ]
       });
@@ -278,6 +287,7 @@ var vue = new Vue({
               options += "<option value=" + item.objectId + ">" + item.userName + "</option>"
             });
             $("#people").append(options);
+            that.people = JSON.parse(lsObj.getLocalStorage("userBo")).objectId;
           } else {
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }

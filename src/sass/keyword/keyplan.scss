@@ -426,3 +426,10 @@ li{
 .W100 .th-inner {
   width: 100px !important;
 }
+
+.showTip{
+  display:inline-block;
+  cursor: pointer;
+  width:20px;
+  border-bottom: 2px solid #58b7f7;
+}

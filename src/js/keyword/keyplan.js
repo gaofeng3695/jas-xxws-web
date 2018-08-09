@@ -172,7 +172,7 @@ var indexs = new Vue({
                   groupName += "<li class='groupItem hidd'><span>" + item.parentGroupName + "</span>->" + item.groupName + "</li>";
                 });
                 groupName += "</ul>";
-                return '<span title="分组详情"  data-html="true"  data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">' + row.relationGroupBoList.length + '</span>';
+                return '<span title="分组详情"  data-html="true"  data-trigger=" hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '"><span class="showTip">' + row.relationGroupBoList.length + '</span></span>';
               } else {
                 return 0;
               }
@@ -202,7 +202,7 @@ var indexs = new Vue({
                     person += "<span style='display:inline-block;width:120px;padding-left:5px;' class='hidd'>" + persons[i] + "</span>"
                   }
                 }
-                return '<span title="人员详情" data-html="true" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '">' + row.relationPersonBoList.length + '</span>';
+                return '<span title="人员详情" data-html="true" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '"><span class="showTip">' + row.relationPersonBoList.length + '</span></span>';
               } else {
                 return row.relationPersonBoList.length;
               }
@@ -486,8 +486,7 @@ var indexs = new Vue({
               return;
             }
             if (data.code == "GJD_GROUP_001") {
-              // xxwsWindowObj.xxwsAlert("您所选择的区域/分组中所包含的关键点，还未分配巡检人员，请先进行【人员关键点设置】");
-               xxwsWindowObj.xxwsAlert(data.msg);
+              xxwsWindowObj.xxwsAlert("您所选择的区域/分组【"+data.msg+"】所包含的关键点，还未分配巡检人员，请先进行【人员关键点设置】");
               return;
             }
             if (data.code == "GJD_PLAN_005") {

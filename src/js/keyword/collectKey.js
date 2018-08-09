@@ -115,22 +115,24 @@ var index = new Vue({
       var that = this;
       that.currentEditIsSave(function () {
         that.isShowTool = false;
-        that.removeAllotPoint();
-        that.removeNoAllotPoint();
-        that.cancalNode();
-        that._requestNode(that.searchInput, function () {
-          /**一些状态需要初始化 */
-          that.isSearchNode = true;
-          that.isDetailNode = false; //必经点详情列表隐藏
-          that.isEditOrView = true;
-          that.allot = true;
-          that.noallot = true;
-          /**一些状态初始化完成 */
-          if (that.nodeInfoArrys.length == 0) {
-            that.noResult = true;
-          } else {
-            that.noResult = false;
-          }
+        that.removeAllotPoint(function () {
+          that.cancalNode();
+          that.removeNoAllotPoint(function () {
+            that._requestNode(that.searchInput, function () {
+              /**一些状态需要初始化 */
+              that.isSearchNode = true;
+              that.isDetailNode = false; //必经点详情列表隐藏
+              that.isEditOrView = true;
+              that.allot = true;
+              that.noallot = true;
+              /**一些状态初始化完成 */
+              if (that.nodeInfoArrys.length == 0) {
+                that.noResult = true;
+              } else {
+                that.noResult = false;
+              }
+            });
+          });
         });
       });
     },
@@ -293,7 +295,7 @@ var index = new Vue({
         styles: _styles
       });
     },
-    removeAllotPoint: function () {
+    removeAllotPoint: function (callback) {
       var that = this;
       if (!that.markerAllotClusterer) {
         return;
@@ -302,8 +304,11 @@ var index = new Vue({
         that.markerAllotClusterer.removeMarker(item.value);
       });
       that._isHasDetailNode(); //进行详情页面的关闭
+      if (typeof callback == 'function') {
+        callback();
+      }
     },
-    removeNoAllotPoint: function () {
+    removeNoAllotPoint: function (callback) {
       var that = this;
       if (!that.markerNOAllotClusterer) {
         return;
@@ -312,6 +317,9 @@ var index = new Vue({
         that.markerNOAllotClusterer.removeMarker(item.value);
       });
       that._isHasDetailNode(); //进行详情页面的关闭
+      if (typeof callback == 'function') {
+        callback();
+      }
     },
     clickItem: function (item) {
       var that = this;
@@ -390,16 +398,19 @@ var index = new Vue({
     },
     refreshDraw: function () { //刷新
       var that = this;
-      that.removeAllotPoint();
-      that.removeNoAllotPoint();
-      that.cancalNode(); //清除所有的点
       that.searchInput = "";
       that.isDetailNode = false; //必经点详情列表隐藏
       that.isSearchNode = false; //必经点列表隐藏
       that.isEditOrView = true;
       that.allot = true;
       that.noallot = true;
-      that._requestNode();
+      that.removeAllotPoint(function () {
+        that.cancalNode(); //清除所有的点
+        that.removeNoAllotPoint(function () {
+          that._requestNode();
+        });
+      });
+
     }, //刷新进行重新绘制  数据的请求
 
     _isHasDetailNode: function () {
