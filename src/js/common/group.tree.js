@@ -50,7 +50,7 @@ var groupTreeObj = {
         var setting = {
             view: {
                 showLine: true,
-                showIcon: false,
+                showIcon: false
             },
             callback: {
                 beforeCheck: function (treeId, treeNode, clickFlag) {

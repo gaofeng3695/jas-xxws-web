@@ -56,7 +56,9 @@
     }
   }
 }
-
+.ztree li a.curSelectedNode{
+ height:20px !important;
+}
 .ztree {
   li {
     line-height: 20px;

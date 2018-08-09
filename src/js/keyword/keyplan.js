@@ -486,7 +486,12 @@ var indexs = new Vue({
               return;
             }
             if (data.code == "GJD_GROUP_001") {
-              xxwsWindowObj.xxwsAlert("您所选择的区域/分组中所包含的关键点，还未分配巡检人员，请先进行【人员关键点设置】");
+              // xxwsWindowObj.xxwsAlert("您所选择的区域/分组中所包含的关键点，还未分配巡检人员，请先进行【人员关键点设置】");
+               xxwsWindowObj.xxwsAlert(data.msg);
+              return;
+            }
+            if (data.code == "GJD_PLAN_005") {
+              xxwsWindowObj.xxwsAlert("该计划结束时间小于今天，无法发布");
               return;
             }
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
@@ -654,7 +659,7 @@ var indexs = new Vue({
       that.setGroupAndPlanToServer(obj);
     },
     setGroupAndPlanToServer: function (obj) {
-      var that=this;
+      var that = this;
       $.ajax({
         type: "post",
         contentType: "application/json",
@@ -664,8 +669,8 @@ var indexs = new Vue({
         success: function (data) {
           if (data.success == 1) {
             $("#people").modal('hide');
-            xxwsWindowObj.xxwsAlert("分配成功",function(){
-that.refreshTable();
+            xxwsWindowObj.xxwsAlert("分配成功", function () {
+              that.refreshTable();
             });
           } else {
             $("#people").modal('hide');

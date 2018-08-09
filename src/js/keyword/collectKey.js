@@ -24,7 +24,8 @@ var index = new Vue({
         name: "",
         inspectionDays: 1,
         groupId: "",
-        groupName: ""
+        groupName: "",
+        remark: ""
       },
       //新增基本使用数据
       isGetOrInput: false, //用于表示
@@ -61,6 +62,12 @@ var index = new Vue({
         that.nodeForm.remark = val.substring(0, 160);
       }
       that.textCount = 160 - that.nodeForm.remark.length;
+    },
+    'nodeDetail.remark': function (val, oldVal) {
+      var that = this;
+      if (val.length > 160) {
+        that.nodeDetail.remark = val.substring(0, 160);
+      }
     },
     'nodeForm.lon': function (val, oldVal) {
       var that = this;
@@ -663,6 +670,7 @@ var index = new Vue({
       this.nodeForm.groupId = "";
       this.nodeForm.groupName = "";
       this.nodeForm.location = "";
+      this.nodeForm.remark = "";
     },
     _locationBd: function () { //84转百度
       var that = this;
