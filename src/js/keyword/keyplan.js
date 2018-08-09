@@ -169,10 +169,10 @@ var indexs = new Vue({
               var groupName = "<ul>";
               if (row.relationGroupBoList.length > 0) {
                 row.relationGroupBoList.forEach(function (item) {
-                  groupName += "<li class='groupItem hidd'>"+item.groupName+"</li>";
+                  groupName += "<li class='groupItem hidd'><span>" + item.parentGroupName + "</span>->" + item.groupName + "</li>";
                 });
-                groupName+="</ul>";
-                return '<span title="分组详情"  data-html="true"  data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">'+row.relationGroupBoList.length+'</span>';
+                groupName += "</ul>";
+                return '<span title="分组详情"  data-html="true"  data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">' + row.relationGroupBoList.length + '</span>';
               } else {
                 return 0;
               }
@@ -188,9 +188,11 @@ var indexs = new Vue({
             editable: true,
             formatter: function (value, row, index) {
               var persons = [];
-              row.relationPersonBoList.forEach(function (item) {
-                persons.push(item.personName);
-              });
+              if (row.relationPersonBoList.length > 0) {
+                row.relationPersonBoList.forEach(function (item) {
+                  persons.push(item.personName);
+                });
+              }
               if (persons.length > 0) {
                 var person = "<ul>";
                 for (var i = 0; i < persons.length; i++) {
@@ -652,6 +654,7 @@ var indexs = new Vue({
       that.setGroupAndPlanToServer(obj);
     },
     setGroupAndPlanToServer: function (obj) {
+      var that=this;
       $.ajax({
         type: "post",
         contentType: "application/json",
@@ -661,7 +664,9 @@ var indexs = new Vue({
         success: function (data) {
           if (data.success == 1) {
             $("#people").modal('hide');
-            xxwsWindowObj.xxwsAlert("分配成功");
+            xxwsWindowObj.xxwsAlert("分配成功",function(){
+that.refreshTable();
+            });
           } else {
             $("#people").modal('hide');
             xxwsWindowObj.xxwsAlert("分配失败");

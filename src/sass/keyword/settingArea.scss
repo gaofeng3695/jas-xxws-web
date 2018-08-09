@@ -82,7 +82,8 @@ body {
             }
         }
         .enterprise_list {
-            overflow: hidden !important;
+            overflow-x: hidden !important;
+            overflow-y:auto;
             width: auto;
             height: 100%;
             padding: 0px 10px;

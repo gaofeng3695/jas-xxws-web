@@ -338,6 +338,7 @@ var vue = new Vue({
                 success: function (data) {
                     if (data.success == 1) {
                         xxwsWindowObj.xxwsAlert(msg + "成功", function () {
+                             that.refreshTable();
                             that.cancel();
                             that.getAllData();
                         });

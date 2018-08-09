@@ -422,9 +422,9 @@ var chooseNode = new Vue({
             if (data.rows[0].distributableKeyPointList.length > 0) {
               data.rows[0].distributableKeyPointList.forEach(function (item) {
                 if (item.personBoList.length > 0) {
-                  item.assignStatus = '未分配';
-                } else {
                   item.assignStatus = '已分配';
+                } else {
+                  item.assignStatus = '未分配';
                 }
                 item.checked = false;
                 that.noAllotNodeArrs.push(item);
@@ -434,9 +434,9 @@ var chooseNode = new Vue({
             if (data.rows[0].assignedkeyPointList.length > 0) {
               data.rows[0].assignedkeyPointList.forEach(function (item) {
                 if (item.personBoList && item.personBoList.length > 0) {
-                  item.assignStatus = '未分配';
-                } else {
                   item.assignStatus = '已分配';
+                } else {
+                  item.assignStatus = '未分配';
                 }
                 item.checked = false;
                 that.allotNodeArrs.push(item);

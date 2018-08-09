@@ -13,6 +13,11 @@ html,
 #page-wrapper {
   height: 100%;
   padding: 15px 0px;
+  overflow: hidden;
+  .container-fluid{
+    height: 100%;
+    overflow: auto;
+  }
   .data_tab {
     background: #fff;
     border-radius: 5px;

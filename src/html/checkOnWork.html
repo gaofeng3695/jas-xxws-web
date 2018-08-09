@@ -37,93 +37,31 @@
               <span class="week-item"> {{item}}</span>
             </div>
           </div>
-          <div class="calendar isOutside" @mouseleave="remove($event)">
+          <div class="calendar isOutside">
             <div class="item" :class="isbg(item)" v-for="item in newDays">
               <img src="/src/images/user/detail_h.png"  @click="viewDetail($event,item)" v-if="ifDetail(item)"></img>
               <span class="date">{{item.days}}</span>
               <div>完成率：{{item.finish}}</div>
             </div>
           </div>
-          <div class="list scrollContainer" v-show="isDetail">
-            <ul class="">
-              <li>
-                <div class="item">
-                  <div class="name">必经点一必经点一</div>
-                  <div class="task">1/9</div>
-                </div>
-                <div class="item address">
-                  海淀区学院路科大天工大厦A座13层
-                </div>
-              </li>
-               <li>
-                <div class="item">
-                  <div class="name">必经点一必经点一</div>
-                  <div class="task">1/9</div>
-                </div>
-                <div class="item address">
-                  海淀区学院路科大天工大厦A座13层
-                </div>
-              </li>
-               <li>
-                <div class="item">
-                  <div class="name">必经点一必经点一</div>
-                  <div class="task">1/9</div>
-                </div>
-                <div class="item address">
-                  海淀区学院路科大天工大厦A座13层
-                </div>
-              </li>
-               <li>
-                <div class="item">
-                  <div class="name">必经点一必经点一</div>
-                  <div class="task">1/9</div>
-                </div>
-                <div class="item address">
-                  海淀区学院路科大天工大厦A座13层
-                </div>
-              </li>
-              <li>
-                <div class="item">
-                  <div class="name">必经点一必经点一</div>
-                  <div class="task">1/9</div>
-                </div>
-                <div class="item address">
-                  海淀区学院路科大天工大厦A座13层
-                </div>
-              </li>
-              <li>
-                <div class="item">
-                  <div class="name">必经点一必经点一</div>
-                  <div class="task">1/9</div>
-                </div>
-                <div class="item address">
-                  海淀区学院路科大天工大厦A座13层
-                </div>
-              </li>
-              <li>
-                <div class="item">
-                  <div class="name">必经点一必经点一</div>
-                  <div class="task">1/9</div>
-                </div>
-                <div class="item address">
-                  海淀区学院路科大天工大厦A座13层
-                </div>
-              </li>
-              <li>
-                <div class="item">
-                  <div class="name">必经点一必经点一</div>
-                  <div class="task">1/9</div>
-                </div>
-                <div class="item address">
-                  海淀区学院路科大天工大厦A座13层
-                </div>
-              </li>
-            </ul>
+        </div>
+      </div>
+    </div>
+   <div id="taskList" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>关键点详情<a class="close" data-dismiss="modal">×</a></h3>
+          </div>
+          <div class="modal-body">
+            <div id="table"></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">取消</button>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 
   <script type="text/javascript" src="/lib/js/vue.js"></script>

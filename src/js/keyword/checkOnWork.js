@@ -237,28 +237,6 @@ var vue = new Vue({
       }
       $("#taskList").modal();
       this.requestDetailByDays();
-      //进行div块的展示 位置在鼠标左边
-      // if (!this.currentDays || this.currentDays != item.days) {
-      //   var w = document.body.offsetWidth;
-      //   if (w - e.clientX < 300) {
-      //     $(".list").css("left", "");
-      //     $(".list").css("right", w - e.clientX);
-      //   } else {
-      //     $(".list").css("right", "");
-      //     $(".list").css("left", e.clientX);
-      //   }
-      //   var h = document.body.offsetHeight;
-      //   if (h - e.clientY < 400) {
-      //     $(".list").css("top", "");
-      //     $(".list").css("bottom", h - e.clientY);
-      //   } else {
-      //     $(".list").css("bottom", "");
-      //     $(".list").css("top", e.clientY);
-      //   }
-      //   this.isDetail = true;
-      //   this.currentDays = item.days;
-      //   this.requestDetailByDays(); //进行查询 该天的详细信息
-      // }
     },
     isbg: function (item) {
       var that = this;
@@ -324,10 +302,6 @@ var vue = new Vue({
         },
         responseHandler: function (res) {
           return res;
-        },
-        onLoadSuccess: function (data) {
-          // $("[data-toggle='tooltip']").tooltip();
-          $("[data-toggle='popover']").popover();
         },
         //表格的列
         columns: [{
