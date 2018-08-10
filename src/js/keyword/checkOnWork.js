@@ -45,7 +45,8 @@ var vue = new Vue({
       }
       that.taskObj.startDate = year + "-" + month + "-01";
       var myDate = new Date(year, month, 0);
-      that.taskObj.endDate = year + "-" + month + "-" + myDate.getDate()
+      that.taskObj.endDate = year + "-" + month + "-" + myDate.getDate();
+      $("#datetimepicker").val(year + "-" + month);
       that.requestTask();
     },
     initDate: function () {
@@ -60,7 +61,7 @@ var vue = new Vue({
         startView: 3, //这里就设置了默认视图为年视图
         minView: 3, //设置最小视图为年视图
         forceParse: 0,
-        endDate:new Date()
+        endDate: new Date()
       }).on("changeDate", function (ev) {
         that.chooseDate = ev.date;
       });
