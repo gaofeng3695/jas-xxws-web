@@ -43,7 +43,7 @@ var indexs = new Vue({
     this.initTable();
     this.bindDate();
     $("[data-toggle='popover']").popover();
-    $("[data-toggle='tooltip']").tooltip();
+    // $("[data-toggle='tooltip']").tooltip();
   },
   methods: {
     initTable: function () {
@@ -75,7 +75,7 @@ var indexs = new Vue({
           return res;
         },
         onLoadSuccess: function (data) {
-          $("[data-toggle='tooltip']").tooltip();
+          // $("[data-toggle='tooltip']").tooltip();
           $("[data-toggle='popover']").popover();
         },
         //表格的列
@@ -166,8 +166,16 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              var groupName = "<ul><li class='groupItem hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li><li class='hidd'>区域一>分组一区域一>分组一区域一>分组一区域一>分组一</li></ul>";
-              return '<span title="分组详情"  data-html="true"  data-trigger="hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '">20</span>';
+              var groupName = "<ul>";
+              if (row.relationGroupBoList.length > 0) {
+                row.relationGroupBoList.forEach(function (item) {
+                  groupName += "<li class='groupItem hidd'><span>" + item.parentGroupName + "</span>->" + item.groupName + "</li>";
+                });
+                groupName += "</ul>";
+                return '<span title="分组详情"  data-html="true"  data-trigger=" hover" 	data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + groupName + '"><span class="showTip">' + row.relationGroupBoList.length + '</span></span>';
+              } else {
+                return 0;
+              }
             }
           },
           {
@@ -179,16 +187,25 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              var persons = ['张三', '李四', '半山烟雨', '测试人员七八', '张测测测测三顶顶顶顶', '李四顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶多'];
-              var person = "<ul>";
-              for (var i = 0; i < persons.length; i++) {
-                if (i % 2 == 0) {
-                  person += "<span style='display:inline-block;width:120px;' class='hidd'>" + persons[i] + "</span>"
-                } else {
-                  person += "<span style='display:inline-block;width:120px;padding-left:5px;' class='hidd'>" + persons[i] + "</span>"
-                }
+              var persons = [];
+              if (row.relationPersonBoList.length > 0) {
+                row.relationPersonBoList.forEach(function (item) {
+                  persons.push(item.personName);
+                });
               }
-              return '<span title="人员详情" data-html="true" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '">20</span>';
+              if (persons.length > 0) {
+                var person = "<ul>";
+                for (var i = 0; i < persons.length; i++) {
+                  if (i % 2 == 0) {
+                    person += "<span style='display:inline-block;width:120px;' class='hidd'>" + persons[i] + "</span>"
+                  } else {
+                    person += "<span style='display:inline-block;width:120px;padding-left:5px;' class='hidd'>" + persons[i] + "</span>"
+                  }
+                }
+                return '<span title="人员详情" data-html="true" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="right" 	data-content="' + person + '"><span class="showTip">' + row.relationPersonBoList.length + '</span></span>';
+              } else {
+                return row.relationPersonBoList.length;
+              }
             }
           },
           {
@@ -200,7 +217,7 @@ var indexs = new Vue({
             width: "10%",
             editable: true,
             formatter: function (value, row, index) {
-              return 20;
+              return row.relationKeyPointBoList.length;
             }
           },
 
@@ -284,7 +301,18 @@ var indexs = new Vue({
               },
               //删除
               'click .closed': function (e, value, row, index) {
-                that.deleteTask(row.objectId);
+                var defaultOptions = {
+                  tip: "您是否删除该计划？",
+                  name_title: '提示',
+                  name_cancel: '取消',
+                  name_confirm: '确定',
+                  isCancelBtnShow: true,
+                  callBack: function () {
+                    that.deleteTask(row.objectId);
+                  }
+                };
+                xxwsWindowObj.xxwsAlert(defaultOptions);
+
               },
               'click .management': function (e, value, row, index) {
                 that.editTask(row.objectId);
@@ -395,7 +423,6 @@ var indexs = new Vue({
     },
     deleteTask: function (objectId) {
       var that = this;
-      var tip = "";
       $.ajax({
         type: "get",
         url: "/cloudlink-inspection-event/keyPointPlan/delete?token=" + lsObj.getLocalStorage('token'),
@@ -403,29 +430,16 @@ var indexs = new Vue({
         dataType: "json",
         data: {
           id: objectId,
-          confirm: false,
         },
         success: function (data) {
-          if (data.success == -1) {
-            if (data.code == "GJD001") {
-              tip = "该计划下存在关键点,是否继续删除？"
-            } else if (data.code == "GJD_PLAN_001") {
-              tip = '该计划已经发布，确认是否删除？';
-            } else {
-              tip = '您是否删除该计划？';
-            }
+          if (data.success == 1) {
+            xxwsWindowObj.xxwsAlert("删除成功", function () {
+              that.refreshTable();
+            });
+          } else {
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
           }
-          var defaultOptions = {
-            tip: tip,
-            name_title: '提示',
-            name_cancel: '取消',
-            name_confirm: '确定',
-            isCancelBtnShow: true,
-            callBack: function () {
-              that.deleteTaskToServer(objectId);
-            }
-          };
-          xxwsWindowObj.xxwsAlert(defaultOptions);
+
         }
       })
     },
@@ -471,8 +485,16 @@ var indexs = new Vue({
               xxwsWindowObj.xxwsAlert("该计划下还未分配到区域/分组，请先分配");
               return;
             }
-            if (data.code == "GJD_GROUP_001") {
-              xxwsWindowObj.xxwsAlert("您所选择的区域/分组中所包含的关键点，还未分配巡检人员，请先进行【人员关键点设置】");
+            if (data.code == "GJD_PLAN_004") {
+              xxwsWindowObj.xxwsAlert("您所选择的区域/分组【" + data.msg + "】，还未分配巡检人员，请先进行【区域分组管理】进行人员分配");
+              return;
+            }
+            if (data.code == "GJD_PLAN_005") {
+              xxwsWindowObj.xxwsAlert("该计划结束时间小于今天，无法发布");
+              return;
+            }
+            if (data.code == "GJD_PLAN_006") {
+              xxwsWindowObj.xxwsAlert("您所选择的区域/分组【" + data.msg + "】所含关键点，还未分配巡检人员，请先进行【人员关键点设置】");
               return;
             }
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
@@ -546,11 +568,12 @@ var indexs = new Vue({
         minView: 'month',
         language: 'zh-CN',
         autoclose: true,
-      }).on("click", function () {
-        $("#startTime").datetimepicker("setStartDate", new Date());
-        $("#startTime").datetimepicker("setEndDate", $("#endTime").val());
-      }).on("changeDate", function (ev) {
-        that.taskForm.startTime = ev.date.Format("yyyy-MM-dd");
+        startDate: new Date(),
+        endDate: $("#endTime").val()
+      }).on("hide", function () {
+        // console.log(ev);
+        // that.taskForm.startTime = ev.date.Format("yyyy-MM-dd");
+        that.taskForm.startTime = $("#startTime").val();
       });
       $("#endTime").datetimepicker({
         format: 'yyyy-mm-dd',
@@ -558,13 +581,14 @@ var indexs = new Vue({
         language: 'zh-CN',
         autoclose: true,
       }).on("click", function () {
-        if (new Date(that.taskForm.startTime) <= new Date()) {
+        if (that.taskForm.startTime == "" || new Date(that.taskForm.startTime) <= new Date()) {
           $("#endTime").datetimepicker("setStartDate", new Date());
         } else {
           $("#endTime").datetimepicker("setStartDate", $("#startTime").val());
         }
-      }).on("changeDate", function (ev) {
-        that.taskForm.endTime = ev.date.Format("yyyy-MM-dd");
+      }).on("hide", function () {
+        that.taskForm.endTime = $("#endTime").val();
+        // that.taskForm.endTime = ev.date.Format("yyyy-MM-dd");
       });
     },
     verify: function () {
@@ -638,6 +662,7 @@ var indexs = new Vue({
       that.setGroupAndPlanToServer(obj);
     },
     setGroupAndPlanToServer: function (obj) {
+      var that = this;
       $.ajax({
         type: "post",
         contentType: "application/json",
@@ -647,7 +672,9 @@ var indexs = new Vue({
         success: function (data) {
           if (data.success == 1) {
             $("#people").modal('hide');
-            xxwsWindowObj.xxwsAlert("分配成功");
+            xxwsWindowObj.xxwsAlert("分配成功", function () {
+              that.refreshTable();
+            });
           } else {
             $("#people").modal('hide');
             xxwsWindowObj.xxwsAlert("分配失败");

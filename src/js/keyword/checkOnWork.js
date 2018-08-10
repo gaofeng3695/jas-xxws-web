@@ -3,165 +3,51 @@ var vue = new Vue({
   data: function () {
     return {
       isDetail: false,
+      taskObj: {
+        "startDate": "2018-08-01",
+        "endDate": "2018-08-31",
+        "userId": "",
+      },
       currentDays: "",
+      searchObj: {},
       weeks: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
-      days: [{
-        month: 6,
-        days: 1,
-        finish: "21/21",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 2,
-        finish: "21/21",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 3,
-        finish: "13/13",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 4,
-        finish: "11/11",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 5,
-        finish: "11/11",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 6,
-        finish: "23/23",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 7,
-        finish: "10/10",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 8,
-        finish: "6/6",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 9,
-        finish: "11/11",
-        finish1: 11 / 11
-      }, {
-        month: 6,
-        days: 10,
-        finish: "11/23"
-      }, {
-        month: 6,
-        days: 11,
-        finish: "11/23",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 12,
-        finish: "1/1",
-        finish1: 11 / 11
-      }, {
-        month: 6,
-        days: 13,
-        finish: "11/23"
-      }, {
-        month: 6,
-        days: 14,
-        finish: "4/4",
-        finish1: 11 / 11
-      }, {
-        month: 6,
-        days: 15,
-        finish: "5/5",
-        finish1: 11 / 11
-      }, {
-        month: 6,
-        days: 16,
-        finish: "11/23"
-      }, {
-        month: 6,
-        days: 17,
-        finish: "7/7",
-        finish1: 11 / 11
-      }, {
-        month: 6,
-        days: 18,
-        finish: "31/31",
-        finish1: 11 / 11
-      }, {
-        month: 6,
-        days: 19,
-        finish: "11/23",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 20,
-        finish: "11/23"
-      }, {
-        month: 6,
-        days: 21,
-        finish: "11/23"
-      }, {
-        month: 6,
-        days: 22,
-        finish: "11/23"
-      }, {
-        month: 6,
-        days: 23,
-        finish: "11/23",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 24,
-        finish: "11/23"
-      }, {
-        month: 6,
-        days: 25,
-        finish: "11/23"
-      }, {
-        month: 6,
-        days: 26,
-        finish: "21/21",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 27,
-        finish: "11/23"
-      }, {
-        month: 6,
-        days: 28,
-        finish: "13/13",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 29,
-        finish: "11/11",
-        finish1: 21 / 21
-      }, {
-        month: 6,
-        days: 30,
-        finish: "11/23"
-      }],
+      days: [],
       newDays: [],
       chooseDate: new Date(),
+      people: "",
     }
   },
   watch: {
-    chooseDate: function () {
+    people: function () {
       var that = this;
-      that.initdays();
+      that.taskObj.userId = that.people;
+      that.getParams();
+    },
+    chooseDate: function () {
+      this.getParams();
     }
   },
   mounted: function () {
     var that = this;
     that.initDate();
-    that.initdays();
+    that.requestPeopleList(); //请求企业下面的人员
   },
   methods: {
+    getParams: function () {
+      var that = this;
+      var year = that.chooseDate.getFullYear();
+      var month = that.chooseDate.getMonth();
+      if (month < 9) {
+        month = month + 1;
+        month = "0" + month;
+      } else {
+        month = month + 1;
+      }
+      that.taskObj.startDate = year + "-" + month + "-01";
+      var myDate = new Date(year, month, 0);
+      that.taskObj.endDate = year + "-" + month + "-" + myDate.getDate()
+      that.requestTask();
+    },
     initDate: function () {
       var that = this;
       $("#datetimepicker").datetimepicker({
@@ -174,8 +60,49 @@ var vue = new Vue({
         startView: 3, //这里就设置了默认视图为年视图
         minView: 3, //设置最小视图为年视图
         forceParse: 0,
+        endDate:new Date()
       }).on("changeDate", function (ev) {
         that.chooseDate = ev.date;
+      });
+    },
+    requestTask: function () {
+      var that = this;
+      that.days = [];
+      $.ajax({
+        type: "POST",
+        url: "/cloudlink-inspection-event/keyPointTask/workAttendance?token=" + lsObj.getLocalStorage('token'),
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify(that.taskObj),
+        success: function (data) {
+          if (data.success == 1) {
+            data.rows.forEach(function (item) {
+              var finish = "0%";
+              if (new Date(item.inspectionDate) > new Date()) {
+                finish = "暂无"
+              } else {
+                if (item.totalCount && item.finishedCount) {
+                  finish = item.finishedCount + "/" + item.totalCount;
+                } else if (item.totalCount && !item.finishedCount) {
+                  finish = 0 + "/" + item.totalCount;
+                } else {
+                  finish = 0 + "/" + 0;
+                }
+              }
+              var obj = {
+                days: new Date(item.inspectionDate).getDate(),
+                inspectionDate: item.inspectionDate,
+                totalCount: item.totalCount,
+                finishedCount: item.finishedCount,
+                finish: finish
+              }
+              that.days.push(obj);
+            });
+            that.initdays();
+          } else {
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
+          }
+        }
       });
     },
     initdays: function () {
@@ -200,26 +127,14 @@ var vue = new Vue({
           days--;
           that.newDays.unshift(obj);
         }
-      }
+      } //上面获取上一个月最后有几天
       that.newDays = that.newDays.concat(that.days);
-      if (month == 2) {
-        days = year % 4 == 0 ? 29 : 28;
-        if (days == 29) that.newDays.pop();
-        if (days == 28) that.newDays.splice(that.newDays.length - 2, 2);
-      } else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
-        days = 31;
-        that.newDays.push({
-          month: 6,
-          days: 31,
-          finish: "11/23"
-        })
-      }
       if (that.newDays.length == 42) {
         return;
       } else {
-        for (var j = 1; that.newDays.length < 42; j++) {
+        for (var j = 1; that.newDays.length < 42; j++) { //取值取下个月的最后几天
           var obj = {
-            auto: "last",
+            auto: "next",
             days: j,
             finish: "暂无"
           }
@@ -228,47 +143,34 @@ var vue = new Vue({
       }
     },
     viewDetail: function (e, item) {
+      var that = this;
       if (item.auto) {
-        this.isDetail = false;
+        that.isDetail = false;
         return;
       }
-      //进行div块的展示 位置在鼠标左边
-      if (!this.currentDays || this.currentDays != item.days) {
-        var w = document.body.offsetWidth;
-        if (w - e.clientX < 300) {
-          $(".list").css("left", "");
-          $(".list").css("right", w - e.clientX);
-        } else {
-          $(".list").css("right", "");
-          $(".list").css("left", e.clientX);
-        }
-        var h = document.body.offsetHeight;
-        if (h - e.clientY < 400) {
-          $(".list").css("top", "");
-          $(".list").css("bottom", h - e.clientY);
-        } else {
-          $(".list").css("bottom", "");
-          $(".list").css("top", e.clientY);
-        }
-        this.isDetail = true;
-        this.currentDays = item.days;
-        this.requestDetailByDays(); //进行查询 该天的详细信息
-      }
+      that.searchObj.userId = that.people;
+      that.searchObj.inspectionDate = item.inspectionDate;
+      $("#taskList").modal();
+      that.requestDetailByDays();
     },
     isbg: function (item) {
       var that = this;
       if (!item.auto && item.days == new Date().getDate() && that.chooseDate.getMonth() == new Date().getMonth()) {
         return "chooseBg";
       }
+
       if (!item.auto) {
-        if(that.chooseDate.getMonth()==new Date().getMonth()&& item.days > new Date().getDate()){
-           return "";
+        if (that.chooseDate.getMonth() == new Date().getMonth() && item.days > new Date().getDate()) {
+          return "";
+        }
+        if (that.chooseDate.getMonth() > new Date().getMonth() && !(that.chooseDate.getFullYear() < new Date().getFullYear())) {
+          return "";
         }
       }
       if (item.auto) {
         return " cover";
       }
-      if (item.finish1 == 1) {
+      if (item.totalCount && item.finishedCount && item.finishedCount == item.totalCount) {
         return " bg1";
       }
       return "bg";
@@ -278,24 +180,120 @@ var vue = new Vue({
       if (item.auto) {
         return false;
       } else {
+        if (that.chooseDate.getMonth() > new Date().getMonth() && !(that.chooseDate.getFullYear() < new Date().getFullYear())) {
+          return false
+        }
         if (that.chooseDate.getMonth() != new Date().getMonth()) {
           return true;
-        } else if (item.days > new Date().getDate()) {
+        }
+        if (item.days > new Date().getDate()) {
           return false;
         }
       }
       return true;
     },
-    remove: function (event) {
-      var totar = event.relatedTarget || event.toElement; //鼠标指向的元素
-      var t = event.target;
-      if ($(totar).find(".isOutside").size() > 0 || $(totar).find(".week-item").size() > 0) {
-        this.isDetail = false;
-      }
-    },
     requestDetailByDays: function () {
       var that = this;
-      console.log("请求数据")
-    }
+      $('#table').bootstrapTable('destroy').bootstrapTable({
+        url: "/cloudlink-inspection-event/keyPointTask/workAttendanceDetail?token=" + lsObj.getLocalStorage('token'),
+        method: 'post',
+        cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        showHeader: true,
+        showRefresh: true,
+        pagination: true, //分页
+        striped: true,
+        sidePagination: 'server', //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber: 1,
+        pageSize: 10,
+        pageList: [10, 20, 50], //分页步进值
+        search: false, //显示搜索框
+        searchOnEnterKey: false,
+        queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+        // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+        queryParams: function (params) {
+          that.searchObj.pageSize = params.pageSize;
+          that.searchObj.pageNum = params.pageNumber;
+          return that.searchObj;
+        },
+        responseHandler: function (res) {
+          return {
+            rows: res.rows[0].resultList,
+            total: res.rows[0].total
+          };
+        },
+        //表格的列
+        columns: [{
+            field: 'planName', //域值
+            title: '计划名称',
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: '10%',
+            editable: true,
+          },
+          {
+            field: 'groupName', //域值
+            title: '分组', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: '10%',
+            editable: true,
+          }, {
+            field: 'keyPointName', //域值
+            title: '关键点名称', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: '10%',
+          },
+          {
+            field: 'checkStatus', //域值
+            title: '状态', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: "10%",
+            editable: true,
+            formatter: function (a) {
+              if (a == 0) {
+                return '未检查'
+              } else {
+                return '已检查'
+              }
+            }
+          }
+        ]
+      });
+    },
+    cancalNode: function () {
+      $('#table').bootstrapTable('destroy');
+      $("#taskList").modal('hide');
+    },
+    requestPeopleList: function () { //请求该企业下面的所有人员
+      var that = this;
+      $.ajax({
+        type: "POST",
+        url: "/cloudlink-core-framework/user/queryList?token=" + lsObj.getLocalStorage('token'),
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+          enterpriseId: JSON.parse(lsObj.getLocalStorage("userBo")).enterpriseId,
+          status: "1"
+        }),
+        success: function (data) {
+          if (data.success == 1) {
+            var options = "";
+            data.rows.forEach(function (item) {
+              options += "<option value=" + item.objectId + ">" + item.userName + "</option>"
+            });
+            $("#people").append(options);
+            that.people = JSON.parse(lsObj.getLocalStorage("userBo")).objectId;
+          } else {
+            xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
+          }
+        }
+      });
+    },
   }
 });

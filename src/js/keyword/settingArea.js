@@ -128,8 +128,13 @@ var vue = new Vue({
                 contentType: "application/json",
                 dataType: "json",
                 success: function (data) {
-                    data.rows[0].text = JSON.parse(lsObj.getLocalStorage("userBo")).enterpriseName;
-                    _this.renderDepartment(data.rows);
+                    if (data.success == 1) {
+                        data.rows[0].text = JSON.parse(lsObj.getLocalStorage("userBo")).enterpriseName;
+                        _this.renderDepartment(data.rows);
+                    } else {
+                        xxwsWindowObj.xxwsAlert("服务器异常，请稍候尝试");
+                    }
+
                 }
             });
         },
@@ -137,6 +142,10 @@ var vue = new Vue({
             var _this = this;
             var setting = {
                 edit: {
+                    drag: {
+                        isCopy: false,
+                        isMove: false
+                    },
                     enable: true,
                     removeTitle: "删除",
                     renameTitle: "修改",
@@ -288,7 +297,6 @@ var vue = new Vue({
                 that.addGroup = "分组名称：";
             } else {
                 that.form.parentId = '0';
-                // that.form.parentName = "";
                 that.form.level = 0;
                 that.addGroup = "区域名称：";
             }
@@ -303,8 +311,13 @@ var vue = new Vue({
             var url = "";
             var msg = "";
             if (that.form.name.trim() == "") {
-                var tip = that.addGroup.subString(0, that.addGroup.length);
+                var tip = that.addGroup.substring(0, that.addGroup.length);
                 xxwsWindowObj.xxwsAlert(tip + "不能为空");
+                return;
+            }
+            if (that.form.name.trim().length > 50) {
+                var tip = that.addGroup.substring(0, that.addGroup.length);
+                xxwsWindowObj.xxwsAlert(tip + "最大不能超过50个字");
                 return;
             }
             if (that.form.title == '修改') {
@@ -325,6 +338,7 @@ var vue = new Vue({
                 success: function (data) {
                     if (data.success == 1) {
                         xxwsWindowObj.xxwsAlert(msg + "成功", function () {
+                             that.refreshTable();
                             that.cancel();
                             that.getAllData();
                         });
@@ -356,6 +370,8 @@ var vue = new Vue({
                         xxwsWindowObj.xxwsAlert("删除成功", function () {
                             that.getAllData();
                             that.currentNode.nodeId = "";
+                            that.currentNode.leaf = false;
+                            that.refreshTable();
                         });
                     } else {
                         xxwsWindowObj.xxwsAlert("删除失败");
@@ -415,9 +431,11 @@ var vue = new Vue({
         refreshTable: function () {
             var that = this;
             $('#table').bootstrapTable('refreshOptions', {
-                queryParams: function () {
-                    that.searchObj.pageSize = 10;
-                    that.searchObj.pageNum = 1;
+                pageNumber: +that.searchObj.pageNum,
+                pageSize: +that.searchObj.pageSize,
+                queryParams: function (params) {
+                    that.searchObj.pageSize = params.pageSize;
+                    that.searchObj.pageNum = params.pageNumber;
                     that.searchObj.groupId = that.currentNode.nodeId || "";
                     that.searchObj.ifRecursion = that.currentNode.leaf ? false : true;
                     return that.searchObj;

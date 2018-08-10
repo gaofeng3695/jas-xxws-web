@@ -6,8 +6,17 @@ body {
   overflow: hidden;
 }
 
+#page-wrapper,
+.wrapper-main {
+  height: 100%;
+  width: 100%;
+}
+
 .container-fluid {
-  margin: 10px;
+  height: 100%;
+  width: 100%;
+  padding: 15px;
+  overflow: auto;
   .linh {
     height: 45px;
   }
@@ -42,7 +51,6 @@ body {
   }
   .work {
     margin-top: 10px;
-    overflow: hidden;
     padding: 10px;
     background: #fff;
     border-bottom: 1px solid #cbccce;
@@ -52,21 +60,23 @@ body {
       height: 40px;
       line-height: 40px;
       .week {
-        width: 14.286%;
+        width: 14%;
         float: left;
         text-align: center
       }
     }
     .calendar {
-      overflow: hidden;
-      // border-bottom: 1px solid #c8cacc;
+      overflow: hidden; // border-bottom: 1px solid #c8cacc;
       .item {
         position: relative;
-        width: 14.286%; // border-left: 1px dotted #58b7f7;
+        width: 14%; // border-left: 1px dotted #58b7f7;
         border-top: 1px solid #fff;
-        border-bottom: 1px solid #fff; // border-right: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        border-right: 2px solid #fff;
         text-align: center;
-        padding: 30px 0px;
+        padding: 20px 10px;
+        max-height:100px;
+        overflow: hidden;
         float: left;
         img {
           position: absolute;
@@ -74,12 +84,36 @@ body {
           right: 5px;
           cursor: pointer;
         }
+        // .top {
+        //   width: 100%;
+        //   height: 25px;
+        //   line-height: 25px;
+        //   padding: 0px 10px;
+        //   // background: rgba(88, 88, 88, 0.23);
+        //   background:rgba(61,186,240, 0.42);
+        //   vertical-align: middle;
+        //   .left {
+        //     float: left;
+        //     color: #fff !important;
+        //   }
+        //   .image {
+        //     float: right;
+        //     background:url("/src/images/user/detail.png") no-repeat center center;
+        //     width:20px;
+        //     height:25px;
+        //     background-size:20px 20px;
+        //     cursor: pointer;
+        //   }
+        // }
         .date {
           font-size: 20px;
+          cursor: pointer; // color: #333;
         }
-        .span {
-          display: block;
-          font-size: 14px;
+        .bottom {
+          padding: 10px 10px;
+          width: 100%;
+          text-align: center;
+          font-size: 14px; // color:#666;
         }
         &:hover {
           border: 1px solid #fb0;
@@ -91,30 +125,7 @@ body {
       }
       .hander {
         cursor: pointer;
-      } // .item:nth-child(7n) {
-      //   border-right: 1px dotted #58b7f7;
-      // }
-      // .item:nth-last-of-type(1) {
-      //   border-bottom: 1px solid #c8cacc;
-      // }
-      // .item:nth-last-of-type(2) {
-      //   border-bottom: 1px solid #c8cacc;
-      // }
-      // .item:nth-last-of-type(3) {
-      //   border-bottom: 1px solid #c8cacc;
-      // }
-      // .item:nth-last-of-type(4) {
-      //   border-bottom: 1px solid #c8cacc;
-      // }
-      // .item:nth-last-of-type(5) {
-      //   border-bottom: 1px solid #c8cacc;
-      // }
-      // .item:nth-last-of-type(6) {
-      //   border-bottom: 1px solid #c8cacc;
-      // }
-      // .item:nth-last-of-type(7) {
-      //   border-bottom: 1px solid #c8cacc;
-      // }
+      }
       .bg {
         background: #fff0f0; // cursor: pointer;
       }
@@ -172,4 +183,72 @@ body {
       }
     }
   }
+}
+
+#taskList {
+  font-size: 14px; // overflow: hidden;
+  .modal-lg {
+    .modal-content {
+      width: 800px;
+      height: 580px;
+      margin: 0 auto;
+      border-radius: 8px;
+      overflow: hidden;
+      .modal-header {
+        height: 38px;
+        background: #344052;
+        color: #fff;
+        padding: 0;
+        margin: 0;
+        h3 {
+          line-height: 40px;
+          font-size: 16px;
+          text-align: center;
+          margin: 0;
+          a {
+            color: #fff;
+            margin-top: 6px;
+            margin-right: 10px;
+            font-weight: none;
+            opacity: 1;
+          }
+        }
+      }
+      .modal-body {
+        padding: 20px;
+        overflow: hidden;
+        height: 490px;
+        .bootstrap-table{
+          // overflow: auto;
+          height:100%;
+        }
+        .fixed-table-container{
+              height: 420px;
+        }
+      }
+      .modal-footer {
+        text-align: center;
+        background: #344052;
+        height: 50px;
+        padding: 0;
+        margin: 0;
+        button {
+          height: 36px;
+          border: none;
+          width: 120px;
+          margin: 7px 30px 0 30px;
+          font-size: 16px;
+        }
+        .submit {
+          background: #59b6fc;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+
+.fixed-table-toolbar{
+  display:none;
 }

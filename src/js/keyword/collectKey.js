@@ -24,7 +24,8 @@ var index = new Vue({
         name: "",
         inspectionDays: 1,
         groupId: "",
-        groupName: ""
+        groupName: "",
+        remark: ""
       },
       //新增基本使用数据
       isGetOrInput: false, //用于表示
@@ -62,6 +63,12 @@ var index = new Vue({
       }
       that.textCount = 160 - that.nodeForm.remark.length;
     },
+    'nodeDetail.remark': function (val, oldVal) {
+      var that = this;
+      if (val.length > 160) {
+        that.nodeDetail.remark = val.substring(0, 160);
+      }
+    },
     'nodeForm.lon': function (val, oldVal) {
       var that = this;
       if (val == oldVal) {
@@ -87,6 +94,18 @@ var index = new Vue({
     that.mapObj.enableScrollWheelZoom(true);
     var point = new BMap.Point(116.404, 39.915); // 创建点坐标
     that.mapObj.centerAndZoom(point, 10); // 初始化地图，设置中心点坐标和地图级别
+    //声明-比例尺控件（左下角）
+    var bottom_left_ScaleControl = new BMap.ScaleControl({
+      anchor: BMAP_ANCHOR_BOTTOM_LEFT
+    });
+    //声明-平移和缩放按钮控件（右下角）
+    var bottom_right_navigation = new BMap.NavigationControl({
+      anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+      type: BMAP_NAVIGATION_CONTROL_SMALL
+    });
+    //地图加载控件
+    that.mapObj.addControl(bottom_left_ScaleControl);
+    that.mapObj.addControl(bottom_right_navigation);
     that.defaultCursor = that.mapObj.getDefaultCursor();
     that.draggingCursor = that.mapObj.getDraggingCursor();
     that._requestNode();
@@ -96,22 +115,24 @@ var index = new Vue({
       var that = this;
       that.currentEditIsSave(function () {
         that.isShowTool = false;
-        that.removeAllotPoint();
-        that.removeNoAllotPoint();
-        that.cancalNode();
-        that._requestNode(that.searchInput, function () {
-          /**一些状态需要初始化 */
-          that.isSearchNode = true;
-          that.isDetailNode = false; //必经点详情列表隐藏
-          that.isEditOrView = true;
-          that.allot = true;
-          that.noallot = true;
-          /**一些状态初始化完成 */
-          if (that.nodeInfoArrys.length == 0) {
-            that.noResult = true;
-          } else {
-            that.noResult = false;
-          }
+        that.removeAllotPoint(function () {
+          that.cancalNode();
+          that.removeNoAllotPoint(function () {
+            that._requestNode(that.searchInput, function () {
+              /**一些状态需要初始化 */
+              that.isSearchNode = true;
+              that.isDetailNode = false; //必经点详情列表隐藏
+              that.isEditOrView = true;
+              that.allot = true;
+              that.noallot = true;
+              /**一些状态初始化完成 */
+              if (that.nodeInfoArrys.length == 0) {
+                that.noResult = true;
+              } else {
+                that.noResult = false;
+              }
+            });
+          });
         });
       });
     },
@@ -274,7 +295,7 @@ var index = new Vue({
         styles: _styles
       });
     },
-    removeAllotPoint: function () {
+    removeAllotPoint: function (callback) {
       var that = this;
       if (!that.markerAllotClusterer) {
         return;
@@ -283,8 +304,11 @@ var index = new Vue({
         that.markerAllotClusterer.removeMarker(item.value);
       });
       that._isHasDetailNode(); //进行详情页面的关闭
+      if (typeof callback == 'function') {
+        callback();
+      }
     },
-    removeNoAllotPoint: function () {
+    removeNoAllotPoint: function (callback) {
       var that = this;
       if (!that.markerNOAllotClusterer) {
         return;
@@ -293,6 +317,9 @@ var index = new Vue({
         that.markerNOAllotClusterer.removeMarker(item.value);
       });
       that._isHasDetailNode(); //进行详情页面的关闭
+      if (typeof callback == 'function') {
+        callback();
+      }
     },
     clickItem: function (item) {
       var that = this;
@@ -371,16 +398,19 @@ var index = new Vue({
     },
     refreshDraw: function () { //刷新
       var that = this;
-      that.removeAllotPoint();
-      that.removeNoAllotPoint();
-      that.cancalNode(); //清除所有的点
       that.searchInput = "";
       that.isDetailNode = false; //必经点详情列表隐藏
       that.isSearchNode = false; //必经点列表隐藏
       that.isEditOrView = true;
       that.allot = true;
       that.noallot = true;
-      that._requestNode();
+      that.removeAllotPoint(function () {
+        that.cancalNode(); //清除所有的点
+        that.removeNoAllotPoint(function () {
+          that._requestNode();
+        });
+      });
+
     }, //刷新进行重新绘制  数据的请求
 
     _isHasDetailNode: function () {
@@ -650,7 +680,8 @@ var index = new Vue({
       this.nodeForm.lon = "";
       this.nodeForm.groupId = "";
       this.nodeForm.groupName = "";
-      this.nodeForm.location="";
+      this.nodeForm.location = "";
+      this.nodeForm.remark = "";
     },
     _locationBd: function () { //84转百度
       var that = this;
@@ -800,9 +831,11 @@ var index = new Vue({
       $("#departmentSelect").on('shown.bs.modal', function (e) {
         var selectArr = [];
         if (!that.isEditOrView) {
-          selectArr.push({
-            id: that.nodeDetail.groupId,
-          });
+          if (that.nodeDetail.groupId != null && that.nodeDetail.groupId != "") {
+            selectArr.push({
+              id: that.nodeDetail.groupId,
+            });
+          }
         }
         groupTreeObj.requestPeopleTree(selectArr, 'radio');
       });
