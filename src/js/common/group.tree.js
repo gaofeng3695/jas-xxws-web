@@ -53,6 +53,9 @@ var groupTreeObj = {
                 showIcon: false
             },
             callback: {
+                onClick: function (e, treeId, treeNode, clickFlag) {
+                     _this.zTree.checkNode(treeNode, !treeNode.checked, true);
+                },
                 beforeCheck: function (treeId, treeNode, clickFlag) {
                     if (_this.isView) {
                         return false;

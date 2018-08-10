@@ -279,6 +279,7 @@ var vue = new Vue({
         dataType: "json",
         data: JSON.stringify({
           enterpriseId: JSON.parse(lsObj.getLocalStorage("userBo")).enterpriseId,
+          status:"1"
         }),
         success: function (data) {
           if (data.success == 1) {

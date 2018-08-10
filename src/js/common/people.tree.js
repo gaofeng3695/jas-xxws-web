@@ -88,6 +88,11 @@ var peopleTreeObj = {
     renderPeopleTree: function (data) { //遍历tree
         var _this = this;
         var setting = {
+            callback: {
+                onClick: function (e, treeId, treeNode, clickFlag) {
+                    _this.zTree.checkNode(treeNode, !treeNode.checked, true);
+                },
+            },
             view: {
                 showLine: true
             },
