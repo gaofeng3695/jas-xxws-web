@@ -15,11 +15,13 @@ var vue = new Vue({
       newDays: [],
       chooseDate: new Date(),
       people: "",
+      loading: true,
     }
   },
   watch: {
     people: function () {
       var that = this;
+      that.loading = true;
       that.taskObj.userId = that.people;
       that.getParams();
     },
@@ -63,6 +65,7 @@ var vue = new Vue({
         forceParse: 0,
         endDate: new Date()
       }).on("changeDate", function (ev) {
+        that.loading = true;
         that.chooseDate = ev.date;
       });
     },
@@ -77,6 +80,7 @@ var vue = new Vue({
         data: JSON.stringify(that.taskObj),
         success: function (data) {
           if (data.success == 1) {
+            that.loading = false;
             data.rows.forEach(function (item) {
               var finish = "0%";
               if (new Date(item.inspectionDate) > new Date()) {
@@ -97,6 +101,11 @@ var vue = new Vue({
                 finishedCount: item.finishedCount,
                 finish: finish
               }
+              // if (obj.days == 2) {
+              //   obj.totalCount = 2;
+              //   obj.finishedCount = 2;
+              //   obj.finish="2/2"
+              // }
               that.days.push(obj);
             });
             that.initdays();
@@ -168,13 +177,17 @@ var vue = new Vue({
           return "";
         }
       }
+
       if (item.auto) {
-        return " cover";
+        return "cover";
       }
       if (item.totalCount && item.finishedCount && item.finishedCount == item.totalCount) {
-        return " bg1";
+        return " bg1"; //已完成
       }
-      return "bg";
+      if (!item.auto && !item.totalCount && !item.finishedCount) {
+        return "bg2 "; //今天没有任务
+      }
+      return "bg"; //未完成
     },
     ifDetail: function (item) {
       var that = this;
@@ -229,7 +242,16 @@ var vue = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '10%',
+            width: '20%',
+            editable: true,
+          },
+          {
+            field: 'parentGroupName', //区域
+            title: '区域', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            width: '20%',
             editable: true,
           },
           {
@@ -238,7 +260,7 @@ var vue = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '10%',
+            width: '20%',
             editable: true,
           }, {
             field: 'keyPointName', //域值
@@ -246,7 +268,22 @@ var vue = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: '10%',
+            width: '20%',
+          },
+          {
+            field: 'checkTime', //域值
+            title: '检查日期', //内容
+            align: 'center',
+            visible: true, //false表示不显示
+            sortable: false, //启用排序
+            class: "W150",
+            formatter:function(val){
+              if(val){
+                return val;
+              }else{
+                return "";
+              }
+            }
           },
           {
             field: 'checkStatus', //域值
@@ -254,13 +291,13 @@ var vue = new Vue({
             align: 'center',
             visible: true, //false表示不显示
             sortable: false, //启用排序
-            width: "10%",
+            class: "W100",
             editable: true,
             formatter: function (a) {
               if (a == 0) {
-                return '未检查'
+                return '<span class="nocheck">未检查</span>'
               } else {
-                return '已检查'
+                return '<span class="check">已检查</span>'
               }
             }
           }

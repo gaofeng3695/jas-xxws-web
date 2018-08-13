@@ -31,7 +31,12 @@
             </div>
           </div>
         </div>
-        <div class="work">
+        <div class="loading" v-if="loading">
+          <div class="loading-img">
+
+          </div>
+        </div>
+        <div class="work" v-else>
           <div class="top">
             <div class="week" v-for="item in weeks">
               <span class="week-item"> {{item}}</span>
@@ -47,11 +52,11 @@
         </div>
       </div>
     </div>
-   <div id="taskList" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div id="taskList" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h3>关键点详情<a class="close" data-dismiss="modal">×</a></h3>
+            <h3>任务详情<a class="close" data-dismiss="modal">×</a></h3>
           </div>
           <div class="modal-body">
             <div id="table"></div>
