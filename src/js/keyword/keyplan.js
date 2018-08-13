@@ -215,10 +215,7 @@ var indexs = new Vue({
             visible: true, //false表示不显示
             sortable: false, //启用排序
             width: "10%",
-            editable: true,
-            formatter: function (value, row, index) {
-              return row.relationKeyPointBoList.length;
-            }
+            editable: true
           },
 
           {
