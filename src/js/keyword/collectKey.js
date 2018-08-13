@@ -773,13 +773,15 @@ var index = new Vue({
         return false;
       }
       var lon = obj.lon + "";
-      if (!lon.trim()) {
+      var bdLon = obj.bdLon + "";
+      if (!lon.trim() || !bdLon.trim()) {
         xxwsWindowObj.xxwsAlert("经度不能为空");
         return false;
       }
       var lat = obj.lat + "";
-      if (!lat.trim()) {
-        xxwsWindowObj.xxwsAlert("经度不能为空");
+      var bdLat = obj.bdLat + "";
+      if (!lat.trim()|| !bdLat.trim()) {
+        xxwsWindowObj.xxwsAlert("纬度不能为空");
         return false;
       }
       if (!obj.location.trim()) {
