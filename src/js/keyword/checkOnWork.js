@@ -60,6 +60,7 @@ var vue = new Vue({
         startView: 3, //这里就设置了默认视图为年视图
         minView: 3, //设置最小视图为年视图
         forceParse: 0,
+        endDate:new Date()
       }).on("changeDate", function (ev) {
         that.chooseDate = ev.date;
       });
@@ -147,7 +148,7 @@ var vue = new Vue({
         that.isDetail = false;
         return;
       }
-      that.searchObj.userId = JSON.parse(lsObj.getLocalStorage("userBo")).objectId;
+      that.searchObj.userId = that.people;
       that.searchObj.inspectionDate = item.inspectionDate;
       $("#taskList").modal();
       that.requestDetailByDays();
@@ -157,8 +158,12 @@ var vue = new Vue({
       if (!item.auto && item.days == new Date().getDate() && that.chooseDate.getMonth() == new Date().getMonth()) {
         return "chooseBg";
       }
+
       if (!item.auto) {
         if (that.chooseDate.getMonth() == new Date().getMonth() && item.days > new Date().getDate()) {
+          return "";
+        }
+        if (that.chooseDate.getMonth() > new Date().getMonth() && !(that.chooseDate.getFullYear() < new Date().getFullYear())) {
           return "";
         }
       }
@@ -175,9 +180,13 @@ var vue = new Vue({
       if (item.auto) {
         return false;
       } else {
+        if (that.chooseDate.getMonth() > new Date().getMonth() && !(that.chooseDate.getFullYear() < new Date().getFullYear())) {
+          return false
+        }
         if (that.chooseDate.getMonth() != new Date().getMonth()) {
           return true;
-        } else if (item.days > new Date().getDate()) {
+        }
+        if (item.days > new Date().getDate()) {
           return false;
         }
       }
@@ -222,16 +231,7 @@ var vue = new Vue({
             width: '10%',
             editable: true,
           },
-          // {
-          //   field: 'code', //域值
-          //   title: '区域', //内容
-          //   align: 'center',
-          //   visible: true, //false表示不显示
-          //   sortable: false, //启用排序
-          //   width: '10%',
-          //   editable: true
-          // },
-           {
+          {
             field: 'groupName', //域值
             title: '分组', //内容
             align: 'center',
@@ -279,7 +279,7 @@ var vue = new Vue({
         dataType: "json",
         data: JSON.stringify({
           enterpriseId: JSON.parse(lsObj.getLocalStorage("userBo")).enterpriseId,
-          status:"1"
+          status: "1"
         }),
         success: function (data) {
           if (data.success == 1) {

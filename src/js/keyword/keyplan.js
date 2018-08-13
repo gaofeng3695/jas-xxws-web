@@ -485,12 +485,16 @@ var indexs = new Vue({
               xxwsWindowObj.xxwsAlert("该计划下还未分配到区域/分组，请先分配");
               return;
             }
-            if (data.code == "GJD_GROUP_001") {
-              xxwsWindowObj.xxwsAlert("您所选择的区域/分组【"+data.msg+"】所包含的关键点，还未分配巡检人员，请先进行【人员关键点设置】");
+            if (data.code == "GJD_PLAN_004") {
+              xxwsWindowObj.xxwsAlert("您所选择的区域/分组【" + data.msg + "】，还未分配巡检人员，请先进行【区域分组管理】进行人员分配");
               return;
             }
             if (data.code == "GJD_PLAN_005") {
               xxwsWindowObj.xxwsAlert("该计划结束时间小于今天，无法发布");
+              return;
+            }
+            if (data.code == "GJD_PLAN_006") {
+              xxwsWindowObj.xxwsAlert("您所选择的区域/分组【" + data.msg + "】所含关键点，还未分配巡检人员，请先进行【人员关键点设置】");
               return;
             }
             xxwsWindowObj.xxwsAlert("服务异常，请稍候尝试");
