@@ -608,6 +608,14 @@ var index = new Vue({
               that.refreshDraw();
             });
           } else {
+            if (data.msg.indexOf("name") > -1) {
+              xxwsWindowObj.xxwsAlert("关键点名称重复");
+              return;
+            }
+            if (data.msg.indexOf("code") > -1) {
+              xxwsWindowObj.xxwsAlert("关键点编号重复");
+              return;
+            }
             xxwsWindowObj.xxwsAlert("服务器异常，请稍候尝试");
           }
         }
@@ -780,7 +788,7 @@ var index = new Vue({
       }
       var lat = obj.lat + "";
       var bdLat = obj.bdLat + "";
-      if (!lat.trim()|| !bdLat.trim()) {
+      if (!lat.trim() || !bdLat.trim()) {
         xxwsWindowObj.xxwsAlert("纬度不能为空");
         return false;
       }
