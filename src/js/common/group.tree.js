@@ -54,7 +54,11 @@ var groupTreeObj = {
             },
             callback: {
                 onClick: function (e, treeId, treeNode, clickFlag) {
-                     _this.zTree.checkNode(treeNode, !treeNode.checked, true);
+                    if (treeNode.parentId != "0" && treeNode.leaf) {
+                        _this.zTree.checkNode(treeNode, !treeNode.checked, true);
+                    }else{
+                        xxwsWindowObj.xxwsAlert("请到【区域分组管理】维护区域/分组");
+                    }
                 },
                 beforeCheck: function (treeId, treeNode, clickFlag) {
                     if (_this.isView) {
