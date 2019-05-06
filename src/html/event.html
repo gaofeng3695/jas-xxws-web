@@ -18,6 +18,8 @@
     <link href="/src/css/detailsRepair.css" rel="stylesheet">
     <link href="/src/css/event.css" rel="stylesheet">
     <link href="/src/css/common/pipelineswitch.css" rel="stylesheet">
+    <link href="/src/css/common/group.tree.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -149,17 +151,24 @@
                     <div class="container-fluid">
                         <div id="toolbar" class="btn-group">
                             <button id="btn_add" type="button" data-toggle="modal" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新建事件
-                                </button>
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                新建事件
+                            </button>
                             <button id="export_all" type="button" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-share" aria-hidden="true"></span>导出全部
-                                </button>
+                                <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+                                导出全部
+                            </button>
                             <button id="export_choice" type="button" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>导出已选
-                                </button>
+                                <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+                                导出已选
+                            </button>
                             <button id="map_choice" type="button" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>多点定位
-                                </button>
+                                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                                多点定位
+                            </button>
+                            <button id="switch_point" type="button" class="btn btn-default">
+                                <span class="fa fa-podcast" aria-hidden="true"></span> 转换关键点
+                            </button>
                         </div>
                         <table id="table"></table>
                     </div>
@@ -242,7 +251,7 @@
                                     </div>
                                     <div class="list_right">
                                         <select class="form-control" id="eventType">
-                                </select>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form_part">
@@ -252,8 +261,8 @@
                                     <div class="list_right has-feedback">
                                         <input type="text" class="form-control form_datetime" readonly id="datetime">
                                         <span class="form-control-feedback" aria-hidden="true">
-                                    <img src="/src/images/event/time.png" alt="">
-                                </span>
+                                            <img src="/src/images/event/time.png" alt="">
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -262,10 +271,11 @@
                                     <i>*</i>详细位置
                                 </div>
                                 <div class="list_right has-feedback">
-                                    <input type="text" data-toggle="modal" class="form-control map_address" placeholder="请在地图上选取位置" readonly>
+                                    <input type="text" data-toggle="modal" class="form-control map_address"
+                                        placeholder="请在地图上选取位置" readonly>
                                     <span class="form-control-feedback" aria-hidden="true">
-                                    <img src="/src/images/event/map_r.png" alt="">
-                                </span>
+                                        <img src="/src/images/event/map_r.png" alt="">
+                                    </span>
                                     <input type="hidden" name="lon">
                                     <input type="hidden" name="lat">
                                 </div>
@@ -276,7 +286,8 @@
                                     <i>*</i>事件描述
                                 </div>
                                 <div class="list_right textarea_text">
-                                    <textarea id="event_description" oninput="checkLen(this)" class="form-control"></textarea>
+                                    <textarea id="event_description" oninput="checkLen(this)"
+                                        class="form-control"></textarea>
                                     <span class="text_num">(160字)</span>
                                 </div>
                             </div>
@@ -305,22 +316,25 @@
                                     <div class="form_radio">
                                         <div class="form_radio_l">
                                             <span class="pay_list_c1 on">
-                                        <input type="radio" id="radio_yse" checked="checked" name="state" value="20" class="radioclass">
-                                    </span>
+                                                <input type="radio" id="radio_yse" checked="checked" name="state"
+                                                    value="20" class="radioclass">
+                                            </span>
                                             <label class="" for="radio_yse">是</label>
                                         </div>
                                         <div class="form_radio_r has-feedback">
-                                            <input type="text" class="form-control" name="receiveUser" placeholder="请选择报送人" readonly>
+                                            <input type="text" class="form-control" name="receiveUser"
+                                                placeholder="请选择报送人" readonly>
                                             <span class="form-control-feedback" aria-hidden="true">
-                                        <img src="/src/images/event/slaff.png" alt="">
-                                    </span>
+                                                <img src="/src/images/event/slaff.png" alt="">
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="form_radio">
                                         <div class="form_radio_l">
                                             <span class="pay_list_c1">
-                                        <input type="radio" id="radio_no" name="state" value="30" class="radioclass">
-                                    </span>
+                                                <input type="radio" id="radio_no" name="state" value="30"
+                                                    class="radioclass">
+                                            </span>
                                             <label class="" for="radio_no">否</label>
                                         </div>
                                         <div class="form_radio_r">
@@ -351,7 +365,8 @@
                     <div id="address_map"></div>
                     <div class="map_search text-center">
                         <div class="search_btn">
-                            <div class="search_btn_l"><input type="text" class="search-query search_val" placeholder="输入关键词搜索"></div>
+                            <div class="search_btn_l"><input type="text" class="search-query search_val"
+                                    placeholder="输入关键词搜索"></div>
                             <div class="search_btn_r">
                                 <!--<input type="button" class="btn search_botton" value="确定">-->
                                 <span class="search_botton">确定</span>
@@ -368,7 +383,8 @@
         </div>
     </div>
     <!--人员信息-->
-    <div id="stakeholder" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div id="stakeholder" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -387,11 +403,13 @@
         </div>
     </div>
     <!-- 历史类型 -->
-    <div id="hisData" class="modal big_modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div id="hisData" class="modal big_modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h3 class="modal-title" id="gridSystemModalLabel">历史类型筛选</h3>
                 </div>
                 <div class="modal-body">
@@ -409,7 +427,8 @@
     </div>
 
     <!--历史维修记录-->
-    <div id="repairHistory" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div id="repairHistory" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -432,8 +451,124 @@
             </div>
         </div>
     </div>
+
+    <div id="setpointwrap">
+        <div id="setpoint" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>转换关键点<a class="close" @click="cancalNode">×</a></h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="bg">
+                        </div>
+                        <form>
+                            <div class="node_form">
+
+                                <div class="form_list">
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i> 巡检频次
+                                        </div>
+                                        <div class="list_right">
+                                            <input type="text" class="form-control" placeholder="单位：每天"
+                                                v-model="nodeForm.inspectionTimes">
+                                        </div>
+                                    </div>
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i>巡检间隔
+                                        </div>
+                                        <div class="list_right">
+                                            <select name="inspectionInterval" id="inspectionInterval"
+                                                class="form-control" v-model="nodeForm.inspectionInterval">
+                                                <option value="1">1小时</option>
+                                                <option value="2">2小时</option>
+                                                <option value="3">3小时</option>
+                                                <option value="4">4小时</option>
+                                                <option value="5">5小时</option>
+                                                <option value="6">6小时</option>
+                                                <option value="7">7小时</option>
+                                                <option value="8">8小时</option>
+                                                <option value="9">9小时</option>
+                                                <option value="10">10小时</option>
+                                                <option value="11">11小时</option>
+                                                <option value="12">12小时</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form_list">
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i>有效半径
+                                        </div>
+                                        <div class="list_right">
+                                            <input type="text" class="form-control " placeholder="单位：米"
+                                                v-model="nodeForm.effectiveRadius">
+                                        </div>
+                                    </div>
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i>分组
+                                        </div>
+                                        <div class="list_right">
+                                            <input type="text" readonly class="form-control" style="background:#fff"
+                                                placeholder="请选择分组" v-model="nodeForm.groupName" @click="chooseGroup">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form_list">
+                                    <div class="list_left text-right">
+                                        备注
+                                    </div>
+                                    <div class="list_right textarea_text">
+                                        <textarea id="event_description" v-model="nodeForm.remark"
+                                            class="form-control"></textarea>
+                                        <span class="text_num">({{textCount}}字)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn submit" @click="submit">确定</button>
+                        <button class="btn" @click="cancalNode">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--打开邀请人员组织结构的选择-->
+        <div id="departmentSelect" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
+            role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>选择区域/分组<a class="close" data-dismiss="modal">×</a></h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="department_select scrollContainer">
+                            <ul id="group_list" class="ztree"></ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn submit" @click="quiteChooseGroup">确定</button>
+                        <button class="btn" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
     <!--维修详情模态框-->
-    <div id="repairDetails" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div id="repairDetails" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -451,7 +586,8 @@
                             <p class="detailsCode">维修编号：{{maintenanceCode}}</p>
                             <!--维修详情-->
                             <div class="frameDetailsMain" v-show="detailsShow">
-                                <component v-bind:is="which_to_show" v-bind:modifybtn="modifyShow" v-bind:openperson="openPerson" v-bind:my-msgdetails="dataBasics"></component>
+                                <component v-bind:is="which_to_show" v-bind:modifybtn="modifyShow"
+                                    v-bind:openperson="openPerson" v-bind:my-msgdetails="dataBasics"></component>
                             </div>
                             <!--维修任务轴-->
                             <div class="frameAxisMian" v-show="axisShow">
@@ -478,7 +614,8 @@
     <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
     <!--<script type="text/javascript" src="/lib/js/bootstrap-modal.js"></script>-->
     <script type="text/javascript" src="/lib/js/common_base.js"></script>
-    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1">
+    </script>
     <script type="text/javascript" src="/src/js/event/upload.js"></script>
     <script type="text/javascript" src="/src/js/event/ajaxFileUpload.js"></script>
     <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
@@ -488,6 +625,8 @@
     <script type="text/javascript" src="/src/js/common/details_common.js"></script>
     <script type="text/javascript" src="/src/js/common/tjSdk.min.js"></script>
     <script type="text/javascript" src="/src/js/common/search.template.js"></script>
+    <script type="text/javascript" src="/src/js/common/group.tree.js"></script>
+
     <script type="text/javascript" src="/src/js/event/event.js"></script>
     <script type="text/javascript" src="/src/js/common/view.pic.js"></script>
     <script type="text/javascript" src="/src/js/pipeline_map/model_vue.js"></script>

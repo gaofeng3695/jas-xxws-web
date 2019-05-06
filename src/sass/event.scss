@@ -13,16 +13,19 @@
 #page-wrapper {
     background: #edf1f2;
     $seaH: 36px;
+
     ul,
     li {
         list-style: none;
         margin: 0;
         padding: 0;
     }
+
     input,
     button {
         outline: none;
     }
+
     .event_map {
         #event_map {
             height: 250px;
@@ -32,14 +35,17 @@
             top: 0;
             left: 0;
         }
+
         .bottom_btn {
             position: relative;
             height: 20px;
+
             #drafting_down {
                 background: #344052;
                 height: 3px;
                 cursor: n-resize;
             }
+
             span {
                 display: inline-block;
                 height: 14px;
@@ -50,17 +56,21 @@
                 left: 50%;
                 margin-left: -22px;
             }
+
             .map_up {
                 background: url(/src/images/event/map_up.png) no-repeat;
             }
+
             .map_down {
                 background: url(/src/images/event/map_down.png) no-repeat;
             }
         }
     }
+
     .wrapper-main {
         padding: 0 15px;
     }
+
     .screening {
         background: #fff;
         border-radius: 5px;
@@ -68,8 +78,10 @@
         padding: 12px 10px;
         box-shadow: 2px 1px #e1e5e6;
         font-size: 14px;
+
         .select_btn {
             width: 100%;
+
             label {
                 width: 33%;
                 height: $seaH;
@@ -78,14 +90,17 @@
                 color: #999;
                 border-color: #e3e2e2;
             }
+
             .active {
                 color: #59b6fc;
                 background: #ecf7ff;
                 border-color: #59b6fc;
             }
         }
+
         .input_append {
             width: 100%;
+
             .search-query {
                 height: $seaH;
                 border-radius: 18px 0 0 18px;
@@ -95,18 +110,23 @@
                 text-indent: 25px;
                 width: 70%;
             }
+
             input::-webkit-input-placeholder {
                 background: url(/src/images/event/search.png) 6px center no-repeat;
             }
+
             input:-moz-placeholder {
                 background: url(/src/images/event/search.png) 6px center no-repeat;
             }
+
             input::-moz-placeholder {
                 background: url(/src/images/event/search.png) 6px center no-repeat;
             }
+
             input:-ms-input-placeholder {
                 background: url(/src/images/event/search.png) 6px center no-repeat;
             }
+
             button[type=submit] {
                 background: #59b6fc;
                 height: $seaH;
@@ -121,6 +141,7 @@
                 padding: 0;
             }
         }
+
         .btn_search {
             border: 1px solid #59b6fc;
             background: #ecf7ff;
@@ -130,6 +151,7 @@
             padding: 0 15px;
             border-radius: 18px;
         }
+
         .nav_main {
             background: #f7f7f7;
             border: 1px solid #e3e2e2;
@@ -139,6 +161,7 @@
             color: #666;
             position: relative;
             display: none;
+
             b.org_bot_cor {
                 width: 0;
                 height: 0;
@@ -150,6 +173,7 @@
                 position: absolute;
                 right: 42px;
                 top: -10px;
+
                 i {
                     display: block;
                     width: 0;
@@ -162,33 +186,42 @@
                     left: -10px;
                 }
             }
+
             .row {
                 line-height: 48px;
+
                 .main_list {
                     span {
                         color: #000;
                         cursor: pointer;
                         margin-right: 30px;
+
                         i {
                             color: #bbb;
                             margin-left: 5px;
                         }
+
                         &:hover {
                             color: #59b6fc;
+
                             i {
                                 color: #59b6fc;
                             }
                         }
+
                         &:last-child {
                             margin: 0;
                         }
                     }
+
                     .active {
                         color: #59b6fc;
+
                         i {
                             color: #59b6fc;
                         }
                     }
+
                     .form_datetime {
                         height: 36px;
                         line-height: 36px;
@@ -198,11 +231,13 @@
                     }
                 }
             }
+
             .status_list {
                 display: none;
             }
         }
     }
+
     .data_tab {
         background: #fff;
         border-radius: 5px;
@@ -211,6 +246,7 @@
         box-shadow: 2px 1px #e1e5e6;
         font-size: 14px;
         margin-top: 15px;
+
         .location {
             i {
                 display: inline-block;
@@ -219,14 +255,17 @@
                 background: url(/src/images/event/map.png) no-repeat;
                 vertical-align: middle;
                 margin: 0 5px;
+
                 &:hover {
                     background: url(/src/images/event/map_h.png) no-repeat;
                 }
             }
+
             .active {
                 background: url(/src/images/event/map_h.png) no-repeat;
             }
         }
+
         .check {
             i {
                 display: inline-block;
@@ -235,8 +274,23 @@
                 background: url(/src/images/event/look.png) no-repeat;
                 vertical-align: middle;
                 margin: 0 5px;
+
                 &:hover {
                     background: url(/src/images/event/look_h.png) no-repeat;
+                }
+            }
+        }
+
+        .setpoint {
+            i {
+                font-size: 20px;
+                color: #666;
+                padding-top: 4px;
+                vertical-align: bottom;
+                margin: 0 5px;
+
+                &:hover {
+                    color:#ff9800;
                 }
             }
         }
@@ -251,8 +305,10 @@
     // height: 600px;
     // margin-top: -300px;
     font-size: 14px;
+
     // overflow: hidden;
     .modal-lg {
+
         // margin: 0;
         // width: 100%;
         .modal-content {
@@ -261,17 +317,20 @@
             margin: 0 auto;
             border-radius: 8px;
             overflow: hidden;
+
             .modal-header {
                 height: 38px;
                 background: #344052;
                 color: #fff;
                 padding: 0;
                 margin: 0;
+
                 h3 {
                     line-height: 40px;
                     font-size: 16px;
                     text-align: center;
                     margin: 0;
+
                     a {
                         color: #fff;
                         margin-top: 6px;
@@ -281,10 +340,12 @@
                     }
                 }
             }
+
             .modal-body {
                 padding: 20px 20px 0 20px;
                 overflow-y: auto;
                 height: 510px;
+
                 .event_form {
                     background: #fff;
                     border-radius: 5px;
@@ -292,10 +353,12 @@
                     padding-bottom: 10px;
                     min-height: 490px;
                     color: #636363;
+
                     .form_part {
                         width: 50%;
                         float: left;
                     }
+
                     .has-feedback {
                         .form-control {
                             padding-right: 38px;
@@ -305,17 +368,21 @@
                             white-space: nowrap;
                             overflow: hidden;
                         }
+
                         .form-control-feedback {
                             right: 20px;
                         }
                     }
+
                     .form_list {
                         overflow: hidden;
                         line-height: 30px;
                         margin-top: 15px;
+
                         .list_left {
                             width: 80px;
                             float: left;
+
                             i {
                                 color: red;
                                 vertical-align: middle;
@@ -323,19 +390,24 @@
                                 font-size: 20px;
                             }
                         }
+
                         .list_right {
                             margin-left: 80px;
                             width: auto;
                             padding: 0 20px 0 10px;
+
                             .form_radio {
                                 overflow: hidden;
                                 margin-bottom: 15px;
+
                                 .form_radio_l {
                                     width: 80px;
                                     float: left;
+
                                     label {
                                         cursor: pointer;
                                     }
+
                                     .pay_list_c1 {
                                         width: 20px;
                                         height: 20px;
@@ -347,10 +419,12 @@
                                         vertical-align: middle;
                                         margin-right: 10px;
                                     }
+
                                     .on {
                                         background: url(/src/images/event/radio.png) no-repeat;
                                         background-size: 100% 100%;
                                     }
+
                                     .radioclass {
                                         opacity: 0;
                                         cursor: pointer;
@@ -361,31 +435,38 @@
                                         display: inline-block;
                                     }
                                 }
+
                                 .form_radio_r {
                                     margin-left: 80px;
                                     width: auto;
+
                                     p {
                                         color: #979797;
                                         padding-left: 10px;
                                     }
+
                                     .form-control-feedback {
                                         right: 0;
                                     }
                                 }
                             }
+
                             #eventType {
                                 option {
                                     line-height: 30px;
                                 }
                             }
                         }
+
                         .textarea_text {
                             position: relative;
+
                             textarea {
                                 resize: none;
                                 height: 120px;
                                 position: relative
                             }
+
                             .text_num {
                                 color: #999;
                                 position: absolute;
@@ -394,10 +475,13 @@
                             }
                         }
                     }
+
                     .feedback_img {
                         padding-top: 10px;
+
                         .feedback_img_list {
                             float: left;
+
                             .feedback_images {
                                 width: 104px;
                                 height: 78px;
@@ -405,10 +489,12 @@
                                 margin-right: 20px;
                                 position: relative;
                                 margin-bottom: 10px;
+
                                 img {
                                     width: 104px;
                                     height: 78px;
                                 }
+
                                 span {
                                     width: 28px;
                                     height: 28px;
@@ -425,13 +511,16 @@
                                 }
                             }
                         }
+
                         .feedback_img_file {
                             display: none;
                         }
+
                         .feedback_img_add {
                             width: 104px;
                             height: 78px;
                             float: left;
+
                             span {
                                 width: 104px;
                                 height: 78px;
@@ -441,23 +530,27 @@
                                 font-size: 16px;
                                 cursor: pointer;
                             }
+
                             input {
                                 display: none;
                             }
                         }
                     }
                 }
+
                 .form_line {
                     border-bottom: 1px solid #ddd;
                     margin-top: 20px;
                 }
             }
+
             .modal-footer {
                 text-align: center;
                 background: #344052;
                 height: 50px;
                 padding: 0;
                 margin: 0;
+
                 button {
                     height: 36px;
                     border: none;
@@ -465,6 +558,7 @@
                     margin: 7px 30px 0 30px;
                     font-size: 16px;
                 }
+
                 .submit {
                     background: #59b6fc;
                     color: #fff;
@@ -476,6 +570,7 @@
 
 #event_address {
     @extend #addEvent;
+
     // width: 600px;
     // height: 400px;
     // margin-left: -300px;
@@ -484,33 +579,40 @@
         // margin: 0;
         // width: 100%;
         margin-top: 120px;
+
         .modal-content {
             width: 600px;
             height: 400px;
+
             // margin: 0 auto;
             .modal-body {
                 height: 310px;
                 padding: 0;
                 position: relative;
+
                 #address_map {
                     width: 100%;
                     height: 100%;
                 }
+
                 .map_search {
                     position: absolute;
                     top: 10px;
                     height: 36px;
                     width: 100%;
+
                     .search_btn {
                         display: inline-block;
                         width: 64%;
                         line-height: 36px;
                         position: relative;
+
                         .search_btn_r {
                             width: 80px;
                             position: absolute;
                             right: 0;
                             top: 0;
+
                             span {
                                 width: 100%;
                                 background: #59b6fc;
@@ -526,9 +628,11 @@
                                 cursor: pointer;
                             }
                         }
+
                         .search_btn_l {
                             width: auto;
                             margin-right: 80px;
+
                             input[type='text'] {
                                 width: 100%;
                                 height: 36px;
@@ -537,15 +641,19 @@
                                 text-indent: 25px;
                                 outline: none;
                             }
+
                             input::-webkit-input-placeholder {
                                 background: url(/src/images/event/search.png) 6px center no-repeat;
                             }
+
                             input:-moz-placeholder {
                                 background: url(/src/images/event/search.png) 6px center no-repeat;
                             }
+
                             input::-moz-placeholder {
                                 background: url(/src/images/event/search.png) 6px center no-repeat;
                             }
+
                             input:-ms-input-placeholder {
                                 background: url(/src/images/event/search.png) 6px center no-repeat #fff;
                             }
@@ -553,8 +661,10 @@
                     }
                 }
             }
+
             .modal-footer {
                 background: #fff;
+
                 span {
                     display: inline-block;
                     margin-top: 7px;
@@ -562,6 +672,7 @@
                     line-height: 36px;
                     vertical-align: middle;
                 }
+
                 input {
                     height: 36px;
                     text-indent: 10px;
@@ -569,6 +680,7 @@
                     vertical-align: middle;
                     width: 340px;
                 }
+
                 button {
                     background: #59b6fc;
                     color: #fff;
@@ -579,12 +691,151 @@
     }
 }
 
-#stakeholder ,
-#selectPeople{
+
+#setpoint
+  {
+  // top: 50%;
+  // left: 50%;
+  // width: 800px;
+  // margin-left: -400px;
+  // height: 600px;
+  // margin-top: -300px;
+  font-size: 14px; // overflow: hidden;
+  .modal-lg {
+    // margin: 0;
+    // width: 100%;
+    .modal-content {
+      width: 700px;
+      height: 460px;
+      margin: 0 auto;
+      border-radius: 8px;
+      overflow: hidden;
+      .modal-header {
+        height: 38px;
+        background: #344052;
+        color: #fff;
+        padding: 0;
+        margin: 0;
+        h3 {
+          line-height: 40px;
+          font-size: 16px;
+          text-align: center;
+          margin: 0;
+          a {
+            color: #fff;
+            margin-top: 6px;
+            margin-right: 10px;
+            font-weight: none;
+            opacity: 1;
+          }
+        }
+      }
+      .modal-body {
+        padding: 20px 20px 0 20px;
+        overflow-y: auto;
+        height: 370px;
+        .first {
+          background: #fff;
+          border-radius: 5px;
+          padding-top: 1px;
+          padding-bottom: 10px;
+          min-height: 350px;
+          color: #636363;
+          .bg {
+            padding-bottom: 10px;
+            width: 100%;
+            height: 40px;
+            background: url('/src/images/node/base1.png') no-repeat center;
+          }
+        }
+        .second {
+          .bg {
+            padding-bottom: 10px;
+            width: 100%;
+            height: 40px;
+            background: url('/src/images/node/2.png') no-repeat center;
+          }
+        }
+        .node_form {
+          .form_part {
+            width: 50%;
+            float: left;
+          }
+          .form_list {
+            overflow: hidden;
+            line-height: 30px;
+            margin-top: 15px;
+            .list_left {
+              width: 80px;
+              float: left;
+              i {
+                color: red;
+                vertical-align: middle;
+                margin-right: 5px;
+                font-size: 20px;
+              }
+            }
+            .list_right {
+              margin-left: 80px;
+              width: auto;
+              padding: 0 20px 0 10px;
+              .inline {
+                display: inline-block;
+              }
+              .wid110 {
+                width: 110px;
+              }
+              .wid150 {
+                width: 230px;
+              }
+            }
+            .textarea_text {
+              position: relative;
+              textarea {
+                resize: none;
+                height: 80px;
+                position: relative
+              }
+              .text_num {
+                color: #999;
+                position: absolute;
+                bottom: 2px;
+                right: 30px;
+              }
+            }
+          }
+        }
+      }
+      .modal-footer {
+        text-align: center;
+        background: #344052;
+        height: 50px;
+        padding: 0;
+        margin: 0;
+        button {
+          height: 36px;
+          border: none;
+          width: 120px;
+          margin: 7px 30px 0 30px;
+          font-size: 16px;
+        }
+        .submit {
+          background: #59b6fc;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+#stakeholder,
+#selectPeople {
     @extend #addEvent;
+
     // width: 500px;
     // margin-left: -250px;
     .modal-lg {
+
         // margin: 0;
         // width: 100%;
         .modal-content {
@@ -598,7 +849,9 @@
 
 $bgclr: #e7e8ec;
 $blue: #59b6fc;
+
 .big_modal .modal-dialog {
+
     //@include modal_size();
     /*position: absolute;
     margin: 0;
@@ -616,12 +869,14 @@ $blue: #59b6fc;
             color: #fff;
             height: 40px;
             padding: 0;
+
             h3 {
                 line-height: 40px;
                 font-size: 16px;
                 text-align: center;
                 margin: 0;
             }
+
             button.close {
                 right: 0;
                 position: absolute;
@@ -630,11 +885,13 @@ $blue: #59b6fc;
                 outline: none;
                 opacity: .9;
                 text-shadow: none;
+
                 span {
                     color: white;
                 }
             }
         }
+
         .modal-body {
             position: relative;
             padding: 15px;
@@ -643,6 +900,7 @@ $blue: #59b6fc;
             overflow-x: hidden;
             overflow-y: auto;
             background: $bgclr;
+
             .sub_wrapper {
                 color: #666;
                 padding: 15px;
@@ -650,12 +908,14 @@ $blue: #59b6fc;
                 background: white;
             }
         }
+
         .modal-footer {
             text-align: center;
             background: #344052;
             height: 50px;
             padding: 0;
             margin: 0;
+
             button {
                 height: 36px;
                 border: none;
@@ -663,9 +923,11 @@ $blue: #59b6fc;
                 margin-top: 7px;
                 font-size: 16px;
                 margin: 6px 22px 0 22px;
+
                 &.modal_close {
                     background-color: #e6e6e6;
                 }
+
                 &.modal_active {
                     background-color: $blue;
                 }
