@@ -1220,7 +1220,7 @@ function operateFormatter(value, row, index) {
         '<a class="check" data-toggle="modal" href="javascript:void(0)" title="查看">',
         '<i></i>',
         '</a>',
-        '<a class="setpoint" data-toggle="modal" href="javascript:void(0)" title="设置关键点">',
+        '<a class="setpoint" data-toggle="modal" href="javascript:void(0)" title="转换关键点">',
         '<i class="fa fa-podcast" ></i>',
         '</a>',
     ].join('');
@@ -1439,14 +1439,14 @@ var addketpointVm = new Vue({
                 success: function (data) {
                     if (data.success == 1) {
                         that.cancalNode();
-                        xxwsWindowObj.xxwsAlert("保存成功");
+                        xxwsWindowObj.xxwsAlert("转换成功");
                     } else {
                         if (data.msg.indexOf("name") > -1) {
-                            xxwsWindowObj.xxwsAlert("保存失败，不可以重复转化关键点");
+                            xxwsWindowObj.xxwsAlert("转换失败，不可以重复转化关键点");
                             return;
                         }
                         if (data.msg.indexOf("code") > -1) {
-                            xxwsWindowObj.xxwsAlert("保存失败，不可以重复转化关键点");
+                            xxwsWindowObj.xxwsAlert("转换失败，不可以重复转化关键点");
                             return;
                         }
                         xxwsWindowObj.xxwsAlert("服务器异常，请稍候尝试");
