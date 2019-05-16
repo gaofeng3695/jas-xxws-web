@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
     searchObj.init(); //搜索条件
     mapObj.init(); //地图初始化
@@ -13,7 +13,7 @@ $(function() {
     pipelinebtnObj.isPrivaliage($("#event_map"), mapObj.$bdMap);
 });
 /*searchObj*/
-(function(window, $, createSearhTemplate) {
+(function (window, $, createSearhTemplate) {
     var obj = {
         queryObj: { //对象，必填，传输给后台的对象，也会用来初始化html视图展示，高亮显示
             keyword: '',
@@ -27,11 +27,11 @@ $(function() {
             iscustorm: "1", //0表示自定义的 1表示item的
         },
 
-        init: function() {
+        init: function () {
             this.requestEventType();
             //this.bindEvent();
         },
-        requestEventType: function() {
+        requestEventType: function () {
             var that = this;
             var params = {};
             $.ajax({
@@ -40,7 +40,7 @@ $(function() {
                 data: JSON.stringify(params),
                 contentType: "application/json",
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     if (data.success == 1) {
                         //that.servicedata = JSON.parse(JSON.stringify(data.rows));
                         that.foramtEventType(data.rows);
@@ -58,10 +58,10 @@ $(function() {
                 }
             });
         },
-        foramtEventType: function(data) {
+        foramtEventType: function (data) {
             var oAllTypes = {}; //活跃的：组、类型对应Map
 
-            data.forEach(function(item) {
+            data.forEach(function (item) {
                 if (+item.parentId === 0) { //父级节点作为map的key
                     oAllTypes[item.objectId] = {
                         typeName: item.typeName,
@@ -73,7 +73,7 @@ $(function() {
                     }
                 }
             });
-            data.forEach(function(item) {
+            data.forEach(function (item) {
                 if (+item.parentId !== 0) { //子集节点作为value放入响应的key中
                     if (+item.active === 0) { //类型类型
                         oAllTypes[item.parentId].aHisData.push({
@@ -93,7 +93,7 @@ $(function() {
             //console.log(oAllTypes);
             this._formatTypeDataForActiveAndHis(oAllTypes);
         },
-        _formatTypeDataForActiveAndHis: function(obj) {
+        _formatTypeDataForActiveAndHis: function (obj) {
             //渲染历史数据
             var that = this;
 
@@ -123,7 +123,7 @@ $(function() {
                     }
                     /*活动的类型*/
                     if (item.aActiveData.length > 0) {
-                        var subValue = item.aActiveData.map(function(val) {
+                        var subValue = item.aActiveData.map(function (val) {
                             return val.value;
                         }).join(',');
                         var children = item.aActiveData.length > 1 ? [{
@@ -147,12 +147,12 @@ $(function() {
             }
             // alert(JSON.stringify(aActiveData));
             that.hisData = aHisData;
-            that.aActiveData = aActiveData.filter(function(item) {
+            that.aActiveData = aActiveData.filter(function (item) {
                 return item;
             });
             //console.log(that.aActiveData);
         },
-        _initSearcEventType: function(aActiveData, hisData) { //返回组装后的事件类型
+        _initSearcEventType: function (aActiveData, hisData) { //返回组装后的事件类型
             var that = this;
             var aItems = [{
                 name: '全部',
@@ -176,7 +176,7 @@ $(function() {
             );
             return aItems;
         },
-        createSearchTemplateObj: function(aActiveData, hisData) {
+        createSearchTemplateObj: function (aActiveData, hisData) {
             var that = this;
             var item = that._initSearcEventType(aActiveData, hisData);
             return {
@@ -218,37 +218,37 @@ $(function() {
                     },
                     'date',
                 ],
-                cbRender: function() { ////选填，选项变更时会触发回调
+                cbRender: function () { ////选填，选项变更时会触发回调
                     $('.itemHisData').removeClass('active');
                     // that._clearHisActive();
                 },
                 queryObj: this.queryObj,
-                callback: function(data) { //初始化和更新queryObj后的回调，默认传入queryObj
+                callback: function (data) { //初始化和更新queryObj后的回调，默认传入queryObj
                     //console.log(data.type);
                     that.refreshTable();
                 }
             };
         },
-        refreshTable: function() {
+        refreshTable: function () {
             var that = this;
             that.queryObj.pageNum = '1';
             $('#table').bootstrapTable('refreshOptions', {
                 pageNumber: +that.queryObj.pageNum,
                 pageSize: +that.queryObj.pageSize,
-                queryParams: function(params) {
+                queryParams: function (params) {
                     that.queryObj.pageSize = params.pageSize;
                     that.queryObj.pageNum = params.pageNumber;
                     return that.queryObj;
                 }
             });
         },
-        bindEvent: function() {
+        bindEvent: function () {
             var that = this;
-            $('body').on('click', '.peo_border', function() { //展现历史选择列表
+            $('body').on('click', '.peo_border', function () { //展现历史选择列表
 
                 $('#hisData').modal();
             });
-            $('body').on('click', '#btn_hisData', function() {
+            $('body').on('click', '#btn_hisData', function () {
                 that._setSelectedItems();
                 $('.item2_id').hide();
                 $('#hisTypeInput').val(that.aTypeName.join('，'));
@@ -262,7 +262,7 @@ $(function() {
                 that.queryObj.type = that.aTypeId.join(',');
                 that.searchInst.callback();
             });
-            $('body').on('click', '#clear_type', function() { //点击清空历史事件类型
+            $('body').on('click', '#clear_type', function () { //点击清空历史事件类型
                 that._clearHisActive();
                 that.queryObj.type = '';
                 that.searchInst.renderActive({
@@ -271,11 +271,11 @@ $(function() {
                 that.searchInst.callback();
             });
 
-            $('body').on('click', '.search_reset', function() { //添加重置事件
+            $('body').on('click', '.search_reset', function () { //添加重置事件
                 that._clearHisActive();
             });
         },
-        renderEventTypeTree: function(data) {
+        renderEventTypeTree: function (data) {
             var that = this;
             var setting = {
                 view: {
@@ -300,12 +300,12 @@ $(function() {
             that.zTree = $.fn.zTree.init($("#eventType_list"), setting, data);
             that.zTree.expandAll(true);
         },
-        _setSelectedItems: function() { //设定选中的历史事件类型
+        _setSelectedItems: function () { //设定选中的历史事件类型
             var that = this;
             that.aTypeId = [];
             that.aTypeName = [];
             var arr = that.zTree.getCheckedNodes(true);
-            arr.forEach(function(item, index) {
+            arr.forEach(function (item, index) {
                 if (item.isParent) {
                     return;
                 }
@@ -313,7 +313,7 @@ $(function() {
                 that.aTypeName.push(item.treenodename);
             });
         },
-        _clearHisActive: function() {
+        _clearHisActive: function () {
             var that = this;
             that.aTypeId = null;
             that.aTypeName = null;
@@ -338,7 +338,7 @@ $(function() {
  */
 var eventObj = {
     $addBtn: $("#btn_add"),
-    $submit: $(".submit"),
+    $submit: $("#addEvent .submit"),
     $mapA: $(".map_address"),
     $lon: $("input[name=lon]"),
     $lat: $("input[name=lat]"),
@@ -349,46 +349,46 @@ var eventObj = {
     _eventObjectId: null,
     $eventId: null,
     $flg: true,
-    init: function() {
+    init: function () {
         var _this = this;
-        this.$addBtn.click(function() { //打开事件模态框
+        this.$addBtn.click(function () { //打开事件模态框
             _this.eventOpen();
         });
-        this.$mapA.click(function() { //打开地图模态框
+        this.$mapA.click(function () { //打开地图模态框
             _this.mapOpen();
         });
-        this.$submit.click(function() { //事件上报
+        this.$submit.click(function () { //事件上报
             _this.submit();
         });
-        this.$receiveUser.click(function() {
+        this.$receiveUser.click(function () {
             $("#stakeholder").modal(); //打开人员模态框
             _this.requestPeopleTree();
         });
-        $('#btn_selectPeople').click(function() { //确定选择人员
+        $('#btn_selectPeople').click(function () { //确定选择人员
             _this.setSelectedPerson();
             //console.log(that.querryObj);
         });
 
         //地图模态框加载完加载
-        this.$mapM.on('shown.bs.modal', function() {
+        this.$mapM.on('shown.bs.modal', function () {
             mapAddObj.reload();
         });
         //详情模态框加载完加载
-        $('#details').on('shown.bs.modal', function(e) {
+        $('#details').on('shown.bs.modal', function (e) {
             detailsObj.loadEventDetails(_this._eventObjectId);
         });
         this.getType();
     },
-    eventOpen: function() { //打开摸态窗口
+    eventOpen: function () { //打开摸态窗口
         var time = (new Date()).Format("yyyy-MM-dd HH:mm");
         $("#datetime").val(time);
         this.$eventM.modal();
     },
-    mapOpen: function() { //打开地图摸态窗口
+    mapOpen: function () { //打开地图摸态窗口
         this.$mapM.modal();
         this.iconHide();
     },
-    submit: function() { //提交表单
+    submit: function () { //提交表单
         var _this = this;
         this.$eventId = baseOperation.createuuid();
         var occurrenceTime = $("#datetime").val();
@@ -419,7 +419,7 @@ var eventObj = {
                     name_cancel: '取消',
                     name_confirm: '确定',
                     isCancelBtnShow: true,
-                    callBack: function() {
+                    callBack: function () {
                         _this.uploadFile();
                     }
                 };
@@ -429,7 +429,7 @@ var eventObj = {
         }
 
     },
-    uploadFile: function() {
+    uploadFile: function () {
         var nImgHasBeenSendSuccess = 0;
         var _this = this;
         var files = $(".feedback_img_file").find("input[name=file]");
@@ -445,7 +445,7 @@ var eventObj = {
                     dataType: "json",
                     type: "POST",
                     async: false,
-                    success: function(data, status) {
+                    success: function (data, status) {
                         var statu = data.success;
                         if (statu == 1) {
                             nImgHasBeenSendSuccess++;
@@ -465,7 +465,7 @@ var eventObj = {
             _this.uploadData();
         }
     },
-    uploadData: function() {
+    uploadData: function () {
         var _this = this;
         var eventData = this.formData();
         // console.log(JSON.stringify(eventData));
@@ -475,7 +475,7 @@ var eventObj = {
             contentType: "application/json",
             data: JSON.stringify(eventData),
             dataType: "json",
-            success: function(data, status) {
+            success: function (data, status) {
                 if (data.success == 1) {
                     $("input[type='text']").val("");
                     _this.$eventM.modal('hide');
@@ -487,7 +487,7 @@ var eventObj = {
             }
         })
     },
-    formData: function() {
+    formData: function () {
         // debugger;
         var _this = this;
         var occurrenceTime = $("#datetime").val();
@@ -521,14 +521,14 @@ var eventObj = {
         dataArr.push(dataMsg);
         return dataArr;
     },
-    getType: function() {
+    getType: function () {
         var that = this;
         var data = searchObj.aActiveData;
         //console.log(data);
 
-        var sHtml = data.map(function(item, index) {
+        var sHtml = data.map(function (item, index) {
             if (item.children) {
-                return item.children.map(function(subItem) {
+                return item.children.map(function (subItem) {
                     if (subItem.name === '全部') {
                         return '';
                     }
@@ -562,7 +562,7 @@ var eventObj = {
         // });
         // $("#eventType").append(txt);
     },
-    requestPeopleTree: function() { //请求人员信息
+    requestPeopleTree: function () { //请求人员信息
         var that = this;
         if (that.aAllPeople) {
             return;
@@ -576,7 +576,7 @@ var eventObj = {
                 status: 1
             },
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 // console.log(JSON.stringify(data));
                 var peopleAllArr = data.rows;
                 if (data.success != 1) {
@@ -594,13 +594,13 @@ var eventObj = {
                 that.renderPeopleTree(that.aAllPeople);
             },
             statusCode: {
-                404: function() {
+                404: function () {
                     xxwsWindowObj.xxwsAlert('获取人员信息失败！');
                 }
             }
         });
     },
-    renderPeopleTree: function(data) { //遍历tree
+    renderPeopleTree: function (data) { //遍历tree
         var that = this;
         //data = '';
         //// console.log(data)
@@ -626,14 +626,14 @@ var eventObj = {
         that.zTree = $.fn.zTree.init($("#people_list"), setting, data);
         that.zTree.expandAll(true);
     },
-    setSelectedPerson: function() { //获取选中的人员
+    setSelectedPerson: function () { //获取选中的人员
         var that = this;
         // that.aPeopleId = [];
         that.aPeopleName = [];
         that.receiveUserIdsArr = []; //人员数组
         var userObj = null;
         var arr = that.zTree.getCheckedNodes(true);
-        arr.forEach(function(item, index) {
+        arr.forEach(function (item, index) {
             if (item.isParent) {
                 return;
             }
@@ -651,7 +651,7 @@ var eventObj = {
         // console.log(that.aPeopleName);
         // receiveUserIdsArr
     },
-    initPeopleList: function() { //清空人员信息
+    initPeopleList: function () { //清空人员信息
         var that = this;
         that.aPeopleName = [];
         that.receiveUserIdsArr = [];
@@ -660,11 +660,11 @@ var eventObj = {
             that.zTree.checkAllNodes(false);
         }
     },
-    iconHide: function() { //隐藏百度图标与文字
+    iconHide: function () { //隐藏百度图标与文字
         $(".BMap_cpyCtrl.BMap_noprint.anchorBL,.anchorBL").hide();
         $(".anchorBL a").hide();
     },
-    again: function() {
+    again: function () {
         this.$flg = true;
     }
 }
@@ -684,7 +684,7 @@ var mapAddObj = { //上报事件地图
     $marker: null,
     $point: null,
     $address: new BMap.Geocoder(),
-    init: function() {
+    init: function () {
         // debugger;
 
         //声明-比例尺控件（左下角）
@@ -704,13 +704,13 @@ var mapAddObj = { //上报事件地图
 
         var _this = this;
 
-        this.$map.addEventListener("click", function(e) { //添加选择点
+        this.$map.addEventListener("click", function (e) { //添加选择点
             _this.$lon = e.point.lng;
             _this.$lat = e.point.lat;
             _this.remove();
             _this.add();
         });
-        this.$botton.click(function() { //地点搜索
+        this.$botton.click(function () { //地点搜索
             // xxwsWindowObj.xxwsAlert(_this.$val.val().trim())
             // debugger;
             var local = new BMap.LocalSearch(_this.$map, {
@@ -720,7 +720,7 @@ var mapAddObj = { //上报事件地图
             });
             local.search(_this.$val.val().trim());
         });
-        this.$dataPass.click(function() { //地址传到上报页面
+        this.$dataPass.click(function () { //地址传到上报页面
             // console.log("dddd")
             if (_this.$text.val() == '') {
                 xxwsWindowObj.xxwsAlert("请选择详细位置！");
@@ -733,24 +733,24 @@ var mapAddObj = { //上报事件地图
             }
         })
     },
-    reload: function() { //重新加载地图
+    reload: function () { //重新加载地图
         this.$map.centerAndZoom(new BMap.Point(116.404, 39.915), 9); // 初始化地图,设置中心点坐标和地图级别
         this.$map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
     },
-    add: function() {
+    add: function () {
         this.$point = new BMap.Point(this.$lon, this.$lat);
         this.$marker = new BMap.Marker(this.$point); // 创建标注
         this.$map.addOverlay(this.$marker); // 将标注添加到地图中
 
         var _this = this;
         // 根据坐标得到地址描述
-        this.$address.getLocation(this.$point, function(result) {
+        this.$address.getLocation(this.$point, function (result) {
             if (result) {
                 _this.$text.val(result.address);
             }
         });
     },
-    remove: function() {
+    remove: function () {
         // this.$map.removeOverlay(this.$marker);
         this.$map.clearOverlays(); //清除所以的点
     }
@@ -760,10 +760,10 @@ var mapAddObj = { //上报事件地图
  *监听页面的相关事件
  *alex 2017-2-23 modify
  */
-var addListenEventHandle = function() {
+var addListenEventHandle = function () {
 
     //地图展示已选-点击事件
-    $("#map_choice").click(function() {
+    $("#map_choice").click(function () {
         var selectedPointItems = $('#table').bootstrapTable('getSelections');
         // xxwsWindowObj.xxwsAlert(selectedPointItems.length);
         if (selectedPointItems.length > 0) {
@@ -772,15 +772,30 @@ var addListenEventHandle = function() {
             xxwsWindowObj.xxwsAlert("请选择您要展示的信息！");
         }
     });
+    //地图展示已选-点击事件
+    $("#switch_point").click(function () {
+        var selectedPointItems = $('#table').bootstrapTable('getSelections');
+        // xxwsWindowObj.xxwsAlert(selectedPointItems.length);
+        if (selectedPointItems.length > 0) {
+            console.log(selectedPointItems)
+            addketpointVm.nodeForm.eventIds = selectedPointItems.map(function (item) {
+                return item.objectId
+            });
+            openSetkeypointDialog();
+
+        } else {
+            xxwsWindowObj.xxwsAlert("请选择您要转换的事件！");
+        }
+    });
 
     // 地图的展开和收缩 - 点击事件
-    $(".bottom_btn span").click(function() {
+    $(".bottom_btn span").click(function () {
         mapObj.mapSwitch();
     });
 
 
     //上传图片-点击事件
-    $(".addImg").click(function() {
+    $(".addImg").click(function () {
         var imgNum = $(".feedback_img_list").find(".feedback_images").length;
         if (imgNum <= 4) {
             $(".upload_file").trigger("click");
@@ -790,8 +805,8 @@ var addListenEventHandle = function() {
     });
 
     //新建事件是否报送-点击change事件
-    $(".pay_list_c1").each(function(e) {
-        $(this).click(function() {
+    $(".pay_list_c1").each(function (e) {
+        $(this).click(function () {
             $(".pay_list_c1").removeClass("on");
             $(this).addClass("on");
             $(this).find("input[type='radio']").prop("checked", true);
@@ -799,14 +814,14 @@ var addListenEventHandle = function() {
     });
 
     //通过该方法来为每次弹出的模态框设置最新的zIndex值，从而使最新的modal显示在最前面
-    $(document).on('show.bs.modal', '.modal', function(event) {
+    $(document).on('show.bs.modal', '.modal', function (event) {
         var zIndex = 1040 + (10 * $('.modal:visible').length);
         $(this).css('z-index', zIndex);
-        setTimeout(function() {
+        setTimeout(function () {
             $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
         }, 0);
     });
-    $(document).on('hidden.bs.modal', '.modal', function(event) {
+    $(document).on('hidden.bs.modal', '.modal', function (event) {
         if ($('.modal:visible').length > 0) {
             $("body").addClass("modal-open");
         }
@@ -825,7 +840,7 @@ var mapObj = {
     $bdMap: new BMap.Map("event_map"), //创建百度地图实例
     $zoom: ["50", "100", "200", "500", "1000", "2000", "5000", "10000", "20000", "25000", "50000", "100000", "20000", "25000", "50000", "100000", "200000", "500000", "1000000", "2000000"],
     aCurrentPoints: [],
-    init: function() { //地图初始化方法
+    init: function () { //地图初始化方法
         this.$bdMap.centerAndZoom(new BMap.Point(116.404, 39.915), 5); // 初始化地图,设置中心点坐标和地图级别
         this.$bdMap.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
         //声明-比例尺控件（左下角）
@@ -842,24 +857,24 @@ var mapObj = {
         this.$bdMap.addControl(bottom_right_navigation);
         this.$bdMap.addControl(new BMap.MapTypeControl());
     },
-    mapSwitch: function() { //地图展开、收缩的开关
+    mapSwitch: function () { //地图展开、收缩的开关
         if (this.$mapO.is(":hidden")) {
             this.show();
         } else {
             this.hide();
         }
     },
-    hide: function() {
+    hide: function () {
         this.$mapO.slideUp();
         this.$mapBtn.attr("class", "map_down");
     },
-    show: function() {
+    show: function () {
         this.$mapO.slideDown();
         this.$mapBtn.attr("class", "map_up");
         eventObj.iconHide();
     },
     //地图打点并计算中心点及缩放等级
-    setPointsMarkerWithCenterPointAndZoomLevel: function(data) {
+    setPointsMarkerWithCenterPointAndZoomLevel: function (data) {
         this.$bdMap.clearOverlays(); //清除地图上已经标注的点
 
         this.aCurrentPoints = [];
@@ -869,7 +884,7 @@ var mapObj = {
         //this.$bdMap.centerAndZoom(centerPointAndZoomLevel.centerPoint, centerPointAndZoomLevel.zoomlevel); //设置中心点坐标和地图级别
 
         //计算中心点及缩放的新方法
-        var arr = data.map(function(item, index, arr) {
+        var arr = data.map(function (item, index, arr) {
             return new BMap.Point(item.bdLon, item.bdLat);
         });
         this.$bdMap.setViewport(arr, {
@@ -878,7 +893,7 @@ var mapObj = {
         this.setPointsMarker(data);
     },
     //地图打点(多个点)
-    setPointsMarker: function(data) {
+    setPointsMarker: function (data) {
 
         //this.$bdMap.clearOverlays(); //清除地图上已经标注的点
         var txts = null;
@@ -923,7 +938,7 @@ var mapObj = {
         }
     },
     ///获取max坐标和min坐标
-    getMaxPointAndMinPoint: function(_data) {
+    getMaxPointAndMinPoint: function (_data) {
         var _maxLon = 0,
             _maxLat = 0,
             _minLon = 999,
@@ -950,10 +965,10 @@ var mapObj = {
             minLon: _minLon,
             minLat: _minLat
         };
-        return _obj;　　　　
+        return _obj;
     },
     //获取中心点及zoom级别
-    getCenterPointAndZoomLevel: function(maxLon, maxLat, minLon, minLat) {
+    getCenterPointAndZoomLevel: function (maxLon, maxLat, minLon, minLat) {
         var pointA = new BMap.Point(maxLon, maxLat); // 创建点坐标A
         var pointB = new BMap.Point(minLon, minLat); // 创建点坐标B
         var distance = this.$bdMap.getDistance(pointA, pointB).toFixed(1); //获取两点距离,保留小数点后两位
@@ -972,7 +987,7 @@ var mapObj = {
         _obj.centerPoint = _centerpoint;
         return _obj;
     },
-    singlePointLocation: function(selectedItem) {
+    singlePointLocation: function (selectedItem) {
         var isExist = 0;
         this.$bdMap.centerAndZoom(new BMap.Point(selectedItem.bdLon, selectedItem.bdLat), 18); //中心点跳转
 
@@ -1024,14 +1039,14 @@ var mapObj = {
         });
         this.addClickHandler(txts, _marker);
     },
-    addClickHandler: function(content, marker) {
+    addClickHandler: function (content, marker) {
         var _this = this;
-        marker.addEventListener("click", function(e) {
+        marker.addEventListener("click", function (e) {
             // xxwsWindowObj.xxwsAlert(content);
             _this.openInfo(content, e)
         });
     },
-    openInfo: function(content, e) {
+    openInfo: function (content, e) {
         var opts = {
             width: 250, // 信息窗口宽度
             height: 80, // 信息窗口高度
@@ -1048,7 +1063,7 @@ var mapObj = {
 function closeImg(e) {
     var num = $(e).attr("data-key");
     $(e).closest(".feedback_images").remove();
-    $(".feedback_img_file input[name=file]").each(function() {
+    $(".feedback_img_file input[name=file]").each(function () {
         console.log($(this).attr("data-value"))
         if ($(this).attr("data-value") == num) {
             $(this).remove();
@@ -1084,15 +1099,15 @@ function initTable() {
         searchOnEnterKey: false,
         queryParamsType: '', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
         // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
-        queryParams: function(params) {
+        queryParams: function (params) {
             searchObj.queryObj.pageSize = params.pageSize;
             searchObj.queryObj.pageNum = params.pageNumber;
             return searchObj.queryObj;
         },
-        responseHandler: function(res) {
+        responseHandler: function (res) {
             return res;
         },
-        onLoadSuccess: function(data) {
+        onLoadSuccess: function (data) {
             // xxwsWindowObj.xxwsAlert(data.rows.length);
             if (data.success == 1) {
                 if (data.rows.length > 0) {
@@ -1132,7 +1147,7 @@ function initTable() {
                 sortable: false, //启用排序
                 width: '17%',
                 editable: true,
-                cellStyle: function(value, row, index) {
+                cellStyle: function (value, row, index) {
                     return {
                         css: {
                             "max-width": "300px",
@@ -1205,13 +1220,16 @@ function operateFormatter(value, row, index) {
         '<a class="check" data-toggle="modal" href="javascript:void(0)" title="查看">',
         '<i></i>',
         '</a>',
+        '<a class="setpoint" data-toggle="modal" href="javascript:void(0)" title="转换关键点">',
+        '<i class="fa fa-podcast" ></i>',
+        '</a>',
     ].join('');
 }
 
 // 表格操作的事件
 window.operateEvents = {
     //定位功能
-    'click .location': function(e, value, row, index) {
+    'click .location': function (e, value, row, index) {
         if ($(this).find('i').attr("class") == 'active') {} else {
             $(".location").find('i').attr("class", "");
             $(this).find('i').attr("class", "active");
@@ -1223,10 +1241,21 @@ window.operateEvents = {
         return false;
     },
     //查看详情
-    'click .check': function(e, value, row, index) {
+    'click .check': function (e, value, row, index) {
         var objId = row.objectId;
         eventObj._eventObjectId = objId;
         $("#details").modal(); //打开详情模态框
+
+        // setTimeout(function() {
+        //     detailsObj.loadEventDetails(objId);
+        // }, 1000);
+        return false;
+    },
+    'click .setpoint': function (e, value, row, index) {
+        var objId = row.objectId;
+        eventObj._eventObjectId = objId;
+        addketpointVm.nodeForm.eventIds = [objId];
+        openSetkeypointDialog();
 
         // setTimeout(function() {
         //     detailsObj.loadEventDetails(objId);
@@ -1252,9 +1281,9 @@ var exportFileObj = {
         "keyword": "",
         "ids": ""
     },
-    init: function() {
+    init: function () {
         var _this = this;
-        this.$exportAll.click(function() {
+        this.$exportAll.click(function () {
             _this.expoerObj.ids = '';
             _this.expoerCondition();
             if (tjSwitch == 1) {
@@ -1263,7 +1292,7 @@ var exportFileObj = {
                 });
             }
         });
-        this.$exportChoice.click(function() {
+        this.$exportChoice.click(function () {
             var selectionsData = $('#table').bootstrapTable('getSelections');
             var objectIds = [];
             if (selectionsData.length == 0) {
@@ -1285,7 +1314,7 @@ var exportFileObj = {
             }
         });
     },
-    expoerCondition: function() {
+    expoerCondition: function () {
         var searchMsg = searchObj.queryObj;
         this.expoerObj.status = searchObj.queryObj.status;
         this.expoerObj.type = searchObj.queryObj.type;
@@ -1295,7 +1324,7 @@ var exportFileObj = {
 
         this.expoerData(this.expoerObj);
     },
-    expoerData: function(date) {
+    expoerData: function (date) {
         var options = {
             "url": '/cloudlink-inspection-event/eventInfo/exportExcel?token=' + lsObj.getLocalStorage('token'),
             "data": date,
@@ -1303,7 +1332,7 @@ var exportFileObj = {
         }
         this.downLoadFile(options);
     },
-    downLoadFile: function(options) {
+    downLoadFile: function (options) {
         var config = $.extend(true, {
             method: 'post'
         }, options);
@@ -1331,4 +1360,185 @@ function checkLen(obj) {
         num = 0;
     }
     $(".text_num").text('(' + num + '字)');
+}
+
+var addketpointVm = new Vue({
+    el: "#setpointwrap",
+    currentEventId: '',
+    data: {
+        nodeForm: {
+            inspectionDays: 1, //巡检天数
+            inspectionTimes: "1", //巡检频次
+            inspectionInterval: 12, //巡检间隔
+            remark: "",
+            effectiveRadius: "50",
+            // personFormList: [],
+            groupName: "",
+            groupId: "",
+            eventIds: [],
+        },
+        textCount: 160,
+    },
+    watch: {
+        'nodeForm.remark': function (val, oldVal) {
+            var that = this;
+            if (val.length > 160) {
+                that.nodeForm.remark = val.substring(0, 160);
+            }
+            that.textCount = 160 - that.nodeForm.remark.length;
+        }
+
+    },
+    methods: {
+        cancalNode: function () { //取消点的增加
+            var that = this;
+
+            $("#setpoint").modal("hide");
+            that.nodeForm = {
+                inspectionDays: 1, //巡检天数
+                inspectionTimes: "1", //巡检频次
+                inspectionInterval: 12, //巡检间隔
+                remark: "",
+                effectiveRadius: "50",
+                groupName: "",
+                groupId: "",
+                eventIds: [],
+            };
+        },
+        chooseGroup: function () {
+            var that = this;
+            $("#departmentSelect").modal();
+            $("#departmentSelect").on('shown.bs.modal', function (e) {
+                var selectArr = [];
+                // if (!that.isEditOrView) {
+                //     if (that.nodeDetail.groupId != null && that.nodeDetail.groupId != "") {
+                //         selectArr.push({
+                //             id: that.nodeDetail.groupId,
+                //         });
+                //     }
+                // }
+                groupTreeObj.requestPeopleTree(selectArr, 'radio');
+            });
+        },
+        submit: function () {
+            /*如果是手动输入，则需要将坐标转换为百度坐标 */
+            var that = this;
+            if (that.verrify(that.nodeForm)) {
+                that.saveNodeToServer();
+            }
+        },
+        saveNodeToServer: function () {
+            var that = this;
+            that.nodeForm.inspectionDays = 1;
+            $.ajax({
+                type: "post",
+                contentType: "application/json",
+                url: "/cloudlink-inspection-event/keyPoint/saveFromEventConversion?token=" + lsObj.getLocalStorage('token'),
+                data: JSON.stringify(that.nodeForm),
+                dataType: "json",
+                success: function (data) {
+                    if (data.success == 1) {
+                        that.cancalNode();
+                        xxwsWindowObj.xxwsAlert("转换成功");
+                    } else {
+                        if (data.msg.indexOf("name") > -1) {
+                            xxwsWindowObj.xxwsAlert("转换失败，不可以重复转化关键点");
+                            return;
+                        }
+                        if (data.msg.indexOf("code") > -1) {
+                            xxwsWindowObj.xxwsAlert("转换失败，不可以重复转化关键点");
+                            return;
+                        }
+                        xxwsWindowObj.xxwsAlert("服务器异常，请稍候尝试");
+                    }
+                }
+            });
+        },
+        quiteChooseGroup: function () {
+            var that = this;
+            var obj = groupTreeObj.getSelectGroup();
+            if (obj.length == 0) {
+                xxwsWindowObj.xxwsAlert("请选择所属分组");
+                return;
+            }
+            that.nodeForm.groupName = obj[0] ? obj[0].name : "";
+            that.nodeForm.groupId = obj[0] ? obj[0].id : "";
+            $("#departmentSelect").modal('hide');
+        },
+        verrify: function (obj) {
+
+            //验证
+            var that = this;
+            var times = obj.inspectionTimes + "";
+            if (!times.trim()) {
+                xxwsWindowObj.xxwsAlert("巡检频次不能为空");
+                return false;
+            }
+            var regNum = /^[0-9]*$/;
+            if (!regNum.test(times)) {
+                xxwsWindowObj.xxwsAlert("巡检频次只能是整数");
+                return false;
+            }
+            var interval = obj.inspectionInterval + "";
+            if (!interval.trim()) {
+                xxwsWindowObj.xxwsAlert("巡检间隔不能为空");
+                return false;
+            }
+            var regNum1 = /^[0-9]+(()||(.[0-9]{1}))?$/;
+            if (!regNum1.test(interval.trim())) {
+                xxwsWindowObj.xxwsAlert("巡检间隔为整数或者小数点后一位");
+                return false;
+            }
+            var r = obj.effectiveRadius + "";
+            if (!r.trim()) {
+                xxwsWindowObj.xxwsAlert("有效半径不能为空");
+                return false;
+            }
+            var regNum1 = /^[0-9]+(()||(.[0-9]{3}))?$/;
+            if (!regNum1.test(r.trim())) {
+                xxwsWindowObj.xxwsAlert("有效半径只能是数字");
+                return false;
+            }
+            if (!obj.groupName) {
+                xxwsWindowObj.xxwsAlert("请选择所属分组");
+                return false;
+            }
+            return true;
+        },
+    }
+})
+
+function openSetkeypointDialog (){
+    checkifhasrole(function(){
+        $("#setpoint").modal();
+    },function(){
+        xxwsWindowObj.xxwsAlert("您需要购买收费版使用关键点功能");
+    })
+}
+
+function checkifhasrole(cb, cbfail) {
+    var that = this;
+    $.ajax({
+        type: 'GET',
+        url: "/cloudlink-core-framework/menu/checkAccess?token=" + lsObj.getLocalStorage('token'),
+        contentType: "application/json",
+        data: {
+            "appId": "0c753fdd-5f54-4b24-bf50-491ea5eb1a84",
+            "menuCode": "keyword"
+        },
+        dataType: "json",
+        success: function (data, state) {
+            if (data.rows && data.rows[0].access) {
+                cb && cb()
+            } else {
+                cbfail && cbfail()
+            }
+        },
+        error: function (data, state) {
+            cbfail && cbfail()
+        }
+    });
+
+
+
 }

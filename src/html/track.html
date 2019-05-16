@@ -13,6 +13,13 @@
     <link href="/src/css/map.css" rel="stylesheet">
     <link href="/src/css/common/search_table.css" rel="stylesheet">
     <link href="/src/css/track.css" rel="stylesheet">
+    <style>
+        .newdownselect {
+            border-bottom: 1px solid #e4e4e4;
+            line-height: 30px;
+            cursor: pointer
+        }
+    </style>
 </head>
 
 <body>
@@ -50,8 +57,8 @@
                 <div class="more_item_wrapper">
                     <div class="sub_wrapper">
                         <b class="up_triangle">
-                                <i></i>
-                            </b>
+                            <i></i>
+                        </b>
                         <div class="son_wrapper">
                             <!-- 时间begin -->
                             <div class="line">
@@ -63,12 +70,16 @@
                                         <span class="item" data-value="week">本周</span>
                                         <span class="item" data-value="month">本月</span>
                                         <span class="date" data-class="date">
-                                                <span id="item_diy" class="diy">自定义</span>
-                                        <span>：</span>
-                                        <input size="16" type="text" id="datetimeStart" onChange="dateChangeForSearch()" placeholder="选择起始时间" readonly class="form_datetime">
-                                        <span>&nbsp;&nbsp;至&nbsp;&nbsp;</span>
-                                        <input size="16" type="text" id="datetimeEnd" onChange="dateChangeForSearch()" placeholder="选择结束时间" readonly class="form_datetime">
-                                        <span id="diyDateBtn" class="itemBtn" data-value="diy">确定</span>
+                                            <span id="item_diy" class="diy">自定义</span>
+                                            <span>：</span>
+                                            <input size="16" type="text" id="datetimeStart"
+                                                onChange="dateChangeForSearch()" placeholder="选择起始时间" readonly
+                                                class="form_datetime">
+                                            <span>&nbsp;&nbsp;至&nbsp;&nbsp;</span>
+                                            <input size="16" type="text" id="datetimeEnd"
+                                                onChange="dateChangeForSearch()" placeholder="选择结束时间" readonly
+                                                class="form_datetime">
+                                            <span id="diyDateBtn" class="itemBtn" data-value="diy">确定</span>
                                         </span>
                                     </div>
                                 </div>
@@ -92,12 +103,12 @@
                                 <div class="item_box">
                                     <div class="item1">
                                         <span class="peo_wrapper" data-class="userIds">
-                                                <span class="peo_border">
-                                                    <input id="peopleInput"class="peo_selected" readonly>
-                                                    <span class="mybtn"></span>
-                                        </span>
-                                        <!--<span id="serach_by_peo" class="itemBtn" data-value="user">确定</span>-->
-                                        <span id="clear_people" class="clear">清空人员</span>
+                                            <span class="peo_border">
+                                                <input id="peopleInput" class="peo_selected" readonly>
+                                                <span class="mybtn"></span>
+                                            </span>
+                                            <!--<span id="serach_by_peo" class="itemBtn" data-value="user">确定</span>-->
+                                            <span id="clear_people" class="clear">清空人员</span>
                                         </span>
                                     </div>
                                 </div>
@@ -110,24 +121,53 @@
         </div>
         <div class="table_wrapper">
             <div class="container-fluid">
-                <div id="toolbar" class="btn-group">
-                    <button id="export_all" type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-share" aria-hidden="true"></span>导出全部
+                <div id="toolbar">
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true">
+                            <span class="glyphicon glyphicon-share" aria-hidden="true"> </span>&nbsp;导出全部
+                            <span class="caret"></span>
                         </button>
-                    <button id="export_choice" type="button" class="btn btn-default">
-                            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>导出已选
+                        <ul class="dropdown-menu addMaintenanceType" style="text-align: center;min-width: 108px"
+                            aria-labelledby="rectification">
+                            <li class="newdownselect" id="export_all">导出word</li>
+                            <li class="newdownselect" style="border:none;" onclick="trackObj.requestOutput('0',null,true)">导出excel</li>
+                        </ul>
+                    </div>
+                    &nbsp;
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true">
+                            <span class="glyphicon glyphicon-saved" aria-hidden="true"> </span>&nbsp;导出已选
+                            <span class="caret"></span>
                         </button>
+                        <ul class="dropdown-menu addMaintenanceType" style="text-align: center;min-width: 108px"
+                            aria-labelledby="rectification">
+                            <li class="newdownselect" id="export_choice">导出word</li>
+                            <li class="newdownselect" style="border:none;" onclick="trackObj.requestOutput('2',null,true)">导出excel</li>
+                        </ul>
+                    </div>
+
+                    <!-- <button id="export_all" type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-share" aria-hidden="true"></span>导出全部
+                    </button> -->
+                    <!-- <button id="export_choice" type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>导出已选
+                    </button> -->
                 </div>
                 <table id="gf_table" data-url="event.json"></table>
             </div>
         </div>
     </div>
     <!--details begin-->
-    <div id="gf_detail" class="modal big_modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div id="gf_detail" class="modal big_modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h3 class="modal-title" id="gridSystemModalLabel">巡检详情</h3>
                 </div>
                 <div id="details_content" class="modal-body">
@@ -175,11 +215,13 @@
         </div>
     </div>
     <!--details end-->
-    <div id="gf_people" class="modal big_modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div id="gf_people" class="modal big_modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h3 class="modal-title" id="gridSystemModalLabel">人员添加</h3>
                 </div>
                 <div class="modal-body">
@@ -195,11 +237,13 @@
         </div>
     </div>
     <!--查看历史轨迹-->
-    <div id="track" class="modal big_modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div id="track" class="modal big_modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h3 class="modal-title" id="gridSystemModalLabel">轨迹查看</h3>
                 </div>
                 <div class="modal-body">
@@ -219,10 +263,14 @@
     <script src="/lib/js/bootstrap-table.min.js"></script>
     <script src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
     <script src="/lib/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
-    <script type="text/javascript" src="https://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
-    <script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
-    <script type="text/javascript" src="https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
+    <script type="text/javascript"
+        src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
+    <script type="text/javascript"
+        src="https://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
+    <script type="text/javascript"
+        src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+    <script type="text/javascript"
+        src="https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
     <script src="/src/js/common/mapObj.js"></script>
     <script src="/src/js/common/common.js"></script>
     <script src="/src/js/common/bootstrap.modal.alert.js"></script>
