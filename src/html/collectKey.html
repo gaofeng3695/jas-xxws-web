@@ -2,50 +2,50 @@
 <html lang="en">
 
 <head>
-  <title></title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="/lib/css/bootstrap.css" rel="stylesheet">
-  <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
-  <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-  <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
-  <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
-  <link href="/src/css/keyword/collectKey.css" rel="stylesheet" />
-  <link href="/src/css/common/group.tree.css" rel="stylesheet" />
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/lib/css/bootstrap.css" rel="stylesheet">
+    <link href="/lib/css/zTreeStyle.css" rel="stylesheet">
+    <link href="/lib/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/src/css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+    <link href="/src/css/keyword/collectKey.css" rel="stylesheet" />
+    <link href="/src/css/common/group.tree.css" rel="stylesheet" />
 </head>
 
 <body>
-  <div id="app">
-    <!-- 左上角tab切换 开始-->
-    <div class="tab_wrapper">
-      <ul class="item_wrapper">
-        <li id="search" class="item wid250">
-          <input type="text" @focus.nactive="search" class="form-control" style="display:inline-block" v-model="searchInput" placeholder="输入名称、编号、位置">
-          <span style="padding-left:10px;" class="fa fa-search" @click="search"></span></li>
-        <li class="border"></li>
-        <li id="addNode" class="item wid80" @click="addNode"><span class="fa fa-plus-square pdr"></span>添加</li>
-        <li class="border"></li>
-        <li id="refresh" class="item wid80 " @click="refreshDraw"><span class="fa fa-refresh pdr"></span>刷新</li>
-      </ul>
-      <div class="nodeList " v-show="isSearchNode">
-        <div id="node" class="  sub_wrapper">
-          <div class=" result scrollContainer">
-            <div v-show="noResult" style="text-align: center;margin-top:10px;">
-              没有查到数据
-            </div>
-            <ul>
-              <li v-for="item in nodeInfoArrys" @click="clickItem(item)">
-                <div class="item">
-                  <div class=" fl hidd  wid300">
-                    <span> {{item.name}} </span> <span style="color:#999;font-size:10px;">（{{item.code}}）</span> </div>
-                  <div class="fr clred" v-if="item.distributionStatus==0">
-                    未分配
-                  </div>
-                  <div class="fr clrb" v-if="item.distributionStatus==1">
-                    已分配
-                  </div>
-                </div>
-                <!--<div class="item">
+    <div id="app">
+        <!-- 左上角tab切换 开始-->
+        <div class="tab_wrapper">
+            <ul class="item_wrapper">
+                <li id="search" class="item wid250">
+                    <input type="text" @focus.nactive="search" class="form-control" style="display:inline-block" v-model="searchInput" placeholder="输入名称、编号、位置">
+                    <span style="padding-left:10px;" class="fa fa-search" @click="search"></span></li>
+                <li class="border"></li>
+                <li id="addNode" class="item wid80" @click="addNode"><span class="fa fa-plus-square pdr"></span>添加</li>
+                <li class="border"></li>
+                <li id="refresh" class="item wid80 " @click="refreshDraw"><span class="fa fa-refresh pdr"></span>刷新</li>
+            </ul>
+            <div class="nodeList " v-show="isSearchNode">
+                <div id="node" class="  sub_wrapper">
+                    <div class=" result scrollContainer">
+                        <div v-show="noResult" style="text-align: center;margin-top:10px;">
+                            没有查到数据
+                        </div>
+                        <ul>
+                            <li v-for="item in nodeInfoArrys" @click="clickItem(item)">
+                                <div class="item">
+                                    <div class=" fl hidd  wid300">
+                                        <span> {{item.name}} </span> <span style="color:#999;font-size:10px;">（{{item.code}}）</span> </div>
+                                    <div class="fr clred" v-if="item.distributionStatus==0">
+                                        未分配
+                                    </div>
+                                    <div class="fr clrb" v-if="item.distributionStatus==1">
+                                        已分配
+                                    </div>
+                                </div>
+                                <!--<div class="item">
                   <div class="wid170 hidd fl">
 
                   </div>
@@ -53,60 +53,59 @@
                     <span>{{item.groupName}}</span>
                   </div>
                 </div>-->
-                <div class="item">
-                  <div class=" hidd locationbg">
-                    <span>{{item.location}}</span>
-                  </div>
-                </div>
+                                <div class="item">
+                                    <div class=" hidd locationbg">
+                                        <span>{{item.location}}</span>
+                                    </div>
+                                </div>
 
-              </li>
-            </ul>
-          </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="tool" v-show="isShowTool">
+                <div class="item" @click="getNode">取点录入</div>
+                <div class="item" @click="inputNode">手动录入</div>
+                <div class="item" @click="top.location.hash='#/event'">事件转化</div>
+            </div>
         </div>
-      </div>
-      <div class="tool" v-show="isShowTool">
-        <div class="item" @click="getNode">取点录入</div>
-        <div class="item" @click="inputNode">手动录入</div>
-        <div class="item" @click="top.location.hash='#/event'">事件转化</div>
-      </div>
-    </div>
-    <!-- 左上角tab切换 结束-->
-    <!-- 地图容器 开始 -->
-    <div id="container" class="map_wrapper">
-    </div>
-    <!-- 地图容器 结束 -->
-    <!--右上角切换-->
-    <div class="change">
-      <div class="allot fl" @click="allotBtn">已分配 <span :class="allot?'active':''"></span></div>
-      <div class="noAllot fr" @click="noAllotBtn">未分配 <span :class="noallot?'active':''"></span></div>
-    </div>
-    <!--必经点详情开始-->
-    <div class="detail" v-show="isDetailNode">
-      <div class="content">
-        <div class="item">
-          <div class="fl  wid100"><span style="color:red">*</span>名称</div>
-          <div class="fl wid">
-            <input type="text" class="form-control" v-model="nodeDetail.name" :disabled="isEditOrView">
-          </div>
+        <!-- 左上角tab切换 结束-->
+        <!-- 地图容器 开始 -->
+        <div id="container" class="map_wrapper">
         </div>
-        <div class="item">
-          <div class="fl  wid100"><span style="color:red">*</span>编号</div>
-          <div class="fl wid">
-            <input type="text" class="form-control" v-model="nodeDetail.code" :disabled="isEditOrView">
-          </div>
+        <!-- 地图容器 结束 -->
+        <!--右上角切换-->
+        <div class="change">
+            <div class="allot fl" @click="allotBtn">已分配 <span :class="allot?'active':''"></span></div>
+            <div class="noAllot fr" @click="noAllotBtn">未分配 <span :class="noallot?'active':''"></span></div>
         </div>
-        <div class="item">
-          <div class="fl wid100"><span style="color:red">*</span>巡检频次</div>
-          <div class="fl wid">
-            <input type="text" class="form-control wid80" v-model="nodeDetail.inspectionTimes" :disabled="isEditOrView">
-            <span>次/每天</span>
-          </div>
-        </div>
-        <div class="item">
-          <div class="fl wid100"><span style="color:red">*</span>巡检间隔</div>
-          <div class="fl wid">
-            <select name="inspectionInterval" style="margin-left:5px" id="inspectionInterval" class="form-control wid160" v-model="nodeDetail.inspectionInterval"
-              :disabled="isEditOrView">
+        <!--必经点详情开始-->
+        <div class="detail" v-show="isDetailNode">
+            <div class="content">
+                <div class="item">
+                    <div class="fl  wid100"><span style="color:red">*</span>名称</div>
+                    <div class="fl wid">
+                        <input type="text" class="form-control" v-model="nodeDetail.name" :disabled="isEditOrView">
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="fl  wid100"><span style="color:red">*</span>编号</div>
+                    <div class="fl wid">
+                        <input type="text" class="form-control" v-model="nodeDetail.code" :disabled="isEditOrView">
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="fl wid100"><span style="color:red">*</span>巡检频次</div>
+                    <div class="fl wid">
+                        <input type="text" class="form-control wid80" v-model="nodeDetail.inspectionTimes" :disabled="isEditOrView">
+                        <span>次/每天</span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="fl wid100"><span style="color:red">*</span>巡检间隔</div>
+                    <div class="fl wid">
+                        <select name="inspectionInterval" style="margin-left:5px" id="inspectionInterval" class="form-control wid160" v-model="nodeDetail.inspectionInterval" :disabled="isEditOrView">
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -120,35 +119,35 @@
                           <option value="11">11</option>
                           <option value="12">12</option>
                         </select>
-            <span>小时</span>
-          </div>
-        </div>
-        <div class="item">
-          <div class="fl wid100"><span style="color:red">*</span>有效半径</div>
-          <div class="fl wid">
-            <input type="text" class="form-control wid160" v-model="nodeDetail.effectiveRadius" :disabled="isEditOrView">
-            <span>米</span>
-          </div>
-        </div>
-        <div class="item">
-          <div class="fl wid100"><span style="color:red">*</span>位置描述</div>
-          <div class="fl wid">
-            <input type="text" class="form-control " v-model="nodeDetail.location" :disabled="isEditOrView">
-          </div>
-        </div>
-        <div class="item">
-          <div class="fl wid100"><span style="color:red">*</span>经度</div>
-          <div class="fl wid">
-            <input type="text" class="form-control " v-model="nodeDetail.bdLon" :disabled="isEditOrView">
-          </div>
-        </div>
-        <div class="item">
-          <div class="fl wid100"><span style="color:red">*</span>纬度</div>
-          <div class="fl wid">
-            <input type="text" class="form-control " v-model="nodeDetail.bdLat" :disabled="isEditOrView">
-          </div>
-        </div>
-        <!--<div class="item">
+                        <span>小时</span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="fl wid100"><span style="color:red">*</span>有效半径</div>
+                    <div class="fl wid">
+                        <input type="text" class="form-control wid160" v-model="nodeDetail.effectiveRadius" :disabled="isEditOrView">
+                        <span>米</span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="fl wid100"><span style="color:red">*</span>位置描述</div>
+                    <div class="fl wid">
+                        <input type="text" class="form-control " v-model="nodeDetail.location" :disabled="isEditOrView">
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="fl wid100"><span style="color:red">*</span>经度</div>
+                    <div class="fl wid">
+                        <input type="text" class="form-control " v-model="nodeDetail.bdLon" :disabled="isEditOrView">
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="fl wid100"><span style="color:red">*</span>纬度</div>
+                    <div class="fl wid">
+                        <input type="text" class="form-control " v-model="nodeDetail.bdLat" :disabled="isEditOrView">
+                    </div>
+                </div>
+                <!--<div class="item">
           <div class="fl wid100"><span style="color:red">*</span>类别</div>
           <div class="fl wid">
             <select type="text" class="form-control " v-model="nodeDetail.category" :disabled="isEditOrView">
@@ -157,73 +156,72 @@
             </select>
           </div>
         </div>-->
-        <div class="item">
-          <div class="fl wid100"><span style="color:red">*</span>分组</div>
-          <div class="fl wid">
-            <input type="text" readonly class="form-control" :class="isEditOrView?'':'bgf'" :disabled="isEditOrView" placeholder="请选择分组"
-              v-model="nodeDetail.groupName" @click="chooseGroup">
-          </div>
-        </div>
-        <div class="item">
-          <div class="fl wid100">备注</div>
-          <div class="fl wid">
-            <input type="textarea" class="form-control " v-model="nodeDetail.remark" :disabled="isEditOrView">
-          </div>
-        </div>
-        <div class="item footer">
-          <button @click="editNode" v-show="isEditOrView">编辑</button>
-          <button @click="delNode" v-show="isEditOrView">删除</button>
-          <button @click="saveNode" v-show="!isEditOrView">保存</button>
-          <button @click="cancelEditNode" v-show="!isEditOrView">取消</button>
-        </div>
-      </div>
-    </div>
-    <!--必经点详情结束-->
-    <!--必经点新增模态框-->
-    <div id="addEvent" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>添加关键点<a class="close" @click="cancalNode">×</a></h3>
-          </div>
-          <div class="modal-body">
-            <div class="bg">
-            </div>
-            <form>
-              <div class="node_form">
-                <div class="form_list">
-                  <div class="form_part">
-                    <div class="list_left text-right">
-                      <i>*</i>名称
+                <div class="item">
+                    <div class="fl wid100"><span style="color:red">*</span>分组</div>
+                    <div class="fl wid">
+                        <input type="text" readonly class="form-control" :class="isEditOrView?'':'bgf'" :disabled="isEditOrView" placeholder="请选择分组" v-model="nodeDetail.groupName" @click="chooseGroup">
                     </div>
-                    <div class="list_right">
-                      <input type="text" class="form-control" placeholder="请输入关键点名称" v-model="nodeForm.name">
-                    </div>
-                  </div>
-                  <div class="form_part">
-                    <div class="list_left text-right">
-                      <i>*</i>编号
-                    </div>
-                    <div class="list_right">
-                      <input type="text" class="form-control" placeholder="请输入关键点编号" v-model="nodeForm.code">
-                    </div>
-                  </div>
                 </div>
-                <div class="form_list">
-                  <div class="form_part">
-                    <div class="list_left text-right">
-                      <i>*</i> 巡检频次
+                <div class="item">
+                    <div class="fl wid100">备注</div>
+                    <div class="fl wid">
+                        <input type="textarea" class="form-control " v-model="nodeDetail.remark" :disabled="isEditOrView">
                     </div>
-                    <div class="list_right">
-                      <input type="text" class="form-control" placeholder="单位：每天" v-model="nodeForm.inspectionTimes">
+                </div>
+                <div class="item footer">
+                    <button @click="editNode" v-show="isEditOrView">编辑</button>
+                    <button @click="delNode" v-show="isEditOrView">删除</button>
+                    <button @click="saveNode" v-show="!isEditOrView">保存</button>
+                    <button @click="cancelEditNode" v-show="!isEditOrView">取消</button>
+                </div>
+            </div>
+        </div>
+        <!--必经点详情结束-->
+        <!--必经点新增模态框-->
+        <div id="addEvent" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>添加关键点<a class="close" @click="cancalNode">×</a></h3>
                     </div>
-                  </div>
-                  <div class="form_part">
-                    <div class="list_left text-right">
-                      <i>*</i>巡检间隔
-                    </div>
-                    <div class="list_right">
-                      <select name="inspectionInterval" id="inspectionInterval" class="form-control" v-model="nodeForm.inspectionInterval">
+                    <div class="modal-body">
+                        <div class="bg">
+                        </div>
+                        <form>
+                            <div class="node_form">
+                                <div class="form_list">
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i>名称
+                                        </div>
+                                        <div class="list_right">
+                                            <input type="text" class="form-control" placeholder="请输入关键点名称" v-model="nodeForm.name">
+                                        </div>
+                                    </div>
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i>编号
+                                        </div>
+                                        <div class="list_right">
+                                            <input type="text" class="form-control" placeholder="请输入关键点编号" v-model="nodeForm.code">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form_list">
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i> 巡检频次
+                                        </div>
+                                        <div class="list_right">
+                                            <input type="text" class="form-control" placeholder="单位：每天" v-model="nodeForm.inspectionTimes">
+                                        </div>
+                                    </div>
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i>巡检间隔
+                                        </div>
+                                        <div class="list_right">
+                                            <select name="inspectionInterval" id="inspectionInterval" class="form-control" v-model="nodeForm.inspectionInterval">
                           <option value="1">1小时</option>
                           <option value="2">2小时</option>
                           <option value="3">3小时</option>
@@ -237,130 +235,130 @@
                           <option value="11">11小时</option>
                           <option value="12">12小时</option>
                         </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="form_list" v-show="isGetOrInput">
-                  <div class="form_part">
-                    <div class="list_left text-right">
-                      <i>*</i>经度
-                    </div>
-                    <div class="list_right">
-                      <input type="text" class="form-control" v-model="nodeForm.lon" placeholder="请输入WGS84坐标经度">
-                    </div>
-                  </div>
-                  <div class="form_part">
-                    <div class="list_left text-right">
-                      <i>*</i>纬度
-                    </div>
-                    <div class="list_right">
-                      <input type="text" class="form-control" v-model="nodeForm.lat" placeholder="请输入WGS84坐标纬度">
-                    </div>
-                  </div>
-                </div>
-                <div class="form_list">
-                  <div class="form_part">
-                    <div class="list_left text-right">
-                      <i>*</i>有效半径
-                    </div>
-                    <div class="list_right">
-                      <input type="text" class="form-control " placeholder="单位：米" v-model="nodeForm.effectiveRadius">
-                    </div>
-                  </div>
-                  <div class="form_part">
-                    <div class="list_left text-right">
-                      <i>*</i>分组
-                    </div>
-                    <div class="list_right">
-                      <input type="text" readonly class="form-control" style="background:#fff" placeholder="请选择分组" v-model="nodeForm.groupName"
-                        @click="chooseGroup">
-                    </div>
-                  </div>
-                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form_list" v-show="isGetOrInput">
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i>经度
+                                        </div>
+                                        <div class="list_right">
+                                            <input type="text" class="form-control" v-model="nodeForm.lon" placeholder="请输入WGS84坐标经度">
+                                        </div>
+                                    </div>
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i>纬度
+                                        </div>
+                                        <div class="list_right">
+                                            <input type="text" class="form-control" v-model="nodeForm.lat" placeholder="请输入WGS84坐标纬度">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form_list">
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i>有效半径
+                                        </div>
+                                        <div class="list_right">
+                                            <input type="text" class="form-control " placeholder="单位：米" v-model="nodeForm.effectiveRadius">
+                                        </div>
+                                    </div>
+                                    <div class="form_part">
+                                        <div class="list_left text-right">
+                                            <i>*</i>分组
+                                        </div>
+                                        <div class="list_right">
+                                            <input type="text" readonly class="form-control" style="background:#fff" placeholder="请选择分组" v-model="nodeForm.groupName" @click="chooseGroup">
+                                        </div>
+                                    </div>
+                                </div>
 
-              <div class="form_list">
-                  <div class="list_left text-right">
-                    <i>*</i>位置描述
-                  </div>
-                  <div class="list_right">
-                    <input type="text" class="form-control" placeholder="请输入位置" v-model="nodeForm.location">
-                  </div>
-              </div>
+                                <div class="form_list">
+                                    <div class="list_left text-right">
+                                        <i>*</i>位置描述
+                                    </div>
+                                    <div class="list_right">
+                                        <input type="text" class="form-control" placeholder="请输入位置" v-model="nodeForm.location">
+                                    </div>
+                                </div>
 
 
-              <div class="form_list">
-                <div class="list_left text-right">
-                  备注
+                                <div class="form_list">
+                                    <div class="list_left text-right">
+                                        备注
+                                    </div>
+                                    <div class="list_right textarea_text">
+                                        <textarea id="event_description" v-model="nodeForm.remark" class="form-control"></textarea>
+                                        <span class="text_num">({{textCount}}字)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn submit" @click="submit">确定</button>
+                        <button class="btn" @click="cancalNode">取消</button>
+                    </div>
                 </div>
-                <div class="list_right textarea_text">
-                  <textarea id="event_description" v-model="nodeForm.remark" class="form-control"></textarea>
-                  <span class="text_num">({{textCount}}字)</span>
-                </div>
-              </div>
-          </div>
-          </form>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn submit" @click="submit">确定</button>
-          <button class="btn" @click="cancalNode">取消</button>
+
+        <!--组别的选择-->
+
+        <!--打开邀请人员组织结构的选择-->
+        <div id="departmentSelect" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>选择区域/分组<a class="close" data-dismiss="modal">×</a></h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="department_select scrollContainer">
+                            <ul id="group_list" class="ztree"></ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn submit" @click="quiteChooseGroup">确定</button>
+                        <button class="btn" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!--事件列表模态框用于转换-->
     </div>
-  </div>
-
-  <!--组别的选择-->
-
-  <!--打开邀请人员组织结构的选择-->
-  <div id="departmentSelect" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>选择区域/分组<a class="close" data-dismiss="modal">×</a></h3>
-        </div>
-        <div class="modal-body">
-          <div class="department_select scrollContainer">
-            <ul id="group_list" class="ztree"></ul>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn submit" @click="quiteChooseGroup">确定</button>
-          <button class="btn" data-dismiss="modal">取消</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!--事件列表模态框用于转换-->
-  </div>
-  <script type="text/javascript" src="/lib/js/vue.min.js"></script>
-  <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
-  <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
-  <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
-  <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
-  <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
-  <script type="text/javascript" src="/lib/js/common_base.js"></script>
-  <script type="text/javascript" src="/src/js/common/linq.min.js"></script>
-  <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
-  <script type="text/javascript" src="https://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
-  <script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
-  <script type="text/javascript" src="https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
-  <script src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
-  <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
-  <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
-  <script type="text/javascript" src="/src/js/common/coordTransform.js"></script>
-  <script type="text/javascript" src="/src/js/common/common.js"></script>
-  <script type="text/javascript" src="/src/js/common/group.tree.js"></script>
-  <script type="text/javascript" src="/src/js/keyword/collectKey.js"></script>
-  <!--<script type="text/javascript" src="/src/js/common/people.tree.js"></script>-->
-  <script>
-    $(".scrollContainer").mCustomScrollbar({
-      advanced: {
-        updateOnContentResize: true
-      }
-    });
-  </script>
+    <script type="text/javascript" src="/lib/js/vue.min.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/lib/js/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript" src="/lib/js/common_base.js"></script>
+    <script type="text/javascript" src="/src/js/common/linq.min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ggGUMM84vpa9GRP6HkOvt2H5UneQeXCQ&s=1"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/DistanceTool/1.2/src/DistanceTool_min.js"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+    <!-- <script type="text/javascript" src="https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script> -->
+    <script type="text/javascript" src="/lib/js/MarkerClusterer_optimize.js"></script>
+    <script src="/src/js/common/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script type="text/javascript" src="/src/js/common/bootstrap.modal.alert.js"></script>
+    <script type="text/javascript" src="/src/js/common/html5-storage.js"></script>
+    <script type="text/javascript" src="/src/js/common/coordTransform.js"></script>
+    <script type="text/javascript" src="/src/js/common/common.js"></script>
+    <script type="text/javascript" src="/src/js/common/group.tree.js"></script>
+    <script type="text/javascript" src="/src/js/keyword/collectKey.js"></script>
+    <!--<script type="text/javascript" src="/src/js/common/people.tree.js"></script>-->
+    <script>
+        $(".scrollContainer").mCustomScrollbar({
+            advanced: {
+                updateOnContentResize: true
+            }
+        });
+    </script>
 </body>
 
 </html>
